@@ -382,6 +382,20 @@ export const modules: Module[] = [
             "Anote Tg e contração nas notas do perfil",
             "Pese 1 metro de cada e confirme densidade",
           ],
+          deepDive: [
+            "A ciência da secagem: todo termoplástico polar (PETG, PA, PC, TPU, ASA) absorve água por difusão de Fick — quanto maior a área exposta e a umidade relativa, maior a captação. Uma bobina de Nylon a 60% UR satura em 36-48h; em 90% UR, em menos de 12h. A água absorvida vira vapor superaquecido dentro do hotend e explode microbolhas que aparecem como 'pipoca', estrias e perda de brilho.",
+            "Curva de secagem operacional: PLA 45°C por 4h (raramente necessário), PETG 65°C por 6h, ABS/ASA 80°C por 4h, Nylon e PA-CF 80°C por 12-16h, TPU 50°C por 8h, PC 80°C por 8h. Acima da Tg do material, a bobina deforma — nunca seque PLA a 65°C numa estufa comum, ele vira disco.",
+            "Armazenamento de longo prazo: caixa hermética com 200-400g de sílica gel indicadora (azul → rosa = trocar), umidade-alvo abaixo de 20% UR, higrômetro digital interno. Filamentos premium vêm com saquinho de dessecante — mantenha dentro da caixa durante o uso, não jogue fora.",
+            "Identificação rápida de filamento úmido: (1) som de estouros (pop-pop) no bico, (2) vapor saindo da extrusora, (3) extrusão fofa/sem brilho, (4) stringing que NÃO melhora ao calibrar retração, (5) adesão entre camadas caindo sem motivo. Dois ou mais sinais = pare e seque antes de continuar.",
+          ],
+          checklist: [
+            "Higrômetro digital dentro de cada drybox em uso",
+            "Sílica gel indicadora trocada/regenerada a cada 30 dias",
+            "Etiqueta na bobina: marca, material, cor, data de abertura, horas de secagem acumuladas",
+            "Estufa/secadora calibrada com termômetro independente (não confie no display)",
+            "PETG, TPU e Nylon nunca ficam fora da drybox durante a impressão",
+          ],
+          caseStudy: "Cliente devolveu 80 peças de PETG transparente com aspecto leitoso e quebradiço. Análise: bobina aberta há 3 semanas em ambiente costeiro (UR média 78%), nenhuma drybox. Solução: secagem 6h a 65°C antes de reimprimir, peças saíram cristalinas. Custo do prejuízo: R$ 340 em filamento + 14h de máquina. Custo da secadora que evitaria tudo: R$ 280.",
         }),
       L(2, "pla-petg", "PLA e PETG — Características Térmicas e Mecânicas", "30min",
         ["PLA rígido", "PETG tenaz", "Stringing"], {
