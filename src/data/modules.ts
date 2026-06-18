@@ -1076,6 +1076,20 @@ export const modules: Module[] = [
             "Escolha o tipo padrão por categoria (figura, técnica, decorativa)",
             "Salve nos perfis dedicados",
           ],
+          deepDive: [
+            "Rear (traseira): a seam é forçada ao ponto de maior coordenada Y do contorno em cada camada. Funciona para peças com 'frente e trás' definidos — busts, figuras humanoides, placas de identificação. O lado de trás vira uma linha vertical limpa que some quando a peça é montada contra parede ou base.",
+            "Aligned (alinhada): em cada camada, o slicer escolhe o vértice mais próximo da costura da camada anterior, gerando uma linha contínua. Ideal para sólidos com aresta natural (cubos, prismas, peças mecânicas) onde a linha cai numa quina física — visualmente desaparece.",
+            "Nearest (mais próxima): cada camada começa no ponto mais perto de onde o bico terminou a camada anterior, minimizando viagem. Resultado: seam aleatória mas curta — perfeita para protótipos funcionais e peças onde o tempo de impressão importa mais que a estética. Costuma reduzir o tempo total em 3-7%.",
+            "Random (aleatória): distribui pontos de início espalhados pela camada. A 'cicatriz' deixa de existir como linha e vira ruído imperceptível em superfícies orgânicas e cilíndricas lisas (vasos, esferas, bustos). Em PETG e materiais que blob facilmente, pode gerar pontos visíveis — combine com PA bem calibrado.",
+            "Decisão prática: peça mecânica → Aligned. Bust/figura → Rear + Seam Painting. Vaso/cilindro liso → Random ou Scarf. Protótipo → Nearest. Quando dúvida, faça uma plate de teste com a peça repetida 4 vezes, uma com cada modo.",
+          ],
+          checklist: [
+            "Definiu a categoria da peça (mecânica/figura/decorativa/protótipo) antes de escolher seam",
+            "Pressure Advance calibrado para o material atual (sem PA, qualquer modo blobeia)",
+            "Wipe Distance entre 1.0 e 2.0mm no perfil do material",
+            "Para peças vendidas: orientação no slicer trava a posição esperada do Rear",
+            "Modelo salvo como .3mf após decisão final (Seam Painting persiste)",
+          ],
         }),
       L(4, "esconder-seam", "Como Esconder e Posicionar a Seam", "30min",
         ["Seam Painting", "Pintura vermelho/azul", "Quinas internas"], {
