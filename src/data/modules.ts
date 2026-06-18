@@ -1335,33 +1335,93 @@ export const modules: Module[] = [
     objective: "Diagnosticar qualquer falha em menos de 2 minutos olhando para a peça.",
     lessons: [
       L(1, "triagem-superficie", "Resolução de Problemas Avançada de Superfície", "20min",
-        ["Triagem", "Falhas estruturais/mecânicas/térmicas"], {
-          theory: ["Triagem inicial: o problema é estrutural (camadas), mecânico (vibração) ou térmico (extrusão)?"],
-          params: [{ param: "Abordagem Sugerida", value: "Checklist Sistematizado", action: "Previne modificações redundantes" }],
+        ["Triagem", "Estrutural/mecânica/térmica", "Checklist"], {
+          theory: [
+            "Triagem inicial: o problema é estrutural (camadas), mecânico (vibração) ou térmico (extrusão)? Identificar categoria reduz 70% do tempo de diagnose.",
+            "Defeitos estruturais: warping, delaminação, layer shift. Causa: adesão, temperatura mesa, correia.",
+            "Defeitos mecânicos: ghosting, ringing, Z-banding. Causa: vibração, fuso, lubrificação.",
+            "Defeitos térmicos: stringing, blob, sub/sobre-extrusão. Causa: temperatura, fluxo, umidade.",
+          ],
+          integrations: [
+            { module: "Módulo 10 (Mestre)", text: "Raciocínio clínico se apoia em triagem categórica — sem ela, vira chute." },
+            { module: "Módulo 5 (Calibração)", text: "Defeitos térmicos quase sempre indicam calibração base perdida." },
+          ],
+          params: [
+            { param: "Abordagem Sugerida", value: "Checklist Sistematizado", action: "Previne modificações redundantes" },
+            { param: "Triagem", value: "3 categorias", action: "Estrutural / Mecânico / Térmico" },
+          ],
           goldenRule: "Use checklist sistematizado — diagnóstico por palpite gera mais problemas que resolve.",
+          errors: [
+            { error: "Tratar warping (estrutural) como subextrusão (térmico)", solution: "Triagem categórica antes de qualquer intervenção" },
+            { error: "Mudar 4 parâmetros e voltar ao zero", solution: "Uma variável por vez, sempre" },
+          ],
+          economy: "Triagem rápida economiza 30-50% do tempo de diagnose — em produção, é dinheiro direto.",
+          exercise: [
+            "Pegue 3 peças com defeito diferentes",
+            "Categorize cada uma (estrutural/mecânico/térmico)",
+            "Aplique intervenção da categoria",
+            "Anote acerto/erro para refinar critério",
+          ],
         }),
       L(2, "stringing-ghosting", "Stringing, Ghosting, Ringing e Z Banding", "40min",
         ["Stringing", "Ghosting", "Z-Banding"], {
           theory: [
-            "Stringing: umidade ou retração insuficiente. Secar filamento resolve 90% dos casos.",
-            "Ghosting/Ringing: vibrações estruturais. Input Shaper + correias tensionadas.",
-            "Z-Banding: fuso empenado, acoplamento ou PID instável.",
+            "Stringing (fios entre ilhas): umidade do filamento ou retração insuficiente. Secar filamento resolve 90% dos casos.",
+            "Ghosting/Ringing (ondulação após detalhes): vibrações estruturais. Input Shaper + correias tensionadas + lubrificação.",
+            "Z-Banding (faixas horizontais regulares): fuso empenado, acoplamento solto ou PID instável da mesa.",
+            "Blob na seam: pressão acumulada no bico — calibre Pressure Advance e ative Wipe/Retract before wipe.",
           ],
-          integrations: [{ module: "Módulo 5 (Problemas)", text: "Cada defeito tem assinatura visual própria — aprenda a reconhecer." }],
-          params: [{ param: "PID de Mesa", value: "Ativar", action: "Evita oscilação térmica que gera bandas" }],
+          integrations: [
+            { module: "Módulo 5 (Calibração)", text: "Cada defeito tem assinatura visual própria — aprenda a reconhecer." },
+            { module: "Módulo 12 (Velocidade)", text: "Input Shaper bem calibrado elimina ghosting em qualquer velocidade." },
+          ],
+          params: [
+            { param: "PID de Mesa", value: "Ativar", action: "Evita oscilação térmica que gera bandas" },
+            { param: "Secagem PETG", value: "65°C / 6h", action: "Resolve 90% do stringing" },
+            { param: "Graxa PTFE Fuso Z", value: "A cada 500h", action: "Previne Z-banding mecânico" },
+          ],
           goldenRule: "Use graxa PTFE nos fusos a cada 500h de impressão — Z-Banding mecânico evitado.",
+          errors: [
+            { error: "Stringing após calibrar retração 5x", solution: "Pare. Seque filamento 6h e retest" },
+            { error: "Z-banding após PA novo", solution: "PA não afeta Z. Lubrifique fuso e refaça PID mesa" },
+          ],
+          finance: "Secadora de filamento (R$ 200-400) resolve stringing crônico e dura anos — paga-se em 1 mês.",
+          exercise: [
+            "Identifique 1 defeito visível em peça atual",
+            "Categorize: mecânico ou térmico?",
+            "Aplique a única intervenção correspondente",
+            "Reimprima e confirme",
+          ],
         }),
       L(3, "warping-delaminacao", "Warping, Delaminação, Subextrusão e Layer Shift", "40min",
         ["Warping", "Delaminação", "Cold Pull", "Layer Shift"], {
           theory: [
-            "Warping: Brim largo + mesa quente isolada de brisas + enclosure para ABS.",
-            "Delaminação: bico frio — aumente temperatura em 5-10°C.",
-            "Clog: faça Cold Pull (puxada fria) para limpar carbonização interna.",
-            "Layer Shift: correias frouxas, colisão durante travel ou driver superaquecido.",
+            "Warping (bordas levantadas): Brim largo (8mm) + mesa quente isolada de brisas + enclosure para ABS/ASA. Fan baixo é crítico.",
+            "Delaminação (camadas separando): bico frio — aumente temperatura em 5-10°C e reduza fan.",
+            "Clog/subextrusão progressiva: faça Cold Pull (puxada fria) para limpar carbonização interna do bico.",
+            "Layer Shift (peça torta a partir de uma altura): correias frouxas, colisão durante travel ou driver TMC superaquecido.",
           ],
-          integrations: [{ module: "Módulo 3 (Adesão)", text: "Warping é controlado primariamente por Brim e temperatura de mesa estável." }],
-          params: [{ param: "Brim Width", value: "8.0 mm", action: "Prolonga base para evitar levantamento" }],
+          integrations: [
+            { module: "Módulo 3 (Adesão)", text: "Warping é controlado primariamente por Brim e temperatura de mesa estável." },
+            { module: "Módulo 4 (Materiais)", text: "ABS sem enclosure = warping crônico, não tem ajuste de slicer que resolva." },
+          ],
+          params: [
+            { param: "Brim Width", value: "8.0 mm", action: "Prolonga base para evitar levantamento" },
+            { param: "Temp +5-10°C", value: "Para delaminação", action: "Bico mais quente = mais adesão entre camadas" },
+            { param: "Cold Pull", value: "Mensal", action: "Limpa carbonização do hotend" },
+          ],
           goldenRule: "Rode cubo de 20mm para cada filamento novo antes de imprimir peça final.",
+          errors: [
+            { error: "Layer shift e blame nas correias", solution: "Confirme primeiro temperatura do driver — TMC quente pula passos" },
+            { error: "Clog não resolve com cold pull", solution: "Desmonte bico, limpe câmara de fusão fisicamente" },
+          ],
+          economy: "Cold pull mensal preserva hotend por anos vs 6 meses sem manutenção — R$80-150 economizados por bico.",
+          exercise: [
+            "Faça cold pull no seu hotend agora",
+            "Observe carbonização puxada",
+            "Imprima cubo 20mm e confirme melhora",
+            "Marque na agenda: cold pull mensal",
+          ],
         }),
     ],
   },
@@ -1375,26 +1435,93 @@ export const modules: Module[] = [
     lessons: [
       L(1, "producao-altura-escala", "Produção Comercial em Altura de Escala", "30min",
         ["Cabines térmicas", "Umidade <40%", "Termohigrômetros"], {
-          theory: ["Isolar máquinas com cabines térmicas estabiliza a temperatura interna em ±2°C e reduz drasticamente warping em ABS/ASA."],
-          integrations: [{ module: "Módulo 8 (Produção)", text: "Manter umidade ambiental abaixo de 40% é crítico para PETG e Nylon." }],
-          params: [{ param: "Umidade Limite", value: "Abaixo de 40%", action: "Previne re-absorção de água pelo filamento" }],
+          theory: [
+            "Isolar máquinas com cabines térmicas estabiliza a temperatura interna em ±2°C e reduz drasticamente warping em ABS/ASA.",
+            "Layout de fazenda: racks verticais com 3-4 impressoras por torre, exaustão direcionada, iluminação independente.",
+            "Umidade ambiental: PLA tolera até 50%; PETG, Nylon e PC degradam acima de 40%. Desumidificador é obrigatório.",
+            "Sensor termohigrômetro em cada rack permite alerta quando umidade sobe — proteção proativa de estoque.",
+          ],
+          integrations: [
+            { module: "Módulo 4 (Materiais)", text: "Manter umidade ambiental abaixo de 40% é crítico para PETG e Nylon." },
+            { module: "Módulo 22 (Perfis)", text: "Documente temperatura e umidade do ambiente no perfil — mudanças explicam variações." },
+          ],
+          params: [
+            { param: "Umidade Limite", value: "Abaixo de 40%", action: "Previne re-absorção de água pelo filamento" },
+            { param: "Temperatura Cabine", value: "±2°C estável", action: "Reduz warping ABS/ASA" },
+            { param: "Termohigrômetro", value: "1 por rack", action: "Monitoramento contínuo" },
+          ],
           goldenRule: "Instale termohigrômetros em cada rack — sem medir, não há controle.",
+          errors: [
+            { error: "Produção em garagem aberta — qualidade oscila com clima", solution: "Cabine térmica básica (R$ 300) estabiliza tudo" },
+            { error: "Stringing geral em PETG no inverno", solution: "Umidade subiu — desumidificador e secagem extra" },
+          ],
+          finance: "Desumidificador 12L (R$ 600-900) protege estoque de R$ 5k+ em filamento — ROI em 2 meses.",
+          exercise: [
+            "Meça umidade do seu ambiente agora",
+            "Compare com limite por material",
+            "Instale desumidificador se passar 40%",
+            "Monte caderno de log diário",
+          ],
         }),
       L(2, "fazenda-controle", "Fazenda de Impressão, Controle de Qualidade e Embalagem", "35min",
         ["Catalogar carretéis", "Caixas estanques", "Embalagem a vácuo"], {
-          theory: ["Catalogue cada carretel de filamento: data de abertura, peso atual, secagem, lote. Sem rastreio, qualidade vira loteria."],
-          integrations: [{ module: "Módulo 2 (Materiais)", text: "Guarde sempre em caixas estanques com sílica gel — umidade entra em horas." }],
-          economy: "Embalagem a vácuo preserva filamento aberto por meses sem re-secagem.",
-          params: [{ param: "Estocagem Recomendada", value: "Vácuo Estanque", action: "Preserva molecularmente" }],
+          theory: [
+            "Catalogue cada carretel de filamento: data de abertura, peso atual, secagem, lote. Sem rastreio, qualidade vira loteria.",
+            "Caixas estanques com sílica gel renovável (cor indica saturação): solução simples e durável.",
+            "Embalagem a vácuo (selador comum + sílica): preserva spool aberto por meses sem re-secagem.",
+            "Controle de qualidade por amostragem: 1 a cada 10 peças pesada, medida e inspecionada. Defeito sistemático aparece rápido.",
+          ],
+          integrations: [
+            { module: "Módulo 4 (Materiais)", text: "Guarde sempre em caixas estanques com sílica gel — umidade entra em horas." },
+            { module: "Módulo 9 (Comercial)", text: "Taxa de falha medida vira insumo direto da planilha de precificação." },
+          ],
+          params: [
+            { param: "Estocagem Recomendada", value: "Vácuo Estanque", action: "Preserva molecularmente" },
+            { param: "QC Amostragem", value: "1 a cada 10", action: "Detecta drift sistemático" },
+            { param: "Sílica", value: "Renovável colorida", action: "Indica saturação visualmente" },
+          ],
           goldenRule: "Etiquete peso atual e data de última desidratação em cada carretel.",
+          errors: [
+            { error: "Spool aberto em prateleira sem caixa", solution: "Caixa estanque + sílica imediata" },
+            { error: "Sem rastreio de qualidade — defeito vira recorrente", solution: "Implemente QC amostral hoje" },
+          ],
+          economy: "Embalagem a vácuo preserva filamento aberto por meses sem re-secagem.",
+          exercise: [
+            "Compre 1 caixa estanque + sílica",
+            "Catalogue todos os spools abertos",
+            "Implemente etiqueta com data e peso",
+            "Estabeleça revisão mensal",
+          ],
         }),
       L(3, "monitoramento-remoto", "Sistemas de Monitoramento Remoto de Falhas", "35min",
         ["Obico", "Klipper", "Detecção por IA"], {
-          theory: ["Obico (ex-Spaghetti Detective) e Klipper Camera AI detectam espaguete (impressão falhando) em segundos e pausam automaticamente."],
-          integrations: [{ module: "Módulo 1 (Interface)", text: "A aba Device do OrcaSlicer faz monitoramento básico nativo." }],
-          economy: "Corta prejuízos de perda de material — uma falha não detectada queima 500g de filamento.",
-          params: [{ param: "Inteligência IP", value: "Ativa", action: "Impede consumo de filamento em impressão falha" }],
+          theory: [
+            "Obico (ex-Spaghetti Detective) e Klipper Camera AI detectam espaguete (impressão falhando) em segundos e pausam automaticamente.",
+            "Câmera fixa enquadrando a peça + IA em nuvem ou local — alerta no celular em menos de 30 segundos.",
+            "Termostatos inteligentes (Sonoff/Shelly) cortam energia automaticamente se temperatura ultrapassar limite.",
+            "Pausa remota via OctoPrint/Klipper Web evita perda de R$30-80 em filamento por falha não detectada.",
+          ],
+          integrations: [
+            { module: "Módulo 1 (Interface)", text: "A aba Device do OrcaSlicer faz monitoramento básico nativo." },
+            { module: "Módulo 9 (Comercial)", text: "Monitoramento reduz taxa de falha real — entra na conta de margem." },
+          ],
+          params: [
+            { param: "Inteligência IP", value: "Ativa", action: "Impede consumo de filamento em impressão falha" },
+            { param: "Alarme Celular", value: "On", action: "Notificação imediata em falha" },
+            { param: "Câmera por máquina", value: "1", action: "Enquadre a peça, não a impressora inteira" },
+          ],
           goldenRule: "Integre alarmes no celular para impressões noturnas autônomas.",
+          errors: [
+            { error: "Falha à noite consome 800g de spool", solution: "Obico + alerta celular evita 100% disso" },
+            { error: "Câmera enquadrando impressora inteira — IA não detecta", solution: "Aproxime, enquadre só a peça e o bico" },
+          ],
+          economy: "Corta prejuízos de perda de material — uma falha não detectada queima 500g de filamento (R$ 60-150).",
+          exercise: [
+            "Instale Obico em uma impressora",
+            "Configure alerta celular",
+            "Force uma falha controlada (puxe filamento)",
+            "Confirme tempo de detecção e pausa",
+          ],
         }),
     ],
   },
@@ -1408,25 +1535,94 @@ export const modules: Module[] = [
     lessons: [
       L(1, "esteticos-organizadores", "Estudos de Caso Estéticos e Organizadores", "25min",
         ["Linha 0.6mm", "Camada 0.28mm", "Baixa densidade"], {
-          theory: ["Para grandes organizadores: largura de linha 0.6mm (paredes mais fortes) + altura 0.28mm + infill baixo. Velocidade prioritária."],
-          integrations: [{ module: "Módulo 3 (Adesão)", text: "Grandes peças = baixa densidade; o segredo está nas paredes." }],
-          params: [{ param: "Largura de Linha", value: "0.60 mm", action: "Otimização para rigidez extrema com menos passadas" }],
+          theory: [
+            "Para grandes organizadores: largura de linha 0.6mm (paredes mais fortes) + altura 0.28mm + infill baixo. Velocidade prioritária.",
+            "Bico 0.4 com largura forçada 0.6 funciona, mas perde detalhe em quinas — para organizadores está OK.",
+            "Top Surface Pattern Monotonic é obrigatório nesses tamanhos para acabamento uniforme.",
+            "Cada gaveta/divisória deve sair em <2h para ser produção viável; perfil rápido aqui é regra.",
+          ],
+          integrations: [
+            { module: "Módulo 7 (Otimização)", text: "Grandes peças = baixa densidade; o segredo está nas paredes." },
+            { module: "Módulo 18 (Infill)", text: "Lightning Infill 10% funciona perfeitamente em organizadores sem carga." },
+          ],
+          params: [
+            { param: "Largura de Linha", value: "0.60 mm", action: "Otimização para rigidez extrema com menos passadas" },
+            { param: "Altura Camada", value: "0.28 mm", action: "Velocidade prioritária em peça grande" },
+            { param: "Infill", value: "Lightning 10%", action: "Decorativo sem carga real" },
+          ],
           goldenRule: "Use altura de camada 0.28mm para modelos grandes — economia de tempo enorme.",
+          errors: [
+            { error: "Organizador em 0.16mm — 12h de impressão", solution: "Suba para 0.28 + Lightning, vai a 3-4h" },
+            { error: "Largura forçada 0.6 em bico 0.4 com detalhe fino", solution: "Use 0.6 só onde detalhe não importa" },
+          ],
+          economy: "Perfil 'rápido decorativo' bem feito multiplica produção por 3 sem trocar máquina.",
+          exercise: [
+            "Pegue STL de organizador atual",
+            "Compare slice 0.16 vs 0.28 com Lightning",
+            "Imprima a versão rápida",
+            "Avalie se acabamento é aceitável para uso",
+          ],
         }),
       L(2, "produtos-virais", "Produtos Virais e Gadgets", "30min",
         ["Spiral Vase", "Silk", "Trajetórias orbitais"], {
-          theory: ["Spiral Vase: trajetórias orbitais contínuas, sem costuras, parede única espessa. Perfeito para vasos e abajures."],
-          integrations: [{ module: "Módulo 8 (Produção)", text: "Spiral vase produz peças em 40 minutos — produto viral de baixo custo." }],
-          economy: "Produtos virais de baixo custo, alta rotatividade — margem alta por unidade.",
-          params: [{ param: "Spiral Vase", value: "Ativo", action: "Cria filetes helicoidais contínuos sem costura" }],
+          theory: [
+            "Spiral Vase (Vase Mode): trajetórias orbitais contínuas, sem costuras, parede única espessa. Perfeito para vasos e abajures.",
+            "Silk PLA + Vase Mode = produto Instagram pronto. Acabamento brilhante sem pós-processamento.",
+            "Vase Mode imprime em ~40 minutos peças que normalmente levariam 3h+ — produto viral de margem alta.",
+            "Largura de linha 150% do bico em Vase = parede grossa e resistente, esconde camadas individualmente.",
+          ],
+          integrations: [
+            { module: "Módulo 15 (Produção)", text: "Spiral vase produz peças em 40 minutos — produto viral de baixo custo." },
+            { module: "Módulo 11 (Seams)", text: "Vase Mode elimina seam por design — nenhuma emenda existe." },
+          ],
+          params: [
+            { param: "Spiral Vase", value: "Ativo", action: "Cria filetes helicoidais contínuos sem costura" },
+            { param: "Largura Perímetro", value: "150% do bico", action: "Parede única super resistente" },
+            { param: "Bottom Layers", value: "3-4", action: "Base sólida obrigatória" },
+          ],
           goldenRule: "Ative largura de perímetro em 150% do bico em modo vaso — paredes super resistentes.",
+          errors: [
+            { error: "Vase com fundo aberto", solution: "Force Bottom Layers 3-4 mínimo" },
+            { error: "Parede do vaso translúcida demais", solution: "Suba largura para 0.6-0.8mm em bico 0.4" },
+          ],
+          finance: "Produtos virais de baixo custo, alta rotatividade — margem alta por unidade.",
+          exercise: [
+            "Baixe um STL de vaso simples",
+            "Ative Vase Mode no perfil",
+            "Imprima em Silk PLA",
+            "Fotografe e compare com vaso comprado",
+          ],
         }),
       L(3, "carga-industrial", "Peças de Carga Industrial sob Desgaste", "35min",
         ["Nylon+CF", "5+ paredes", "Bico endurecido"], {
-          theory: ["Nylon+CF (carbono): alta dureza, estabilidade térmica até 120°C, exige 5+ loops de parede para torque contínuo."],
-          integrations: [{ module: "Módulo 2 (Materiais)", text: "Bico endurecido é absolutamente obrigatório com fibra — bico de latão dura 50h." }],
-          params: [{ param: "Filamento", value: "Nylon Carbono (PA-CF)", action: "Rigidez e estabilidade dimensional" }],
+          theory: [
+            "Nylon+CF (carbono): alta dureza, estabilidade térmica até 120°C, exige 5+ loops de parede para torque contínuo.",
+            "Fibras de carbono são abrasivas: bico de latão dura ~50h, endurecido (aço/rubi) dura anos.",
+            "Velocidade baixa (40 mm/s) para alinhar fibras de carbono na direção da impressão — resistência sobe 20-30%.",
+            "Secagem obrigatória: Nylon absorve umidade ainda no spool fechado. Seque a 70°C por 8h antes de qualquer impressão.",
+          ],
+          integrations: [
+            { module: "Módulo 4 (Materiais)", text: "Bico endurecido é absolutamente obrigatório com fibra — bico de latão dura 50h." },
+            { module: "Módulo 6 (Engenharia)", text: "Carga industrial = orientação + material + paredes alinhadas; nada disso opcional." },
+          ],
+          params: [
+            { param: "Filamento", value: "Nylon Carbono (PA-CF)", action: "Rigidez e estabilidade dimensional" },
+            { param: "Wall Loops", value: "5+", action: "Torque contínuo sem ceder" },
+            { param: "Velocidade", value: "40 mm/s", action: "Alinha fibras na direção da impressão" },
+            { param: "Bico", value: "Endurecido (aço/rubi)", action: "Sobrevive ao abrasivo" },
+          ],
           goldenRule: "Velocidade baixa (40 mm/s) para alinhamento das fibras de carbono na direção da impressão.",
+          errors: [
+            { error: "PA-CF com bico latão — desgaste em 1 spool", solution: "Troca obrigatória por hardened steel/rubi" },
+            { error: "PA-CF úmido — peça com bolhas e fraca", solution: "Seque 8h a 70°C antes de imprimir" },
+          ],
+          finance: "Peça PA-CF substitui alumínio em muitas aplicações — preço 1/3 e prazo 1/5.",
+          exercise: [
+            "Calcule custo de bico endurecido vs perda de 3 bicos de latão",
+            "Seque um spool PA-CF e imprima cubo teste",
+            "Quebre na mão e compare com PETG",
+            "Documente aplicações onde PA-CF substitui metal",
+          ],
         }),
     ],
   },
@@ -1439,26 +1635,96 @@ export const modules: Module[] = [
     objective: "Escolher o gerador de paredes correto para cada tipo de geometria.",
     lessons: [
       L(1, "algoritmo-fatiamento", "O Algoritmo de Fatiamento", "20min",
-        ["Classic largura fixa", "Arachne variável"], {
-          theory: ["Classic: largura fixa, loops constantes. Arachne: largura variável, preenche fendas que o Classic deixaria vazias."],
+        ["Classic largura fixa", "Arachne variável", "Wall Generator"], {
+          theory: [
+            "Classic: largura fixa, loops constantes. Cada parede tem exatamente a largura do bico — simples e previsível.",
+            "Arachne: largura variável, preenche fendas que o Classic deixaria vazias. Algoritmo de 2020 baseado em Voronoi.",
+            "Wall Generator é configuração de perfil: troque em Process > Quality. Não afeta hardware nem firmware.",
+            "Default no OrcaSlicer moderno é Arachne — mude para Classic só quando precisar de previsibilidade dimensional total.",
+          ],
+          integrations: [
+            { module: "Módulo 3 (Paredes)", text: "Wall Loops e Wall Generator são duas escolhas independentes — entenda cada uma." },
+            { module: "Módulo 13 (Tolerâncias)", text: "Classic é mais previsível dimensionalmente; Arachne perdoa mais geometria fina." },
+          ],
+          params: [
+            { param: "Wall Generator", value: "Arachne (default)", action: "Largura variável" },
+            { param: "Wall Generator", value: "Classic", action: "Largura fixa, máxima previsibilidade" },
+          ],
           goldenRule: "Use Arachne para relevos delicados, letras e logos — Classic deixaria gaps.",
+          errors: [
+            { error: "Texto pequeno ilegível em Classic", solution: "Troque para Arachne" },
+            { error: "Peça mecânica fora de medida em Arachne", solution: "Volte para Classic + Horizontal Expansion" },
+          ],
+          economy: "Escolha certa de Wall Generator elimina retrabalho de peças com texto/logo — 0 custo, ganho imediato.",
+          exercise: [
+            "Imprima a mesma peça com texto em Classic e Arachne",
+            "Compare legibilidade do texto",
+            "Meça dimensões críticas",
+            "Escolha o default que serve mais ao seu mix de pedidos",
+          ],
         }),
       L(2, "classic-loops-fixos", "Classic — Loops Rígidos de Extrusão Fixa", "25min",
         ["Largura fixa", "Falhas em paredes finas"], {
-          theory: ["Classic falha em paredes menores que o diâmetro do bico — gera lacunas visíveis em textos pequenos."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "Lacunas em textos pequenos são sintoma típico de Classic em geometria fina." }],
-          params: [{ param: "Wall Generator", value: "Classic", action: "Trajetórias simétricas uniformes" }],
+          theory: [
+            "Classic falha em paredes menores que o diâmetro do bico — gera lacunas visíveis em textos pequenos e relevos finos.",
+            "Vantagem: previsibilidade dimensional total. Cada parede tem exatamente 0.4mm (com bico 0.4mm).",
+            "Para peças mecânicas com encaixe preciso, Classic é a escolha — você sabe exatamente quanto plástico vai onde.",
+            "Wall Loops > 4 em Classic ainda gera infill 'gap fill' em quinas — Arachne preenche melhor mas perde dimensão.",
+          ],
+          integrations: [
+            { module: "Módulo 13 (Tolerâncias)", text: "Classic + Horizontal Expansion = controle dimensional centesimal." },
+            { module: "Módulo 6 (Engenharia)", text: "Peça mecânica = Classic. Estética = Arachne." },
+          ],
+          params: [
+            { param: "Wall Generator", value: "Classic", action: "Trajetórias simétricas uniformes" },
+            { param: "Gap Fill", value: "Nowhere/Everywhere", action: "Preenche vazios remanescentes" },
+          ],
           goldenRule: "Use Classic para máxima rigidez em fatiados lineares e geometrias previsíveis.",
+          errors: [
+            { error: "Lacunas em textos pequenos é sintoma típico de Classic em geometria fina.", solution: "Troque para Arachne nessa peça" },
+            { error: "Gap fill criando bolhas indesejadas", solution: "Mude Gap Fill para Nowhere e refatiamento" },
+          ],
+          finance: "Classic em peça mecânica garante encaixe sem retrabalho — tempo de pós-processamento zero.",
+          exercise: [
+            "Imprima cubo de calibração em Classic",
+            "Meça com paquímetro",
+            "Confirme dimensão exata da parede",
+            "Use como base para futuros ajustes de Horizontal Expansion",
+          ],
         }),
       L(3, "arachne-variavel", "Arachne — Adaptação e Largura Variável", "25min",
         ["Largura variável", "Letreiros sem vazios"], {
-          theory: ["Arachne modula a vazão para se ajustar a quinas estreitas e relevos finos. Sem vazios, sem gaps."],
-          integrations: [{ module: "Módulo 6 (Design)", text: "Letreiros minúsculos e logos imprimem perfeitos com Arachne." }],
-          params: [{ param: "Wall Generator", value: "Arachne", action: "Modulação de largura variável" }],
+          theory: [
+            "Arachne modula a vazão para se ajustar a quinas estreitas e relevos finos. Sem vazios, sem gaps em geometria fina.",
+            "Algoritmo baseado em diagramas de Voronoi: divide a peça em regiões e atribui largura ótima a cada parede.",
+            "Min/Max Wall Width: limites configuráveis (default 0.85x e 1.5x do bico). Saia da faixa e Classic toma conta.",
+            "Custo: Arachne é ligeiramente mais lento que Classic em geometrias simples — diferença mínima.",
+          ],
+          integrations: [
+            { module: "Módulo 11 (Seams)", text: "Arachne combina com Scarf Joint para acabamento premium em relevos." },
+            { module: "Módulo 1 (Interface)", text: "Letreiros minúsculos e logos imprimem perfeitos com Arachne." },
+          ],
+          params: [
+            { param: "Wall Generator", value: "Arachne", action: "Modulação de largura variável" },
+            { param: "Min Wall Width", value: "0.85x bico", action: "Limite inferior" },
+            { param: "Max Wall Width", value: "1.5x bico", action: "Limite superior" },
+          ],
           goldenRule: "Adote Arachne para chaveiros com textos <1mm — único jeito de sair legível.",
+          errors: [
+            { error: "Arachne em peça grande sem detalhe — sem benefício", solution: "Volte para Classic, ligeiramente mais rápido" },
+            { error: "Parede variando demais e visualmente irregular", solution: "Estreite Min/Max Wall Width" },
+          ],
+          finance: "Arachne habilita produção de chaveiros personalizados com texto pequeno — nicho rentável.",
+          exercise: [
+            "Modele chaveiro com texto 1.5mm",
+            "Imprima com Classic e Arachne",
+            "Fotografe macro do texto",
+            "Documente diferença e adote padrão",
+          ],
         }),
     ],
   },
+
 
   {
     id: "padroes-infill", number: 18, title: "Padrões de Infill em Detalhe",
