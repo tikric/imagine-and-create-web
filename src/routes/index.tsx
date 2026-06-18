@@ -1,110 +1,109 @@
-import { createFileRoute } from "@tanstack/react-router";
-import heroCoffee from "@/assets/hero-coffee.jpg";
-import cupLatte from "@/assets/cup-latte.jpg";
-import barista from "@/assets/barista.jpg";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import heroPrinter from "@/assets/hero-printer.jpg";
+import { modules, courseStats } from "@/data/modules";
+import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maré — Café de origem, torrado em pequenos lotes" },
-      { name: "description", content: "Torrefação artesanal de cafés especiais brasileiros, entregues frescos na sua porta." },
-      { property: "og:title", content: "Maré — Café de origem" },
-      { property: "og:description", content: "Torrefação artesanal de cafés especiais brasileiros." },
-      { property: "og:image", content: heroCoffee },
-      { name: "twitter:image", content: heroCoffee },
+      { title: "OrcaSlicer MASTERCLASS — Engenharia de Fatiamento" },
+      { name: "description", content: "O curso definitivo de OrcaSlicer e impressão 3D FDM. 24 módulos, da interface à produção comercial." },
+      { property: "og:image", content: heroPrinter },
+      { name: "twitter:image", content: heroPrinter },
     ],
   }),
-  component: Index,
+  component: Landing,
 });
 
-function Index() {
+function Landing() {
   return (
-    <div className="min-h-screen bg-background text-foreground grain">
-      <Header />
+    <div className="min-h-screen">
+      <SiteHeader />
       <Hero />
       <Marquee />
-      <Origins />
-      <Ritual />
-      <Subscription />
-      <Journal />
-      <Footer />
+      <Stats />
+      <Methodology />
+      <CurriculumPreview />
+      <Instructor />
+      <Pricing />
+      <Faq />
+      <SiteFooter />
     </div>
-  );
-}
-
-function Header() {
-  return (
-    <header className="absolute top-0 left-0 right-0 z-20">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-[var(--cream)]">
-        <a href="#" className="font-serif text-2xl font-semibold tracking-tight">Maré<span className="text-[var(--caramel)]">.</span></a>
-        <ul className="hidden md:flex items-center gap-10 text-sm">
-          <li><a href="#origens" className="hover:text-[var(--caramel)] transition">Origens</a></li>
-          <li><a href="#ritual" className="hover:text-[var(--caramel)] transition">Ritual</a></li>
-          <li><a href="#assinatura" className="hover:text-[var(--caramel)] transition">Assinatura</a></li>
-          <li><a href="#diario" className="hover:text-[var(--caramel)] transition">Diário</a></li>
-        </ul>
-        <a href="#assinatura" className="rounded-full border border-[var(--cream)]/40 px-5 py-2 text-sm hover:bg-[var(--cream)] hover:text-[var(--espresso)] transition">
-          Comprar
-        </a>
-      </nav>
-    </header>
   );
 }
 
 function Hero() {
   return (
-    <section className="relative min-h-[100vh] overflow-hidden">
-      <img
-        src={heroCoffee}
-        alt="Grãos de café sendo despejados"
-        width={1920}
-        height={1080}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
-      <div className="relative z-10 mx-auto flex min-h-[100vh] max-w-7xl flex-col justify-end px-6 pb-24 pt-40 text-[var(--cream)]">
-        <p className="fade-up mb-6 text-sm uppercase tracking-[0.3em] text-[var(--cream)]/70">
-          Safra 2025 · Lote nº 047
-        </p>
-        <h1 className="fade-up font-serif text-5xl md:text-7xl lg:text-8xl font-medium leading-[0.95] text-balance max-w-5xl">
-          O tempo que o <em className="italic text-[var(--caramel)]">grão</em> pede,<br/>na xícara que você merece.
-        </h1>
-        <div className="fade-up mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <a href="#assinatura" className="rounded-full bg-[var(--caramel)] px-8 py-4 text-sm font-medium text-[var(--cream)] hover:bg-[var(--caramel)]/90 transition">
-            Receber em casa
-          </a>
-          <a href="#origens" className="text-sm border-b border-[var(--cream)]/40 pb-1 hover:border-[var(--caramel)] transition">
-            Conheça as origens →
-          </a>
-        </div>
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl border-t border-[var(--cream)]/20 pt-8">
-          {[
-            ["12", "fazendas parceiras"],
-            ["7d", "do torrador ao postal"],
-            ["89", "pontuação SCA média"],
-            ["2.4k", "clientes fiéis"],
-          ].map(([n, l]) => (
-            <div key={l}>
-              <div className="font-serif text-3xl md:text-4xl text-[var(--caramel)]">{n}</div>
-              <div className="mt-1 text-xs uppercase tracking-wider text-[var(--cream)]/60">{l}</div>
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0 grid-bg opacity-30" />
+      <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-16 items-center">
+        <div>
+          <div className="fade-up inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs mono uppercase tracking-wider text-primary mb-8">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            v2026.06 · matrículas abertas
+          </div>
+          <h1 className="fade-up text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.02] text-balance">
+            O guia <span className="text-primary">definitivo</span> do fatiador que vai revolucionar suas impressões 3D.
+          </h1>
+          <p className="fade-up mt-8 text-lg text-muted-foreground max-w-xl leading-relaxed">
+            Calibração científica, mecânica de materiais, otimização extrema e o caminho para transformar seu hobby em um negócio lucrativo — em <strong className="text-foreground">{courseStats.modules} módulos</strong> e <strong className="text-foreground">{courseStats.lessons}+ aulas</strong>.
+          </p>
+          <div className="fade-up mt-10 flex flex-col sm:flex-row gap-4">
+            <a href="#investimento" className="inline-flex items-center justify-center rounded-md bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground hover:opacity-90 transition glow-orca">
+              Garantir minha vaga →
+            </a>
+            <Link to="/curso" className="inline-flex items-center justify-center rounded-md border border-border px-7 py-3.5 text-sm font-medium hover:bg-card transition">
+              Ver os 24 módulos
+            </Link>
+          </div>
+          <div className="fade-up mt-10 flex items-center gap-6 text-xs text-muted-foreground">
+            <div className="flex -space-x-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-8 w-8 rounded-full border-2 border-background bg-gradient-to-br from-primary to-chart-3" />
+              ))}
             </div>
-          ))}
+            <span>+2.400 alunos · nota 4,9/5</span>
+          </div>
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-6 bg-gradient-to-br from-primary/20 via-transparent to-chart-3/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-2xl border border-border">
+            <img src={heroPrinter} alt="Bico de impressora 3D extrudando filamento" width={1536} height={1024} className="w-full h-auto object-cover" />
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between mono text-xs">
+              <span className="rounded bg-background/80 px-2 py-1 backdrop-blur">● REC · live calibration</span>
+              <span className="rounded bg-background/80 px-2 py-1 backdrop-blur text-primary">flow 14.2 mm³/s</span>
+            </div>
+            <div className="absolute bottom-4 left-4 right-4 grid grid-cols-3 gap-2 mono text-[10px]">
+              <Stat label="LAYER" value="0.20mm" />
+              <Stat label="TEMP" value="215°C" />
+              <Stat label="SPEED" value="280 mm/s" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded bg-background/80 backdrop-blur px-3 py-2 border border-border/50">
+      <div className="text-muted-foreground">{label}</div>
+      <div className="text-primary font-semibold">{value}</div>
+    </div>
+  );
+}
+
 function Marquee() {
-  const items = ["Cerrado Mineiro", "Mantiqueira", "Sul de Minas", "Chapada Diamantina", "Matas de Rondônia", "Espírito Santo"];
+  const items = ["PRESSURE ADVANCE", "INPUT SHAPING", "ARACHNE", "TREE SUPPORT", "SCARF SEAM", "ADAPTIVE LAYERS", "FLOW CALIBRATION", "MULTI-MATERIAL", "MODIFIERS", "VASE MODE"];
   const row = [...items, ...items];
   return (
-    <div className="overflow-hidden border-y border-border bg-[var(--espresso)] py-6 text-[var(--cream)]">
-      <div className="marquee flex whitespace-nowrap gap-12 text-2xl md:text-4xl font-serif italic">
+    <div className="border-y border-border bg-card/50 py-5 overflow-hidden">
+      <div className="marquee flex whitespace-nowrap gap-12 mono text-sm text-muted-foreground">
         {row.map((t, i) => (
           <span key={i} className="flex items-center gap-12">
             {t}
-            <span className="text-[var(--caramel)]">✦</span>
+            <span className="text-primary">/</span>
           </span>
         ))}
       </div>
@@ -112,195 +111,211 @@ function Marquee() {
   );
 }
 
-function Origins() {
-  const coffees = [
-    { name: "Yara", region: "Cerrado Mineiro", notes: "Chocolate amargo, avelã, melaço", process: "Natural", price: "R$ 62" },
-    { name: "Iara", region: "Mantiqueira de Minas", notes: "Caramelo, laranja-baía, mel", process: "Cereja descascado", price: "R$ 74" },
-    { name: "Tupã", region: "Chapada Diamantina", notes: "Frutas vermelhas, cacau, jasmim", process: "Fermentado anaeróbio", price: "R$ 96" },
+function Stats() {
+  const stats = [
+    [courseStats.modules, "Módulos", "do básico ao profissional"],
+    [`${courseStats.lessons}+`, "Aulas práticas", "com walkthrough no Orca"],
+    [`${courseStats.hours}h`, "De conteúdo", "atualizado a cada release"],
+    [`${courseStats.downloads}+`, "Downloads", "perfis .3mf, planilhas, checklists"],
   ];
   return (
-    <section id="origens" className="mx-auto max-w-7xl px-6 py-28">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-        <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-[var(--mocha)] mb-4">A coleção</p>
-          <h2 className="font-serif text-5xl md:text-6xl text-balance max-w-2xl">
-            Três <em className="italic text-[var(--caramel)]">origens</em>, três histórias dentro da bolsa.
-          </h2>
-        </div>
-        <p className="max-w-sm text-muted-foreground">
-          Cada grão chega aqui rastreável até o talhão. Torramos em micro-lotes para que você receba no auge da frescura.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden">
-        {coffees.map((c, i) => (
-          <article key={c.name} className="bg-card p-8 md:p-10 flex flex-col group hover:bg-[var(--espresso)] hover:text-[var(--cream)] transition-colors duration-500">
-            <div className="flex items-baseline justify-between mb-8">
-              <span className="text-xs uppercase tracking-wider text-muted-foreground group-hover:text-[var(--cream)]/60">Nº 0{i + 1}</span>
-              <span className="text-xs uppercase tracking-wider text-muted-foreground group-hover:text-[var(--cream)]/60">{c.process}</span>
-            </div>
-            <h3 className="font-serif text-5xl mb-2">{c.name}</h3>
-            <p className="text-sm text-muted-foreground group-hover:text-[var(--cream)]/70 mb-8">{c.region}</p>
-            <div className="border-t border-border group-hover:border-[var(--cream)]/20 pt-6 mt-auto">
-              <p className="text-sm italic mb-6">{c.notes}</p>
-              <div className="flex items-center justify-between">
-                <span className="font-serif text-2xl">{c.price}</span>
-                <span className="text-xs uppercase tracking-wider underline-offset-4 group-hover:underline">250g</span>
-              </div>
-            </div>
-          </article>
+    <section id="metodologia" className="mx-auto max-w-7xl px-6 py-24">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+        {stats.map(([n, l, d]) => (
+          <div key={l} className="bg-background p-8">
+            <div className="text-5xl font-bold text-primary">{n}</div>
+            <div className="mt-3 font-medium">{l}</div>
+            <div className="text-xs text-muted-foreground mt-1">{d}</div>
+          </div>
         ))}
       </div>
     </section>
   );
 }
 
-function Ritual() {
-  return (
-    <section id="ritual" className="bg-[var(--espresso)] text-[var(--cream)]">
-      <div className="mx-auto max-w-7xl px-6 py-28 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-3xl">
-          <img src={barista} alt="Barista preparando café" width={1024} height={1280} loading="lazy" className="h-full w-full object-cover" />
-        </div>
-        <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-[var(--caramel)] mb-4">O ritual</p>
-          <h2 className="font-serif text-5xl md:text-6xl mb-8 text-balance">
-            Café não é pressa.<br/>É um <em className="italic text-[var(--caramel)]">gesto</em>.
-          </h2>
-          <p className="text-lg text-[var(--cream)]/70 mb-10 leading-relaxed max-w-lg">
-            Da escolha do grão verde à última gota na xícara, cada etapa carrega intenção. A Maré nasceu para devolver ao café o tempo que ele merece — e o seu também.
-          </p>
-          <div className="space-y-px">
-            {[
-              ["01", "Seleção", "Visitamos as fazendas, provamos cada lote."],
-              ["02", "Torra", "Pequenos lotes, perfil desenhado por cultivar."],
-              ["03", "Entrega", "Embalado no dia anterior ao envio."],
-            ].map(([n, t, d]) => (
-              <div key={n} className="grid grid-cols-[auto_1fr_2fr] gap-6 items-start border-t border-[var(--cream)]/15 py-5">
-                <span className="font-serif text-2xl text-[var(--caramel)]">{n}</span>
-                <span className="font-serif text-xl">{t}</span>
-                <span className="text-sm text-[var(--cream)]/60">{d}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Subscription() {
-  return (
-    <section id="assinatura" className="mx-auto max-w-7xl px-6 py-28">
-      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 items-center">
-        <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-[var(--mocha)] mb-4">Assinatura Maré</p>
-          <h2 className="font-serif text-5xl md:text-6xl mb-6 text-balance">
-            Uma origem nova<br/>a cada <em className="italic text-[var(--caramel)]">lua cheia</em>.
-          </h2>
-          <p className="text-lg text-muted-foreground mb-10 max-w-lg">
-            Receba mensalmente uma seleção curada pelo nosso mestre de torra, com cartão de catação e sugestão de método.
-          </p>
-
-          <div className="space-y-4">
-            {[
-              ["Solo", "250g · 1 origem", "R$ 68", "/mês"],
-              ["Dueto", "500g · 2 origens", "R$ 128", "/mês"],
-              ["Coletivo", "1kg · 3 origens", "R$ 230", "/mês"],
-            ].map(([n, d, p, s], i) => (
-              <label key={n} className="flex items-center gap-6 p-6 rounded-2xl border border-border hover:border-[var(--caramel)] hover:bg-card cursor-pointer transition group">
-                <input type="radio" name="plan" defaultChecked={i === 1} className="h-4 w-4 accent-[var(--caramel)]" />
-                <div className="flex-1">
-                  <div className="font-serif text-2xl">{n}</div>
-                  <div className="text-sm text-muted-foreground">{d}</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-serif text-2xl">{p}</div>
-                  <div className="text-xs text-muted-foreground">{s}</div>
-                </div>
-              </label>
-            ))}
-          </div>
-
-          <button className="mt-10 rounded-full bg-[var(--espresso)] px-10 py-4 text-sm font-medium text-[var(--cream)] hover:bg-[var(--mocha)] transition">
-            Começar minha assinatura
-          </button>
-        </div>
-
-        <div className="relative aspect-square rounded-3xl overflow-hidden">
-          <img src={cupLatte} alt="Xícara de café com latte art" width={1024} height={1024} loading="lazy" className="h-full w-full object-cover" />
-          <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-[var(--cream)]/95 backdrop-blur p-6">
-            <p className="text-xs uppercase tracking-wider text-[var(--mocha)] mb-2">Frete grátis</p>
-            <p className="font-serif text-xl">para todo o Brasil em assinaturas mensais.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Journal() {
-  const posts = [
-    { tag: "Método", title: "Hario V60: o guia definitivo para começar", date: "12 mar" },
-    { tag: "Origem", title: "Por que a altitude muda tudo no copo", date: "28 fev" },
-    { tag: "Cultura", title: "A nova onda de produtores brasileiros", date: "10 fev" },
+function Methodology() {
+  const pillars = [
+    { tag: "01", title: "Teoria com profundidade", body: "Explicamos a física por trás de cada parâmetro: heat creep, anisotropia, pressure advance, fluxo volumétrico. Você entende, não decora." },
+    { tag: "02", title: "Prática no OrcaSlicer", body: "Cada conceito vem com screenshot anotado mostrando exatamente onde ajustar no slicer e como interpretar o Preview." },
+    { tag: "03", title: "Calibração científica", body: "Testes calibráveis em .3mf, planilhas de registro e protocolos repetíveis. Sem chute, sem 'tente até dar certo'." },
+    { tag: "04", title: "Aplicação comercial", body: "Do orçamento ao envio: cálculo de custos, gestão de fazenda de impressão, perfis otimizados para Mercado Livre e Shopee." },
   ];
   return (
-    <section id="diario" className="border-t border-border">
-      <div className="mx-auto max-w-7xl px-6 py-28">
-        <div className="flex items-end justify-between mb-16">
-          <h2 className="font-serif text-5xl md:text-6xl">Diário<span className="text-[var(--caramel)]">.</span></h2>
-          <a href="#" className="text-sm border-b border-foreground/40 hover:border-[var(--caramel)] pb-1">Todos os textos →</a>
+    <section className="mx-auto max-w-7xl px-6 py-24">
+      <div className="max-w-3xl mb-16">
+        <div className="mono text-xs uppercase tracking-wider text-primary mb-4">A metodologia</div>
+        <h2 className="text-4xl md:text-5xl font-bold text-balance">Quatro pilares que separam o hobby da engenharia.</h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {pillars.map((p) => (
+          <div key={p.tag} className="group rounded-2xl border border-border bg-card/50 p-8 hover:border-primary/50 transition">
+            <div className="flex items-baseline justify-between mb-6">
+              <span className="mono text-xs text-primary">/ {p.tag}</span>
+              <span className="h-px flex-1 mx-4 bg-border group-hover:bg-primary/30 transition" />
+            </div>
+            <h3 className="text-2xl font-semibold mb-3">{p.title}</h3>
+            <p className="text-muted-foreground leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function CurriculumPreview() {
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-24">
+      <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+        <div>
+          <div className="mono text-xs uppercase tracking-wider text-primary mb-4">Grade curricular</div>
+          <h2 className="text-4xl md:text-5xl font-bold">24 módulos, 56 horas, zero achismo.</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {posts.map((p) => (
-            <article key={p.title} className="group cursor-pointer">
-              <div className="flex items-center gap-3 mb-4 text-xs uppercase tracking-wider text-muted-foreground">
-                <span className="text-[var(--caramel)]">{p.tag}</span>
-                <span>·</span>
-                <span>{p.date}</span>
-              </div>
-              <h3 className="font-serif text-2xl leading-snug group-hover:text-[var(--caramel)] transition">{p.title}</h3>
-              <p className="mt-4 text-sm text-muted-foreground">Ler artigo →</p>
-            </article>
-          ))}
+        <Link to="/curso" className="text-sm text-primary hover:underline">Ver curso completo →</Link>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
+        {modules.slice(0, 12).map((m) => (
+          <Link
+            key={m.id}
+            to="/curso/$moduleId"
+            params={{ moduleId: m.id }}
+            className="group bg-card p-6 hover:bg-card/30 transition relative"
+          >
+            <div className="flex items-baseline justify-between mb-4">
+              <span className="mono text-xs text-primary">MOD.{String(m.number).padStart(2, "0")}</span>
+              <span className="text-xs text-muted-foreground">{m.level}</span>
+            </div>
+            <h3 className="font-semibold text-lg leading-snug mb-2 group-hover:text-primary transition">{m.title}</h3>
+            <p className="text-sm text-muted-foreground line-clamp-2">{m.tagline}</p>
+            <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
+              <span>{m.lessons.length} aulas · {m.duration}</span>
+              <span className="text-primary opacity-0 group-hover:opacity-100 transition">→</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+      <div className="mt-8 text-center">
+        <Link to="/curso" className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 text-sm hover:bg-card transition">
+          Mais 12 módulos avançados <span className="text-primary">→</span>
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function Instructor() {
+  return (
+    <section id="instrutor" className="mx-auto max-w-7xl px-6 py-24">
+      <div className="rounded-3xl border border-border bg-gradient-to-br from-card to-background p-8 md:p-16 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-center">
+        <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-chart-3/10 border border-border overflow-hidden">
+          <div className="absolute inset-0 grid-bg opacity-50" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-9xl font-bold text-primary/60">/M</span>
+          </div>
+        </div>
+        <div>
+          <div className="mono text-xs uppercase tracking-wider text-primary mb-4">Seu instrutor</div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
+            Engenheiro, maker e operador de uma fazenda de 12 impressoras.
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+            Sete anos calibrando, quebrando e reconstruindo perfis. Compilei aqui tudo o que eu queria ter aprendido no primeiro mês — sem rodeios, sem misticismo, sem "tente diminuir a temperatura e veja se melhora".
+          </p>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            {[
+              "12 impressoras em produção contínua",
+              "+50.000 horas de impressão registradas",
+              "Perfis publicados para 18 modelos",
+              "Consultoria para indústria automotiva",
+            ].map((t) => (
+              <li key={t} className="flex items-start gap-2">
+                <span className="text-primary mt-0.5">▸</span>
+                <span className="text-muted-foreground">{t}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
   );
 }
 
-function Footer() {
+function Pricing() {
   return (
-    <footer className="bg-[var(--espresso)] text-[var(--cream)]">
-      <div className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12">
-          <div>
-            <a href="#" className="font-serif text-3xl">Maré<span className="text-[var(--caramel)]">.</span></a>
-            <p className="mt-4 text-sm text-[var(--cream)]/60 max-w-xs">
-              Torrefação artesanal de cafés especiais brasileiros. Feita com cuidado em São Paulo.
-            </p>
-          </div>
-          {[
-            ["Loja", ["Cafés", "Assinatura", "Acessórios", "Gift card"]],
-            ["Casa", ["Sobre", "Produtores", "Sustentabilidade", "Contato"]],
-            ["Suporte", ["Envios", "Trocas", "FAQ", "Atacado"]],
-          ].map(([title, items]) => (
-            <div key={title as string}>
-              <h4 className="text-xs uppercase tracking-wider text-[var(--caramel)] mb-4">{title as string}</h4>
-              <ul className="space-y-2 text-sm text-[var(--cream)]/70">
-                {(items as string[]).map((i) => (
-                  <li key={i}><a href="#" className="hover:text-[var(--cream)]">{i}</a></li>
-                ))}
-              </ul>
-            </div>
-          ))}
+    <section id="investimento" className="mx-auto max-w-5xl px-6 py-24">
+      <div className="text-center mb-12">
+        <div className="mono text-xs uppercase tracking-wider text-primary mb-4">Investimento</div>
+        <h2 className="text-4xl md:text-5xl font-bold text-balance">Uma única vaga. Acesso vitalício.</h2>
+      </div>
+      <div className="rounded-3xl border border-primary/50 bg-card overflow-hidden glow-orca">
+        <div className="bg-primary/10 px-8 py-3 text-center mono text-xs uppercase tracking-wider text-primary">
+          Turma de junho · 30 vagas
         </div>
-        <div className="mt-16 pt-8 border-t border-[var(--cream)]/15 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[var(--cream)]/50">
-          <p>© 2026 Maré Torrefação. Todos os direitos reservados.</p>
-          <p>Feito com grãos e calma.</p>
+        <div className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 className="text-3xl font-bold mb-2">Plano Completo</h3>
+            <p className="text-muted-foreground mb-8">Tudo. Para sempre. Atualizações incluídas.</p>
+            <ul className="space-y-3 text-sm">
+              {[
+                "24 módulos · 130+ aulas em vídeo",
+                "Biblioteca de perfis .3mf calibrados",
+                "Planilhas de custo e checklists",
+                "Grupo Telegram com instrutor",
+                "Encontros mensais ao vivo",
+                "Certificado de conclusão",
+                "Atualizações vitalícias (cada release do Orca)",
+                "Garantia de 14 dias",
+              ].map((t) => (
+                <li key={t} className="flex items-start gap-3">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:border-l md:border-border md:pl-12 text-center md:text-left">
+            <div className="text-sm text-muted-foreground line-through">de R$ 1.997</div>
+            <div className="mt-2 flex items-baseline gap-2 justify-center md:justify-start">
+              <span className="text-5xl font-bold">12x R$ 79</span>
+            </div>
+            <div className="text-sm text-muted-foreground mt-1">ou R$ 797 à vista</div>
+            <button className="mt-8 w-full rounded-md bg-primary py-4 text-sm font-semibold text-primary-foreground hover:opacity-90 transition">
+              Quero garantir minha vaga
+            </button>
+            <p className="mt-4 text-xs text-muted-foreground text-center">Pagamento seguro · cartão, Pix ou boleto</p>
+          </div>
         </div>
       </div>
-    </footer>
+    </section>
+  );
+}
+
+function Faq() {
+  const items = [
+    ["Preciso ter uma impressora 3D para fazer o curso?", "Não para os módulos teóricos, mas a partir do módulo 4 (Calibração) o ideal é ter acesso a uma máquina. Funcionamos com qualquer impressora FDM compatível com OrcaSlicer (Bambu Lab, Creality, Prusa, Voron, Ender, etc)."],
+    ["O OrcaSlicer funciona com a minha impressora?", "OrcaSlicer suporta praticamente toda impressora FDM moderna. No módulo 1 ensinamos a criar perfil customizado caso a sua não esteja na lista oficial."],
+    ["O curso é em português?", "100%. Áudio, legendas, materiais escritos e suporte — todos em português brasileiro."],
+    ["Por quanto tempo terei acesso?", "Vitalício. Você compra uma vez e mantém acesso para sempre, incluindo atualizações futuras do conteúdo."],
+    ["Tem garantia?", "Sim, 14 dias. Se não gostar por qualquer motivo, devolvemos 100% do valor sem perguntas."],
+    ["Funciona para quem quer vender peças impressas?", "Sim — o módulo 15 (Produção Comercial) e o módulo 23 (Marketplaces) são dedicados a isso. Inclui planilha de precificação."],
+  ];
+  return (
+    <section id="faq" className="mx-auto max-w-3xl px-6 py-24">
+      <div className="text-center mb-12">
+        <div className="mono text-xs uppercase tracking-wider text-primary mb-4">FAQ</div>
+        <h2 className="text-4xl md:text-5xl font-bold">Perguntas frequentes</h2>
+      </div>
+      <div className="space-y-3">
+        {items.map(([q, a]) => (
+          <details key={q} className="group rounded-xl border border-border bg-card/50 overflow-hidden">
+            <summary className="flex items-center justify-between gap-4 p-6 cursor-pointer hover:bg-card transition list-none">
+              <span className="font-medium">{q}</span>
+              <span className="text-primary text-xl group-open:rotate-45 transition">+</span>
+            </summary>
+            <div className="px-6 pb-6 text-muted-foreground leading-relaxed">{a}</div>
+          </details>
+        ))}
+      </div>
+    </section>
   );
 }
