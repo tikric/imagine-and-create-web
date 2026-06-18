@@ -2907,6 +2907,15 @@ export const modules: Module[] = [
   },
 ];
 
+// Merge per-lesson item-by-item explanations from the orca-param-details file
+import { orcaParamDetails } from "./orca-param-details";
+for (const m of modules) {
+  for (const l of m.lessons) {
+    const details = orcaParamDetails[l.id];
+    if (details) l.paramDetails = details;
+  }
+}
+
 export const courseStats = {
   modules: modules.length,
   lessons: modules.reduce((a, m) => a + m.lessons.length, 0),
