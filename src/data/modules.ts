@@ -902,17 +902,63 @@ export const modules: Module[] = [
     objective: "Diagnosticar e resolver problemas complexos integrando múltiplos parâmetros simultaneamente.",
     lessons: [
       L(1, "desafio-slicer", "Mestre do OrcaSlicer — O Desafio do Slicer", "25min",
-        ["Parâmetros térmicos complexos", "Raciocínio clínico"], {
-          theory: ["A integração de parâmetros térmicos complexos exige raciocínio clínico: identificar o sintoma principal, isolar variáveis, intervir."],
-          params: [{ param: "Nível do Desafio", value: "Expert Integrado", action: "Garante raciocínio clínico" }],
+        ["Parâmetros térmicos complexos", "Raciocínio clínico", "Variável única"], {
+          theory: [
+            "A integração de parâmetros térmicos complexos exige raciocínio clínico: identificar o sintoma principal, isolar variáveis, intervir.",
+            "Pense como médico: anamnese (o que mudou desde a última impressão boa?), exame (foto macro, peso, dimensões), hipótese, intervenção.",
+            "A maioria dos defeitos tem 1 causa raiz e 3-4 sintomas secundários. Resolver a raiz cura todos.",
+            "Documente cada intervenção: o que mudou, o que melhorou, o que piorou. Memória dispersa não acelera diagnóstico.",
+          ],
+          integrations: [
+            { module: "Módulo 14 (Troubleshooting)", text: "Use a árvore de decisão de troubleshooting como referência — não chute." },
+            { module: "Módulo 5 (Calibração)", text: "Sintomas que voltam = calibração base perdida; refaça PA e Flow antes de mais ajustes." },
+          ],
+          params: [
+            { param: "Nível do Desafio", value: "Expert Integrado", action: "Garante raciocínio clínico" },
+            { param: "Variáveis por Intervenção", value: "1", action: "Diagnóstico múltiplo simultâneo = dado corrompido" },
+          ],
           goldenRule: "Varie uma única variável por vez — sempre. Diagnóstico múltiplo simultâneo é impossível de interpretar.",
+          errors: [
+            { error: "Mudar 4 parâmetros e a peça melhorar", solution: "Você não sabe o que funcionou — refaça uma de cada vez" },
+            { error: "Confiar em memória de ajustes anteriores", solution: "Anote tudo em planilha por filamento e máquina" },
+          ],
+          finance: "Diagnóstico ordenado economiza horas/máquina — em produção, vale R$50-100 por hora salva.",
+          exercise: [
+            "Pegue uma peça com defeito recente",
+            "Liste todos os sintomas visíveis",
+            "Identifique o sintoma mais grave",
+            "Faça UMA intervenção, reimprima, compare",
+          ],
         }),
       L(2, "diagnose-fisica", "Desafios Integrados de Diagnose Física", "35min",
         ["Warping severo", "PID dinâmico", "Sintomas múltiplos"], {
-          theory: ["Warping severo exige intervenção combinada: Brim alargado + fan desligado + PID calibrado + mesa quente."],
-          integrations: [{ module: "Módulo 5 (Problemas)", text: "Diagnose de sintomas múltiplos requer abordagem em árvore de decisão." }],
-          params: [{ param: "Intervenção Crítica", value: "PID Dinâmico", action: "Estabiliza aquecimento para eliminar Z-Banding" }],
+          theory: [
+            "Warping severo exige intervenção combinada: Brim alargado + fan desligado + PID calibrado + mesa quente + enclosure fechado.",
+            "Z-banding (faixas horizontais regulares) indica problema no fuso Z, lubrificação ou PID instável da mesa.",
+            "Sintomas múltiplos quase sempre vêm de problema ambiental (umidade do filamento, AC ligado, mesa fria) — não de slicer.",
+            "Use árvore de decisão: ambiente → calibração → slicer → CAD. Nessa ordem, sempre.",
+          ],
+          integrations: [
+            { module: "Módulo 14 (Troubleshooting)", text: "Diagnose de sintomas múltiplos requer abordagem em árvore de decisão sistemática." },
+            { module: "Módulo 4 (Materiais)", text: "ABS/ASA sem enclosure = warping crônico, não tem ajuste de slicer que resolva." },
+          ],
+          params: [
+            { param: "Intervenção Crítica", value: "PID Dinâmico", action: "Estabiliza aquecimento para eliminar Z-Banding" },
+            { param: "Brim para ABS", value: "8-12 mm", action: "Compensa contração nas bordas" },
+            { param: "Fan ABS/ASA", value: "0-10%", action: "Reduz contração térmica abrupta" },
+          ],
           goldenRule: "Higienize a placa PEI com sabão neutro semanalmente — oleosidade é causa nº 1 de descolamento.",
+          errors: [
+            { error: "Warping em ABS culpando o slicer", solution: "Confirme enclosure fechado, fan 0%, mesa 110°C — ambiente vence" },
+            { error: "Z-banding tratado como PA", solution: "Lubrifique fuso Z e refaça PID da mesa antes de mexer em PA" },
+          ],
+          economy: "Hábito semanal de limpar mesa PEI reduz descolamentos em 60% — vale 10 minutos por semana.",
+          exercise: [
+            "Limpe a mesa com sabão neutro + esponja macia",
+            "Rode PID Tune no firmware",
+            "Reimprima uma peça que descolou antes",
+            "Anote a melhora no caderno de manutenção",
+          ],
         }),
     ],
   },
@@ -925,50 +971,155 @@ export const modules: Module[] = [
     objective: "Posicionar a costura exatamente onde ela desaparece e dominar Ironing para superfícies espelhadas.",
     lessons: [
       L(1, "seams-intro", "Seams (Costuras) e Acabamento Profissional", "20min",
-        ["Emenda perímetro", "Caminhos concêntricos"], {
-          theory: ["A seam é a emenda onde o bico inicia e fecha o perímetro de cada camada. Mal posicionada, vira linha vertical visível na peça."],
-          integrations: [{ module: "Módulo 6 (Pós-processamento)", text: "A posição da costura define a qualidade estética final mesmo antes do lixamento." }],
+        ["Emenda perímetro", "Caminhos concêntricos", "Posicionamento"], {
+          theory: [
+            "A seam é a emenda onde o bico inicia e fecha o perímetro de cada camada. Mal posicionada, vira linha vertical visível na peça.",
+            "Empilhamento de seam: se todas as camadas começam no mesmo ponto, forma cicatriz vertical. Random/Staggered distribui essa imperfeição.",
+            "Em peças cilíndricas (figuras, vasos), a seam é a única imperfeição estrutural visível — toda atenção deve estar nela.",
+            "Caminhos concêntricos no top permitem esconder a seam dentro da geometria — escolha 'Concentric' para topos visíveis.",
+          ],
+          integrations: [
+            { module: "Módulo 5 (Calibração)", text: "Pressure Advance bem calibrado reduz drasticamente o blob da seam — pré-requisito." },
+            { module: "Módulo 24 (Ironing)", text: "Topos com seam visível pedem Ironing para desaparecer linha do bico." },
+          ],
+          params: [
+            { param: "Seam Position", value: "Aligned/Rear", action: "Posiciona em lugar fixo controlável" },
+            { param: "Wipe Distance", value: "2.0 mm", action: "Sobra é puxada e amassa contra parede" },
+            { param: "Top Surface Pattern", value: "Monotonic", action: "Esconde a seam do topo" },
+          ],
           goldenRule: "Use caminhos concêntricos onde possível para esconder costuras dentro de geometrias.",
+          errors: [
+            { error: "Linha vertical visível na frente da peça", solution: "Mude seam para Rear ou pinte manualmente para trás" },
+            { error: "Blob em cada camada da seam", solution: "Calibre PA e ative Wipe Distance 2.0mm" },
+          ],
+          economy: "Seam bem posicionada elimina lixamento de costura — 15-30 minutos a menos por peça acabada.",
+          exercise: [
+            "Imprima um cilindro 30mm com Aligned",
+            "Imprima novamente com Random",
+            "Compare visualmente sob luz rasante",
+            "Escolha a estratégia padrão para cilíndricos",
+          ],
         }),
       L(2, "como-orca-cria-emendas", "Como o OrcaSlicer Cria as Emendas", "25min",
         ["Scarf Joint", "Staggered", "Pressão início/fim"], {
           theory: [
-            "Scarf Joint: sobrepõe as pontas em rampa para junção praticamente invisível.",
-            "Staggered: distribui emendas em diferentes alturas em camadas adjacentes.",
-            "Pressão acumulada no início/fim de extrusão é a causa física do blob na costura.",
+            "Scarf Joint: sobrepõe as pontas em rampa para junção praticamente invisível — a melhor opção para peças cilíndricas e suaves.",
+            "Staggered: distribui emendas em diferentes alturas em camadas adjacentes, evitando empilhamento vertical.",
+            "Pressão acumulada no início/fim de extrusão é a causa física do blob na costura — bico chega quente com material pressurizado.",
+            "OrcaSlicer aplica retração interna na seam (Retract before wipe) que sozinha resolve 60-70% dos blobs.",
           ],
-          integrations: [{ module: "Módulo 5 (Hotend)", text: "A pressão acumulada no hotend cria blob no início e crater no fim — Scarf compensa isso." }],
+          integrations: [
+            { module: "Módulo 23 (Hotend)", text: "Hotend de alto fluxo acumula mais pressão — exige PA maior e Scarf mais agressivo." },
+            { module: "Módulo 5 (Calibração)", text: "Sem PA calibrado, Scarf ainda mostra ondulação — calibre antes." },
+          ],
+          params: [
+            { param: "Scarf Joint", value: "On (cilíndricas)", action: "Junção em rampa invisível" },
+            { param: "Staggered", value: "On", action: "Distribui emendas em alturas" },
+            { param: "Retract before wipe", value: "0.4 mm", action: "Alivia pressão antes de fechar" },
+          ],
           goldenRule: "Ative Scarf Joint para peças cilíndricas e geometrias suaves.",
+          errors: [
+            { error: "Scarf ainda visível em PETG", solution: "Aumente PA e velocidade do scarf — PETG é viscoso" },
+            { error: "Buraquinho na seam (cratera)", solution: "Reduza retract before wipe ou aumente Flow do início" },
+          ],
+          finance: "Scarf bem calibrado dispensa pintura e lixamento em peças decorativas — produto premium sem custo extra.",
+          exercise: [
+            "Imprima vaso cilíndrico sem Scarf",
+            "Reimprima com Scarf On",
+            "Fotografe lado a lado",
+            "Padronize Scarf para todas as peças cilíndricas",
+          ],
         }),
       L(3, "tipos-seam", "Tipos de Seam: Rear, Aligned, Nearest e Random", "25min",
         ["Aligned", "Rear", "Nearest", "Random"], {
           theory: [
-            "Aligned: empilha em canto oculto (ideal para poligonais com aresta natural).",
-            "Rear: posiciona na traseira (montagem oculta).",
-            "Nearest: minimiza tempo de viagem (peças técnicas onde estética não importa).",
-            "Random: espalha pontos (superfícies redondas lisas).",
+            "Aligned: empilha em canto oculto (ideal para poligonais com aresta natural). Forma linha controlável.",
+            "Rear: posiciona na traseira (montagem oculta). Garante frente limpa.",
+            "Nearest: minimiza tempo de viagem (peças técnicas onde estética não importa). Mais rápido.",
+            "Random: espalha pontos (superfícies redondas lisas). Esconde por distribuição.",
+          ],
+          integrations: [
+            { module: "Módulo 1 (Interface)", text: "Combine com Seam Painting para forçar posição em peças específicas." },
+            { module: "Módulo 7 (Otimização)", text: "Nearest é o mais rápido — use em protótipos onde tempo importa mais que estética." },
           ],
           params: [
             { param: "Seam Position", value: "Rear (Traseira)", action: "Mantém frente de figuras livre de marcas" },
             { param: "Wipe Distance", value: "2.0 mm", action: "Limpa sobra na costura" },
+            { param: "Random (cilíndricos)", value: "On", action: "Espalha defeito em superfícies redondas" },
           ],
           goldenRule: "Use Random para artigos redondos lisos — uma linha visível arruinaria o acabamento.",
+          errors: [
+            { error: "Random gera pontos visíveis em PETG", solution: "Volte para Aligned + Seam Painting manual" },
+            { error: "Rear não funciona porque peça gira no slicer", solution: "Confirme orientação no Prepare antes de fatiar" },
+          ],
+          economy: "Seam Nearest reduz tempo de impressão em 3-7% em peças com muitas ilhas — ganho silencioso.",
+          exercise: [
+            "Imprima a mesma peça com cada tipo de seam",
+            "Anote: tempo total, posição visível, qualidade",
+            "Escolha o tipo padrão por categoria (figura, técnica, decorativa)",
+            "Salve nos perfis dedicados",
+          ],
         }),
       L(4, "esconder-seam", "Como Esconder e Posicionar a Seam", "30min",
         ["Seam Painting", "Pintura vermelho/azul", "Quinas internas"], {
-          theory: ["Seam Painting permite pintar áreas vermelhas (bloquear costura) ou azuis (forçar costura). Controle manual absoluto."],
-          integrations: [{ module: "Módulo 1 (Interface)", text: "Use a ferramenta de pintura da aba Prepare para marcar manualmente." }],
+          theory: [
+            "Seam Painting permite pintar áreas vermelhas (bloquear costura) ou azuis (forçar costura). Controle manual absoluto.",
+            "Quinas internas de modelos articulados (juntas de figuras, dobras de caixas) são lugares perfeitos para esconder seam.",
+            "Para peças com texto/logo, pinte vermelho sobre o texto e azul logo atrás — força a seam para a região não visível.",
+            "Seam Painting é por-modelo e fica salvo no .3mf — uma vez pintado, persiste em todas as reimpressões.",
+          ],
+          integrations: [
+            { module: "Módulo 1 (Interface)", text: "Use a ferramenta de pintura da aba Prepare para marcar manualmente." },
+            { module: "Módulo 22 (Perfis)", text: "Salve o .3mf com Seam Painting aplicado — vira template reutilizável." },
+          ],
+          params: [
+            { param: "Seam Painting", value: "Manual", action: "Controle absoluto da posição" },
+            { param: "Bloquear (vermelho)", value: "Áreas visíveis", action: "Impede seam onde aparece" },
+            { param: "Forçar (azul)", value: "Quinas internas", action: "Concentra seam onde esconde" },
+          ],
           goldenRule: "Posicione a costura em quinas internas de modelos articulados — esconde 100%.",
+          errors: [
+            { error: "Pintar só vermelho sem azul → seam escolhe local aleatório", solution: "Sempre combine vermelho (bloquear) com azul (forçar)" },
+            { error: "Reimpressão perdeu o painting", solution: "Salve como .3mf, não STL — STL não guarda painting" },
+          ],
+          economy: "Seam Painting bem feito uma vez vale toda vida útil do modelo — investimento de 5 minutos por peça nova.",
+          exercise: [
+            "Importe uma figura humanoid",
+            "Pinte vermelho na frente, azul atrás da cabeça",
+            "Salve como .3mf",
+            "Reimprima e confirme posição",
+          ],
         }),
       L(5, "ironing", "Ironing e Surface Smoothing", "35min",
         ["Microfluxo 15%", "Velocidade 15-30 mm/s", "Espaçamento 0.1mm"], {
-          theory: ["Ironing: o bico quente passa novamente sobre o topo com microfluxo (10-15%) e velocidade reduzida, alisando a superfície até ficar espelhada."],
-          integrations: [{ module: "Módulo 6 (Pós-processamento)", text: "Ironing entrega superfície espelhada que dispensa lixa fina." }],
+          theory: [
+            "Ironing: o bico quente passa novamente sobre o topo com microfluxo (10-15%) e velocidade reduzida, alisando a superfície até ficar espelhada.",
+            "Funciona apenas em superfícies planas horizontais — curvas ou inclinadas o bico não acompanha.",
+            "Espaçamento 0.1mm entre passadas garante cobertura total sem sobre-fusão. Maior gera linhas visíveis; menor desperdiça tempo.",
+            "Custo: Ironing adiciona 15-30% no tempo da peça, então use só em superfícies que aparecem.",
+          ],
+          integrations: [
+            { module: "Módulo 24 (Ironing)", text: "Detalhamento completo de parâmetros e materiais ideais para Ironing." },
+            { module: "Módulo 3 (Cooling)", text: "Ironing pede fan reduzido para fundir bem — ajuste conforme material." },
+          ],
           params: [
             { param: "Fluxo de Alisamento", value: "15%", action: "Volume para fechar frinchas microscópicas" },
             { param: "Velocidade de Alisamento", value: "20 mm/s", action: "Deslocamento lento para fusão homogênea" },
+            { param: "Espaçamento", value: "0.10 mm", action: "Cobertura total sem sobre-fusão" },
+            { param: "Tipo de Ironing", value: "Top Surfaces", action: "Aplica só onde aparece" },
           ],
           goldenRule: "Não use Ironing em superfícies curvas — só funciona em topos planos.",
+          errors: [
+            { error: "Ironing em curva — bico arranha", solution: "Desative para essa peça ou divida o modelo" },
+            { error: "Linhas visíveis no Ironing", solution: "Reduza espaçamento para 0.08mm e velocidade para 15 mm/s" },
+          ],
+          finance: "Ironing entrega acabamento de injeção sem pós-processamento — produto premium com markup direto.",
+          exercise: [
+            "Imprima placa plana 80×80mm sem Ironing",
+            "Reimprima com Ironing On",
+            "Compare brilho sob luz",
+            "Padronize para peças com topo visível",
+          ],
         }),
     ],
   },
@@ -982,32 +1133,94 @@ export const modules: Module[] = [
     lessons: [
       L(1, "limites-cinematicos", "Limites Cinemáticos Reais", "25min",
         ["Aceleração", "Correias", "Lubrificação"], {
-          theory: ["Velocidade acima de 150 mm/s exige estabilização — a aceleração é o verdadeiro fator de velocidade média, não a velocidade de pico."],
-          integrations: [{ module: "Módulo 4 (Calibração)", text: "A aceleração é o fator real de tempo total, não a velocidade nominal." }],
-          economy: "Aceleração 4000 mm/s² poupa até 30% do tempo total em peças com muitos detalhes pequenos.",
-          params: [{ param: "Aceleração Básica", value: "3000 mm/s²", action: "Teto padrão de aceleração estável" }],
+          theory: [
+            "Velocidade acima de 150 mm/s exige estabilização — a aceleração é o verdadeiro fator de velocidade média, não a velocidade de pico.",
+            "Em peças pequenas (<40mm), a impressora nunca atinge velocidade nominal — passa o tempo acelerando e desacelerando. Aceleração é tudo.",
+            "Correias soltas amplificam ringing acima de 200 mm/s. Verifique tensão antes de subir velocidade.",
+            "Lubrificação semanal de fusos e LM8UU é obrigatória em produção — atrito vira ghosting visível.",
+          ],
+          integrations: [
+            { module: "Módulo 5 (Calibração)", text: "A aceleração é o fator real de tempo total, não a velocidade nominal." },
+            { module: "Módulo 20 (Aceleração)", text: "Detalhe absoluto sobre acelerações assimétricas por feature." },
+          ],
+          params: [
+            { param: "Aceleração Básica", value: "3000 mm/s²", action: "Teto padrão de aceleração estável" },
+            { param: "Aceleração Pós-IS", value: "8000-12000 mm/s²", action: "Habilitada por Input Shaper" },
+            { param: "Tensão de Correia", value: "Som G3/G4", action: "Aplicativo de afinador no celular" },
+          ],
           goldenRule: "Use correias reguladas e lubrificação constante — velocidade alta amplifica todo desgaste.",
+          errors: [
+            { error: "Ghosting que volta após 1 mês", solution: "Lubrifique LM8UU e refaça tensão de correia" },
+            { error: "Velocidade alta com aceleração baixa = mesmo tempo", solution: "Suba aceleração junto, ela é o limitante real" },
+          ],
+          economy: "Aceleração 4000 mm/s² poupa até 30% do tempo total em peças com muitos detalhes pequenos.",
+          exercise: [
+            "Verifique tensão das correias com afinador (G3-G4)",
+            "Lubrifique fusos e barras lineares",
+            "Suba aceleração em 500 mm/s² e teste ghosting",
+            "Documente o teto seguro da sua máquina",
+          ],
         }),
       L(2, "limita-velocidade", "O Que Realmente Limita a Velocidade", "30min",
         ["Volumetric Flow", "Bico 0.6mm", "Subextrusão"], {
           theory: [
-            "Volumetric Flow Limit: 12-18 mm³/s (hotend comum), 25-35 mm³/s (Volcano/CHT).",
+            "Volumetric Flow Limit: 12-18 mm³/s (hotend comum), 25-35 mm³/s (Volcano/CHT). É o teto físico de fusão do hotend.",
             "Fórmula: Velocidade Máxima = Vazão Volumétrica ÷ (Altura da Camada × Largura da Linha).",
+            "Exemplo: 15 mm³/s ÷ (0.20 × 0.45) = 167 mm/s máximo. Acima disso = subextrusão garantida.",
+            "Para subir velocidade sem trocar hotend: aumente altura de camada (0.28) ou largura (0.50) — vazão diminui e velocidade sobe.",
           ],
-          integrations: [{ module: "Módulo 5 (Hotend)", text: "Exceder o fluxo volumétrico causa subextrusão garantida — não tem como contornar." }],
-          economy: "Use bico 0.6mm para rascunhos comerciais — dobra a velocidade efetiva.",
-          params: [{ param: "Vazão Volumétrica Limite", value: "15 mm³/s", action: "Teto de derretimento seguro" }],
+          integrations: [
+            { module: "Módulo 23 (Hotend)", text: "Hotend CHT/Volcano dobra o fluxo volumétrico — única forma de velocidade real >250 mm/s." },
+            { module: "Módulo 21 (Protocolo)", text: "Calibração de Max Volumetric Speed é o último passo do protocolo." },
+          ],
+          params: [
+            { param: "Vazão Volumétrica Limite", value: "15 mm³/s", action: "Teto de derretimento seguro" },
+            { param: "Diâmetro do Bico", value: "0.6 mm", action: "Aumenta largura e dobra throughput" },
+            { param: "Altura Camada", value: "0.28 mm", action: "Maior altura = menos velocidade para mesmo fluxo" },
+          ],
           goldenRule: "Calibre a vazão de pico antes de aumentar qualquer velocidade.",
+          errors: [
+            { error: "Velocidade 300 mm/s com subextrusão visível", solution: "Calcule fluxo necessário e compare com teto do hotend" },
+            { error: "Trocou bico 0.6 mas velocidade igual", solution: "Atualize Line Width e Layer Height no perfil novo" },
+          ],
+          economy: "Use bico 0.6mm para rascunhos comerciais — dobra a velocidade efetiva sem trocar hardware.",
+          exercise: [
+            "Calcule sua vazão atual: largura × altura × velocidade",
+            "Confronte com teto do hotend",
+            "Reduza velocidade até ficar 10% abaixo do teto",
+            "Rode Max Volumetric Speed do OrcaSlicer para confirmar",
+          ],
         }),
       L(3, "input-shaper-klipper", "Acelerômetros, Jerks e Input Shaper", "35min",
         ["Input Shaper", "Ghosting eliminado", "Aceleração assimétrica"], {
           theory: [
             "Input Shaper: filtro matemático no firmware (Klipper) que anula as frequências naturais de vibração da estrutura.",
-            "Aceleração Outer Wall: 500-1500 mm/s² (estética). Inner Wall: 1500-3000. Infill: 4000+.",
+            "Calibração: acelerômetro ADXL345 mede ressonância nos eixos X e Y. Klipper aplica filtro automaticamente.",
+            "Sem IS, ringing é visível acima de 3000 mm/s². Com IS bem calibrado, vai a 10000+ mm/s² sem ghost.",
+            "Aceleração assimétrica: Outer Wall 500-1500 (estética), Inner Wall 1500-3000 (interno), Infill 4000+ (não aparece).",
           ],
-          integrations: [{ module: "Módulo 5 (Problemas)", text: "Ghosting (ondulação fantasma) é completamente eliminado com Input Shaper bem calibrado." }],
-          params: [{ param: "Aceleração Parede Externa", value: "1000 mm/s²", action: "Previne trepidações visíveis" }],
+          integrations: [
+            { module: "Módulo 14 (Troubleshooting)", text: "Ghosting (ondulação fantasma) é completamente eliminado com Input Shaper bem calibrado." },
+            { module: "Módulo 20 (Aceleração)", text: "Assimetria de aceleração maximiza ganho de tempo sem perder estética." },
+          ],
+          params: [
+            { param: "Aceleração Parede Externa", value: "1000 mm/s²", action: "Previne trepidações visíveis" },
+            { param: "Aceleração Parede Interna", value: "2000 mm/s²", action: "Não aparece — pode voar" },
+            { param: "Aceleração Infill", value: "5000 mm/s²", action: "Totalmente escondido" },
+            { param: "IS Shaper Type", value: "MZV / EI", action: "MZV equilibrado, EI agressivo" },
+          ],
           goldenRule: "Use aceleração reduzida em paredes externas — o resto da peça pode voar.",
+          errors: [
+            { error: "Ghosting volta depois de IS", solution: "Acelerômetro mal fixado — refaça com fita dupla face firme" },
+            { error: "IS aplicado mas peça vibra na alta velocidade", solution: "Mecânica precisa: tensão correia + lubrificação primeiro" },
+          ],
+          finance: "Input Shaper bem calibrado dobra velocidade útil — 50% mais peças por dia em produção.",
+          exercise: [
+            "Fixe acelerômetro no cabeçote (eixo X) e na mesa (eixo Y)",
+            "Rode SHAPER_CALIBRATE em ambos",
+            "Anote frequências e Shaper Type sugerido",
+            "Atualize printer.cfg e teste com cubo Benchy",
+          ],
         }),
     ],
   },
@@ -1021,37 +1234,98 @@ export const modules: Module[] = [
     lessons: [
       L(1, "tolerancias-encaixe", "Tolerâncias e Projetos Funcionais de Encaixe", "25min",
         ["Folga 0.20mm", "Contração", "Repetibilidade"], {
-          theory: ["Folga recomendada padrão para FDM: 0.20mm por lado. Cada material tem comportamento próprio de contração."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "Sempre preveja contração térmica e expansão dimensional no CAD." }],
-          params: [{ param: "Folga Recomendada", value: "0.20 mm", action: "Distanciamento para eixos e rolamentos" }],
+          theory: [
+            "Folga recomendada padrão para FDM: 0.20mm por lado. Cada material tem comportamento próprio de contração.",
+            "PLA: folga 0.15-0.20mm (mais previsível). PETG: 0.20-0.25mm (contrai mais). ABS: 0.25-0.30mm (contração térmica alta).",
+            "Repetibilidade da impressora: meça 10 peças idênticas com paquímetro e calcule desvio padrão — isso é seu limite real.",
+            "Encaixes deslizantes (gavetas, suportes) usam folga 0.30-0.40mm; encaixes de pressão (press fit) usam 0.05-0.10mm de interferência.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Engenharia)", text: "Sempre preveja contração térmica e expansão dimensional no CAD." },
+            { module: "Módulo 22 (Perfis)", text: "Salve Horizontal Expansion por material — é o seu segredo de tolerância." },
+          ],
+          params: [
+            { param: "Folga Recomendada", value: "0.20 mm", action: "Distanciamento para eixos e rolamentos" },
+            { param: "Folga Deslizante", value: "0.30-0.40 mm", action: "Gavetas e ajustes móveis" },
+            { param: "Interferência Press Fit", value: "0.05-0.10 mm", action: "Encaixa sob pressão e trava" },
+          ],
           goldenRule: "Desenhe folgas baseado na repetibilidade real do bico da sua impressora, não em valores genéricos.",
+          errors: [
+            { error: "Folga 0.20 trava no PETG", solution: "PETG contrai mais — use 0.25mm" },
+            { error: "Encaixe folgado no PLA depois ficar perfeito em ABS", solution: "Crie tabela de tolerância por material" },
+          ],
+          economy: "Tolerância correta evita refazer protótipos cliente — economiza 1-2 reprintagens por projeto.",
+          exercise: [
+            "Imprima teste de encaixe (0.10, 0.15, 0.20, 0.25, 0.30mm)",
+            "Teste cada uma com paquímetro e mão",
+            "Anote a melhor para cada material",
+            "Monte tabela de tolerâncias pessoal",
+          ],
         }),
       L(2, "folgas-compensacoes", "Folgas Reais e Compensações Físicas", "35min",
         ["Horizontal Expansion", "Elephant Foot", "Furos menores"], {
           theory: [
-            "Horizontal Expansion: contrai os perímetros (-0.05mm) para compensar dilatação da linha.",
-            "Elephant Foot Compensation: reduz a primeira camada (0.15mm) para anular rebarba inferior.",
+            "Horizontal Expansion: contrai os perímetros (-0.05mm) para compensar dilatação da linha. Furos saem do tamanho exato do CAD.",
+            "Elephant Foot Compensation: reduz a primeira camada (0.15mm) para anular rebarba inferior. Sem isso, base sempre fica 0.3mm maior.",
+            "Furos verticais saem menores por compressão lateral e elephant foot — sempre modele 0.2-0.4mm maior que o destino real.",
+            "X/Y Compensation aplicada em parte do modelo: use Modifier Mesh com valor próprio em regiões críticas.",
           ],
-          integrations: [{ module: "Módulo 4 (Calibração)", text: "Furos sempre saem menores por elephant foot e pressão lateral — calibre por material." }],
+          integrations: [
+            { module: "Módulo 5 (Calibração)", text: "Furos sempre saem menores por elephant foot e pressão lateral — calibre por material." },
+            { module: "Módulo 1 (Interface)", text: "Use Modifier Mesh para aplicar compensação só onde precisa." },
+          ],
           params: [
             { param: "Compensação XY", value: "-0.05 mm", action: "Contrai perímetros para encaixe preciso" },
             { param: "Compensação Pé de Elefante", value: "0.15 mm", action: "Anula rebarbas de base" },
+            { param: "Furo no CAD", value: "+0.30 mm", action: "Compensa contração lateral" },
           ],
           goldenRule: "Use 0.2mm de folga no CAD para pinos móveis — abaixo disso, vão travar.",
+          errors: [
+            { error: "Furo 6mm sai 5.6mm impresso", solution: "Aumente furo no CAD para 6.3mm ou aplique Hole Compensation" },
+            { error: "Base com rebarba (elephant foot)", solution: "Ative Elephant Foot Compensation 0.15mm" },
+          ],
+          finance: "Compensações corretas eliminam pós-furo com broca — passo de produção a menos por peça.",
+          exercise: [
+            "Imprima placa com furos 4, 6, 8, 10mm",
+            "Meça cada um e calcule desvio",
+            "Aplique Hole Compensation no perfil",
+            "Reimprima e confirme exatidão",
+          ],
         }),
       L(3, "press-snap-heat", "Press Fit, Snap Fit, Roscas e Heat Inserts", "40min",
         ["Press Fit", "Snap Fit", "Heat-Set Inserts"], {
           theory: [
-            "Press Fit: interferência de 0.05-0.1mm (PETG, PLA+). Encaixa sob pressão e trava.",
-            "Snap Fit: lingueta flexionável, orientação longitudinal às camadas para não quebrar.",
-            "Heat-Set Inserts: furo 0.1mm menor que o inserto, ferro de soldar a 180-220°C.",
+            "Press Fit: interferência de 0.05-0.1mm (PETG, PLA+). Encaixa sob pressão e trava — uso único, não desmontável.",
+            "Snap Fit: lingueta flexionável que trava por geometria. Orientação longitudinal às camadas para não quebrar na deflexão.",
+            "Heat-Set Inserts: furo 0.1mm menor que o inserto, ferro de soldar a 180-220°C. Plástico amolece e abraça o metal.",
+            "Roscas impressas: M6+ funciona bem em PETG; abaixo disso use heat-set ou rosca cortada com macho.",
           ],
-          integrations: [{ module: "Módulo 6 (Pós-processamento)", text: "Heat inserts garantem montagem durável com parafusos metálicos." }],
-          params: [{ param: "Loops de Parede", value: "5", action: "Massa contínua para insertos resistirem" }],
+          integrations: [
+            { module: "Módulo 6 (Engenharia)", text: "Snap Fit precisa de orientação para a lingueta resistir flexão — anisotropia importa." },
+            { module: "Módulo 4 (Materiais)", text: "Heat-Set em PLA derrete demais; PETG e PC seguram melhor o inserto." },
+          ],
+          params: [
+            { param: "Loops de Parede", value: "5", action: "Massa contínua para insertos resistirem" },
+            { param: "Interferência Press Fit", value: "0.05-0.10 mm", action: "Encaixa sob pressão" },
+            { param: "Furo Heat Insert", value: "Inserto - 0.10 mm", action: "Plástico amolece e abraça" },
+            { param: "Temperatura ferro", value: "180-220 °C", action: "Acima do Tg, abaixo do ponto de fusão" },
+          ],
           goldenRule: "Fatie furos 0.1mm menores que o inserto — o calor expande e cria o assento perfeito.",
+          errors: [
+            { error: "Snap fit quebra na primeira flexão", solution: "Reoriente lingueta longitudinal às camadas" },
+            { error: "Heat insert solto depois de inserir", solution: "Reduza furo em mais 0.05mm e use temperatura menor" },
+          ],
+          economy: "Heat-set inserts (R$0.30/un) transformam peça plástica em montagem com parafuso metálico durável — produto profissional.",
+          exercise: [
+            "Imprima placa com 4 furos para M3 insert",
+            "Insira com ferro a 200°C",
+            "Aperte parafuso e teste arrancamento",
+            "Padronize procedimento para projetos com montagem",
+          ],
         }),
     ],
   },
+
 
   {
     id: "troubleshooting", number: 14, title: "Resolução de Problemas Avançada",
