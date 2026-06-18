@@ -11,10 +11,19 @@ import tela23 from "@/assets/orca/tela_23.png.asset.json";
 import tela31 from "@/assets/orca/tela_31.png.asset.json";
 import tela32 from "@/assets/orca/tela_32.png.asset.json";
 import tela33 from "@/assets/orca/tela_33.png.asset.json";
+import tela41 from "@/assets/orca/tela_41.png.asset.json";
+import tela42 from "@/assets/orca/tela_42.png.asset.json";
+import tela43 from "@/assets/orca/tela_43.png.asset.json";
+import tela51 from "@/assets/orca/tela_51.png.asset.json";
+import tela52 from "@/assets/orca/tela_52.png.asset.json";
+import tela61 from "@/assets/orca/tela_61.png.asset.json";
+import tela62 from "@/assets/orca/tela_62.png.asset.json";
 
 const TELA_MAP: Record<string, { url: string }> = {
   tela_11: tela11, tela_12: tela12, tela_13: tela13, tela_14: tela14, tela_21: tela21,
   tela_22: tela22, tela_23: tela23, tela_31: tela31, tela_32: tela32, tela_33: tela33,
+  tela_41: tela41, tela_42: tela42, tela_43: tela43, tela_51: tela51, tela_52: tela52,
+  tela_61: tela61, tela_62: tela62,
 };
 
 export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
