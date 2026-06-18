@@ -1735,23 +1735,84 @@ export const modules: Module[] = [
     lessons: [
       L(1, "infill-basicos", "Infill Básicos — Grid, Lines, Rectilinear", "20min",
         ["Grid 2D", "Cruzamentos", "Problemas em alta velocidade"], {
-          theory: ["Grid/Lines/Rectilinear: padrões 2D, com cruzamentos na mesma camada. O bico raspa no plástico em alta velocidade, gerando ruído e desgaste."],
-          integrations: [{ module: "Módulo 3 (Preenchimento)", text: "Use apenas para protótipos rápidos e não-funcionais." }],
+          theory: [
+            "Grid, Lines e Rectilinear são padrões 2D depositados como linhas paralelas que se cruzam (Grid) ou se alternam por camada (Rectilinear).",
+            "Em altas velocidades o bico colide com cruzamentos solidificados, gerando ruído, vibração e desgaste do nozzle.",
+            "São rápidos de gerar G-code e baratos em material, mas anisotrópicos: forte em XY, frágil em Z.",
+          ],
+          integrations: [
+            { module: "Módulo 3 (Preenchimento)", text: "Use apenas para protótipos rápidos e não-funcionais." },
+            { module: "Módulo 20 (Velocidade)", text: "Reduza Infill Speed em Grid ≥10% para evitar colisões." },
+          ],
+          params: [
+            { param: "Infill Pattern", value: "Grid / Lines", action: "Rápido para visualização" },
+            { param: "Infill Density", value: "10–15%", action: "Suficiente para protótipo conceitual" },
+          ],
           goldenRule: "Evite Grid em impressões estruturais rápidas — o cruzamento gera vibração.",
+          errors: [
+            { error: "Ruído metálico no infill", solution: "Troque Grid por Rectilinear ou reduza velocidade." },
+            { error: "Peça quebra na direção Z", solution: "Aumente paredes (4+) — o infill 2D não ajuda em tração Z." },
+          ],
+          economy: "Grid 10% imprime ~30% mais rápido que Gyroid 15%, ideal para validar geometria antes da peça final.",
+          exercise: [
+            "Imprima o mesmo cubo de teste com Grid e Rectilinear a 15%.",
+            "Compare peso, tempo e ruído de impressão.",
+            "Quebre manualmente cada cubo e observe o plano de fratura.",
+          ],
         }),
       L(2, "infill-avancados", "Infill Avançados — Gyroid, Cubic, Lightning, Adaptive", "30min",
         ["Gyroid 3D", "Cubic isotrópico", "Dissipação"], {
-          theory: ["Gyroid/Cubic: padrões 3D, sem cruzamentos na mesma camada. Dissipação isotrópica de tensões em todas direções."],
-          integrations: [{ module: "Módulo 6 (Engenharia)", text: "Resistência praticamente igual em todas as direções." }],
-          params: [{ param: "Infill Pattern", value: "Gyroid 3D / Cubic", action: "Células tridimensionais ideais para função" }],
+          theory: [
+            "Gyroid e Cubic são padrões 3D verdadeiros: cada camada se conecta à seguinte sem cruzamentos planos, distribuindo carga isotropicamente.",
+            "Lightning gera ramificações mínimas que sustentam apenas o teto — ideal para peças decorativas leves.",
+            "Gyroid é o padrão preferido para peças funcionais por sua resposta uniforme a torção, flexão e compressão.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Engenharia)", text: "Resistência praticamente igual em todas as direções." },
+            { module: "Módulo 7 (Otimização)", text: "Lightning corta tempo em 40% mantendo topo aceitável." },
+          ],
+          params: [
+            { param: "Infill Pattern", value: "Gyroid", action: "Padrão 3D isotrópico — peças funcionais" },
+            { param: "Infill Pattern", value: "Lightning", action: "Apenas sustenta topo — economia máxima" },
+          ],
           goldenRule: "Use Gyroid para qualquer peça que sofrerá torção e compressão multidirecional.",
+          errors: [
+            { error: "Topo afundado com Lightning", solution: "Aumente Top Shell Layers para 6+." },
+            { error: "Gyroid lento demais", solution: "Aumente Infill Speed gradualmente até aparecer ruído, depois recue 10%." },
+          ],
+          economy: "Lightning reduz custo de material em até 70% para peças decorativas — ótimo para vasos e estatuetas.",
+          exercise: [
+            "Imprima o mesmo modelo com Gyroid 15% e Lightning.",
+            "Pese ambas as peças e compare consumo de filamento.",
+            "Aplique torção manual e observe rigidez relativa.",
+          ],
         }),
       L(3, "otimizacao-forcas", "Otimizações de Forças em X, Y e Z", "30min",
         ["Adaptive Cubic", "Densidade variável"], {
-          theory: ["Adaptive Cubic: concentra densidade perto das paredes (onde realmente importa), reduz no centro vazio."],
-          integrations: [{ module: "Módulo 7 (Otimização)", text: "Economia de polímeros mantendo resistência estrutural." }],
-          params: [{ param: "Estratégia de Infill", value: "Adaptive Cubic", action: "Concentra material onde tensões são altas" }],
+          theory: [
+            "Adaptive Cubic varia a densidade do infill conforme a distância às paredes — máxima onde há tensão, mínima no miolo.",
+            "Reduz peso e tempo sem comprometer rigidez estrutural perto da superfície.",
+            "É a escolha ideal para protótipos industriais grandes onde cada grama conta.",
+          ],
+          integrations: [
+            { module: "Módulo 7 (Otimização)", text: "Economia de polímeros mantendo resistência estrutural." },
+            { module: "Módulo 9 (Comercial)", text: "Reduz custo material em peças >200g sem perder cliente." },
+          ],
+          params: [
+            { param: "Estratégia de Infill", value: "Adaptive Cubic", action: "Concentra material onde tensões são altas" },
+            { param: "Adaptive Quality", value: "0.6", action: "Equilíbrio entre economia e rigidez" },
+          ],
           goldenRule: "Use Adaptive Cubic para protótipos industriais — força onde precisa, leveza no resto.",
+          errors: [
+            { error: "Casca externa afunda", solution: "Reduza Adaptive Quality para 0.4 (mais material perto da parede)." },
+            { error: "Peça muito leve quebra fácil", solution: "Aumente paredes para 4 — Adaptive não compensa parede fina." },
+          ],
+          economy: "Em peças industriais >300g, Adaptive Cubic economiza 20–35% de filamento mantendo carga útil.",
+          exercise: [
+            "Fatie a mesma peça com Cubic 20% e Adaptive Cubic.",
+            "Compare tempo, peso e visual do preview por camada.",
+            "Imprima ambas e meça deflexão sob carga conhecida.",
+          ],
         }),
     ],
   },
@@ -1766,26 +1827,83 @@ export const modules: Module[] = [
       L(1, "tipos-suporte", "Normal Grid vs Tree Organic", "25min",
         ["Normal denso", "Tree ramos curvos"], {
           theory: [
-            "Normal Grid: blocos verticais densos, difíceis de arrancar, marcam a peça.",
-            "Tree Organic: ramos curvos, mínimo contato com a peça, ramificação inteligente.",
+            "Normal Grid: blocos verticais densos, difíceis de arrancar, marcam a peça e gastam muito material.",
+            "Tree Organic: ramos curvos calculados por algoritmo, mínimo contato com a peça e ramificação inteligente.",
+            "Tree gasta menos material, imprime mais rápido e deixa marcas quase imperceptíveis.",
           ],
-          integrations: [{ module: "Módulo 3 (Suportes)", text: "Tree Organic é uma revolução real para miniaturas e estátuas." }],
-          params: [{ param: "Support Style", value: "Tree Organic", action: "Ramos fáceis de extrair sem marcar" }],
+          integrations: [
+            { module: "Módulo 3 (Suportes)", text: "Tree Organic é uma revolução real para miniaturas e estátuas." },
+            { module: "Módulo 6 (Pós-processamento)", text: "Marca de Tree é facilmente removida com lixa 400." },
+          ],
+          params: [
+            { param: "Support Style", value: "Tree Organic", action: "Ramos fáceis de extrair sem marcar" },
+            { param: "Tree Support Branch Angle", value: "40°", action: "Equilíbrio entre estabilidade e economia" },
+          ],
           goldenRule: "Adote Tree para todas estátuas, miniaturas e modelos estéticos.",
+          errors: [
+            { error: "Tree tomba durante impressão", solution: "Reduza Branch Angle para 30° ou aumente Branch Diameter." },
+            { error: "Tree não cobre overhang grande", solution: "Reduza Tree Support Tip Diameter para 0.4mm." },
+          ],
+          economy: "Tree economiza ~50% de filamento de suporte vs Normal Grid em peças orgânicas.",
+          exercise: [
+            "Gere suporte Normal e Tree para a mesma miniatura.",
+            "Compare gramatura estimada e tempo no preview.",
+            "Imprima ambos e avalie esforço de remoção.",
+          ],
         }),
       L(2, "interface-layers", "Interface Layers — Camadas Densas Separadoras", "25min",
         ["Z Gap 0.15-0.20mm", "3 camadas densas", "Solúveis"], {
-          theory: ["Z Gap: 0.15-0.20mm para descolar sem fundir. Top Interface: 3 camadas densas para acabamento limpo na peça."],
-          integrations: [{ module: "Módulo 6 (Pós-processamento)", text: "Interface bem configurada descola sem fundir, acabamento limpo." }],
-          params: [{ param: "Top Interface Layers", value: "3 Camadas", action: "Grade de alta densidade para acabamento" }],
+          theory: [
+            "Z Gap (0.15–0.20mm) é o espaço que descola o suporte da peça sem soltar no ar.",
+            "Top Interface (3 camadas densas a 90%) cria uma plataforma uniforme que recebe o overhang sem deixar fios.",
+            "Filamentos solúveis (PVA, BVOH) em impressoras multi-material dão acabamento absolutamente limpo.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Pós-processamento)", text: "Interface bem configurada descola sem fundir, acabamento limpo." },
+            { module: "Módulo 22 (Perfis)", text: "PVA precisa de perfil próprio com temperatura mais baixa." },
+          ],
+          params: [
+            { param: "Top Interface Layers", value: "3", action: "Grade de alta densidade para acabamento" },
+            { param: "Support Z Distance", value: "0.18 mm", action: "Descola sem cair durante impressão" },
+          ],
           goldenRule: "Use suportes solúveis (PVA, BVOH) para acabamento absolutamente impecável.",
+          errors: [
+            { error: "Suporte funde na peça", solution: "Aumente Z Gap em 0.05mm e reduza temperatura de interface." },
+            { error: "Marca pontilhada no overhang", solution: "Aumente Top Interface Density para 95%." },
+          ],
+          finance: "Cobrar premium em peças com PVA é justo — material custa 4× o PLA e exige câmara seca.",
+          exercise: [
+            "Imprima um overhang teste com Z Gap 0.15, 0.20 e 0.25.",
+            "Avalie esforço de remoção e qualidade da superfície inferior.",
+            "Anote o melhor Z Gap para seu nozzle/material.",
+          ],
         }),
       L(3, "design-anti-suporte", "Design Anti-Suporte: Chanfros de 45°", "30min",
         ["Ângulo <45° autoportante", "Chanfros em furos"], {
-          theory: ["Ângulo de overhang menor que 45° é autoportante — não precisa de suporte. Chanfros em furos horizontais eliminam suportes internos."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "O melhor suporte é aquele que não precisa existir — projete para evitá-los." }],
-          params: [{ param: "Ângulo Limite", value: "45°", action: "Limite físico para deposição estável" }],
+          theory: [
+            "Overhangs com ângulo menor que 45° são autoportantes — o filamento se apoia na camada anterior.",
+            "Chanfros em furos horizontais eliminam suportes internos e melhoram tolerância dimensional.",
+            "Reprojetar a peça é mais barato do que pós-processar suporte mal acabado.",
+          ],
+          integrations: [
+            { module: "Módulo 7 (Design)", text: "O melhor suporte é aquele que não precisa existir — projete para evitá-los." },
+            { module: "Módulo 13 (Tolerâncias)", text: "Chanfro em furo melhora encaixe de parafusos." },
+          ],
+          params: [
+            { module: "Ângulo Limite", value: "45°", action: "Limite físico para deposição estável" } as unknown as ParamRow,
+            { param: "Overhang Threshold", value: "55°", action: "Aciona suporte apenas além desse ângulo" },
+          ],
           goldenRule: "Aplique chanfros em todos furos horizontais maiores que 5mm.",
+          errors: [
+            { error: "Overhang 50° feio sem suporte", solution: "Adicione chanfro de 45° no CAD ou rotacione a peça." },
+            { error: "Furo horizontal oval", solution: "Modele como losango ou aplique chanfro superior." },
+          ],
+          economy: "Eliminar suporte interno em furos reduz tempo de impressão em 8–15% por peça.",
+          exercise: [
+            "Pegue uma peça com furo horizontal e adicione chanfro de 45°.",
+            "Fatie antes e depois e compare tempo + material.",
+            "Imprima e meça redondeza do furo nos dois casos.",
+          ],
         }),
     ],
   },
@@ -1799,23 +1917,84 @@ export const modules: Module[] = [
     lessons: [
       L(1, "velocidades-impressao", "Velocidades de Impressão (com Extrusão Ativa)", "30min",
         ["Outer Wall conservadora", "Inner Wall média", "Infill rápido"], {
-          theory: ["Outer Wall conservadora (precisão estética), Inner Wall mais rápida (estrutural), Infill mais rápido (não visível)."],
-          integrations: [{ module: "Módulo 12 (Velocidade)", text: "O equilíbrio entre beleza e tempo é assimetria proporcional." }],
+          theory: [
+            "Cada feature tem velocidade ideal: Outer Wall conservadora (estética), Inner Wall média (estrutural), Infill rápida (não visível).",
+            "Velocidade demais derrete pouco o material → underextrusion; velocidade de menos cozinha o polímero → fios e blobs.",
+            "O perfil assimétrico é o segredo: rápido onde não importa, lento onde a peça aparece.",
+          ],
+          integrations: [
+            { module: "Módulo 12 (Velocidade)", text: "O equilíbrio entre beleza e tempo é assimetria proporcional." },
+            { module: "Módulo 22 (Perfis)", text: "Materiais técnicos exigem velocidades 30–50% menores." },
+          ],
+          params: [
+            { param: "Outer Wall Speed", value: "80 mm/s", action: "Velocidade conservadora para acabamento" },
+            { param: "Infill Speed", value: "200 mm/s", action: "Rápido onde a casca cobre" },
+          ],
           goldenRule: "Velocidades proporcionais à temperatura de fusão do material — quanto mais frio, mais lento.",
+          errors: [
+            { error: "Acabamento ondulado", solution: "Reduza Outer Wall Speed para 60 mm/s." },
+            { error: "Falhas no infill (gaps)", solution: "Reduza Infill Speed em 20% ou aumente temperatura 5°C." },
+          ],
+          finance: "Perfil bem ajustado entrega peça vendável em 1 tentativa — cada reimpressão queima margem.",
+          exercise: [
+            "Imprima cubo de calibração a 80, 120 e 160 mm/s na parede externa.",
+            "Compare brilho e linhas visíveis.",
+            "Fixe a velocidade máxima que ainda dá acabamento aceitável.",
+          ],
         }),
       L(2, "travel-rapido", "Velocidades de Movimento Rápido (Travel)", "30min",
         ["Travel >250mm/s", "Ghosting por travel"], {
-          theory: ["Travel rápido reduz tempo ocioso, mas movimentos violentos causam ghosting nas paredes próximas."],
-          integrations: [{ module: "Módulo 5 (Problemas)", text: "Vibrações de travel geram marcas em paredes adjacentes." }],
-          params: [{ param: "Travel Speed", value: "250 mm/s", action: "Velocidade em vazio entre ilhas" }],
+          theory: [
+            "Travel é movimento em vazio — sem extrusão. Quanto mais rápido, menor o tempo total.",
+            "Mas travel violento sacode o frame e gera ghosting nas paredes seguintes mesmo a velocidades normais.",
+            "O segredo é equilibrar aceleração de travel e velocidade de pico, considerando rigidez do frame.",
+          ],
+          integrations: [
+            { module: "Módulo 5 (Problemas)", text: "Vibrações de travel geram marcas em paredes adjacentes." },
+            { module: "Módulo 12 (Input Shaper)", text: "Input Shaper permite travel mais agressivo sem ghosting." },
+          ],
+          params: [
+            { param: "Travel Speed", value: "250 mm/s", action: "Velocidade em vazio entre ilhas" },
+            { param: "Travel Acceleration", value: "5000 mm/s²", action: "Aceleração agressiva mas estável" },
+          ],
           goldenRule: "Evite travel >300 mm/s se o frame tem baixa inércia (Ender, A1 Mini).",
+          errors: [
+            { error: "Ghosting após cantos", solution: "Reduza Travel Acceleration para 3000 mm/s²." },
+            { error: "Stepper perde passos em travel", solution: "Reduza Travel Speed em 50 mm/s." },
+          ],
+          economy: "Otimizar travel pode encurtar impressões longas em 10–15% sem afetar qualidade.",
+          exercise: [
+            "Imprima uma peça com 2 ilhas a 150, 250 e 350 mm/s de travel.",
+            "Observe ghosting nas paredes.",
+            "Defina o teto seguro para sua máquina.",
+          ],
         }),
       L(3, "aceleracoes-finas", "Configuração de Acelerações Finas", "30min",
         ["Outer 500-1200", "Inner 1500", "Infill alto"], {
-          theory: ["Outer Wall Accel: 500-1200 mm/s² (nitidez). Inner Wall: 1500 mm/s² (estrutural). Infill: alto (não visível)."],
-          integrations: [{ module: "Módulo 12 (Input Shaper)", text: "Aceleração é o que define ghosting visível, não velocidade nominal." }],
-          params: [{ param: "Inner Wall Accel", value: "1500 mm/s²", action: "Aceleração intermediária balanceada" }],
+          theory: [
+            "Aceleração define quão rápido o cabeçote atinge velocidade nominal — é ela que cria ou elimina ghosting.",
+            "Outer Wall Accel baixa (500–1200) preserva acabamento; Inner Wall e Infill podem ser altos.",
+            "Jerk (ou Junction Deviation no Klipper) controla a transição entre segmentos — fino demais arredonda cantos.",
+          ],
+          integrations: [
+            { module: "Módulo 12 (Input Shaper)", text: "Aceleração é o que define ghosting visível, não velocidade nominal." },
+            { module: "Módulo 21 (Calibração)", text: "Recalibre Input Shaper após mudar aceleração nominal." },
+          ],
+          params: [
+            { param: "Outer Wall Accel", value: "800 mm/s²", action: "Conservadora para acabamento limpo" },
+            { param: "Inner Wall Accel", value: "1500 mm/s²", action: "Aceleração intermediária balanceada" },
+          ],
           goldenRule: "Aceleração conservadora em paredes externas é a regra de ouro para acabamento.",
+          errors: [
+            { error: "Cantos arredondados", solution: "Aumente Junction Deviation ou Jerk gradualmente." },
+            { error: "Ringing fantasma após cantos", solution: "Reduza Outer Wall Accel para 500 mm/s² ou calibre Input Shaper." },
+          ],
+          economy: "Acelerações otimizadas reduzem ~20% do tempo de impressão sem ghosting visível.",
+          exercise: [
+            "Imprima um cubo Input Shaper a 500, 1000, 2000 e 4000 mm/s².",
+            "Identifique a aceleração máxima sem ghosting.",
+            "Aplique 70% desse valor como Outer Wall Accel.",
+          ],
         }),
     ],
   },
@@ -1830,29 +2009,83 @@ export const modules: Module[] = [
       L(1, "protocolo-8-etapas", "O Protocolo de Calibração em 8 Etapas", "35min",
         ["8 passos", "Ordem rígida"], {
           theory: [
-            "1) Nivelamento da chapa PEI · 2) PID térmico · 3) Multiplicador de vazão · 4) Pressure Advance · 5) Retração fina · 6) Input Shaping · 7) Teste de temperatura · 8) Teste de fluxo.",
+            "Sequência obrigatória: 1) Nivelamento PEI · 2) PID térmico · 3) Multiplicador de vazão · 4) Pressure Advance · 5) Retração fina · 6) Input Shaping · 7) Teste de temperatura · 8) Teste de fluxo.",
+            "Cada etapa pressupõe a anterior calibrada — invertendo a ordem, o erro propaga e a calibração nunca converge.",
+            "Documente os resultados em planilha por máquina+filamento; é seu ativo profissional.",
           ],
-          integrations: [{ module: "Módulo 4 (Calibração)", text: "Cada passo se assenta sobre o anterior — pular um quebra a cadeia." }],
-          params: [{ param: "Etapas", value: "8 Passos", action: "Alinhamento sistêmico absoluto" }],
+          integrations: [
+            { module: "Módulo 4 (Calibração)", text: "Cada passo se assenta sobre o anterior — pular um quebra a cadeia." },
+            { module: "Módulo 22 (Perfis)", text: "Cada filamento novo exige PA + fluxo + temperatura novamente." },
+          ],
+          params: [
+            { param: "Sequência", value: "8 etapas fixas", action: "Não inverter a ordem em hipótese alguma" },
+            { param: "Frequência", value: "A cada filamento novo", action: "PA + fluxo + temperatura no mínimo" },
+          ],
           goldenRule: "Não pule etapas na ordem científica — cada uma valida a anterior.",
+          errors: [
+            { error: "PA não converge", solution: "Volte ao multiplicador de vazão — provavelmente está errado." },
+            { error: "Input Shaper não fixa ghosting", solution: "Verifique correias e parafusos do carriage antes de tudo." },
+          ],
+          finance: "Cobre 'taxa de calibração' (R$ 50–150) ao usar filamento novo do cliente — é trabalho técnico real.",
+          exercise: [
+            "Execute o protocolo completo em uma máquina + filamento.",
+            "Anote tempo total e parâmetros finais.",
+            "Salve como perfil nomeado: 'Máquina_Filamento_DDMMYY'.",
+          ],
         }),
       L(2, "termo-fluxo-pa", "Relação Termodinâmica de Temperatura, Fluxo e PA", "25min",
         ["Temperatura altera viscosidade", "Recalibrar PA"], {
-          theory: ["Temperatura altera viscosidade do polímero, o que invalida o PA calibrado. Mudou a temperatura? Recalibre o PA."],
-          integrations: [{ module: "Módulo 5 (Hotend)", text: "Estabilidade térmica é fundamental para qualquer calibração." }],
-          params: [{ param: "Estabilização Térmica", value: "Mesa PID Calibrada", action: "Impede descalibrações por oscilação" }],
+          theory: [
+            "Temperatura altera viscosidade do polímero — quanto mais quente, mais fluido e mais Pressure Advance necessário.",
+            "Mudou +10°C? Recalibre PA. Mudou marca de filamento? Recalibre tudo do passo 3 em diante.",
+            "Estabilidade térmica da mesa e do hotend é pré-requisito; PID mal sintonizado invalida toda calibração subsequente.",
+          ],
+          integrations: [
+            { module: "Módulo 5 (Hotend)", text: "Estabilidade térmica é fundamental para qualquer calibração." },
+            { module: "Módulo 23 (Extrusor)", text: "PA depende diretamente do conjunto hotend + extrusor." },
+          ],
+          params: [
+            { param: "Tolerância PID", value: "±1°C", action: "Acima disso PA varia perceptivelmente" },
+            { param: "Recalibração PA", value: "A cada Δ10°C", action: "Mantém precisão de seam e cantos" },
+          ],
           goldenRule: "Mantenha o PID sintonizado semanalmente — drift térmico invalida tudo.",
+          errors: [
+            { error: "Cantos com blob após troca de temp", solution: "Recalibre Pressure Advance no novo set point." },
+            { error: "Fluxo varia entre lotes do mesmo filamento", solution: "Refaça multiplicador de vazão por lote." },
+          ],
+          economy: "Calibração térmica precisa elimina ~80% das peças rejeitadas por seam visível.",
+          exercise: [
+            "Calibre PA a 200°C e depois a 215°C no mesmo filamento.",
+            "Compare valores e anote a diferença.",
+            "Adicione regra no perfil: 'PA muda ~0.005 por 10°C'.",
+          ],
         }),
       L(3, "manutencao-preventiva", "Manual Preventivo de Correções Recorrentes", "30min",
         ["Correias 150Hz", "Substituir bicos", "Atomic Pull"], {
           theory: [
-            "Tensionar correias (~150Hz medido com app de afinador).",
-            "Substituir bicos desgastados (sinais: filamento sai oval, peças com erro dimensional crescente).",
-            "Secar carretéis em estufa antes de calibração nova.",
+            "Tensione correias a ~150Hz (medido com app de afinador de violão).",
+            "Substitua bicos desgastados (sinais: filamento sai oval, peças com erro dimensional crescente, aro do furo do bico fica espelhado).",
+            "Seque carretéis em estufa 4–6h antes de calibração nova; umidade altera fluxo em até 8%.",
           ],
-          integrations: [{ module: "Módulo 5 (Manutenção)", text: "90% dos problemas atribuídos a fatiamento são na verdade manutenção mecânica." }],
-          params: [{ param: "Frequência de Correia", value: "150 Hz", action: "Evita ghosting e ringing" }],
+          integrations: [
+            { module: "Módulo 5 (Manutenção)", text: "90% dos problemas atribuídos a fatiamento são na verdade manutenção mecânica." },
+            { module: "Módulo 23 (Extrusor)", text: "Atomic Pull semanal evita entupimentos parciais invisíveis." },
+          ],
+          params: [
+            { param: "Frequência de Correia", value: "150 Hz", action: "Evita ghosting e ringing" },
+            { param: "Vida útil bico latão", value: "~300h PLA", action: "Reduz para 50h com fibra/CF" },
+          ],
           goldenRule: "Faça Atomic Pull (puxada fria) antes de calibrar qualquer material técnico.",
+          errors: [
+            { error: "Layer shift recorrente", solution: "Tensione correias e verifique parafusos das polias." },
+            { error: "Erro dimensional aumentando com o tempo", solution: "Troque o bico — provavelmente desgastado/oval." },
+          ],
+          finance: "Bico aço endurecido (R$ 80) vale a pena se você imprime fibra — vida útil 10× maior que latão.",
+          exercise: [
+            "Meça a frequência das correias com app de afinador.",
+            "Tensione até ficar entre 130–170 Hz.",
+            "Execute um Atomic Pull e documente cor/forma do resíduo.",
+          ],
         }),
     ],
   },
@@ -1866,24 +2099,84 @@ export const modules: Module[] = [
     lessons: [
       L(1, "perfil-filamento-precisao", "Configurando o Perfil de Filamento com Precisão", "25min",
         ["Densidade real", "Diâmetro", "Custo"], {
-          theory: ["Configure densidade real (g/cm³), custo por kg e diâmetro nominal — essenciais para orçamentos corretos."],
-          integrations: [{ module: "Módulo 9 (Comercial)", text: "Orçamentos precisos dependem da densidade real declarada." }],
-          params: [{ param: "Diâmetro Nominal", value: "1.75 mm", action: "Espessura de entrada do carretel" }],
+          theory: [
+            "Densidade real (g/cm³) varia por aditivo: PLA puro 1.24, PLA+wood 1.15, PLA-CF 1.30.",
+            "Custo por kg e diâmetro nominal alimentam o orçamento — erros aqui distorcem preço final.",
+            "Meça o diâmetro real do filamento em 5 pontos com paquímetro; use a média no perfil.",
+          ],
+          integrations: [
+            { module: "Módulo 9 (Comercial)", text: "Orçamentos precisos dependem da densidade real declarada." },
+            { module: "Módulo 21 (Calibração)", text: "Diâmetro errado vira erro de fluxo permanente." },
+          ],
+          params: [
+            { param: "Diâmetro Medido", value: "1.74–1.76 mm", action: "Use a média real, não o nominal" },
+            { param: "Densidade", value: "Da ficha técnica", action: "Essencial para custo correto" },
+          ],
           goldenRule: "Localize a massa específica na ficha técnica do fabricante — varia por aditivo.",
+          errors: [
+            { error: "Peça superextrusada após troca de marca", solution: "Meça diâmetro real e refaça multiplicador de vazão." },
+            { error: "Orçamento bate na balança errado", solution: "Atualize densidade no perfil — provavelmente está com 1.24 genérico." },
+          ],
+          finance: "Margem real só aparece com densidade e custo corretos — perfil errado pode esconder prejuízo.",
+          exercise: [
+            "Meça diâmetro de 5 pontos de um carretel com paquímetro.",
+            "Atualize o perfil com a média.",
+            "Compare gramatura prevista vs balança após impressão.",
+          ],
         }),
       L(2, "variacoes-termicas", "Variações Térmicas de Nozzle e Bed por Camada", "25min",
         ["Primeira camada quente", "Demais estáveis"], {
-          theory: ["Primeira camada: temperatura levemente maior para adesão. Demais camadas: temperatura estável para coesão."],
-          integrations: [{ module: "Módulo 3 (Adesão)", text: "A primeira camada define o sucesso de toda a impressão." }],
-          params: [{ param: "Mesa (L1/Demais)", value: "60°C / 55°C", action: "Temperatura inicial ampliada para adesão" }],
+          theory: [
+            "Primeira camada precisa de mesa e bico mais quentes para garantir adesão e fusão.",
+            "Demais camadas devem ser estáveis — variação térmica gera warping invisível e linhas de transição.",
+            "Materiais técnicos (ABS, ASA, PC) exigem câmara fechada com temperatura ambiente controlada.",
+          ],
+          integrations: [
+            { module: "Módulo 3 (Adesão)", text: "A primeira camada define o sucesso de toda a impressão." },
+            { module: "Módulo 21 (Calibração)", text: "PID da mesa precisa ser sintonizado para cada set point." },
+          ],
+          params: [
+            { param: "Mesa (L1/Demais)", value: "60°C / 55°C", action: "Temperatura inicial ampliada para adesão" },
+            { param: "Bico (L1/Demais)", value: "215°C / 210°C", action: "+5°C ajuda fluxo na primeira camada" },
+          ],
           goldenRule: "Use 60°C estáveis para PLA padrão — variação cria warping invisível.",
+          errors: [
+            { error: "Primeira camada não adere", solution: "Aumente mesa em 5°C e reduza velocidade da L1 para 20 mm/s." },
+            { error: "Linhas claras a cada N camadas", solution: "Mesa oscilando — recalibre PID da mesa." },
+          ],
+          economy: "Mesa estabilizada reduz scrap de adesão em ~70% — ROI imediato.",
+          exercise: [
+            "Calibre PID da mesa a 60°C e 100°C.",
+            "Monitore oscilação com termômetro IR.",
+            "Anote a faixa real de variação.",
+          ],
         }),
       L(3, "dilatacao-shrinkage", "Coeficiente de Dilatação e Retração Molecular", "30min",
         ["Shrinkage 0.8% ABS", "Cubos de 100mm"], {
-          theory: ["Shrinkage Compensation: ABS encolhe ~0.8%, ASA ~0.5%, PLA ~0.3%. Compensa deformidade tridimensional."],
-          integrations: [{ module: "Módulo 13 (Tolerâncias)", text: "A dilatação molecular afeta diretamente as tolerâncias de montagem." }],
-          params: [{ param: "Shrinkage Compensation", value: "0.8% (ABS)", action: "Compensa deformidade reológica" }],
+          theory: [
+            "Shrinkage Compensation: ABS encolhe ~0.8%, ASA ~0.5%, PLA ~0.3% após resfriar.",
+            "Em peças funcionais (engrenagens, encaixes), essa diferença vira folga ou interferência indesejada.",
+            "Calibre rodando um cubo de 100mm e medindo XY com paquímetro digital.",
+          ],
+          integrations: [
+            { module: "Módulo 13 (Tolerâncias)", text: "A dilatação molecular afeta diretamente as tolerâncias de montagem." },
+            { module: "Módulo 9 (Comercial)", text: "Peça que não encaixa = retrabalho = prejuízo direto." },
+          ],
+          params: [
+            { param: "Shrinkage Compensation", value: "0.8% (ABS)", action: "Compensa deformidade reológica" },
+            { param: "Cubo de Aferição", value: "100 × 100 mm", action: "Tamanho ideal para medir encolhimento" },
+          ],
           goldenRule: "Rode cubos de 100mm para aferir encolhimento real do seu lote.",
+          errors: [
+            { error: "Engrenagem com folga", solution: "Ajuste Shrinkage Compensation X/Y separadamente." },
+            { error: "Encaixe forçado em ABS", solution: "Aumente Shrinkage para 0.85% — lote provavelmente diferente." },
+          ],
+          economy: "Compensação correta elimina retrabalho — economia de tempo e filamento em peças funcionais.",
+          exercise: [
+            "Imprima cubo 100mm em ABS sem compensação.",
+            "Meça X e Y com paquímetro.",
+            "Calcule % de erro e aplique no perfil.",
+          ],
         }),
     ],
   },
@@ -1897,24 +2190,84 @@ export const modules: Module[] = [
     lessons: [
       L(1, "extrusor-retracoes", "Configurações Físicas do Extrusor e Retrações", "25min",
         ["Velocidade máx 60 mm/s", "Engrenagens duplas"], {
-          theory: ["Velocidade máxima de extrusão: 60 mm/s. Engrenagens endurecidas são obrigatórias para torque sustentado."],
-          integrations: [{ module: "Módulo 5 (Hotend)", text: "Engrenagens de qualidade evitam grind do filamento e patinagem." }],
-          params: [{ param: "Velocidade Máxima", value: "60 mm/s", action: "Limite para proteger engrenagens" }],
+          theory: [
+            "Velocidade máxima de extrusão: ~60 mm/s para hotends padrão; CHT/volcano podem ir além.",
+            "Engrenagens endurecidas (BMG, Sherpa) são obrigatórias para torque sustentado e abrasivos.",
+            "Retração em Bowden (4–6mm) é maior que em Direct Drive (0.5–1mm) por causa do tubo PTFE.",
+          ],
+          integrations: [
+            { module: "Módulo 5 (Hotend)", text: "Engrenagens de qualidade evitam grind do filamento e patinagem." },
+            { module: "Módulo 11 (Seams)", text: "Retração calibrada elimina gotejamento na costura." },
+          ],
+          params: [
+            { param: "Velocidade Máxima", value: "60 mm/s", action: "Limite para proteger engrenagens" },
+            { param: "Retração Direct", value: "0.5–1.0 mm", action: "Curta evita filamento mole atrás" },
+          ],
           goldenRule: "Use engrenagens de dupla tração (BMG, Sherpa) para alto torque em direct drive.",
+          errors: [
+            { error: "Filamento moído (grind)", solution: "Reduza velocidade de extrusão e aumente temperatura 5°C." },
+            { error: "Stringing persistente", solution: "Faça Retraction Test no Orca — calibração rápida." },
+          ],
+          finance: "Upgrade para extrusor de qualidade (R$ 250) paga-se em 2 meses de produção sem refugo.",
+          exercise: [
+            "Execute Retraction Test no Orca Calibration.",
+            "Identifique distância mínima sem stringing.",
+            "Salve no perfil de filamento.",
+          ],
         }),
       L(2, "wipe-retract", "Acoplamento de Velocidades em Retração e Wipe", "25min",
         ["Wipe before retract", "0.5mm Direct"], {
-          theory: ["Wipe before retract: o bico desliza sobre fileiras sólidas limpando a sobra antes de retrair."],
-          integrations: [{ module: "Módulo 11 (Seams)", text: "Wipe elimina gotejamento na costura — visível desaparece." }],
-          params: [{ param: "Wipe before retract", value: "Habilitado", action: "Garante trajetórias sem escorrimentos" }],
+          theory: [
+            "Wipe before retract: o bico desliza sobre fileiras sólidas limpando a sobra antes de retrair.",
+            "Reduz blobs na costura e gotas em travel — invisível a olho nu quando bem ajustado.",
+            "Combine com Coast (parar extrusão antes do fim do segmento) para resultado de produção.",
+          ],
+          integrations: [
+            { module: "Módulo 11 (Seams)", text: "Wipe elimina gotejamento na costura — visível desaparece." },
+            { module: "Módulo 20 (Velocidade)", text: "Wipe Speed alta demais arrasta material; mantenha próxima da Outer Wall." },
+          ],
+          params: [
+            { param: "Wipe before retract", value: "Habilitado", action: "Garante trajetórias sem escorrimentos" },
+            { param: "Wipe Distance", value: "0.5 mm (Direct)", action: "Suficiente para limpar sem desperdiçar tempo" },
+          ],
           goldenRule: "Use 0.5mm de wipe em Direct Drive — suficiente para limpar sem desperdiçar tempo.",
+          errors: [
+            { error: "Blob na costura mesmo com retração", solution: "Habilite Wipe Before Retract." },
+            { error: "Wipe deixando sulco visível", solution: "Reduza Wipe Distance e aumente Wipe Speed." },
+          ],
+          economy: "Wipe bem configurado dispensa lixa em peças vendáveis — ganho de tempo direto.",
+          exercise: [
+            "Imprima um cilindro com e sem Wipe Before Retract.",
+            "Compare costura sob luz oblíqua.",
+            "Anote configuração ideal por filamento.",
+          ],
         }),
       L(3, "z-hop", "Movimentações de Z-Hop de Bico", "30min",
         ["Z-Hop 0.2-0.4mm", "Spiral Z-Hop"], {
-          theory: ["Z-Hop: sobe 0.2-0.4mm em movimentos de travel para evitar colisão. Spiral Z-Hop suaviza em rampa helicoidal."],
-          integrations: [{ module: "Módulo 20 (Velocidade)", text: "Z-Hop evita colisões em peças com geometria complexa." }],
-          params: [{ param: "Z-Hop Type", value: "Spiral", action: "Elimina marcas horizontais visíveis" }],
+          theory: [
+            "Z-Hop: sobe 0.2–0.4mm em travel para evitar colisão do bico com a peça.",
+            "Spiral Z-Hop suaviza o movimento em rampa helicoidal — elimina marcas verticais.",
+            "Use 'Only on layer change' para peças simples; 'On all retractions' para modelos complexos.",
+          ],
+          integrations: [
+            { module: "Módulo 20 (Velocidade)", text: "Z-Hop evita colisões em peças com geometria complexa." },
+            { module: "Módulo 11 (Seams)", text: "Spiral Z-Hop reduz marca visível na costura." },
+          ],
+          params: [
+            { param: "Z-Hop Type", value: "Spiral", action: "Elimina marcas horizontais visíveis" },
+            { param: "Z-Hop Height", value: "0.3 mm", action: "Suficiente para evitar arranhão" },
+          ],
           goldenRule: "Use Spiral Z-Hop para modelos esguios verticais — sem marca de travel.",
+          errors: [
+            { error: "Linhas verticais no acabamento", solution: "Mude Z-Hop para Spiral ou reduza para 0.2mm." },
+            { error: "Z-Hop derrubando peça", solution: "Aumente adesão de mesa ou reduza Travel Speed em travel longo." },
+          ],
+          economy: "Z-Hop bem ajustado salva peças longas (vasos, estatuetas) que falhariam por colisão.",
+          exercise: [
+            "Imprima a mesma peça com Z-Hop Normal e Spiral.",
+            "Compare paredes verticais sob luz lateral.",
+            "Adote Spiral como padrão se diferença for visível.",
+          ],
         }),
     ],
   },
@@ -1928,24 +2281,84 @@ export const modules: Module[] = [
     lessons: [
       L(1, "ironing-coeficientes", "Ironing — Coeficientes, Espaçamentos e Fluxos", "25min",
         ["Microfluxo 15%", "Espaçamento 0.15mm"], {
-          theory: ["Ironing: microfluxo de 10-15%, espaçamento 0.10-0.15mm, velocidade 15-30 mm/s. Resultado: superfície quase espelhada."],
-          integrations: [{ module: "Módulo 6 (Pós-processamento)", text: "Ironing dispensa lixa fina em superfícies planas superiores." }],
-          params: [{ param: "Espaçamento", value: "0.15 mm", action: "Ajuste para bico 0.4mm" }],
+          theory: [
+            "Ironing passa o bico aquecido sobre a camada superior com microfluxo (10–15%) e espaçamento ~0.15mm.",
+            "O resultado é uma superfície quase espelhada que dispensa lixa em planos superiores.",
+            "Funciona apenas em superfícies horizontais (top); paredes verticais não recebem ironing.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Pós-processamento)", text: "Ironing dispensa lixa fina em superfícies planas superiores." },
+            { module: "Módulo 22 (Perfis)", text: "Filamento úmido gera bolhas no ironing — seque antes." },
+          ],
+          params: [
+            { param: "Ironing Flow", value: "12%", action: "Microfluxo para alisar sem acumular" },
+            { param: "Espaçamento", value: "0.15 mm", action: "Ajuste para bico 0.4mm" },
+          ],
           goldenRule: "Seque o filamento antes de ativar Ironing — umidade gera bolhas visíveis no espelhamento.",
+          errors: [
+            { error: "Bolhas no top liso", solution: "Seque o filamento 4h em estufa a 50°C." },
+            { error: "Topo enrugado", solution: "Reduza Ironing Flow para 8% e velocidade para 20 mm/s." },
+          ],
+          finance: "Peças com ironing podem ser vendidas como acabamento premium (+20–30% no preço).",
+          exercise: [
+            "Imprima placa 50×50mm com e sem Ironing.",
+            "Compare brilho sob luz oblíqua.",
+            "Anote o melhor flow para seu filamento.",
+          ],
         }),
       L(2, "bridges-overhangs", "Bridges e Overhangs — Controle das Fatias Suspensas", "30min",
         ["Bridge Speed reduzida", "Cooling 100%"], {
-          theory: ["Bridge: velocidade reduzida (30-50% da normal) + cooling 100% forçado + flow ligeiramente reduzido = fios estáveis no ar."],
-          integrations: [{ module: "Módulo 3 (Suportes)", text: "Cooling máximo congela o filamento no ar antes que ele caia." }],
-          params: [{ param: "Bridge Flow Ratio", value: "0.95", action: "Reduz vazão para tencionar a suspensão" }],
+          theory: [
+            "Bridge: linha estendida no ar entre dois apoios — exige resfriamento agressivo para não cair.",
+            "Receita: velocidade 30–50% da normal + cooling 100% + Bridge Flow Ratio 0.90–0.95.",
+            "Bridge Detect (Orca) identifica automaticamente e aplica perfil de ponte na região.",
+          ],
+          integrations: [
+            { module: "Módulo 3 (Suportes)", text: "Cooling máximo congela o filamento no ar antes que ele caia." },
+            { module: "Módulo 19 (Suportes)", text: "Ponte bem calibrada elimina necessidade de suporte interno." },
+          ],
+          params: [
+            { param: "Bridge Flow Ratio", value: "0.95", action: "Reduz vazão para tensionar a suspensão" },
+            { param: "Bridge Speed", value: "30 mm/s", action: "Tempo para cooling solidificar o fio" },
+          ],
           goldenRule: "Ative Bridge Detect automaticamente — o Orca identifica e ajusta sozinho.",
+          errors: [
+            { error: "Ponte cai", solution: "Reduza Bridge Speed para 20 mm/s e Flow para 0.90." },
+            { error: "Ponte fofa/sem tensão", solution: "Aumente Bridge Flow Ratio para 1.0 e ative cooling máximo." },
+          ],
+          economy: "Pontes bem feitas eliminam ~30% dos suportes em peças mecânicas — economia direta.",
+          exercise: [
+            "Imprima Bridge Test do Orca Calibration.",
+            "Identifique distância máxima sem cair.",
+            "Use 70% desse valor como limite seguro no design.",
+          ],
         }),
       L(3, "fuzzy-skin", "Texturas e Acabamentos Decorativos (Fuzzy Skin)", "25min",
         ["Oscilações senoidais", "Outer Walls"], {
-          theory: ["Fuzzy Skin: aplica oscilações senoidais (0.1mm) na parede externa, criando textura aveludada que disfarça imperfeições."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "Disfarça imperfeições de camada e melhora aderência tátil." }],
-          params: [{ param: "Fuzzy Skin Thickness", value: "0.3 mm", action: "Distância radial de oscilação" }],
+          theory: [
+            "Fuzzy Skin aplica oscilações senoidais (0.1–0.3mm) na parede externa, criando textura aveludada.",
+            "Disfarça imperfeições de camada e melhora aderência tátil — ideal para empunhaduras e cases.",
+            "Aplicar apenas em Outer Walls preserva a integridade estrutural interna.",
+          ],
+          integrations: [
+            { module: "Módulo 7 (Design)", text: "Disfarça imperfeições de camada e melhora aderência tátil." },
+            { module: "Módulo 9 (Comercial)", text: "Acabamento texturizado vende como 'soft touch' premium." },
+          ],
+          params: [
+            { param: "Fuzzy Skin Thickness", value: "0.3 mm", action: "Distância radial de oscilação" },
+            { param: "Fuzzy Skin Point Distance", value: "0.75 mm", action: "Frequência do ruído tátil" },
+          ],
           goldenRule: "Habilite Fuzzy Skin apenas em Outer Walls — afeta só a aparência, não a estrutura.",
+          errors: [
+            { error: "Peça perdeu precisão dimensional", solution: "Limite Fuzzy Skin a Outer Walls (não All Walls)." },
+            { error: "Textura grossa demais", solution: "Reduza Fuzzy Skin Thickness para 0.15mm." },
+          ],
+          finance: "Itens com Fuzzy Skin (cases, empunhaduras) podem ser vendidos como acabamento soft-touch premium.",
+          exercise: [
+            "Imprima cilindro com Fuzzy Skin Thickness 0.15, 0.3 e 0.5mm.",
+            "Compare toque e visual.",
+            "Salve as duas variantes mais usadas como presets.",
+          ],
         }),
     ],
   },
