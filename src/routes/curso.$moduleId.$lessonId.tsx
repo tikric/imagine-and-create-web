@@ -1,6 +1,21 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { modules, type Lesson, type Module, type ParamRow, type Integration, type ErrorItem } from "@/data/modules";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import tela11 from "@/assets/orca/tela_11.png.asset.json";
+import tela12 from "@/assets/orca/tela_12.png.asset.json";
+import tela13 from "@/assets/orca/tela_13.png.asset.json";
+import tela14 from "@/assets/orca/tela_14.png.asset.json";
+import tela21 from "@/assets/orca/tela_21.png.asset.json";
+import tela22 from "@/assets/orca/tela_22.png.asset.json";
+import tela23 from "@/assets/orca/tela_23.png.asset.json";
+import tela31 from "@/assets/orca/tela_31.png.asset.json";
+import tela32 from "@/assets/orca/tela_32.png.asset.json";
+import tela33 from "@/assets/orca/tela_33.png.asset.json";
+
+const TELA_MAP: Record<string, { url: string }> = {
+  tela_11: tela11, tela_12: tela12, tela_13: tela13, tela_14: tela14, tela_21: tela21,
+  tela_22: tela22, tela_23: tela23, tela_31: tela31, tela_32: tela32, tela_33: tela33,
+};
 
 export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
   head: ({ params }) => {
@@ -69,6 +84,31 @@ function LessonPage() {
             <span key={t} className="text-xs rounded-md border border-border bg-card/60 px-2.5 py-1 text-muted-foreground">{t}</span>
           ))}
         </div>
+
+        {l.screens && l.screens.length > 0 && (
+          <Section title="Tela do OrcaSlicer — Ferramenta em destaque">
+            <div className="space-y-6">
+              {l.screens.map((s, i) => (
+                <figure key={i} className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+                  <div className="border-b border-border bg-card/60 px-5 py-3">
+                    <div className="mono text-xs uppercase tracking-wider text-primary">{s.tela}</div>
+                    <div className="text-sm font-semibold mt-1">{s.panel}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{s.tool}</div>
+                  </div>
+                  <img
+                    src={TELA_MAP[s.src]?.url}
+                    alt={`${s.tela} — ${s.panel}`}
+                    loading="lazy"
+                    className="w-full h-auto block bg-[#1e1e1e]"
+                  />
+                  <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">
+                    {s.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </Section>
+        )}
 
         {l.theory && l.theory.length > 0 && (
           <Section title="Conteúdo Teórico">
