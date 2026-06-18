@@ -2141,4 +2141,423 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       goldenRule: "Ative para overhangs. A reversão melhora a adesão em áreas críticas.",
     },
   ],
+
+  // ====================================================================
+  // TELA 21 — RESISTÊNCIA (Paredes · Cascas Topo/Base · Preenchimento)
+  // ====================================================================
+  "tela-21-resistencia-cascas-preenchimento": [
+    // ───────────── MÓDULO 1: PAREDES ─────────────
+    {
+      name: "Voltas da parede (Wall Loops)",
+      value: "3–4 (padrão)",
+      whatIs:
+        "Número de linhas (perímetros) impressas ao redor da peça em cada camada. As paredes são a 'casca' estrutural e a fonte primária de resistência — mais que o infill. Analogia: cada volta é uma fileira de tijolos ao redor da peça.",
+      whyAdjust:
+        "Define a resistência mecânica real da peça, sua rigidez, peso, tempo de impressão e até a qualidade visual (a parede externa é o que se vê).",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["1–2", "Paredes finas, leve, flexível", "Decorativos, protótipos rápidos"],
+          ["3–4", "Padrão equilibrado", "Uso geral, peças funcionais"],
+          ["5–6", "Paredes grossas, alta resistência", "Estruturas, ferramentas"],
+          ["7–8", "Paredes muito grossas", "Industrial, cargas extremas"],
+        ],
+      },
+      influences: "Resistência mecânica, peso, tempo, material consumido, qualidade visual da parede externa.",
+      influencesList: [
+        "Tipo de peça: decorativa = poucas; estrutural = muitas",
+        "Material: PLA 3–4 · PETG 4–5 · ABS 4–5 · Nylon 5–6",
+        "Tamanho: pequenas 2–3, médias 3–4, grandes 4–5",
+        "Função: protótipo 2–3, uso final 4–5, ferramenta 5–6",
+        "Cada parede extra adiciona ~20% de tempo de impressão",
+      ],
+      generates: "Peça frágil/leve (2 paredes) ou peça resistente/pesada (6+ paredes).",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["2 paredes", "Leve, flexível, frágil", "Decoração, protótipo"],
+          ["4 paredes", "Equilíbrio resistência/peso", "Uso geral"],
+          ["6 paredes", "Muito resistente, pesado", "Estruturas, ferramentas"],
+          ["8 paredes", "Máxima resistência", "Industrial"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação com Paredes", "Ajuste recomendado"],
+        rows: [
+          ["Densidade de infill", "Paredes pesam mais que infill na resistência", "4 paredes + 20% infill = ótimo"],
+          ["Ordem das paredes", "Define qualidade visual da externa", "Interior/Exterior"],
+          ["Largura da parede", "Define a espessura final somada", "Ajustar largura DEPOIS"],
+          ["Camadas de topo/base", "Complementam as paredes", "Manter ≥3 camadas sólidas"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Aba Prepare", desc: "Abra o OrcaSlicer 2.4" },
+        { step: "2", path: "Resistência › Paredes", desc: "Expanda no painel esquerdo" },
+        { step: "3", path: "Voltas da parede", desc: "Digite o número desejado" },
+      ],
+      example: {
+        piece: "Suporte de motor de 5kg",
+        config: "6 paredes + 30% infill",
+        result: "Suporte rígido, seguro para carga, sem flexão",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Peça quebra fácil", "Poucas paredes", "Aumentar para 4–6"],
+          ["Tempo muito alto", "Muitas paredes", "Reduzir para 3–4"],
+          ["Superfície irregular", "Paredes insuficientes", "Mínimo 3"],
+          ["Peça pesada demais", "Excesso de paredes", "Reduzir + infill leve"],
+        ],
+      },
+      goldenRule:
+        "4 paredes para a maioria. 2 para protótipos. 6 para estruturas. A resistência começa nas paredes, não no infill.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Paredes", "Motivo"],
+        rows: [
+          ["Decorativa/protótipo", "2–3", "Leve e rápida"],
+          ["Uso geral/funcional", "3–4", "Equilíbrio"],
+          ["Estrutural/ferramenta", "5–6", "Alta resistência"],
+          ["Industrial/carga", "7–8", "Máxima resistência"],
+        ],
+      },
+    },
+    {
+      name: "Parede extra alternada",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Adiciona uma parede EXTRA em camadas alternadas (camada par: N paredes; camada ímpar: N+1 paredes). Cria intertravamento entre camadas sem dobrar o material da peça inteira.",
+      whyAdjust:
+        "Aumenta resistência (especialmente a flexão e cisalhamento entre camadas) com custo menor de tempo/material que simplesmente adicionar mais uma parede em todas as camadas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Paredes alternadas, intertravadas", "Peças que sofrem flexão"],
+          ["Desativado", "Número fixo de paredes", "Uso geral"],
+        ],
+      },
+      influences: "Resistência a flexão, intertravamento entre camadas, peso e tempo.",
+      generates: "Peça com maior resistência a flexão quando ativado, com pequeno custo de tempo.",
+      goldenRule: "Ative para peças que sofrem flexão. A parede alternada distribui tensões.",
+    },
+    {
+      name: "Detectar paredes finas",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Identifica regiões com paredes mais finas que a largura da linha e ajusta dinamicamente a largura da extrusão para preenchê-las, evitando que sejam ignoradas no fatiamento.",
+      whyAdjust:
+        "Sem detecção, paredes <0,4mm com bico 0,4mm simplesmente desaparecem do G-code. A detecção força o slicer a preencher essas regiões com linhas adaptadas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Ajusta largura para preencher paredes finas", "Miniaturas, peças com detalhes"],
+          ["Desativado", "Paredes finas podem ser ignoradas", "Peças com paredes grossas"],
+        ],
+      },
+      influences: "Fidelidade do modelo, presença de detalhes finos no G-code.",
+      generates: "Detalhes finos aparecem na peça quando ativado; somem quando desativado.",
+      goldenRule: "Ative para miniaturas e modelos com detalhe. Desative para estruturas puras.",
+    },
+    {
+      name: "Cascas de topo/base",
+      value: "Camadas (padrão)",
+      whatIs:
+        "Define o MÉTODO de cálculo da espessura das cascas (camadas sólidas no topo e base): por número de camadas ou por espessura em mm. As cascas formam as superfícies fechadas da peça.",
+      whyAdjust:
+        "Trocar entre 'camadas' e 'espessura' permite manter consistência seja qual for a altura da camada usada — útil ao trocar entre 0,2mm e 0,28mm sem recalcular.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Camadas", "Espessura = N × altura da camada", "Uso geral, controle direto"],
+          ["Espessura (mm)", "Slicer calcula N camadas para atingir espessura", "Quando muda altura da camada com frequência"],
+        ],
+      },
+      influences: "Espessura final das cascas ao mudar layer height.",
+      generates: "Topo/base com espessura consistente ou variável conforme a opção.",
+      goldenRule: "Use 'Camadas' para a maioria. 'Espessura' se troca layer height com frequência.",
+    },
+    {
+      name: "Camadas de topo da casca",
+      value: "4 (padrão)",
+      whatIs:
+        "Quantidade de camadas SÓLIDAS (100% preenchidas) impressas no topo da peça antes de fechar a superfície. São as últimas camadas que selam o infill.",
+      whyAdjust:
+        "Poucas camadas no topo = pillowing (bolhas), buracos sobre o infill. Muitas = desperdício de tempo. O número certo depende do infill abaixo.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["2–3", "Topo fino, rápido", "Infill alto (>40%)"],
+          ["4–5", "Padrão", "Infill médio (20–30%)"],
+          ["6–8", "Topo muito sólido", "Peças estéticas ou Ironing"],
+        ],
+      },
+      influences: "Qualidade do topo, pillowing, brilho do Ironing, tempo de impressão.",
+      generates: "Topo perfeitamente fechado (correto) ou com bolhas/buracos (poucas camadas).",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Densidade do infill", "Infill baixo pede mais camadas", "20% infill → 5 camadas; 40% → 3"],
+          ["Ironing", "Mais camadas dão melhor base", "Mínimo 4 camadas"],
+        ],
+      },
+      goldenRule: "4 camadas para a maioria. 5–6 com infill <20%. Topo bonito começa aqui.",
+    },
+    {
+      name: "Espessura da casca do topo",
+      value: "0,8 mm (padrão)",
+      whatIs:
+        "Espessura TOTAL em mm das camadas sólidas do topo, calculada como (camadas de topo × altura da camada). Funciona como mínimo: se Nº de camadas não atingir essa espessura, mais camadas são adicionadas.",
+      whyAdjust:
+        "Garante espessura mínima de topo independente da altura da camada usada. Evita topo fino demais ao usar layer heights pequenas.",
+      optionsTable: {
+        headers: ["Valor", "Equivale a (layer 0,2mm)", "Uso"],
+        rows: [
+          ["0,8 mm", "4 camadas", "Padrão"],
+          ["1,0 mm", "5 camadas", "Topo médio"],
+          ["1,2 mm", "6 camadas", "Topo grosso, Ironing"],
+        ],
+      },
+      influences: "Espessura mínima do topo, integração com Ironing.",
+      generates: "Topo sólido com espessura garantida.",
+      goldenRule: "0,8mm cobre a maioria. Aumente para 1,2mm em peças com Ironing.",
+    },
+    {
+      name: "Densidade da superfície superior",
+      value: "100% (padrão)",
+      whatIs:
+        "Densidade de extrusão (% de plástico) APENAS na última camada visível do topo. 100% = linhas totalmente coladas, sem espaço entre elas.",
+      whyAdjust:
+        "Menos de 100% no topo deixa linhas separadas visíveis. 100% garante superfície totalmente fechada.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["100%", "Topo completamente sólido", "Topos visíveis, Ironing"],
+          ["80–90%", "Topo levemente menos denso", "Peças internas, não visíveis"],
+        ],
+      },
+      influences: "Aparência do topo, fechamento, brilho.",
+      generates: "Topo perfeito (100%) ou listras (<100%).",
+      goldenRule: "100% sempre. Reduza só em peças cuja parte de cima ficará escondida.",
+    },
+    {
+      name: "Padrão de superfície superior",
+      value: "Monotonic (padrão)",
+      whatIs:
+        "Padrão geométrico das linhas da última camada do topo. Cada padrão produz uma textura visual diferente.",
+      whyAdjust:
+        "O padrão define a estética do topo. Monotonic gera linhas paralelas no mesmo sentido — visual mais uniforme.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Monotonic", "Linhas paralelas mesma direção", "Acabamento liso e uniforme (padrão)"],
+          ["Rectilinear", "Linhas paralelas, sentido alterna", "Padrão clássico"],
+          ["Concentric", "Círculos concêntricos", "Peças redondas/cilíndricas"],
+          ["Hilbert Curve", "Curva fractal contínua", "Estética sofisticada"],
+        ],
+      },
+      influences: "Aparência visual do topo.",
+      generates: "Texturas distintas conforme padrão escolhido.",
+      goldenRule: "Monotonic para acabamento uniforme. Concentric em peças redondas.",
+    },
+    {
+      name: "Camadas da casca de base",
+      value: "3–4 (padrão)",
+      whatIs:
+        "Quantidade de camadas sólidas (100%) na base da peça — as primeiras camadas que tocam a mesa e formam o 'piso' sólido.",
+      whyAdjust:
+        "Base fina = falha de adesão, possíveis buracos no chão. Base grossa = boa adesão, mais material.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["2", "Base fina", "Economia, peças com base não visível"],
+          ["3–4", "Padrão", "Uso geral"],
+          ["5–6", "Base muito sólida", "Peças com infill baixo, ou base estrutural"],
+        ],
+      },
+      influences: "Adesão à mesa, fechamento do 'chão', resistência da base.",
+      generates: "Base sólida e bem aderida com 3–4 camadas.",
+      goldenRule: "3–4 camadas para a maioria. Aumente em peças com infill <15%.",
+    },
+    {
+      name: "Espessura da casca de base",
+      value: "0,4–0,6 mm (padrão)",
+      whatIs:
+        "Espessura TOTAL em mm das camadas inferiores sólidas. Funciona como mínimo (forçando mais camadas se preciso).",
+      whyAdjust: "Garante chão mínimo independente da altura da camada.",
+      optionsTable: {
+        headers: ["Valor", "Equivale a (layer 0,2mm)", "Uso"],
+        rows: [
+          ["0,4 mm", "2 camadas", "Economia"],
+          ["0,6 mm", "3 camadas", "Padrão"],
+          ["0,8 mm", "4 camadas", "Base estrutural"],
+        ],
+      },
+      influences: "Espessura mínima do 'chão'.",
+      generates: "Base com espessura garantida.",
+      goldenRule: "0,6mm cobre a maioria.",
+    },
+    {
+      name: "Densidade da superfície inferior",
+      value: "100% (padrão)",
+      whatIs:
+        "Densidade de extrusão da PRIMEIRA camada visível inferior. 100% = chão totalmente sólido.",
+      whyAdjust: "100% melhora adesão à mesa e dá aparência limpa ao chão da peça.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["100%", "Base completamente sólida (padrão)"],
+          ["90%", "Pequeno espaço entre linhas"],
+        ],
+      },
+      influences: "Adesão e aparência da base.",
+      generates: "Base perfeita com 100%.",
+      goldenRule: "Mantenha 100%.",
+    },
+    {
+      name: "Padrão de superfície inferior",
+      value: "Monotonic (padrão)",
+      whatIs:
+        "Padrão geométrico das linhas da primeira camada visível inferior.",
+      optionsTable: {
+        headers: ["Opção", "Uso"],
+        rows: [
+          ["Monotonic", "Padrão, melhor aparência da base"],
+          ["Rectilinear", "Linhas alternadas"],
+          ["Concentric", "Círculos para bases redondas"],
+        ],
+      },
+      influences: "Aparência da base.",
+      generates: "Texturas diferentes na base conforme padrão.",
+      goldenRule: "Monotonic para a maioria. Concentric em bases circulares.",
+    },
+    {
+      name: "Sobreposição Superior/Inferior de preenchimento sólido/parede",
+      value: "25% (padrão)",
+      whatIs:
+        "Quanto o preenchimento sólido das cascas (topo/base) AVANÇA SOBRE a parede adjacente, criando ancoragem entre a casca e a parede.",
+      whyAdjust:
+        "Sem sobreposição, casca e parede ficam apenas encostadas — podem se separar. Sobreposição 'costura' as duas, evitando lacunas e separações visíveis.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0–10%", "Pouca conexão, risco de lacuna", "Não recomendado"],
+          ["20–30%", "Boa ancoragem", "Padrão, uso geral"],
+          ["40–50%", "Forte conexão, pode marcar parede externa", "Peças estruturais"],
+        ],
+      },
+      influences: "Ancoragem casca↔parede, lacunas visíveis, qualidade da parede externa.",
+      generates: "Topo/base bem integrado às paredes com 25%.",
+      goldenRule: "20–30% cobre a maioria. Mais que 40% pode causar marcas externas.",
+    },
+
+    // ───────────── MÓDULO 2: PREENCHIMENTO (INFILL) ─────────────
+    {
+      name: "Densidade do preenchimento esparso",
+      value: "15–20% (padrão)",
+      whatIs:
+        "Porcentagem de plástico usado no INTERIOR da peça (entre as paredes). 0% = oca; 100% = totalmente sólida. Define o quanto a peça pesa e custa.",
+      whyAdjust:
+        "Mais infill ≠ proporcionalmente mais resistência. A maior parte da resistência vem das paredes. Infill alto principalmente aumenta peso, tempo e custo — com ganho marginal de resistência acima de 30%.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0–10%", "Infill mínimo, peça leve", "Decorativos, miniaturas"],
+          ["15–25%", "Padrão equilibrado", "Uso geral"],
+          ["30–50%", "Infill denso", "Peças funcionais/estruturais"],
+          ["50–80%", "Muito denso", "Alta resistência mecânica"],
+          ["100%", "Peça maciça", "Casos raros — peso e tempo extremos"],
+        ],
+      },
+      influences: "Peso, tempo, custo, resistência (com retorno decrescente), apoio ao topo.",
+      influencesList: [
+        "Resistência: dobrar infill NÃO dobra resistência — paredes mandam mais",
+        "Topo: infill baixo (<15%) pede mais camadas de topo para evitar pillowing",
+        "Peso: 100% pesa ~3× mais que 20%",
+        "Tempo: 50% pode dobrar o tempo vs 20%",
+      ],
+      generates: "Peça leve e rápida (15–20%) ou pesada e demorada (>50%).",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Paredes", "Aumente paredes ANTES de aumentar infill", "Resistência vem das paredes"],
+          ["Camadas de topo", "Infill baixo pede mais topo", "20% infill → 4 camadas mínimo"],
+          ["Padrão de infill", "Define eficiência", "Gyroid/Cubic mais eficientes que Grid"],
+        ],
+      },
+      goldenRule:
+        "15–20% para a maioria. Para mais resistência aumente PAREDES primeiro, infill depois.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Infill", "Motivo"],
+        rows: [
+          ["Decorativa", "5–10%", "Leveza"],
+          ["Funcional geral", "15–25%", "Equilíbrio"],
+          ["Estrutural", "30–50%", "Resistência real"],
+          ["Alta carga", "60–80%", "Máxima resistência prática"],
+        ],
+      },
+    },
+    {
+      name: "Multilinhas de Preenchimento",
+      value: "Desativado",
+      whatIs:
+        "Permite que o slicer imprima MÚLTIPLAS linhas paralelas próximas no infill, em vez de uma linha simples — acelerando trajetos longos do infill ao custo de pequena variação de qualidade.",
+      whyAdjust:
+        "Em peças grandes, infill com multilinhas reduz consideravelmente o tempo por aproveitar trajetos retos mais largos.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Múltiplas linhas por passada — mais rápido"],
+          ["Desativado", "Uma linha por vez — padrão, mais preciso"],
+        ],
+      },
+      influences: "Tempo de impressão e qualidade do infill (raramente perceptível externamente).",
+      generates: "Impressão sensivelmente mais rápida em peças grandes quando ativado.",
+      goldenRule: "Ative em peças grandes para ganhar tempo. Desative em peças pequenas/precisas.",
+    },
+    {
+      name: "Padrão de preenchimento esparso",
+      value: "Gyroid (padrão recomendado)",
+      whatIs:
+        "Geometria das linhas que formam o INFILL interno. Cada padrão tem propriedades distintas de resistência, isotropia (igualdade em todas as direções), velocidade e estética.",
+      whyAdjust:
+        "O padrão certo define se a peça resiste igual em todas as direções (isotrópico) ou só em uma; também afeta tempo, peso e a capacidade de suportar topos sólidos.",
+      optionsTable: {
+        headers: ["Padrão", "Característica", "Melhor para"],
+        rows: [
+          ["Gyroid", "Isotrópico, sem cruzamentos, ondulado", "Peças funcionais — recomendado padrão"],
+          ["Cubic", "Alta resistência multidirecional", "Estruturas mecânicas"],
+          ["Grid", "Rápido, simples, cruzamentos visíveis", "Protótipos rápidos"],
+          ["Lightning", "Ultra econômico, só apoia o topo", "Peças decorativas, miniaturas"],
+          ["Honeycomb (3D Honeycomb)", "Muito resistente, pesado", "Painéis estruturais"],
+          ["Triangles", "Resistência boa em XY", "Peças planas"],
+          ["Concentric", "Acompanha o perímetro", "Peças flexíveis (TPU)"],
+        ],
+      },
+      influences: "Resistência (e em qual direção), tempo, peso, ruído de impressão, suporte ao topo.",
+      influencesList: [
+        "Isotropia: Gyroid = igual em todas as direções; Grid = forte só em XY",
+        "Velocidade: Grid mais rápido; Gyroid intermediário; Honeycomb mais lento",
+        "Suporte ao topo: Cubic/Gyroid suportam bem; Lightning quase só nas pontas",
+        "Para TPU/flexíveis: Concentric mantém flexibilidade",
+      ],
+      generates: "Peças com perfis de resistência muito diferentes conforme o padrão.",
+      example: {
+        piece: "Suporte de prateleira que carrega peso vertical",
+        config: "Cubic 30%",
+        result: "Suporte rígido em todas as direções, sem flexão",
+      },
+      goldenRule:
+        "Gyroid para a maioria — isotrópico e bonito. Lightning para decorativos. Cubic para estruturais.",
+      summaryTable: {
+        headers: ["Aplicação", "Padrão", "Motivo"],
+        rows: [
+          ["Uso geral", "Gyroid", "Equilíbrio total"],
+          ["Mecânica/estrutura", "Cubic", "Resistência 3D"],
+          ["Protótipo rápido", "Grid", "Velocidade"],
+          ["Decorativo leve", "Lightning", "Economia extrema"],
+          ["Painel resistente", "Honeycomb", "Rigidez por peso"],
+          ["TPU/flexível", "Concentric", "Mantém flexibilidade"],
+        ],
+      },
+    },
+  ],
 };
