@@ -3576,4 +3576,241 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       },
     },
   ],
+
+  // ====================================================================
+  // MÓDULO 3.2 — NOVIDADES DO ORCASLICER 3.2
+  // ====================================================================
+  "modulo-orcaslicer-3-2-novidades": [
+    // ───────────── SEÇÃO 1: NOVIDADES GERAIS ─────────────
+    {
+      name: "Visualização Realista (Realistic View)",
+      value: "Phong + SSAO + Sombras",
+      whatIs:
+        "Novo sistema de renderização 3D que substitui o visualizador clássico (Gouraud) por um motor baseado em Phong shading, com suporte a oclusão de ambiente (SSAO) e sombras projetadas. Phong oferece iluminação realista; SSAO adiciona sombras suaves em cantos; sombras projetadas mostram a peça projetando sombra na mesa virtual.",
+      whyAdjust:
+        "Visualização muito mais realista facilita identificar problemas de design (overhangs, cantos, detalhes) antes de fatiar, reduzindo retrabalho e desperdício de filamento.",
+      optionsTable: {
+        headers: ["Nível", "Descrição", "Quando usar"],
+        rows: [
+          ["Gouraud (Clássico)", "Iluminação básica, sem sombras", "PCs menos potentes"],
+          ["Gouraud + SSAO", "Básica com oclusão", "Equilíbrio performance/realismo"],
+          ["Gouraud + SSAO + Sombras", "Básica com sombras", "Visualização detalhada"],
+          ["Phong", "Iluminação realista básica", "Preferência visual"],
+          ["Phong + SSAO", "Realista com oclusão", "Melhor visualização de detalhes"],
+          ["Phong + SSAO + Sombras", "Máximo realismo", "Visualização final da peça"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Prepare", desc: "Abra o OrcaSlicer 3.2 na aba Prepare" },
+        { step: "2", path: "Opções de renderização", desc: "Selecione Gouraud ou Phong" },
+        { step: "3", path: "SSAO / Sombras", desc: "Ative conforme preferência visual" },
+      ],
+      example: {
+        piece: "Miniatura com detalhes faciais",
+        config: "Phong + SSAO + Sombras",
+        result: "Curvas, texturas e áreas que precisam de suporte ficam claramente visíveis",
+      },
+      influences: "Percepção de detalhes, identificação de problemas de design e desempenho da GPU.",
+      generates: "Pré-visualização realista da peça antes do fatiamento.",
+      goldenRule: "Visualização realista = menos surpresas na impressão. Veja como sua peça vai ficar antes de fatiar.",
+    },
+    {
+      name: "Sliders de Pré-visualização Aprimorados",
+      value: "Interativos",
+      whatIs:
+        "Sliders da aba Preview foram reformulados: as etiquetas das camadas ao lado do slider vertical agora são interativas — clicáveis e arrastáveis. Destacam ao passar o mouse, preservam a posição atual (sem saltos) e ganharam estilo visual mais limpo com bordas e sombras.",
+      whyAdjust:
+        "Navegação camada por camada mais rápida e precisa, especialmente útil para inspecionar áreas críticas do G-code.",
+      howTo: [
+        { step: "1", path: "Preview", desc: "Acesse a aba Preview" },
+        { step: "2", path: "Slider vertical", desc: "Navegue entre camadas ou clique nas etiquetas" },
+        { step: "3", path: "Slider horizontal", desc: "Navegue dentro da camada selecionada" },
+      ],
+      influences: "Velocidade de inspeção do G-code e identificação de problemas por camada.",
+      generates: "Experiência de navegação mais fluida na pré-visualização.",
+      goldenRule: "Clique direto na etiqueta da camada para saltar — sem perder o contexto atual.",
+    },
+    {
+      name: "Centro de Solução de Problemas (Troubleshoot Center)",
+      value: "Novo recurso",
+      whatIs:
+        "Painel acessível pelo menu Ajuda que centraliza ferramentas de diagnóstico: salvar logs em ZIP, definir nível de log, copiar informações de sistema (OS/CPU/RAM/GPU/monitores), visão geral de perfis (habilitados/totais/usuários) e botão 'Reconstruir' para limpar a pasta de perfis. Nenhuma informação pessoal é coletada e especificações podem ser ocultadas.",
+      whyAdjust:
+        "Facilita reportar bugs com contexto suficiente para o time de desenvolvimento e resolver problemas locais de perfil sem reinstalar o software.",
+      howTo: [
+        { step: "1", path: "Ajuda > Centro de Solução de Problemas", desc: "Abrir o painel" },
+        { step: "2", path: "Copiar informações do sistema", desc: "Para reportar bugs" },
+        { step: "3", path: "Reconstruir", desc: "Limpa a pasta de perfis em caso de corrupção" },
+        { step: "4", path: "Salvar logs", desc: "Exporta ZIP com logs para análise" },
+      ],
+      influences: "Velocidade de diagnóstico e qualidade dos relatórios de bug.",
+      generates: "Logs e info de sistema padronizados para suporte.",
+      goldenRule: "Use o Troubleshoot Center antes de reportar qualquer problema — economize tempo dos devs e seu.",
+    },
+
+    // ───────────── SEÇÃO 2: MELHORIAS EM PONTES ─────────────
+    {
+      name: "Largura de Linha Dedicada para Pontes",
+      value: "100% do diâmetro do bico",
+      whatIs:
+        "Parâmetro novo (Bridge Line Width) que separa a largura das linhas de ponte da largura do infill sólido interno. Limitado a 100% do diâmetro do bico, melhora a adesão entre linhas impressas no ar — que não podem ser pressionadas contra a camada anterior.",
+      whyAdjust:
+        "Pontes ficam mais fortes, com melhor adesão lateral entre linhas e superfície inferior mais lisa, sem aumentar o tempo de impressão.",
+      optionsTable: {
+        headers: ["Largura", "Efeito"],
+        rows: [
+          ["70% do bico", "Linhas finas, menos sag mas pouca adesão"],
+          ["85% do bico", "Equilíbrio"],
+          ["100% do bico", "Máxima adesão entre linhas (recomendado)"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Resistência > Pontes", desc: "Abrir parâmetros de ponte" },
+        { step: "2", path: "Largura da linha da ponte", desc: "Ajustar entre 70–100% do bico" },
+      ],
+      influences: "Qualidade da superfície inferior de pontes e resistência das linhas no ar.",
+      generates: "Pontes mais coesas e com acabamento melhor.",
+      goldenRule: "100% do diâmetro do bico é o padrão ideal — pontes fortes sem custo de tempo.",
+    },
+    {
+      name: "Direção Relativa de Pontes",
+      value: "Ativado",
+      whatIs:
+        "Permite ajustar o ângulo da ponte em relação à geometria da peça, em vez de um ângulo absoluto fixo em relação à mesa. Você pode 'nudge' (deslocar) o ângulo em alguns graus. Ironing também respeita o alinhamento.",
+      whyAdjust:
+        "Em peças complexas, alinhar pontes à geometria da própria peça produz cobertura melhor que ângulos fixos.",
+      howTo: [
+        { step: "1", path: "Resistência > Pontes", desc: "Abrir parâmetros de ponte" },
+        { step: "2", path: "Direção relativa de ponte", desc: "Ativar e ajustar o ângulo" },
+      ],
+      influences: "Cobertura e qualidade de pontes em geometrias irregulares.",
+      generates: "Pontes alinhadas à peça, com melhor acabamento.",
+      goldenRule: "Use direção relativa em geometrias complexas — siga a peça, não a mesa.",
+    },
+    {
+      name: "Pontes Externas em Geometrias Complexas",
+      value: "Algoritmo melhorado",
+      whatIs:
+        "O detector de pontes externas foi aprimorado para formar pontes corretamente onde contornos compartilham vértices e há micro-espaços entre superfícies adjacentes — situações em que a versão anterior gerava lacunas.",
+      whyAdjust:
+        "Não há nada para configurar — é uma melhoria automática. Antes (V2.3) pontes externas em peças complexas podiam ter lacunas; agora formam superfícies completas e uniformes.",
+      example: {
+        piece: "Peça com contornos sobrepostos",
+        config: "OrcaSlicer 3.2 (automático)",
+        result: "Superfície inferior perfeitamente formada, sem interrupções",
+      },
+      influences: "Qualidade da face inferior de peças com geometria complexa.",
+      generates: "Pontes externas completas e uniformes.",
+      goldenRule: "Atualizar para 3.2 já resolve pontes externas quebradas em peças complexas — sem mexer em parâmetros.",
+    },
+
+    // ───────────── SEÇÃO 3: MULTI-MATERIAL (SEMM) ─────────────
+    {
+      name: 'Filamento "Padrão" para Recursos Específicos',
+      value: "Padrão (filamento ativo)",
+      whatIs:
+        'Nova opção "Padrão" na atribuição de filamento por recurso (paredes externas/internas, infill esparso/sólido, superfícies). Filamento 0 = Padrão usa o filamento ativo do objeto; outros recursos podem ter filamentos específicos, incluindo em impressoras SEMM (Single-Extruder Multi-Material).',
+      whyAdjust:
+        "Permite combinar materiais com propriedades diferentes na mesma peça — por exemplo, parede externa flexível com núcleo rígido — sem precisar de impressora IDEX.",
+      howTo: [
+        { step: "1", path: "Prepare", desc: "Selecione o objeto" },
+        { step: "2", path: "Filamento por Recurso", desc: 'Escolha "Padrão" ou um filamento específico por recurso' },
+      ],
+      example: {
+        piece: "Cabo de ferramenta",
+        config: "Parede externa = TPU; demais = PETG",
+        result: "Pegada macia por fora, núcleo rígido por dentro",
+      },
+      influences: "Possibilidades criativas e funcionais em SEMM e multimaterial.",
+      generates: "Peças híbridas com propriedades diferentes por região.",
+      goldenRule: "Filamento por recurso = criatividade sem limites. Use materiais diferentes em áreas diferentes da mesma peça.",
+    },
+
+    // ───────────── SEÇÃO 4: CONECTIVIDADE E HOSTS ─────────────
+    {
+      name: "Suporte Nativo ao Moonraker (Klipper)",
+      value: "Moonraker",
+      whatIs:
+        "OrcaSlicer 3.2 adiciona Moonraker (Klipper) como tipo de host de impressão nativo. Permite controle direto de impressoras com firmware Klipper, sem precisar de plugins ou bridges.",
+      whyAdjust:
+        "Melhor integração com fazendas de impressão Klipper, comunicação mais confiável e rápida, e gerenciamento centralizado a partir do slicer.",
+      howTo: [
+        { step: "1", path: "Dispositivo", desc: "Abrir configuração de host" },
+        { step: "2", path: "Tipo de host", desc: "Selecionar Moonraker (Klipper)" },
+        { step: "3", path: "Endereço", desc: "Inserir IP/URL da máquina e conectar" },
+      ],
+      influences: "Fluxo de envio de G-code e monitoramento em impressoras Klipper.",
+      generates: "Controle nativo de Klipper diretamente do OrcaSlicer.",
+      goldenRule: "Klipper + Moonraker nativo no 3.2 — fim das gambiarras de integração.",
+    },
+
+    // ───────────── SEÇÃO 5: MELHORIAS EM INFILL ─────────────
+    {
+      name: "Ângulos Configuráveis para Lightning Infill",
+      value: "Overhang 60–70° · Prune 40–50° · Straighten 20–30°",
+      whatIs:
+        "Três novos parâmetros (modo especialista) para o infill Lightning: Ângulo de Saliência (quão longe paredes suportam o topo), Ângulo de Poda (agressividade na remoção de ramos sem suporte) e Ângulo de Endireitamento (simplificação dos ramos).",
+      whyAdjust:
+        "Permite ajustar Lightning para diferentes geometrias, equilibrando uso de material com suporte ao topo da peça.",
+      optionsTable: {
+        headers: ["Parâmetro", "Função", "Recomendado"],
+        rows: [
+          ["Ângulo de Saliência (Overhang)", "Quão longe paredes suportam o topo", "60–70°"],
+          ["Ângulo de Poda (Prune)", "Remoção de ramos sem suporte", "40–50°"],
+          ["Ângulo de Endireitamento", "Simplificação dos ramos", "20–30°"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Resistência > Preenchimento", desc: "Selecione Lightning como padrão" },
+        { step: "2", path: "Avançado", desc: "Expandir opções avançadas" },
+        { step: "3", path: "Ajustar ângulos", desc: "Configurar os três parâmetros conforme a peça" },
+      ],
+      influences: "Uso de material, suporte ao topo e tempo de impressão com Lightning.",
+      generates: "Infill Lightning ajustado à geometria específica.",
+      goldenRule: "Lightning configurável = menos material com mesmo suporte ao topo.",
+    },
+
+    // ───────────── SEÇÃO 6: OUTRAS MELHORIAS ─────────────
+    {
+      name: 'Desativar "Diminuir Velocidade para Perímetros Encaracolados"',
+      value: "Desativado por padrão",
+      whatIs:
+        'A opção "Slow Down for Curled Perimeters" passa a vir desativada por padrão. Em velocidades modernas, pode causar artefatos nas paredes se o Pressure Advance não estiver perfeitamente calibrado. O tooltip foi expandido com recomendações.',
+      whyAdjust:
+        "Evita artefatos visíveis em paredes para a maioria dos usuários. Reativar só faz sentido em hotends com resfriamento fraco ou impressoras com Pressure Advance bem ajustado.",
+      howTo: [
+        { step: "1", path: "Velocidade > Avançado", desc: "Abrir opções avançadas de velocidade" },
+        { step: "2", path: "Slow Down for Curled Perimeters", desc: "Reativar somente se necessário" },
+      ],
+      influences: "Qualidade visual das paredes e necessidade de calibração do Pressure Advance.",
+      generates: "Paredes mais limpas por padrão.",
+      goldenRule: "Mantenha desativado — só reative se vir curling nas paredes.",
+    },
+    {
+      name: "Fechamento de Vãos e Linhas de Ponte em Modificadores",
+      value: "Correções aplicadas",
+      whatIs:
+        "Correções para garantir que velocidades de ponte (internas e externas) e configurações de gap fill definidas em volumes modificadores sejam respeitadas durante o fatiamento. Também melhora a ordenação de partes de modelo sobrepostas.",
+      whyAdjust:
+        "Sem ação do usuário — é uma correção. Importante para quem usa modificadores para ajustar regiões específicas da peça.",
+      influences: "Comportamento de modificadores e previsibilidade do fatiamento.",
+      generates: "Modificadores que realmente aplicam suas configurações.",
+      goldenRule: "Modificadores agora funcionam como esperado — confie nas suas configurações locais.",
+      summaryTable: {
+        title: "Resumo das novidades do OrcaSlicer 3.2",
+        headers: ["Categoria", "Funcionalidade", "Impacto Principal"],
+        rows: [
+          ["Visualização", "Realistic View (Phong, SSAO, Sombras)", "Visualização mais realista"],
+          ["Interface", "Sliders interativos", "Navegação mais fácil"],
+          ["Diagnóstico", "Troubleshoot Center", "Facilidade em reportar problemas"],
+          ["Pontes", "Largura dedicada", "Pontes mais fortes"],
+          ["Pontes", "Direção relativa", "Melhor cobertura em geometrias complexas"],
+          ["Multi-Material", 'Filamento "Padrão"', "Mais criatividade"],
+          ["Infill", "Ângulos Lightning configuráveis", "Controle mais fino"],
+          ["Hosts", "Suporte Moonraker", "Melhor integração Klipper"],
+        ],
+      },
+    },
+  ],
 };
+
