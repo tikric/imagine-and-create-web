@@ -51,31 +51,62 @@ function CursoIndex() {
 
       <section className="mx-auto max-w-7xl px-6 pb-24">
         <div className="space-y-3">
-          {modules.map((m) => (
-            <Link
-              key={m.id}
-              to="/curso/$moduleId"
-              params={{ moduleId: m.id }}
-              className="group block rounded-2xl border border-border bg-card/40 hover:bg-card hover:border-primary/40 transition p-6 md:p-8"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 items-center">
-                <div className="mono text-primary text-lg md:text-xl">
-                  /{String(m.number).padStart(2, "0")}
-                </div>
-                <div>
-                  <div className="flex items-center gap-3 flex-wrap mb-2">
-                    <span className={`mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border ${LEVEL_COLORS[m.level]}`}>
-                      {m.level}
-                    </span>
-                    <span className="mono text-xs text-muted-foreground">{m.lessons.length} aulas · {m.duration}</span>
+          {modules.map((m) => {
+            const highlights = Array.from(
+              new Set(m.lessons.flatMap((l) => l.topics)),
+            ).slice(0, 6);
+            const goldenRule = m.lessons.find((l) => l.goldenRule)?.goldenRule;
+            return (
+              <Link
+                key={m.id}
+                to="/curso/$moduleId"
+                params={{ moduleId: m.id }}
+                className="group block rounded-2xl border border-border bg-card/40 hover:bg-card hover:border-primary/40 transition p-6 md:p-8"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto] gap-6 items-start">
+                  <div className="mono text-primary text-lg md:text-xl pt-1">
+                    /{String(m.number).padStart(2, "0")}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-semibold group-hover:text-primary transition">{m.title}</h3>
-                  <p className="text-muted-foreground mt-1">{m.tagline}</p>
+                  <div>
+                    <div className="flex items-center gap-3 flex-wrap mb-2">
+                      <span className={`mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border ${LEVEL_COLORS[m.level]}`}>
+                        {m.level}
+                      </span>
+                      <span className="mono text-xs text-muted-foreground">{m.lessons.length} aulas · {m.duration}</span>
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-semibold group-hover:text-primary transition">{m.title}</h3>
+                    <p className="text-muted-foreground mt-1">{m.tagline}</p>
+
+                    <p className="text-sm text-foreground/80 mt-4 leading-relaxed">
+                      <span className="mono text-[10px] uppercase tracking-wider text-primary mr-2">Objetivo</span>
+                      {m.objective}
+                    </p>
+
+                    {highlights.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {highlights.map((t) => (
+                          <span
+                            key={t}
+                            className="mono text-[10px] uppercase tracking-wider px-2 py-1 rounded border border-border bg-background/40 text-muted-foreground"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {goldenRule && (
+                      <p className="mt-4 text-xs text-muted-foreground border-l-2 border-primary/50 pl-3 italic">
+                        <span className="mono not-italic text-primary mr-1">Regra de ouro:</span>
+                        {goldenRule}
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-primary text-2xl opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition md:pt-1">→</div>
                 </div>
-                <div className="text-primary text-2xl opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition">→</div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
