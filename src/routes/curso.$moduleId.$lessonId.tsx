@@ -133,11 +133,17 @@ function LessonPage() {
                       {p.value}
                     </div>
                   </div>
-                  <div className="grid gap-4">
+                  <div className="grid gap-5">
                     <div>
                       <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que é</div>
                       <p className="text-foreground/90 leading-relaxed">{p.whatIs}</p>
                     </div>
+                    {p.whyAdjust && (
+                      <div>
+                        <div className="mono text-xs uppercase tracking-wider text-chart-3 mb-1">▸ Por que ajustar</div>
+                        <p className="text-foreground/90 leading-relaxed">{p.whyAdjust}</p>
+                      </div>
+                    )}
                     {p.types && p.types.length > 0 && (
                       <div>
                         <div className="mono text-xs uppercase tracking-wider text-primary mb-2">▸ Tipos / Opções disponíveis</div>
@@ -150,15 +156,66 @@ function LessonPage() {
                         </ul>
                       </div>
                     )}
+                    {p.optionsTable && (
+                      <MiniTable label="▸ Tabela de opções" color="primary" data={p.optionsTable} />
+                    )}
                     <div>
                       <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que influencia</div>
                       <p className="text-foreground/90 leading-relaxed">{p.influences}</p>
+                      {p.influencesList && p.influencesList.length > 0 && (
+                        <ul className="mt-2 space-y-1 list-disc pl-5 text-foreground/90">
+                          {p.influencesList.map((it, ii) => <li key={ii}>{it}</li>)}
+                        </ul>
+                      )}
                     </div>
                     <div>
                       <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que gera (consequência prática)</div>
                       <p className="text-foreground/90 leading-relaxed">{p.generates}</p>
                     </div>
+                    {p.generatesTable && (
+                      <MiniTable label="▸ Consequências práticas" color="primary" data={p.generatesTable} />
+                    )}
+                    {p.integrationsTable && (
+                      <MiniTable label="▸ Integração com outros parâmetros" color="chart-3" data={p.integrationsTable} />
+                    )}
+                    {p.howTo && p.howTo.length > 0 && (
+                      <div>
+                        <div className="mono text-xs uppercase tracking-wider text-chart-3 mb-2">▸ Como configurar no OrcaSlicer</div>
+                        <ol className="space-y-2">
+                          {p.howTo.map((h, hi) => (
+                            <li key={hi} className="rounded-lg border border-border bg-card/50 p-3">
+                              <div className="font-semibold">{h.step}</div>
+                              <div className="mono text-xs text-primary mt-0.5">{h.path}</div>
+                              <div className="text-sm text-foreground/80 mt-1">{h.desc}</div>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+                    {p.example && (
+                      <div className="rounded-xl border border-chart-3/40 bg-chart-3/5 p-4">
+                        <div className="mono text-xs uppercase tracking-wider text-chart-3 mb-2">▸ Exemplo prático</div>
+                        <div className="grid gap-1.5 text-sm">
+                          <div><span className="font-semibold">Peça:</span> {p.example.piece}</div>
+                          <div><span className="font-semibold">Configuração:</span> {p.example.config}</div>
+                          <div><span className="font-semibold">Resultado:</span> {p.example.result}</div>
+                        </div>
+                      </div>
+                    )}
+                    {p.errorsTable && (
+                      <MiniTable label="▸ Erros comuns e soluções" color="destructive" data={p.errorsTable} />
+                    )}
+                    {p.goldenRule && (
+                      <div className="rounded-xl border border-primary/50 bg-gradient-to-br from-primary/10 to-transparent p-4">
+                        <div className="mono text-xs uppercase tracking-wider text-primary mb-1">★ Regra de ouro</div>
+                        <p className="font-semibold text-foreground">"{p.goldenRule}"</p>
+                      </div>
+                    )}
+                    {p.summaryTable && (
+                      <MiniTable label={`▸ ${p.summaryTable.title ?? "Tabela resumo"}`} color="primary" data={p.summaryTable} />
+                    )}
                   </div>
+
                 </div>
               ))}
             </div>
