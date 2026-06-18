@@ -23,6 +23,7 @@ function Landing() {
       <Marquee />
       <Stats />
       <Methodology />
+      <DeepDive />
       <CurriculumPreview />
       <Instructor />
       <Pricing />
