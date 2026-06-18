@@ -169,30 +169,43 @@ function CurriculumPreview() {
         <div>
           <div className="mono text-xs uppercase tracking-wider text-primary mb-4">Grade curricular</div>
           <h2 className="text-4xl md:text-5xl font-bold">24 módulos, 56 horas, zero achismo.</h2>
+          <p className="mt-4 max-w-2xl text-muted-foreground">
+            Da segurança operacional (com protocolo para crianças e impressoras fechadas) até pós-processamento profissional — lixamento, alisamento químico com acetona e insertos termofixados.
+          </p>
         </div>
         <Link to="/curso" className="text-sm text-primary hover:underline">Ver curso completo →</Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border border-border">
-        {modules.slice(0, 12).map((m) => (
-          <Link
-            key={m.id}
-            to="/curso/$moduleId"
-            params={{ moduleId: m.id }}
-            className="group bg-card p-6 hover:bg-card/30 transition relative"
-          >
-            <div className="flex items-baseline justify-between mb-4">
-              <span className="mono text-xs text-primary">MOD.{String(m.number).padStart(2, "0")}</span>
-              <span className="text-xs text-muted-foreground">{m.level}</span>
-            </div>
-            <h3 className="font-semibold text-lg leading-snug mb-2 group-hover:text-primary transition">{m.title}</h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">{m.tagline}</p>
-            <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{m.lessons.length} aulas · {m.duration}</span>
-              <span className="text-primary opacity-0 group-hover:opacity-100 transition">→</span>
-            </div>
-          </Link>
-        ))}
+        {modules.slice(0, 12).map((m) => {
+          const highlights = Array.from(new Set(m.lessons.flatMap((l) => l.topics))).slice(0, 3);
+          return (
+            <Link
+              key={m.id}
+              to="/curso/$moduleId"
+              params={{ moduleId: m.id }}
+              className="group bg-card p-6 hover:bg-card/30 transition relative flex flex-col"
+            >
+              <div className="flex items-baseline justify-between mb-4">
+                <span className="mono text-xs text-primary">MOD.{String(m.number).padStart(2, "0")}</span>
+                <span className="text-xs text-muted-foreground">{m.level}</span>
+              </div>
+              <h3 className="font-semibold text-lg leading-snug mb-2 group-hover:text-primary transition">{m.title}</h3>
+              <p className="text-sm text-muted-foreground line-clamp-2">{m.tagline}</p>
+              {highlights.length > 0 && (
+                <ul className="mt-4 space-y-1 text-xs text-foreground/80">
+                  {highlights.map((t) => (
+                    <li key={t} className="flex gap-2"><span className="text-primary">▸</span><span>{t}</span></li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-auto pt-6 flex items-center justify-between text-xs text-muted-foreground">
+                <span>{m.lessons.length} aulas · {m.duration}</span>
+                <span className="text-primary opacity-0 group-hover:opacity-100 transition">→</span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
       <div className="mt-8 text-center">
         <Link to="/curso" className="inline-flex items-center gap-2 rounded-md border border-border px-6 py-3 text-sm hover:bg-card transition">
