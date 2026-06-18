@@ -2903,4 +2903,269 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       goldenRule: "Ative se rotaciona peças no plate e quer manter o comportamento da ponte.",
     },
   ],
+
+  // ====================================================================
+  // TELA 23 — RESISTÊNCIA (Sólido Interno · Avançado)
+  // ====================================================================
+  "tela-23-resistencia-solido-interno-avancado": [
+    {
+      name: "Sólido interno › Direção do preenchimento sólido",
+      value: "45°",
+      whatIs:
+        "Ângulo das linhas de preenchimento em áreas onde o infill é SÓLIDO (100%): interfaces infill/parede, camadas de topo/base internas e reforços. Exige máxima resistência e alinhamento com as forças aplicadas.",
+      whyAdjust:
+        "Alinhar com a carga predominante maximiza a resistência mecânica. 45° distribui forças uniformemente; 0° ou 90° concentram resistência em um eixo.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando Usar"],
+        rows: [
+          ["0°", "Linhas horizontais", "Forças em X"],
+          ["45° (padrão)", "Distribuição uniforme", "Uso geral"],
+          ["90°", "Linhas verticais", "Forças em Y"],
+          ["0°/90°", "Cruzado", "Máxima resistência multidirecional"],
+        ],
+      },
+      influences: "Direção da força, geometria, material e função da peça.",
+      generates: "Resistência direcional (alinhada) ou uniforme (45°).",
+      goldenRule: "45° para a maioria. Alinhe com a carga para resistência máxima.",
+      summaryTable: {
+        title: "Decisão rápida",
+        headers: ["Tipo de Peça", "Direção", "Motivo"],
+        rows: [
+          ["Uso geral", "45°", "Distribuição uniforme"],
+          ["Carga horizontal", "0°", "Força em X"],
+          ["Carga vertical", "90°", "Força em Y"],
+          ["Carga complexa", "0°/90°", "Ambas direções"],
+        ],
+      },
+    },
+    {
+      name: "Sólido interno › Gabarito de rotação de preenchimento sólido",
+      value: "Padrão",
+      whatIs: "Ponto de referência a partir do qual a direção do infill sólido é calculada e rotacionada camada a camada.",
+      whyAdjust: "Em peças assimétricas, mudar o gabarito alinha melhor o sólido com áreas críticas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Padrão", "Rotação a partir do centro"],
+          ["Personalizado", "Rotação a partir de ponto definido"],
+        ],
+      },
+      influences: "Consistência do padrão sólido em peças assimétricas.",
+      generates: "Alinhamento previsível ao longo da altura.",
+      goldenRule: "Deixe em Padrão a menos que precise alinhar com eixo específico.",
+    },
+    {
+      name: "Sólido interno › Aplicar preenchimento de vão",
+      value: "Ativado",
+      whatIs: "Ativa o gap fill: preenche pequenos espaços entre paredes e infill com linhas extras.",
+      whyAdjust: "Sem gap fill, lacunas microscópicas enfraquecem a peça e podem ficar visíveis.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Preenche vãos", "Peças estruturais"],
+          ["Desativado", "Deixa vãos", "Velocidade"],
+        ],
+      },
+      influences: "Integridade da interface parede-infill.",
+      generates: "Peça sólida sem lacunas; leve aumento de tempo.",
+      goldenRule: "Ative para peças estruturais. Evita lacunas.",
+    },
+    {
+      name: "Sólido interno › Filtrar vazios pequenos",
+      value: "Ativado",
+      whatIs: "Remove vazios microscópicos que não afetam a estrutura, reduzindo tempo de fatiamento.",
+      whyAdjust: "Vazios sub-milimétricos geram movimentos extras sem ganho real.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Remove vazios pequenos", "Uso geral"],
+          ["Desativado", "Mantém todos", "Requisitos especiais"],
+        ],
+      },
+      influences: "Tempo de fatiamento e tamanho do G-code.",
+      generates: "G-code mais limpo sem perda de resistência.",
+      goldenRule: "Ative. Vazios pequenos não afetam resistência.",
+    },
+    {
+      name: "Sólido interno › Sobreposição de preenchimento/parede",
+      value: "20%",
+      whatIs: "Quanto o infill se sobrepõe à parede interna para garantir conexão estrutural e eliminar lacunas.",
+      whyAdjust: "Pouco = infill se solta; muito = marcas do infill aparecem na parede externa.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando Usar"],
+        rows: [
+          ["0-10%", "Pouca sobreposição", "Decorativas"],
+          ["15-25% (padrão)", "Conexão forte", "Uso geral"],
+          ["30-40%", "Conexão muito forte, marcas leves", "Estruturais"],
+          ["50%+", "Infill visível na parede", "Casos extremos"],
+        ],
+      },
+      influences: "Tipo de peça, material, densidade do infill e número de paredes.",
+      generates: "Correto = forte e liso; insuficiente = fraco; excessivo = marcas.",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste"],
+        rows: [
+          ["Densidade do infill", "Complementa", "Ajustar juntos"],
+          ["Número de paredes", "Afeta necessidade", "+ paredes = – sobreposição"],
+          ["Largura da linha", "Afeta valor real", "Proporcional"],
+        ],
+      },
+      goldenRule: "20% para a maioria. Conecta infill à parede sem excesso.",
+      summaryTable: {
+        title: "Decisão rápida",
+        headers: ["Tipo", "Sobreposição", "Motivo"],
+        rows: [
+          ["Decorativa", "10-15%", "Sem marcas"],
+          ["Uso geral", "20%", "Equilíbrio"],
+          ["Estrutural", "25-30%", "Conexão forte"],
+          ["Alta carga", "30-40%", "Máxima resistência"],
+        ],
+      },
+    },
+    {
+      name: "Avançado › Alinhar direção do preenchimento ao modelo",
+      value: "Desativado",
+      whatIs: "Ajusta automaticamente a direção do infill para se alinhar à geometria local do modelo.",
+      whyAdjust: "Em geometrias curvas/orgânicas, direção fixa não acompanha as forças reais.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Ajuste local", "Peças orgânicas"],
+          ["Desativado", "Direção global", "Peças simples"],
+        ],
+      },
+      influences: "Resistência local em regiões com geometria variável.",
+      generates: "Melhor aproveitamento mecânico em peças não-cartesianas.",
+      goldenRule: "Ative para geometrias complexas.",
+    },
+    {
+      name: "Avançado › Inserir camadas sólidas",
+      value: "0",
+      whatIs: "Adiciona camadas sólidas em intervalos regulares dentro do infill esparso, criando 'lajes' de reforço.",
+      whyAdjust: "Aumenta rigidez vertical sem precisar aumentar a densidade global do infill.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando Usar"],
+        rows: [
+          ["0", "Sem camadas extras", "Peças simples"],
+          ["2-3", "Reforço a cada 2-3mm", "Estruturais"],
+          ["5+", "Muitas lajes", "Alta resistência vertical"],
+        ],
+      },
+      influences: "Rigidez Z, peso, tempo e material.",
+      generates: "Peças mais rígidas no eixo Z.",
+      goldenRule: "2-3 para peças estruturais.",
+    },
+    {
+      name: "Avançado › Direção de preenchimento de ponte externa",
+      value: "0° (auto)",
+      whatIs: "Ângulo do infill nas pontes EXTERNAS visíveis.",
+      whyAdjust: "Linhas paralelas ao vão (0°) maximizam resistência; diagonais causam sag.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0° (auto)", "Alinhado com a ponte — recomendado"],
+          ["45°", "Diagonal — estético"],
+        ],
+      },
+      influences: "Qualidade visual e resistência das pontes.",
+      generates: "Pontes firmes sem afundamento.",
+      goldenRule: "Deixe em 0°. Linhas paralelas ao vão = ponte forte.",
+    },
+    {
+      name: "Avançado › Direção de preenchimento de ponte interna",
+      value: "0° (auto)",
+      whatIs: "Ângulo do infill nas pontes INTERNAS (não visíveis, mas estruturais).",
+      whyAdjust: "Mesma lógica das pontes externas, afetando estrutura interna.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0° (auto)", "Alinhado com a ponte"],
+          ["45°", "Diagonal"],
+        ],
+      },
+      influences: "Resistência estrutural interna sobre cavidades.",
+      generates: "Suporte interno robusto para camadas subsequentes.",
+      goldenRule: "0° (auto) para máxima resistência.",
+    },
+    {
+      name: "Avançado › Ângulo relativo de ponte (Relative bridge angle)",
+      value: "Desativado",
+      whatIs: "Quando ATIVADO, os ângulos das pontes são RELATIVOS à geometria local, não à mesa.",
+      whyAdjust: "Em peças rotacionadas, mantém a estratégia de ponte consistente.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Relativo à geometria"],
+          ["Desativado", "Relativo ao eixo X"],
+        ],
+      },
+      influences: "Consistência da estratégia de ponte ao rotacionar a peça.",
+      generates: "Pontes ótimas independente da rotação.",
+      goldenRule: "Ative se rotaciona peças no plate.",
+    },
+    {
+      name: "Avançado › Limiar mínimo de preenchimento esparso",
+      value: "0 mm²",
+      whatIs: "Área mínima para que uma região receba infill esparso. Áreas menores são tratadas como sólidas ou ignoradas.",
+      whyAdjust: "Em ilhas pequenas, infill esparso não traz resistência e gera movimentos extras.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0 mm²", "Esparso em todas as áreas"],
+          ["10-50 mm²", "Esparso apenas em áreas grandes"],
+        ],
+      },
+      influences: "Tratamento de pequenas ilhas internas.",
+      generates: "Menos movimentos curtos em ilhas pequenas.",
+      goldenRule: "Mantenha 0 a menos que tenha problemas com ilhas pequenas.",
+    },
+    {
+      name: "Avançado › Combinar preenchimento",
+      value: "Desativado",
+      whatIs: "Funde várias camadas de infill em uma única passagem mais espessa, acelerando a impressão.",
+      whyAdjust: "Reduz drasticamente o tempo de infill, ao custo de maior demanda de fluxo do hotend.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Une camadas (mais rápido)"],
+          ["Desativado", "Uma camada por vez (padrão)"],
+        ],
+      },
+      influences: "Tempo de impressão, demanda de fluxo do hotend.",
+      generates: "Impressões mais rápidas; cuidado com hotends de baixo fluxo.",
+      goldenRule: "Ative em peças grandes com hotend volumétrico capaz.",
+    },
+    {
+      name: "Avançado › Detectar preenchimentos sólidos internos estreitos",
+      value: "Ativado",
+      whatIs: "Identifica regiões estreitas de infill sólido e otimiza o tratamento para evitar superextrusão.",
+      whyAdjust: "Sem detecção, áreas estreitas podem gerar blobs ou vazios.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Detecta e otimiza"],
+          ["Desativado", "Tratamento padrão"],
+        ],
+      },
+      influences: "Qualidade de regiões sólidas internas finas.",
+      generates: "Acabamento limpo em sólidos estreitos.",
+      goldenRule: "Mantenha ativado.",
+    },
+    {
+      name: "Avançado › Garantir a espessura vertical da casca",
+      value: "Ativado",
+      whatIs: "Garante espessura mínima da casca em TODAS as áreas, adicionando sólido onde a geometria afina.",
+      whyAdjust: "Sem esta opção, áreas inclinadas podem ter casca menor que a configurada, causando vazamentos.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Espessura mínima garantida"],
+          ["Desativado", "Pode variar com inclinação"],
+        ],
+      },
+      influences: "Estanqueidade e opacidade em áreas inclinadas.",
+      generates: "Peças sem vazamentos nem zonas translúcidas.",
+      goldenRule: "Mantenha ativado — padrão seguro.",
+    },
+  ],
 };
