@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Outlet, createFileRoute, Link, notFound, useRouterState } from "@tanstack/react-router";
 import { modules, type Lesson } from "@/data/modules";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
@@ -35,6 +35,14 @@ export const Route = createFileRoute("/curso/$moduleId")({
 
 function ModulePage() {
   const { module: m, prev, next } = Route.useLoaderData();
+  const isLessonRoute = useRouterState({
+    select: (state) => state.location.pathname.split("/").filter(Boolean).length > 2,
+  });
+
+  if (isLessonRoute) {
+    return <Outlet />;
+  }
+
   return (
     <div className="min-h-screen">
       <SiteHeader />
