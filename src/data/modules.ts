@@ -556,25 +556,94 @@ export const modules: Module[] = [
     objective: "Projetar peças funcionais entendendo anisotropia, orientação de carga e infill estrutural real.",
     lessons: [
       L(1, "engenharia-3d", "Engenharia Mecânica para Impressão 3D", "30min",
-        ["Anisotropia", "Cisalhamento Z"], {
-          theory: ["Anisotropia: peças FDM são fortes em X/Y (filamento contínuo) e frágeis em Z (apenas adesão entre camadas). Queda de até 60% no eixo Z."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "Oriente cargas sempre paralelamente às camadas para máxima resistência." }],
-          params: [{ param: "Anisotropia Típica", value: "Eixo Z Crítico", action: "Queda de até 60% na resistência" }],
+        ["Anisotropia", "Cisalhamento Z", "Direção de carga"], {
+          theory: [
+            "Anisotropia: peças FDM são fortes em X/Y (filamento contínuo) e frágeis em Z (apenas adesão entre camadas). Queda de até 60% na resistência axial.",
+            "A falha quase sempre acontece por cisalhamento entre camadas — não por ruptura do filamento. Visualmente, a peça 'descasca' em vez de quebrar.",
+            "Compare com injeção plástica: peça injetada é isotrópica (rigidez igual nas 3 direções); peça FDM nunca é.",
+            "Engenheiro 3D pensa antes de modelar: 'qual eixo recebe a carga principal?' e orienta o STL conforme — não conforme o que 'cabe na mesa'.",
+          ],
+          integrations: [
+            { module: "Módulo 1 (Interface)", text: "Use 'Place on Face' para deitar a peça na direção que maximiza resistência à carga real." },
+            { module: "Módulo 13 (Tolerâncias)", text: "Anisotropia também afeta tolerância: encaixes XY são previsíveis; encaixes Z variam mais." },
+          ],
+          params: [
+            { param: "Anisotropia Típica", value: "Eixo Z Crítico", action: "Queda de até 60% na resistência axial" },
+            { param: "Wall Loops", value: "4-6", action: "Cascas absorvem carga melhor que infill" },
+            { param: "Layer Height (funcional)", value: "0.16 mm", action: "Camada menor = mais adesão entre camadas" },
+          ],
           goldenRule: "Planeje os eixos de carga em direções longitudinais às camadas — sempre.",
+          errors: [
+            { error: "Imprimir parafuso em pé — cisalha na primeira torção", solution: "Deite paralelo à mesa; rosca passa a ter força longitudinal" },
+            { error: "Suporte de prateleira com camadas perpendiculares à carga", solution: "Reoriente para que as camadas trabalhem em compressão, não tração" },
+          ],
+          finance: "Falha mecânica em campo custa devolução + retrabalho + reputação — projeto correto vale 10x o tempo gasto.",
+          exercise: [
+            "Pegue uma peça funcional pronta",
+            "Identifique a direção da carga principal",
+            "Reposicione no slicer para alinhar carga às camadas",
+            "Imprima as duas versões e quebre na mão para sentir diferença",
+          ],
         }),
       L(2, "direcao-camadas", "Direção das Camadas e Tipos de Tensão", "30min",
-        ["Posicionamento", "Tração/compressão/flexão"], {
-          theory: ["O posicionamento do modelo na mesa define a durabilidade sem acrescentar peso ou material. A mesma peça pode quebrar ou aguentar 10x mais carga só pela orientação."],
-          integrations: [{ module: "Módulo 3 (Suportes)", text: "Orientação correta reduz drasticamente a necessidade de suportes." }],
-          params: [{ param: "Orientação da Peça", value: "Paralela à Carga", action: "Garante resistência sem quebras de Z" }],
+        ["Posicionamento", "Tração/compressão/flexão", "Torção"], {
+          theory: [
+            "O posicionamento do modelo na mesa define a durabilidade sem acrescentar peso ou material. A mesma peça pode quebrar ou aguentar 10x mais carga só pela orientação.",
+            "Tração: filamento aguenta bem ao longo da linha; ruim entre camadas. Oriente fibras na direção do esticamento.",
+            "Compressão: FDM aguenta muito bem em qualquer direção — pilares e bases trabalham aqui.",
+            "Flexão e torção: as piores cargas para FDM. Combine 5-6 paredes com infill Cubic e oriente o eixo neutro alinhado às camadas.",
+          ],
+          integrations: [
+            { module: "Módulo 1 (Interface)", text: "Orientação correta reduz drasticamente a necessidade de suportes — bônus de design." },
+            { module: "Módulo 19 (Suportes)", text: "Quanto melhor a orientação mecânica, menos suporte e menos pós-processamento." },
+          ],
+          params: [
+            { param: "Orientação da Peça", value: "Paralela à Carga", action: "Garante resistência sem quebras de Z" },
+            { param: "Wall Loops (flexão)", value: "5-6", action: "Cascas resistem flexão mais que infill" },
+            { param: "Layer Height (carga)", value: "0.12-0.16 mm", action: "Camada fina = mais adesão = mais resistência Z" },
+          ],
           goldenRule: "Evite imprimir pinos em pé se eles vão sofrer forças transversais — quebram na primeira tensão.",
+          errors: [
+            { error: "Gancho de carga impresso 'em pé' pela estética", solution: "Deite e use suporte mínimo — vale 8x mais carga" },
+            { error: "Eixo de rotação com camadas perpendiculares ao giro", solution: "Imprima o eixo deitado, carga passa por compressão das fibras" },
+          ],
+          economy: "Orientação correta economiza tempo de pós e suporte — produção comercial ganha 15-20% por peça.",
+          exercise: [
+            "Modele um L de suporte simples",
+            "Imprima em 3 orientações diferentes (em pé, deitado, 45°)",
+            "Pendure peso até quebrar cada um",
+            "Anote qual orientação aguentou mais",
+          ],
         }),
       L(3, "infill-paredes-real", "Infill, Paredes e Resistência Estrutural Real", "45min",
-        ["4 paredes vs infill denso", "Gyroid/Cubic"], {
-          theory: ["4-5 paredes aumentam a rigidez em ~120% comparado a infill denso. Paredes são a estrutura primária; infill é estrutura secundária."],
-          integrations: [{ module: "Módulo 18 (Infill)", text: "Use Gyroid ou Cubic para distribuição isotrópica de tensões em peças estruturais." }],
-          params: [{ param: "Configuração Mecânica", value: "4 Paredes + 25% Gyroid", action: "Rigidez volumétrica ideal" }],
+        ["4 paredes vs infill denso", "Gyroid/Cubic", "Receita estrutural"], {
+          theory: [
+            "4-5 paredes aumentam a rigidez em ~120% comparado a infill denso. Paredes são a estrutura primária; infill é estrutura secundária.",
+            "Gyroid: padrão isotrópico (rigidez igual nas 3 direções), sem cruzamentos de filamento — melhor opção genérica para peças funcionais.",
+            "Cubic: cubos rotacionados 35°, rigidez uniforme nas 3 direções, levemente mais leve que Gyroid em alta densidade.",
+            "Honeycomb 3D: máxima rigidez por grama, mas tempo de impressão alto. Use só quando peso importa mais que tempo.",
+          ],
+          integrations: [
+            { module: "Módulo 18 (Infill)", text: "Use Gyroid ou Cubic para distribuição isotrópica de tensões em peças estruturais." },
+            { module: "Módulo 7 (Otimização)", text: "Aumentar paredes em vez de densidade economiza tempo E material — duplo ganho." },
+          ],
+          params: [
+            { param: "Configuração Mecânica", value: "4 Paredes + 25% Gyroid", action: "Rigidez volumétrica ideal" },
+            { param: "Top/Bottom Layers", value: "5", action: "Fecha superfície sem pinholing" },
+            { param: "Infill Pattern", value: "Gyroid", action: "Isotrópico, sem nós de tensão" },
+          ],
           goldenRule: "4 paredes + 25% Gyroid = a receita padrão de rigidez para peças funcionais.",
+          errors: [
+            { error: "Aumentar infill para 80% e peça ainda flexionar", solution: "Reduza infill para 25% e suba paredes para 6 — vai ficar mais rígido" },
+            { error: "Quebra na junção entre paredes e infill", solution: "Ative 'Detect overhang wall' e revise temperatura — adesão fraca" },
+          ],
+          finance: "Receita 4 paredes + 25% Gyroid usa 30-40% menos material que receita 'infill alto' equivalente em rigidez.",
+          exercise: [
+            "Imprima 3 cubos: (a) 2 paredes + 60% infill, (b) 4 paredes + 25% Gyroid, (c) 6 paredes + 10%",
+            "Pese cada um",
+            "Aplique flexão na mão até deformar",
+            "Calcule rigidez/grama de cada — Gyroid+paredes vence",
+          ],
         }),
     ],
   },
@@ -587,20 +656,66 @@ export const modules: Module[] = [
     objective: "Imprimir 30-60% mais rápido com 40-60% menos plástico, sem perder resistência funcional.",
     lessons: [
       L(1, "otimizacao-conceitos", "Otimização Extrema — Conceitos Gerais", "25min",
-        ["Trajetórias redundantes", "Velocidades assimétricas"], {
-          theory: ["A base da otimização é combater movimentações redundantes e desperdício de fusão. Cada movimento ocioso é dinheiro perdido."],
-          integrations: [{ module: "Módulo 9 (Comercial)", text: "Otimização traduz-se direto em lucratividade — produção por hora aumenta linearmente." }],
-          economy: "Análise min/g (minutos por grama) = métrica de lucratividade real por peça.",
-          params: [{ param: "Métrica Monitorada", value: "Tempo por Grama (min/g)", action: "Indica eficiência do processo" }],
+        ["Trajetórias redundantes", "Velocidades assimétricas", "min/g"], {
+          theory: [
+            "A base da otimização é combater movimentações redundantes e desperdício de fusão. Cada movimento ocioso é dinheiro perdido.",
+            "Métrica fundamental: min/g (minutos por grama). Peça com 50g em 4h = 4.8 min/g. Quanto menor, mais lucrativa.",
+            "Velocidades assimétricas: parede externa lenta (qualidade visível), parede interna rápida (não aparece), infill ainda mais rápido.",
+            "Travel speed: configure no máximo que a máquina aguenta sem ghost — movimento sem extrusão deve ser sempre rápido.",
+          ],
+          integrations: [
+            { module: "Módulo 9 (Comercial)", text: "Otimização traduz-se direto em lucratividade — produção por hora aumenta linearmente." },
+            { module: "Módulo 20 (Velocidade)", text: "Acelerar travel é o ganho mais barato e fácil — não afeta qualidade." },
+          ],
+          params: [
+            { param: "Métrica Monitorada", value: "Tempo por Grama (min/g)", action: "Indica eficiência do processo" },
+            { param: "Outer Wall Speed", value: "30-60 mm/s", action: "Devagar onde aparece" },
+            { param: "Inner Wall Speed", value: "120-200 mm/s", action: "Rápido onde não aparece" },
+            { param: "Travel Speed", value: "300-500 mm/s", action: "Máximo da máquina sem ghost" },
+          ],
           goldenRule: "Defina velocidades assimétricas — devagar onde aparece, rápido onde não aparece.",
+          errors: [
+            { error: "Mesma velocidade em parede externa e infill", solution: "Diferencie: parede externa 50, interna 150, infill 200+" },
+            { error: "Travel speed baixo igualado à impressão", solution: "Travel sempre 2-4x mais rápido que extrusão" },
+          ],
+          economy: "Travel 500 mm/s vs 150 mm/s reduz tempo total em 8-15% em peças com muitos saltos.",
+          exercise: [
+            "Anote tempo e peso de uma peça atual",
+            "Calcule min/g",
+            "Aplique velocidades assimétricas e travel alto",
+            "Reimprima e compare min/g final",
+          ],
         }),
       L(2, "reduzir-tempo-material", "Reduzir Tempo e Material sem Perder Rigidez", "35min",
         ["Lightning Infill", "Bico 0.6mm", "Adaptive Layer"], {
-          theory: ["Lightning Infill: cria subestruturas flutuantes que sustentam apenas o topo, economizando até 60% de plástico em decorativos."],
-          integrations: [{ module: "Módulo 18 (Infill)", text: "Lightning é perfeito para peças decorativas e protótipos visuais." }],
-          economy: "Bico 0.6mm reduz tempo em 40%+ para peças volumosas — economia anual de R$ 1.500+ em horas de máquina.",
-          params: [{ param: "Padrão de Infill", value: "Lightning", action: "Otimização volumétrica extrema" }],
+          theory: [
+            "Lightning Infill: cria subestruturas flutuantes que sustentam apenas o topo, economizando até 60% de plástico em decorativos.",
+            "Bico 0.6mm com altura 0.32mm dobra a vazão volumétrica vs bico 0.4 + camada 0.20 — mesmo CAD impresso em quase metade do tempo.",
+            "Adaptive Layer Height: detecta curvas e reduz altura, planos altos a peça e expande altura. Tempo cai sem perder qualidade aparente.",
+            "Combine os três: bico 0.6 + Lightning 10% + Adaptive Layer reduz peça de 6h para 2h30 com perda mínima de qualidade decorativa.",
+          ],
+          integrations: [
+            { module: "Módulo 18 (Infill)", text: "Lightning é perfeito para peças decorativas e protótipos visuais — não use em peças funcionais." },
+            { module: "Módulo 23 (Hotend)", text: "Bico 0.6 exige volumetric flow ~22 mm³/s — confirme com hotend de alto fluxo." },
+          ],
+          params: [
+            { param: "Padrão de Infill", value: "Lightning", action: "Otimização volumétrica extrema" },
+            { param: "Diâmetro do Bico", value: "0.6 mm", action: "Dobra vazão útil" },
+            { param: "Altura de Camada", value: "0.32 mm (bico 0.6)", action: "Mantém aspecto razoável a alta velocidade" },
+            { param: "Adaptive Layer Height", value: "On", action: "Ganho extra em peças curvas" },
+          ],
           goldenRule: "Use Lightning com 10-15% para peças de vitrine e modelos decorativos.",
+          errors: [
+            { error: "Lightning em peça funcional → cede sob carga", solution: "Lightning é decorativo. Para função use Gyroid/Cubic" },
+            { error: "Bico 0.6 com perfil de 0.4 → subextrusão", solution: "Atualize Line Width e Flow no perfil ao trocar bico" },
+          ],
+          finance: "Bico 0.6mm reduz tempo em 40%+ para peças volumosas — economia anual de R$ 1.500+ em horas de máquina em produção.",
+          exercise: [
+            "Pegue uma peça decorativa atual",
+            "Troque infill para Lightning 10%",
+            "Troque bico (e perfil) para 0.6mm",
+            "Compare tempo, peso e aspecto final",
+          ],
         }),
     ],
   },
@@ -613,27 +728,95 @@ export const modules: Module[] = [
     objective: "Aplicar todo o conhecimento teórico em casos práticos de engenharia mecânica.",
     lessons: [
       L(1, "case-studies", "Prepare > Case Studies", "20min",
-        ["Requisitos funcionais", "Fatores térmicos e químicos"], {
-          theory: ["A análise de requisitos funcionais antecede o fatiamento. Cada utilidade tem limites específicos (carga, ciclos, exposição química, térmica)."],
-          integrations: [{ module: "Módulo 7 (Design)", text: "Cada utilidade tem limites específicos — liste todos antes de modelar." }],
+        ["Requisitos funcionais", "Fatores térmicos e químicos", "Checklist de projeto"], {
+          theory: [
+            "A análise de requisitos funcionais antecede o fatiamento. Cada utilidade tem limites específicos (carga, ciclos, exposição química, térmica).",
+            "Checklist obrigatório antes de imprimir peça funcional: (1) ambiente de uso, (2) cargas e direção, (3) ciclos esperados, (4) exposição química/UV, (5) tolerâncias críticas.",
+            "Ignorar qualquer item do checklist gera retrabalho garantido — cliente devolve por motivo que era previsível.",
+            "Documente o checklist no .3mf como nota — historico vira manual de boas práticas para projetos futuros.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Engenharia)", text: "Os requisitos definem material, orientação, paredes e infill — não comece pelo slicer." },
+            { module: "Módulo 16 (Casos+)", text: "Estudos estendidos detalham 6 receitas comerciais aplicáveis direto." },
+          ],
+          params: [
+            { param: "Checklist Funcional", value: "5 itens obrigatórios", action: "Ambiente, carga, ciclos, química, tolerância" },
+            { param: "Notas no .3mf", value: "Documentadas", action: "Histórico técnico por projeto" },
+          ],
           goldenRule: "Liste fatores térmicos e químicos antes de fatiar — a peça vai ficar onde, sob qual carga, exposta a quê?",
+          errors: [
+            { error: "Peça externa em PLA — quebra com sol e calor", solution: "Aplique checklist: ambiente externo = PETG/ASA/PC mínimo" },
+            { error: "Peça com solvente em PETG", solution: "PETG sofre com acetona/álcool forte — use PC ou Nylon" },
+          ],
+          finance: "Checklist evita 80% das devoluções por uso indevido — margem comercial protegida.",
+          exercise: [
+            "Liste seu próximo projeto cliente",
+            "Responda os 5 itens do checklist",
+            "Escolha material baseado nas respostas",
+            "Anote tudo em nota dentro do .3mf",
+          ],
         }),
       L(2, "pecas-funcionais", "Peças Funcionais: Suportes, Dobradiças, Engrenagens", "35min",
         ["Dobradiças tolerância XY", "Engrenagens em Nylon", "Bico especial"], {
           theory: [
-            "Dobradiças: exigem tolerâncias XY precisas (0.2mm de folga típica).",
-            "Engrenagens: imprimir em Nylon ou PA-CF, bico especial endurecido, fan desligado para coesão entre camadas.",
+            "Dobradiças: exigem tolerâncias XY precisas (0.2mm de folga típica). Imprima eixo e olhal juntos com 'print-in-place' para garantir alinhamento.",
+            "Engrenagens: imprimir em Nylon ou PA-CF, bico especial endurecido, fan desligado para coesão entre camadas — fricção exige rigidez Z.",
+            "Eixo da engrenagem deve ser longitudinal às camadas; dente engata em força transversal, mas precisa de coesão axial para não delaminar.",
+            "Horizontal Expansion: ajuste -0.05 a -0.10mm em encaixes apertados — slicer tende a engordar furos.",
           ],
-          integrations: [{ module: "Módulo 2 (Materiais)", text: "Use Nylon para alta fricção e ciclos longos — PLA falha por fadiga em ~1000 ciclos." }],
-          params: [{ param: "Filamento", value: "Nylon PA12 / ASA", action: "Polímeros de rigidez máxima" }],
+          integrations: [
+            { module: "Módulo 4 (Materiais)", text: "Use Nylon para alta fricção e ciclos longos — PLA falha por fadiga em ~1000 ciclos." },
+            { module: "Módulo 13 (Tolerâncias)", text: "Ajuste de Horizontal Expansion é o segredo de encaixes precisos." },
+          ],
+          params: [
+            { param: "Filamento", value: "Nylon PA12 / ASA", action: "Polímeros de rigidez máxima" },
+            { param: "Horizontal Expansion", value: "-0.05 mm", action: "Compensa engorda de furos" },
+            { param: "Fan (Nylon)", value: "0%", action: "Mantém coesão entre camadas" },
+            { param: "Folga em dobradiça", value: "0.20 mm", action: "Move sem travar nem balançar" },
+          ],
           goldenRule: "Ajuste Horizontal Expansion (-0.05mm) quando furos saem apertados para encaixes.",
+          errors: [
+            { error: "Print-in-place travado sólido", solution: "Aumente folga para 0.25mm e reduza Flow para 0.97" },
+            { error: "Engrenagem PLA derretendo por fricção", solution: "Reimprima em Nylon ou PETG — PLA não suporta fricção contínua" },
+          ],
+          economy: "Engrenagem Nylon dura 50-100x mais ciclos que PLA — peça única vale o preço do spool.",
+          exercise: [
+            "Imprima uma dobradiça print-in-place padrão",
+            "Imprima novamente com Horizontal Expansion -0.05",
+            "Compare quanto cada uma se move",
+            "Repita com folga 0.15 / 0.20 / 0.25 e meça",
+          ],
         }),
       L(3, "suporte-parede-pesada", "Suporte de Parede de Serviço Pesado", "35min",
         ["6 loops concêntricos", "Gyroid 3D 30%", "Furos horizontais"], {
-          theory: ["Para suportes que sustentam carga real: 6 loops concêntricos + Gyroid 30% = máxima resistência por grama."],
-          integrations: [{ module: "Módulo 6 (Engenharia)", text: "Alinhe furos de ancoragem na horizontal para evitar delaminação por arrancamento." }],
-          params: [{ param: "Infill Aplicado", value: "Gyroid 3D (30%)", action: "Melhor distribuição contra torções" }],
+          theory: [
+            "Para suportes que sustentam carga real: 6 loops concêntricos + Gyroid 30% = máxima resistência por grama.",
+            "Furos de ancoragem (para parafuso de fixação na parede) sempre na horizontal — força de arrancamento passa por compressão de camadas, não tração entre elas.",
+            "Top/Bottom 6 camadas em peça com parafuso embutido — superfície fina rasga ao apertar.",
+            "Para carga sobre saliência (cantilever), oriente o suporte deitado; carga vira compressão em vez de cisalhamento Z.",
+          ],
+          integrations: [
+            { module: "Módulo 6 (Engenharia)", text: "Alinhe furos de ancoragem na horizontal para evitar delaminação por arrancamento." },
+            { module: "Módulo 18 (Infill)", text: "Gyroid 3D distribui torção melhor que Cubic em cantilevers." },
+          ],
+          params: [
+            { param: "Infill Aplicado", value: "Gyroid 3D (30%)", action: "Melhor distribuição contra torções" },
+            { param: "Wall Loops", value: "6", action: "Casca espessa para parafuso" },
+            { param: "Top/Bottom Layers", value: "6", action: "Não rasga ao apertar parafuso" },
+            { param: "Orientação Furo", value: "Horizontal", action: "Carga vira compressão de camadas" },
+          ],
           goldenRule: "Oriente furos horizontalmente para evitar delaminação por carga axial.",
+          errors: [
+            { error: "Furo vertical com parafuso → camada rasga", solution: "Reimprima furo na horizontal" },
+            { error: "Suporte de prateleira flexionando com peso", solution: "Suba paredes para 6 + Gyroid 30% e reoriente" },
+          ],
+          finance: "Suporte impresso bem dimensionado substitui peça metálica de R$ 30-80 — margem alta em volumes pequenos.",
+          exercise: [
+            "Modele suporte L de 100×60×30mm",
+            "Imprima com 4p+20% Gyroid e com 6p+30% Gyroid",
+            "Pendure peso até deformar",
+            "Anote diferença de carga máxima",
+          ],
         }),
     ],
   },
@@ -646,23 +829,70 @@ export const modules: Module[] = [
     objective: "Precificar peças com lucro real, calculando todos os custos invisíveis.",
     lessons: [
       L(1, "mercado-profissional", "Impressão 3D Comercial e o Mercado Profissional", "30min",
-        ["Padronização de custos", "Produtividade líquida"], {
-          theory: ["A padronização absoluta de custos operacionais é o que separa hobby de negócio. Sem planilha, não há margem real."],
-          integrations: [{ module: "Módulo 8 (Produção)", text: "Consistência operacional reduz perdas — cada falha é uma quebra de margem." }],
-          economy: "Preencha 90% da mesa para economizar aquecimento e tempo de setup por peça.",
-          finance: "Cobre R$ 15-25/hora ativa de máquina como referência de mercado brasileiro.",
+        ["Padronização de custos", "Produtividade líquida", "Nicho vs commodity"], {
+          theory: [
+            "A padronização absoluta de custos operacionais é o que separa hobby de negócio. Sem planilha, não há margem real.",
+            "Produtividade líquida = peças aprovadas / hora total. Inclui setup, retrabalho e falhas. Bruta engana, líquida paga conta.",
+            "Nicho: peças técnicas com baixa concorrência (próteses, ortopédicas, industriais) — margem 4-8x.",
+            "Commodity: chaveiros, brindes, decorativos — margem 1.5-2x. Só faz sentido em alto volume com máquina dedicada.",
+          ],
+          integrations: [
+            { module: "Módulo 15 (Produção)", text: "Consistência operacional reduz perdas — cada falha é uma quebra de margem direta." },
+            { module: "Módulo 7 (Otimização)", text: "Otimização extrema é o que torna commodity viável — sem ela, só nicho dá lucro." },
+          ],
+          params: [
+            { param: "Margem Nicho", value: "4-8x custo", action: "Peça técnica especializada" },
+            { param: "Margem Commodity", value: "1.5-2x custo", action: "Volume com máquina dedicada" },
+            { param: "Métrica Principal", value: "min/g aprovado", action: "Tempo útil por grama de peça boa" },
+          ],
           goldenRule: "Calcule produtividade líquida (peças boas/hora), não bruta.",
+          errors: [
+            { error: "Cobrar igual hobby (custo material × 2)", solution: "Inclua energia, desgaste, depreciação, falha, setup, lucro" },
+            { error: "Aceitar commodity sem máquina dedicada", solution: "Recuse ou aumente prazo — não disputa volume com farm" },
+          ],
+          economy: "Preencha 90% da mesa para diluir tempo de aquecimento e setup por peça.",
+          finance: "Cobre R$ 15-25/hora ativa de máquina como referência de mercado brasileiro.",
+          exercise: [
+            "Liste 3 peças que você já fez",
+            "Calcule custo real (material + energia + desgaste + falha + tempo)",
+            "Compare com o que cobrou",
+            "Ajuste preço futuro com margem 2-4x do custo total",
+          ],
         }),
       L(2, "precificacao", "Precificação: Custo, Lucro e Perfis Comerciais", "40min",
         ["Energia ~300W", "Desgaste de bico", "Depreciação", "Taxa de falha"], {
-          theory: ["Componentes obrigatórios do custo: energia (~300W ativos), desgaste de bico, depreciação da impressora, taxa de falha (~8-10%), tempo humano."],
-          integrations: [{ module: "Módulo 15 (Produção)", text: "Use sempre taxa de falha histórica na precificação — não opcional." }],
-          finance: "Margem 2x a 4x sobre custo básico para sustentabilidade do negócio. Inclua taxa de setup para projetos novos.",
-          params: [{ param: "Taxa de Falha Coberta", value: "10% de Contingência", action: "Amortece custos inerentes de falha" }],
+          theory: [
+            "Componentes obrigatórios do custo: energia (~300W ativos), desgaste de bico, depreciação da impressora, taxa de falha (~8-10%), tempo humano de setup e pós-processamento.",
+            "Energia: 300W × R$0.90/kWh × horas = custo direto. Em SP residencial pode ir a R$1.10/kWh.",
+            "Depreciação: máquina de R$5000 com vida útil 5000h = R$1.00/h de máquina, antes de qualquer outro custo.",
+            "Taxa de falha histórica: anote cada peça refugada por 6 meses para ter taxa real. Estimativa inicial 8-10%.",
+          ],
+          integrations: [
+            { module: "Módulo 15 (Produção)", text: "Use sempre taxa de falha histórica na precificação — não opcional." },
+            { module: "Módulo 14 (Troubleshooting)", text: "Reduzir falha sistemática é forma direta de aumentar margem sem subir preço." },
+          ],
+          params: [
+            { param: "Taxa de Falha Coberta", value: "10% de Contingência", action: "Amortece custos inerentes de falha" },
+            { param: "Custo Energia", value: "R$ 0.30-0.40/h", action: "300W × tarifa local" },
+            { param: "Depreciação", value: "R$ 1.00/h", action: "Máquina R$5k em 5000h" },
+            { param: "Margem sobre custo", value: "2-4x", action: "Sustentabilidade + lucro real" },
+          ],
           goldenRule: "Inclua taxa de setup separada para projetos novos — modelar/calibrar nova peça consome horas não-impressão.",
+          errors: [
+            { error: "Esquecer depreciação no cálculo", solution: "Adicione R$1.00/h fixo na planilha" },
+            { error: "Cobrar mesmo preço para peça nova e repetida", solution: "Setup é custo one-time — destaque na proposta" },
+          ],
+          finance: "Margem 2x a 4x sobre custo básico para sustentabilidade do negócio. Inclua taxa de setup para projetos novos.",
+          exercise: [
+            "Monte planilha com: material, energia, desgaste, depreciação, falha, setup, lucro",
+            "Aplique em 3 cotações reais",
+            "Compare com o preço que cobrou no passado",
+            "Reajuste tabela de preços para clientes novos",
+          ],
         }),
     ],
   },
+
 
   {
     id: "mestre-orcaslicer", number: 10, title: "Mestre do OrcaSlicer",
