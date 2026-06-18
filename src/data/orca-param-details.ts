@@ -5,10 +5,21 @@ export type OrcaParamDetail = {
   name: string;
   value: string;
   whatIs: string;
+  whyAdjust?: string;
   types?: { label: string; desc: string }[];
+  optionsTable?: { headers: string[]; rows: string[][] };
   influences: string;
+  influencesList?: string[];
   generates: string;
+  generatesTable?: { headers: string[]; rows: string[][] };
+  integrationsTable?: { headers: string[]; rows: string[][] };
+  howTo?: { step: string; path: string; desc: string }[];
+  example?: { piece: string; config: string; result: string };
+  errorsTable?: { headers: string[]; rows: string[][] };
+  goldenRule?: string;
+  summaryTable?: { title?: string; headers: string[]; rows: string[][] };
 };
+
 
 export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // ====================================================================
@@ -153,16 +164,92 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       name: "Largura da linha › Ponte",
       value: "100%",
       whatIs:
-        "Multiplicador (em %) aplicado à largura quando o Orca detecta uma ponte (linha que cruza vazio sem suporte). Manter em 100% mantém a largura padrão; reduzir afina a linha para ela esticar melhor sobre o vão.",
-      types: [
-        { label: "100% (padrão)", desc: "Mantém largura igual ao resto." },
-        { label: "85–95% (mais fino)", desc: "Linha mais esticada, atravessa vãos maiores sem cair." },
-      ],
+        "Multiplicador (em %) aplicado à largura da extrusão quando o OrcaSlicer detecta uma ponte — uma linha que cruza um vazio sem suporte abaixo. A ponte é esticada entre duas paredes, como uma corda estendida no ar. 100% (padrão) mantém a largura nominal do bico (ex.: 0,42 mm para bico 0,4 mm); 85–95% gera linha mais fina, que estica melhor sobre o vão; abaixo de 85% a linha tende a romper.",
+      whyAdjust:
+        "Uma linha mais grossa tem mais inércia e pode cair antes de solidificar. Uma linha mais fina estica como um fio, atravessando vãos maiores com menos peso para segurar. O segredo é encontrar o ponto onde a linha estica sem romper.",
+      optionsTable: {
+        headers: ["Valor", "Efeito na ponte", "Melhor para"],
+        rows: [
+          ["70–80%", "Linha muito fina, estica bem", "Vãos muito longos (>80 mm) com risco de queda"],
+          ["85–95%", "Linha esticada, boa travessia", "Vãos médios (30–80 mm) — PONTO ÓTIMO"],
+          ["95–100%", "Linha nominal, estrutura sólida", "Vãos curtos (<30 mm), pontes estruturais"],
+          [">100%", "Linha grossa, pesada", "Não recomendado para pontes"],
+        ],
+      },
       influences:
-        "Capacidade de cruzar vãos sem cair, qualidade do acabamento das pontes.",
+        "Capacidade de cruzar vãos sem cair, qualidade do acabamento das pontes e tempo necessário para a linha solidificar no ar.",
+      influencesList: [
+        "Comprimento do vão: vãos longos exigem linhas mais finas",
+        "Velocidade da ponte: linhas finas precisam de velocidade moderada",
+        "Resfriamento: ponte exige ventilador a 100% para solidificar rápido",
+        "Material: PLA solidifica rápido (aceita vãos longos), PETG é mais lento (precisa de linhas mais grossas)",
+        "Diâmetro do bico: bico 0,6 mm com 85% = 0,51 mm (mais massa que bico 0,4 mm com 100% = 0,4 mm)",
+      ],
       generates:
-        "Ponte mais fina gera pontes longas sem queda; ponte 100% gera estrutura sólida mas pontes longas tendem a ceder.",
+        "Configurações de largura mais baixa geram pontes que atravessam vãos longos com baixa flecha; 100% gera estrutura sólida mas pontes longas tendem a ceder.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Ponte 100%, vão 50 mm", "Linha pode ceder no meio", "Vãos curtos, peças estruturais"],
+          ["Ponte 85%, vão 50 mm", "Linha estica e atravessa", "Vãos médios, boa aparência inferior"],
+          ["Ponte 80%, vão 80 mm", "Linha estica bem", "Vãos longos, estética sobrepõe resistência"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Ajuste recomendado para ponte"],
+        rows: [
+          ["Velocidade da ponte", "30–50 mm/s (mais lenta que infill)"],
+          ["Cooling Fan", "100% (forçar solidificação)"],
+          ["Bridge Flow Ratio", "0,90–0,95 (reduzir fluxo para evitar excesso)"],
+          ["Z Gap (suportes)", "N/A (ponte não usa suporte)"],
+        ],
+      },
+      howTo: [
+        {
+          step: "1. Ativar detecção automática de pontes",
+          path: "Processo › Qualidade › Detectar pontes automaticamente",
+          desc: "Permite que o OrcaSlicer identifique e aplique configurações específicas em cada vão.",
+        },
+        {
+          step: "2. Ajustar a largura da ponte",
+          path: "Processo › Qualidade › Largura da linha › Ponte",
+          desc: "Defina 85% para vãos médios, 90% para peças estruturais.",
+        },
+        {
+          step: "3. Ajustar a velocidade da ponte",
+          path: "Processo › Velocidade › Velocidade da ponte",
+          desc: "Mantenha 30–50 mm/s para garantir solidificação durante a travessia.",
+        },
+      ],
+      example: {
+        piece: "Suporte de prateleira com vão de 60 mm sem suporte",
+        config: "Ponte 85%, Velocidade 40 mm/s, Fan 100%",
+        result: "Ponte atravessa sem queda, superfície inferior aceitável",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Linha cai no meio do vão", "Ponte muito fina ou velocidade muito alta", "Aumentar largura para 90–100% ou reduzir velocidade"],
+          ["Linha rompe durante a ponte", "Ponte muito fina ou filamento frio", "Aumentar largura para 95% ou temperatura do bico"],
+          ["Ponte com fiapos na parte inferior", "Resfriamento insuficiente", "Aumentar Cooling Fan para 100%"],
+          ["Ponte ondulada", "Velocidade muito alta", "Reduzir velocidade da ponte para 30 mm/s"],
+        ],
+      },
+      goldenRule:
+        "85% de largura + 40 mm/s + 100% de fan = ponte que atravessa e solidifica.",
+      summaryTable: {
+        title: "Decisão rápida por vão e material",
+        headers: ["Vão", "Material", "Largura ponte", "Velocidade", "Fan"],
+        rows: [
+          ["< 30 mm", "PLA", "100%", "50 mm/s", "80%"],
+          ["30–60 mm", "PLA", "85–90%", "40 mm/s", "100%"],
+          ["60–100 mm", "PLA", "80–85%", "30 mm/s", "100%"],
+          ["< 30 mm", "PETG", "100%", "40 mm/s", "60%"],
+          ["30–60 mm", "PETG", "90–95%", "30 mm/s", "80%"],
+        ],
+      },
     },
+
     {
       name: "Costura › Posição da costura",
       value: "Alinhada",

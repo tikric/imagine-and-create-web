@@ -24,10 +24,21 @@ export type Lesson = {
     name: string;
     value: string;
     whatIs: string;
+    whyAdjust?: string;
     types?: { label: string; desc: string }[];
+    optionsTable?: { headers: string[]; rows: string[][] };
     influences: string;
+    influencesList?: string[];
     generates: string;
+    generatesTable?: { headers: string[]; rows: string[][] };
+    integrationsTable?: { headers: string[]; rows: string[][] };
+    howTo?: { step: string; path: string; desc: string }[];
+    example?: { piece: string; config: string; result: string };
+    errorsTable?: { headers: string[]; rows: string[][] };
+    goldenRule?: string;
+    summaryTable?: { title?: string; headers: string[]; rows: string[][] };
   }[];
+
 };
 
 export type Module = {
