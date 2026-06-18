@@ -1,6 +1,20 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { modules, type Lesson, type Module, type ParamRow, type Integration, type ErrorItem } from "@/data/modules";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import tela11 from "@/assets/orca/tela_11.png.asset.json";
+import tela12 from "@/assets/orca/tela_12.png.asset.json";
+import tela13 from "@/assets/orca/tela_13.png.asset.json";
+import tela14 from "@/assets/orca/tela_14.png.asset.json";
+import tela21 from "@/assets/orca/tela_21.png.asset.json";
+import tela22 from "@/assets/orca/tela_22.png.asset.json";
+import tela23 from "@/assets/orca/tela_23.png.asset.json";
+import tela31 from "@/assets/orca/tela_31.png.asset.json";
+import tela32 from "@/assets/orca/tela_32.png.asset.json";
+import tela33 from "@/assets/orca/tela_33.png.asset.json";
+
+const TELA_MAP: Record<string, { url: string }> = {
+  tela_11, tela_12, tela_13, tela_14, tela_21, tela_22, tela_23, tela_31, tela_32, tela_33,
+};
 
 export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
   head: ({ params }) => {
