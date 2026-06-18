@@ -23,6 +23,7 @@ function Landing() {
       <Marquee />
       <Stats />
       <Methodology />
+      <DeepDive />
       <CurriculumPreview />
       <Instructor />
       <Pricing />
@@ -155,6 +156,109 @@ function Methodology() {
             </div>
             <h3 className="text-2xl font-semibold mb-3">{p.title}</h3>
             <p className="text-muted-foreground leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function DeepDive() {
+  const blocks = [
+    {
+      tag: "MOD.01",
+      title: "Segurança real — inclusive para crianças",
+      bullets: [
+        "Recomendações de impressoras fechadas e faixa etária mínima",
+        "Protocolo de qualidade do ar: VOCs, UFP e ventilação obrigatória por material",
+        "Regras de operação supervisionada e EPI básico no workshop",
+      ],
+    },
+    {
+      tag: "MOD.02",
+      title: "Ciência dos filamentos e secagem",
+      bullets: [
+        "Tabela comparativa PLA / PETG / ABS / ASA / TPU / Nylon (Tg, retração, encolhimento)",
+        "Curvas de secagem por material + sinais visuais e sonoros de umidade",
+        "Suportes solúveis: PVA (água) vs HIPS (limoneno) — quando e por quê",
+      ],
+    },
+    {
+      tag: "MOD.06",
+      title: "Pós-processamento profissional",
+      bullets: [
+        "Lixamento progressivo (grits 120 → 2000) e primer filler",
+        "Alisamento químico com acetona: câmara de vapor segura para ABS/ASA",
+        "Insertos termofixados (heat-set) e adesivos por material (CA, epóxi, PU)",
+      ],
+    },
+    {
+      tag: "MOD.07",
+      title: "Design paramétrico para impressão",
+      bullets: [
+        "Tolerâncias reais para snap-fit, press-fit e roscas impressas",
+        "Orientação e divisão de peças para eliminar suportes na origem",
+        "Modelagem paramétrica (Fusion / FreeCAD) com foco em manufaturabilidade FDM",
+      ],
+    },
+    {
+      tag: "MOD.11",
+      title: "Seams: a costura invisível",
+      bullets: [
+        "Os 4 modos: Rear, Aligned, Nearest e Random — quando cada um vence",
+        "Pincel de Seam Painting para esconder a costura em peças visuais",
+        "Scarf Seam: a junção em rampa que apaga a linha vertical",
+      ],
+    },
+    {
+      tag: "MOD.17",
+      title: "Classic vs Arachne",
+      bullets: [
+        "Como Arachne usa larguras variáveis para fechar gaps em textos e letras finas",
+        "Quando voltar ao Classic para paredes uniformes em peças mecânicas",
+        "Parâmetros de transição: min width, wall transition angle e threshold",
+      ],
+    },
+    {
+      tag: "MOD.19",
+      title: "Suportes avançados (Tree + Z Gap)",
+      bullets: [
+        "Tree Organic vs Snug vs Normal — árvore de decisão prática",
+        "Z Gap e interface layers: o segredo do suporte que solta limpo",
+        "Anti-support painting e redesenho da peça para zerar suporte",
+      ],
+    },
+    {
+      tag: "MOD.21",
+      title: "Calibração científica em 8 passos",
+      bullets: [
+        "PID → Flow → Pressure Advance → Input Shaper, nessa ordem",
+        "Planilhas de registro por máquina + perfis .3mf calibráveis incluídos",
+        "Validação com torre de temperatura, retração e overhangs",
+      ],
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-24 border-t border-border">
+      <div className="max-w-3xl mb-16">
+        <div className="mono text-xs uppercase tracking-wider text-primary mb-4">O que você realmente vai aprender</div>
+        <h2 className="text-4xl md:text-5xl font-bold text-balance">
+          Profundidade que outros cursos <span className="text-primary">não entregam.</span>
+        </h2>
+        <p className="mt-6 text-lg text-muted-foreground">
+          Não é só "ajuste a temperatura". Cada módulo entra na engenharia, na química e no acabamento — incluindo tudo que normalmente é tratado como bônus opcional.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {blocks.map((b) => (
+          <div key={b.tag} className="rounded-2xl border border-border bg-card/50 p-6 hover:border-primary/40 transition">
+            <div className="mono text-xs text-primary mb-3">{b.tag}</div>
+            <h3 className="font-semibold text-lg leading-snug mb-4">{b.title}</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {b.bullets.map((x) => (
+                <li key={x} className="flex gap-2"><span className="text-primary mt-0.5">▸</span><span>{x}</span></li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
