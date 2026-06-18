@@ -13,7 +13,8 @@ import tela32 from "@/assets/orca/tela_32.png.asset.json";
 import tela33 from "@/assets/orca/tela_33.png.asset.json";
 
 const TELA_MAP: Record<string, { url: string }> = {
-  tela_11, tela_12, tela_13, tela_14, tela_21, tela_22, tela_23, tela_31, tela_32, tela_33,
+  tela_11: tela11, tela_12: tela12, tela_13: tela13, tela_14: tela14, tela_21: tela21,
+  tela_22: tela22, tela_23: tela23, tela_31: tela31, tela_32: tela32, tela_33: tela33,
 };
 
 export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
