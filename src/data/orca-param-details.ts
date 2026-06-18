@@ -1891,4 +1891,254 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       goldenRule: "Ative Automático apenas em peças com furos para parafusos escareados.",
     },
   ],
+
+  // ====================================================================
+  // TELA 14 — RESISTÊNCIA (Pontes avançadas · Saliências/Overhangs)
+  // ====================================================================
+  "tela-14-resistencia-ponte-saliencias": [
+    // ───────────── MÓDULO 1: PONTES (DETALHAMENTO AVANÇADO) ─────────────
+    {
+      name: "Limiar de parede única (detalhamento avançado)",
+      value: "300% (padrão)",
+      whatIs:
+        "Espessura máxima de parede (em % da largura da linha) para que ela seja impressa com UMA ÚNICA linha de extrusão em vez de múltiplas paredes. Fórmula: limite_mm = largura_linha × (limiar/100). Ex: 0,42mm × 300% = paredes <1,26mm viram linha única.",
+      whyAdjust:
+        "Paredes muito finas com múltiplas linhas geram excesso/sobreposição; com linha única podem ficar quebradiças. O limiar equilibra resistência e fidelidade dimensional.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["100%", "Quase nenhuma região vira linha única", "Peças estruturais sólidas"],
+          ["200%", "Poucas regiões finas viram linha única", "Peças com poucos detalhes"],
+          ["300%", "Padrão", "Uso geral, equilíbrio"],
+          ["400%", "Muitas regiões usam linha única", "Peças orgânicas, variações de espessura"],
+          ["500%", "Quase todas as paredes finas usam linha única", "Luminárias, peças decorativas/flexíveis"],
+        ],
+      },
+      influences: "Resistência, transparência, excesso de plástico, fidelidade dimensional e tempo de impressão.",
+      influencesList: [
+        "Espessura: paredes <1mm pedem limiar alto; >2mm pedem limiar baixo",
+        "Material: PLA tolera limiar alto; TPU exige limiar baixo (precisa de mais linhas)",
+        "Função: estrutural = baixo; decorativa = alto",
+        "Visual: linha única pode deixar transparência; múltiplas linhas dão superfície sólida",
+        "Velocidade: linha única extrui menos = mais rápido",
+      ],
+      generates: "Paredes sólidas (limiar baixo) ou paredes finas/transparentes (limiar alto).",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["100–150%", "Paredes sólidas, sem transparência", "Estruturais, resistentes"],
+          ["200–300%", "Equilíbrio entre qualidade e leveza", "Uso geral"],
+          ["400–500%", "Muitas paredes finas, possível transparência", "Decorativas, leves"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação com Limiar", "Ajuste recomendado"],
+        rows: [
+          ["Largura da linha", "É a base do cálculo", "Ajustar a largura ANTES do limiar"],
+          ["Gerador de paredes", "Arachne ignora o limiar e ajusta dinamicamente", "Arachne anula"],
+          ["Parede precisa", "Funciona junto", "Ativar para precisão dimensional"],
+          ["Número de paredes", "Limiar define o mínimo", "Manter 2–3 paredes"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Aba Prepare", desc: "Abra o OrcaSlicer 2.4" },
+        { step: "2", path: "Resistência › Paredes e superfícies", desc: "Expanda no painel esquerdo" },
+        { step: "3", path: "Limiar de parede única", desc: "Digite o valor em %" },
+      ],
+      example: {
+        piece: "Cúpula de luminária com paredes de 0,6mm (bico 0,4mm)",
+        config: "Limiar 400%",
+        result: "Paredes em linha única, luz atravessa de forma uniforme",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Paredes transparentes indesejadas", "Limiar muito alto", "Reduzir para 200–250%"],
+          ["Excesso de plástico em paredes finas", "Limiar muito baixo", "Aumentar para 350–400%"],
+          ["Paredes quebradiças", "Limiar muito alto em peça estrutural", "Reduzir significativamente"],
+          ["Tempo de impressão alto", "Limiar muito baixo em peça leve", "Aumentar para 300%"],
+        ],
+      },
+      goldenRule:
+        "300% para a maioria. Paredes finas → limiar alto. Paredes grossas → limiar baixo. Ajuste até a parede ficar sólida sem excesso.",
+      summaryTable: {
+        title: "Decisão por espessura de parede",
+        headers: ["Espessura da parede", "Limiar recomendado", "Motivo"],
+        rows: [
+          ["< 0,6mm", "400–500%", "Linha única, leveza, transparência"],
+          ["0,6–1,0mm", "300%", "Equilíbrio"],
+          ["1,0–1,5mm", "200%", "Duas linhas, resistente"],
+          ["> 1,5mm", "100–150%", "Múltiplas linhas, sólido"],
+        ],
+      },
+    },
+    {
+      name: "Evitar atravessar paredes (detalhamento avançado)",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Faz o bico CONTORNAR paredes já impressas durante travels, em vez de cruzar por cima. O slicer calcula um caminho alternativo que respeita o perímetro existente.",
+      whyAdjust:
+        "Bico quente passando sobre parede impressa pode derreter, riscar ou derrubar a superfície. Evitar travessias preserva o acabamento.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Bico desvia das paredes", "Peças com paredes finas, foco em qualidade"],
+          ["Desativado", "Bico atravessa livremente", "Velocidade, peças robustas"],
+        ],
+      },
+      influences: "Qualidade superficial, tempo de impressão, integridade de paredes finas, tamanho de travels.",
+      influencesList: [
+        "Espessura: <1mm sempre ativado; >2mm pode desativar",
+        "Tipo de peça: estéticas = ativado; estruturais = opcional",
+        "Temperatura: bico muito quente derrete fácil → ativar",
+        "Material: PLA/PETG/ABS amolecem rápido → ativar",
+        "Tempo: ativado aumenta tempo total da impressão",
+      ],
+      generates: "Superfície sem riscos/marcas quando ativado; impressão mais rápida porém com riscos quando desativado.",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Z-Hop (Travels)", "Alternativa: ergue o bico", "Ativar Z-Hop também"],
+          ["Largura da parede", "Paredes finas pedem desvio", "Ativar para paredes <1mm"],
+          ["Ordem de impressão", "Define quais paredes já existem", "Interior/Exterior + Evitar = ótimo"],
+        ],
+      },
+      example: {
+        piece: "Cúpula de luminária com paredes 0,8mm",
+        config: "Evitar = Ativado",
+        result: "Paredes intactas, sem marcas de arraste",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Marcas de arraste", "Evitar desativado", "Ativar Evitar"],
+          ["Tempo de impressão muito alto", "Evitar ativado em peça simples", "Desativar"],
+          ["Paredes finas derrubadas", "Evitar desativado", "Ativar"],
+        ],
+      },
+      goldenRule: "Ative para qualidade. Desative para velocidade. Paredes finas merecem o desvio.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Evitar", "Motivo"],
+        rows: [
+          ["Estética/decorativa", "Ativado", "Superfície perfeita"],
+          ["Paredes <1mm", "Ativado", "Evita danos"],
+          ["Protótipo", "Desativado", "Velocidade"],
+          ["Paredes >2mm", "Desativado", "Desnecessário"],
+        ],
+      },
+    },
+    {
+      name: "Compensação de fluxo de área pequena (beta) — detalhamento",
+      value: "Desativado",
+      whatIs:
+        "Reduz automaticamente o fluxo em áreas <1mm² para evitar acúmulo de material/blobs em pontas, detalhes finos e geometria minúscula.",
+      whyAdjust:
+        "Em áreas muito pequenas o plástico não tem para onde escoar — o excesso vira bolha. A compensação proporciona fluxo proporcional à área.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Compensação automática em áreas <1mm²", "Miniaturas, detalhes finos"],
+          ["Desativado", "Fluxo normal", "Peças grandes, estruturais"],
+        ],
+      },
+      influences: "Qualidade de detalhes minúsculos, formação de blobs em pontas.",
+      generates: "Detalhes limpos quando ativado; possíveis blobs quando desativado em geometria fina.",
+      goldenRule: "Ative para miniaturas. Desative para peças grandes. A compensação evita bolhas em detalhes finos.",
+    },
+
+    // ───────────── MÓDULO 2: SALIÊNCIAS (OVERHANGS) ─────────────
+    {
+      name: "Saliências › Detectar paredes salientes",
+      value: "Ativado (padrão)",
+      whatIs:
+        "Faz o slicer identificar automaticamente, camada a camada, regiões onde a parede se projeta além do suporte da camada anterior (overhangs). Permite aplicar velocidade, cooling e fluxo específicos a essas regiões.",
+      whyAdjust:
+        "Saliências (especialmente >45°) são pontos críticos: precisam de velocidade reduzida e cooling máximo para não cair. Sem detecção, são tratadas como parede comum e falham.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Detecta e trata overhangs separadamente", "Peças com curvas, esferas, ângulos"],
+          ["Desativado", "Todas as paredes tratadas iguais", "Peças sem overhangs (caixas retas)"],
+        ],
+      },
+      influences: "Qualidade de overhangs, velocidade adaptativa, cooling em pontos críticos.",
+      generates: "Overhangs mais limpos e estáveis quando ativado.",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Velocidade de overhang", "Só funciona se detecção ativa", "30–50% da velocidade normal"],
+          ["Cooling para overhang", "Só funciona se detecção ativa", "100% do ventilador"],
+          ["Paredes extras em saliências", "Só ativa com detecção", "1–2 paredes extras"],
+        ],
+      },
+      goldenRule: "Mantenha sempre ativado. A detecção é pré-requisito para todo o tratamento de overhangs.",
+    },
+    {
+      name: "Saliências › Tornar saliências imprimíveis",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Modifica AUTOMATICAMENTE a geometria da peça inserindo micro-rampas em saliências severas (>45–60°) para reduzir o ângulo efetivo e melhorar a adesão sem precisar de suportes.",
+      whyAdjust:
+        "Em saliências severas, em vez de adicionar suporte (que precisa ser removido e marca a peça), o slicer 'engana' a geometria criando uma rampa interna invisível.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Otimiza geometria, reduz necessidade de suportes", "Peças com overhangs severos"],
+          ["Desativado", "Mantém geometria original do STL", "Peças simples ou que exigem fidelidade dimensional total"],
+        ],
+      },
+      influences: "Necessidade de suportes, fidelidade dimensional, qualidade de overhangs severos.",
+      generates: "Overhangs >60° imprimíveis sem suporte quando ativado; necessidade de suporte quando desativado.",
+      example: {
+        piece: "Estatueta com braços para baixo (overhang ~65°)",
+        config: "Tornar saliências imprimíveis = Ativado",
+        result: "Braços imprimem sem suporte, com pequena alteração interna invisível",
+      },
+      goldenRule: "Ative para reduzir suportes. Desative se a peça exige fidelidade dimensional absoluta.",
+    },
+    {
+      name: "Saliências › Paredes extras em saliências",
+      value: "0 (padrão)",
+      whatIs:
+        "Adiciona paredes ADICIONAIS especificamente nas regiões detectadas como saliência, criando reforço estrutural para que a saliência não deforme nem caia.",
+      whyAdjust:
+        "Saliências são áreas de tensão — a parede está parcialmente no ar. Paredes extras ancoram a saliência na parte sólida.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0", "Sem reforço", "Overhangs leves (<45°)"],
+          ["1", "Uma parede extra", "Overhangs médios (45–60°)"],
+          ["2", "Duas paredes extras", "Overhangs severos (>60°)"],
+        ],
+      },
+      influences: "Resistência e estabilidade de overhangs, tempo de impressão, peso da peça.",
+      generates: "Overhangs sem deformação quando dimensionado corretamente.",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Detectar paredes salientes", "Pré-requisito", "DEVE estar ativado"],
+          ["Velocidade de overhang", "Combina para sucesso", "Reduzir velocidade + paredes extras"],
+        ],
+      },
+      goldenRule: "1 parede extra para a maioria. 2 para overhangs severos. Paredes extras evitam deformações.",
+    },
+    {
+      name: "Saliências › Reversão em par",
+      value: "Desativado",
+      whatIs:
+        "Alterna a DIREÇÃO de extrusão (horário/anti-horário) entre camadas consecutivas em regiões de overhang, melhorando a adesão entre camadas em pontos críticos.",
+      whyAdjust:
+        "Em overhangs, a camada atual se apoia parcialmente na anterior. Alternar a direção 'cruza' a deposição entre camadas, ancorando melhor uma na outra.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Alterna direção em overhangs camada a camada"],
+          ["Desativado", "Mantém direção constante (anti-horário)"],
+        ],
+      },
+      influences: "Adesão entre camadas em overhangs, resistência de saliências.",
+      generates: "Overhangs mais coesos quando ativado.",
+      goldenRule: "Ative para overhangs. A reversão melhora a adesão em áreas críticas.",
+    },
+  ],
 };
