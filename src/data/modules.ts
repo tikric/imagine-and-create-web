@@ -1894,6 +1894,19 @@ export const modules: Module[] = [
             "Compare gramatura estimada e tempo no preview.",
             "Imprima ambos e avalie esforço de remoção.",
           ],
+          deepDive: [
+            "Tree Organic é um algoritmo gerativo (introduzido pelo Cura, refinado no Orca) que parte do overhang e cresce ramos curvos para baixo evitando colisão com a peça. Cada nó da árvore decide onde se ramificar baseado em três parâmetros físicos: Branch Angle (inclinação máxima do ramo, default 40°), Branch Distance (espaçamento entre pontas de apoio, default 1.0mm), e Branch Diameter (espessura da base, default 5mm).",
+            "Diferença prática para Normal Grid em uma miniatura de 80mm: Tree usa ~12-18g de filamento contra ~35-45g do Normal — economia de 60-65% no suporte, sem perder estabilidade. O tempo de impressão cai 25-40% porque o slicer não precisa preencher blocos densos camada por camada.",
+            "Quando Tree FALHA e Normal vence: overhangs amplos e contínuos (ex: parte inferior de uma asa horizontal de 60×40mm) — Tree vai gerar dezenas de ramos finos que oscilam e desabam. Use Normal Grid com 10-15% density nesse cenário, ou divida a peça em duas partes coladas depois. Tree é para geometrias orgânicas, irregulares e localizadas.",
+            "Tree Organic Hybrid (modo do Orca) combina os dois: Tree onde a geometria é orgânica, Normal Grid onde há overhang chapado. É o default ideal para peças mistas (figuras com base plana, modelos com partes técnicas e estéticas).",
+          ],
+          checklist: [
+            "Identificou se a peça é orgânica (Tree), chapada (Normal) ou mista (Hybrid)",
+            "Branch Diameter ≥ 5mm em peças >50mm de altura para evitar tombamento",
+            "Top Interface Layers ≥ 2 para todo Tree em peça visível",
+            "Plate testada antes de produção em lote — Tree pode falhar em geometrias incomuns",
+            "Filamento de suporte seco (PETG e PVA acumulam umidade que mata estabilidade do ramo)",
+          ],
         }),
       L(2, "interface-layers", "Interface Layers — Camadas Densas Separadoras", "25min",
         ["Z Gap 0.15-0.20mm", "3 camadas densas", "Solúveis"], {
