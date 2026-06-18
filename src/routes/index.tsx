@@ -270,14 +270,14 @@ function Pricing() {
             <p className="text-muted-foreground mb-8">Tudo. Para sempre. Atualizações incluídas.</p>
             <ul className="space-y-3 text-sm">
               {[
-                "24 módulos · 130+ aulas em vídeo",
-                "Biblioteca de perfis .3mf calibrados",
-                "Planilhas de custo e checklists",
-                "Grupo Telegram com instrutor",
-                "Encontros mensais ao vivo",
-                "Certificado de conclusão",
-                "Atualizações vitalícias (cada release do Orca)",
-                "Garantia de 14 dias",
+                "24 módulos · 73+ aulas com walkthrough no Orca",
+                "Perfis .3mf de calibração (PLA, PETG, ABS, TPU, ASA)",
+                "Planilha de precificação + custo por grama/hora",
+                "Checklist de manutenção e de pós-processamento",
+                "Guia de alisamento químico (acetona) e insertos termofixados",
+                "Tabelas de secagem e armazenamento de filamentos",
+                "Grupo Telegram com instrutor + encontros mensais ao vivo",
+                "Certificado de conclusão · atualizações vitalícias · garantia de 14 dias",
               ].map((t) => (
                 <li key={t} className="flex items-start gap-3">
                   <span className="text-primary mt-1">✓</span>
