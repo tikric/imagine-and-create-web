@@ -404,3 +404,46 @@ function Callout({ label, icon, children }: { label: string; icon: string; child
     </div>
   );
 }
+
+function MiniTable({
+  label,
+  color,
+  data,
+}: {
+  label: string;
+  color: "primary" | "chart-3" | "destructive";
+  data: { headers: string[]; rows: string[][] };
+}) {
+  const colorClass =
+    color === "destructive"
+      ? "text-destructive border-destructive/40"
+      : color === "chart-3"
+        ? "text-chart-3 border-chart-3/40"
+        : "text-primary border-primary/40";
+  return (
+    <div>
+      <div className={`mono text-xs uppercase tracking-wider mb-2 ${colorClass.split(" ")[0]}`}>{label}</div>
+      <div className={`overflow-x-auto rounded-xl border ${colorClass.split(" ")[1]}`}>
+        <table className="w-full text-sm">
+          <thead className="bg-card/60">
+            <tr className="text-left mono text-xs uppercase tracking-wider text-muted-foreground">
+              {data.headers.map((h, i) => (
+                <th key={i} className="px-4 py-2.5 border-b border-border">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data.rows.map((row, ri) => (
+              <tr key={ri} className="hover:bg-card/40 transition">
+                {row.map((cell, ci) => (
+                  <td key={ci} className="px-4 py-2.5 border-b border-border align-top text-foreground/90">{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
