@@ -119,6 +119,52 @@ function LessonPage() {
           </Section>
         )}
 
+        {l.paramDetails && l.paramDetails.length > 0 && (
+          <Section title="Cada item da tela, explicado">
+            <div className="space-y-5">
+              {l.paramDetails.map((p, i) => (
+                <div key={i} className="rounded-2xl border border-border bg-card/40 p-6">
+                  <div className="flex items-start justify-between gap-4 flex-wrap mb-4 pb-3 border-b border-border">
+                    <div>
+                      <div className="mono text-xs uppercase tracking-wider text-muted-foreground">Item {String(i + 1).padStart(2, "0")}</div>
+                      <div className="text-lg font-bold mt-0.5">{p.name}</div>
+                    </div>
+                    <div className="mono text-sm text-primary bg-primary/10 px-3 py-1.5 rounded-md border border-primary/30">
+                      {p.value}
+                    </div>
+                  </div>
+                  <div className="grid gap-4">
+                    <div>
+                      <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que é</div>
+                      <p className="text-foreground/90 leading-relaxed">{p.whatIs}</p>
+                    </div>
+                    {p.types && p.types.length > 0 && (
+                      <div>
+                        <div className="mono text-xs uppercase tracking-wider text-primary mb-2">▸ Tipos / Opções disponíveis</div>
+                        <ul className="space-y-1.5">
+                          {p.types.map((t, ti) => (
+                            <li key={ti} className="text-foreground/90 leading-relaxed">
+                              <span className="font-semibold text-primary">{t.label}:</span> {t.desc}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    <div>
+                      <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que influencia</div>
+                      <p className="text-foreground/90 leading-relaxed">{p.influences}</p>
+                    </div>
+                    <div>
+                      <div className="mono text-xs uppercase tracking-wider text-primary mb-1">▸ O que gera (consequência prática)</div>
+                      <p className="text-foreground/90 leading-relaxed">{p.generates}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
         {l.theory && l.theory.length > 0 && (
           <Section title="Conteúdo Teórico">
             <div className="space-y-4 text-lg leading-relaxed text-foreground/90">
