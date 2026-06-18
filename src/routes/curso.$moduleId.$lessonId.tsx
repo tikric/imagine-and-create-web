@@ -85,6 +85,31 @@ function LessonPage() {
           ))}
         </div>
 
+        {l.screens && l.screens.length > 0 && (
+          <Section title="Tela do OrcaSlicer — Ferramenta em destaque">
+            <div className="space-y-6">
+              {l.screens.map((s, i) => (
+                <figure key={i} className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+                  <div className="border-b border-border bg-card/60 px-5 py-3">
+                    <div className="mono text-xs uppercase tracking-wider text-primary">{s.tela}</div>
+                    <div className="text-sm font-semibold mt-1">{s.panel}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{s.tool}</div>
+                  </div>
+                  <img
+                    src={TELA_MAP[s.src]?.url}
+                    alt={`${s.tela} — ${s.panel}`}
+                    loading="lazy"
+                    className="w-full h-auto block bg-[#1e1e1e]"
+                  />
+                  <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">
+                    {s.caption}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </Section>
+        )}
+
         {l.theory && l.theory.length > 0 && (
           <Section title="Conteúdo Teórico">
             <div className="space-y-4 text-lg leading-relaxed text-foreground/90">
