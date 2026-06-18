@@ -19,6 +19,7 @@ export type Lesson = {
   deepDive?: string[];
   checklist?: string[];
   caseStudy?: string;
+  screens?: { src: string; tela: string; panel: string; tool: string; caption: string }[];
 };
 
 export type Module = {
