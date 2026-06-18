@@ -1890,7 +1890,7 @@ export const modules: Module[] = [
             { module: "Módulo 13 (Tolerâncias)", text: "Chanfro em furo melhora encaixe de parafusos." },
           ],
           params: [
-            { module: "Ângulo Limite", value: "45°", action: "Limite físico para deposição estável" } as unknown as ParamRow,
+            { param: "Ângulo Limite", value: "45°", action: "Limite físico para deposição estável" },
             { param: "Overhang Threshold", value: "55°", action: "Aciona suporte apenas além desse ângulo" },
           ],
           goldenRule: "Aplique chanfros em todos furos horizontais maiores que 5mm.",
