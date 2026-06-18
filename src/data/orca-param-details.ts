@@ -737,4 +737,657 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         "PLA/PETG calibrados = desativado. Nylon/TPU/PETG úmido = ativado.",
     },
   ],
+
+  // ====================================================================
+  // TELA 12 — QUALIDADE (Precisão · Pé de elefante · Alisamento)
+  // ====================================================================
+  "tela-12-qualidade-precisao-alisamento": [
+    // ───────────── MÓDULO 1: LIMPEZA ANTES DA VOLTA EXTERNA ─────────────
+    {
+      name: "Limpeza antes da volta externa",
+      value: "Checkbox",
+      whatIs:
+        "Função que faz o bico se mover ligeiramente sobre a parede INTERNA antes de iniciar a parede externa, descarregando o excesso de plástico residual ali (onde ninguém vê) em vez de criar um 'blob' na superfície visível.",
+      whyAdjust:
+        "A parede externa é a 'cara' da peça. Qualquer caroço (blob) no início do perímetro fica visível para sempre. Limpar o bico ANTES, na parede interna, transfere o defeito para um lugar invisível.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Bico limpa na parede interna antes da externa", "Peças com alta qualidade visual"],
+          ["Desativado", "Bico inicia a parede externa diretamente", "Peças estruturais, máxima velocidade"],
+        ],
+      },
+      influences:
+        "Qualidade visual da parede externa, tempo de impressão (movimento extra) e quantidade de blobs no início de cada perímetro.",
+      influencesList: [
+        "Peças estéticas (figuras, vasos) → Ativar",
+        "Peças estruturais → Pode desativar",
+        "PLA/PETG se beneficiam (reduzem stringing)",
+        "ABS pode dispensar (velocidade > estética)",
+      ],
+      generates:
+        "Ativado gera paredes externas sem blobs visíveis no início do perímetro; desativado gera economia de tempo com possíveis caroços visíveis.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Ativado", "Parede externa lisa, sem blobs", "Peças visíveis, estéticas"],
+          ["Desativado", "Possíveis blobs na parede externa", "Protótipos, peças estruturais"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Costura (Seam)", "Limpeza ocorre antes da costura", "Manter ativado p/ costura limpa"],
+          ["Wipe Distance", "Define o tamanho da limpeza", "Ajustar se aparecer marca"],
+          ["Retração", "Reduz excesso na costura", "Combinar com a limpeza"],
+          ["Velocidade parede externa", "Deve ser lenta", "40–60 mm/s"],
+        ],
+      },
+      howTo: [
+        { step: "1. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "2. Qualidade", path: "Processo › Qualidade", desc: "Expandir o grupo." },
+        { step: "3. Checkbox", path: "Limpeza antes da volta externa", desc: "Marcar ou desmarcar." },
+      ],
+      example: {
+        piece: "Busto decorativo em PLA",
+        config: "Limpeza ativada · Velocidade externa 50 mm/s",
+        result: "Superfície lisa, sem imperfeições no início dos perímetros.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Blobs na parede externa", "Limpeza desativada", "Ativar limpeza"],
+          ["Tempo de impressão alto demais", "Limpeza ativada desnecessariamente", "Desativar p/ peças estruturais"],
+          ["Costura ainda com excesso", "Limpeza insuficiente", "Aumentar Wipe Distance"],
+        ],
+      },
+      goldenRule:
+        "Ative a limpeza para peças bonitas. Desative para peças rápidas. A parede externa merece o cuidado extra.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Limpeza", "Motivo"],
+        rows: [
+          ["Estética, decorativa", "Ativado", "Superfície perfeita"],
+          ["Estrutural, funcional", "Desativado", "Velocidade"],
+          ["Protótipo visual", "Ativado", "Avaliar estética"],
+          ["Protótipo funcional", "Desativado", "Avaliar forma"],
+        ],
+      },
+    },
+
+    // ───────────── MÓDULO 2: PRECISÃO ─────────────
+    {
+      name: "Precisão › Raio de fechamento de vãos de fatiamento",
+      value: "0,049 mm",
+      whatIs:
+        "Distância máxima que o fatiador considera como 'vão' entre duas linhas. Se o espaço entre paredes é MENOR que este valor, o Orca une as paredes automaticamente, preenchendo o gap. Acima do valor, o gap é preservado.",
+      whyAdjust:
+        "Modelos STL têm imperfeições microscópicas: paredes que deveriam tocar não tocam, contornos não fecham. Este parâmetro decide até que tamanho de 'buraquinho' o Orca silenciosamente conserta — sem isso, peças mostram lacunas estranhas; com valor alto demais, detalhes finos somem.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,02 mm", "Fechamento mínimo", "Modelos STEP precisos, detalhes finos"],
+          ["0,049 mm — PADRÃO", "Equilíbrio", "Uso geral"],
+          ["0,08–0,10 mm", "Fechamento agressivo", "Modelos com imperfeições, peças grandes"],
+        ],
+      },
+      influences:
+        "Qualidade do modelo (STEP vs STL), tamanho dos detalhes finos, dimensão da peça e tipo de geometria.",
+      influencesList: [
+        "STEP/CAD limpo → valor baixo",
+        "STL/mesh com falhas → valor mais alto",
+        "Textos e letras pequenas → valor baixo (preserva traços)",
+        "Paredes finas próximas → valor baixo (evita unir)",
+        "Peças grandes/orgânicas → valor alto",
+      ],
+      generates:
+        "Valor baixo preserva todos os detalhes mas pode deixar lacunas microscópicas; valor alto fecha os gaps mas pode unir paredes/letras que deveriam ficar separadas.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["0,02 mm", "Detalhes preservados, possíveis lacunas", "Modelos perfeitos, peças pequenas"],
+          ["0,049 mm", "Bom equilíbrio, sem lacunas", "Uso geral"],
+          ["0,10 mm", "Preenche espaços, detalhes podem sumir", "Modelos com imperfeições"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Resolução", "Ambos controlam precisão", "Manter proporcionais"],
+          ["Parede precisa", "Trabalha em conjunto", "Ativar ambos p/ precisão dimensional"],
+          ["Largura da linha", "Define o gap mínimo natural", "Aumentar se ainda houver lacunas"],
+        ],
+      },
+      howTo: [
+        { step: "1. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "2. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir o grupo." },
+        { step: "3. Campo dedicado", path: "Raio de fechamento de vãos", desc: "Ex.: 0,049 mm." },
+      ],
+      example: {
+        piece: "Placa com letras em relevo de 2 mm",
+        config: "Raio de fechamento 0,02 mm",
+        result: "Letras nítidas e bem separadas, sem traços preenchidos.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Lacunas entre paredes", "Valor muito baixo", "Subir para 0,08–0,10 mm"],
+          ["Detalhes finos sumindo", "Valor muito alto", "Reduzir para 0,02–0,03 mm"],
+          ["Textos ilegíveis", "Valor muito alto", "Reduzir significativamente"],
+          ["Paredes próximas unidas", "Valor muito alto", "Reduzir para 0,03–0,04 mm"],
+        ],
+      },
+      goldenRule:
+        "0,049 mm para a maioria. Aumente se houver lacunas. Diminua se detalhes sumirem.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Valor", "Motivo"],
+        rows: [
+          ["Textos, detalhes finos", "0,02–0,03 mm", "Preserva detalhes"],
+          ["Uso geral", "0,049 mm", "Equilíbrio"],
+          ["Peças grandes/orgânicas", "0,08–0,10 mm", "Preenche imperfeições"],
+          ["Paredes finas próximas", "0,03–0,04 mm", "Evita unir"],
+        ],
+      },
+    },
+    {
+      name: "Precisão › Resolução",
+      value: "0,012 mm",
+      whatIs:
+        "Distância mínima entre dois pontos consecutivos que o fatiador considera ao caminhar sobre a malha. Mais baixo = mais pontos preservados = curvas mais suaves; mais alto = menos pontos = G-code menor e mais leve.",
+      whyAdjust:
+        "Controla quanto detalhe da malha sobrevive ao fatiamento. Resoluções muito baixas geram arquivos enormes que travam impressoras; muito altas geram curvas poligonais visíveis.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,005 mm", "Máxima precisão, G-code grande", "Joias, miniaturas com curvas complexas"],
+          ["0,012 mm — PADRÃO", "Equilíbrio detalhe × tamanho", "Uso geral"],
+          ["0,025 mm", "Menos precisão, G-code leve", "Peças grandes e simples"],
+          ["0,050 mm", "Baixa precisão", "Protótipos rápidos"],
+        ],
+      },
+      influences:
+        "Suavidade de curvas, tamanho do G-code, tempo de fatiamento e tempo de processamento na impressora.",
+      influencesList: [
+        "Curvas complexas → resolução baixa",
+        "Superfícies planas → resolução alta tolerada",
+        "Peças pequenas → resolução baixa (detalhes críticos)",
+        "Peças grandes → resolução alta (detalhes diluídos)",
+      ],
+      generates:
+        "Resolução baixa gera curvas perfeitas mas arquivos pesados; resolução alta gera arquivos leves com possíveis 'facetas' visíveis.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["0,005 mm", "Curvas perfeitamente suaves", "Joias, miniaturas"],
+          ["0,012 mm", "Curvas boas, detalhes nítidos", "Uso geral"],
+          ["0,025 mm", "Curvas com ligeiros degraus", "Peças grandes"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Raio de fechamento", "Ambos controlam precisão", "Manter equilibrados"],
+          ["Altura da camada", "Resolução < altura", "Resolução ≈ 5–10% da altura"],
+          ["Ajuste de arco", "Substitui necessidade de res. baixa", "Ativar p/ curvas"],
+        ],
+      },
+      howTo: [
+        { step: "1. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "2. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir." },
+        { step: "3. Resolução", path: "Campo Resolução", desc: "Ex.: 0,012 mm." },
+      ],
+      example: {
+        piece: "Anel decorativo com curvas complexas",
+        config: "Resolução 0,005 mm",
+        result: "Curvas perfeitamente suaves, sem facetas visíveis.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Curvas com degraus", "Resolução muito alta", "Reduzir para 0,008–0,012 mm"],
+          ["G-code enorme", "Resolução muito baixa", "Subir para 0,015–0,025 mm"],
+          ["Fatiamento lento", "Resolução muito baixa", "Subir para 0,015 mm"],
+          ["Detalhes perdidos", "Resolução muito alta", "Reduzir para 0,008 mm"],
+        ],
+      },
+      goldenRule:
+        "0,012 mm para a maioria. 0,005 mm para curvas perfeitas. 0,025 mm para peças simples.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Valor", "Motivo"],
+        rows: [
+          ["Joias, miniaturas", "0,005–0,008 mm", "Curvas perfeitas"],
+          ["Uso geral", "0,012 mm", "Equilíbrio"],
+          ["Peças grandes simples", "0,025 mm", "Economia de processamento"],
+          ["Protótipos rápidos", "0,050 mm", "Velocidade máxima"],
+        ],
+      },
+    },
+    {
+      name: "Precisão › Ajuste de arco (Arc fitting)",
+      value: "Checkbox",
+      whatIs:
+        "Função que converte sequências de muitos segmentos retos (G1) em comandos de arco (G2/G3). O Orca identifica trechos curvos e os substitui por um único comando matemático de arco, reduzindo o G-code em até 90% nas partes curvas.",
+      whyAdjust:
+        "Sem Arc Fitting, uma circunferência vira centenas de pequenos G1 — arquivos enormes, processamento pesado, e em altas velocidades a impressora 'engasga' entre segmentos. Com Arc Fitting, vira 1 ou 2 comandos G2/G3 fluidos.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Converte segmentos em arcos G2/G3", "Peças com curvas, firmwares modernos"],
+          ["Desativado", "Mantém somente G1", "Peças angulares ou firmware antigo sem G2/G3"],
+        ],
+      },
+      influences:
+        "Tamanho do G-code, suavidade das curvas em alta velocidade, compatibilidade com firmware e fluidez do movimento.",
+      influencesList: [
+        "Peças curvas → ativar (até 90% menos G-code)",
+        "Peças angulares → indiferente",
+        "Firmware moderno (Marlin 2+, Klipper) → suporta G2/G3",
+        "Firmware antigo → testar antes de ativar",
+      ],
+      generates:
+        "Ativado gera arquivos pequenos, curvas suaves e movimentos fluidos; desativado gera arquivos pesados com possível 'engasgo' em curvas a alta velocidade.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Ativado", "Curvas suaves, arquivo pequeno", "Vasos, figuras, peças orgânicas"],
+          ["Desativado", "Curvas poligonais, arquivo grande", "Caixas, peças angulares"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Resolução", "Arc Fitting substitui necessidade de res. baixa", "Usar resolução padrão"],
+          ["Velocidade", "G2/G3 mantém fluidez em altas velocidades", "Permite imprimir mais rápido"],
+        ],
+      },
+      howTo: [
+        { step: "1. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "2. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir." },
+        { step: "3. Checkbox", path: "Ajuste de arco (Arc fitting)", desc: "Marcar para ativar." },
+      ],
+      example: {
+        piece: "Vaso cilíndrico decorativo",
+        config: "Arc fitting ativado",
+        result: "G-code reduziu de 2 MB para 200 KB; curvas perfeitamente suaves.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Curvas com degraus", "Arc fitting desativado", "Ativar"],
+          ["G-code muito grande", "Arc fitting desativado", "Ativar"],
+          ["Impressora trava em curvas", "Firmware sem suporte a G2/G3", "Desativar ou atualizar firmware"],
+        ],
+      },
+      goldenRule:
+        "Ative Arc fitting para peças com curvas. Desative se o firmware não suportar G2/G3.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Arc Fitting", "Motivo"],
+        rows: [
+          ["Vasos, curvas", "Ativado", "Suavidade + arquivo pequeno"],
+          ["Caixas, angulares", "Indiferente", "Sem efeito prático"],
+          ["Figuras orgânicas", "Ativado", "Curvas complexas"],
+          ["Peças mecânicas", "Indiferente", "Geometria simples"],
+        ],
+      },
+    },
+    {
+      name: "Precisão › Compensação de furos XY",
+      value: "0 mm",
+      whatIs:
+        "Ajuste dimensional aplicado APENAS a furos internos (contornos fechados internos). Em FDM, furos sempre saem MENORES que o CAD por dois motivos físicos: contração do plástico ao esfriar + trajetória circular que puxa o filete para dentro. Esta compensação 'engorda' o furo no G-code para compensar.",
+      whyAdjust:
+        "Sem compensação, um furo CAD de 3,0 mm imprime tipicamente 2,80–2,90 mm — parafuso M3 não entra. Com compensação positiva, o furo sai exatamente no diâmetro projetado.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0 mm", "Sem compensação", "Peças sem furos ou tolerâncias largas"],
+          ["+0,05 mm", "Pequena compensação", "Furos até 5 mm em PLA"],
+          ["+0,10 mm", "Média compensação", "Furos 5–10 mm, padrão p/ encaixes"],
+          ["+0,15–0,20 mm", "Grande compensação", "Furos grandes, ABS, Nylon"],
+        ],
+      },
+      influences:
+        "Diâmetro real do furo, encaixe de parafusos/pinos/eixos e qualidade do encaixe mecânico.",
+      influencesList: [
+        "Diâmetro do furo: quanto maior, mais compensação",
+        "Material: PLA pouco; ABS/Nylon muito",
+        "Temperatura: mais quente = mais contração = mais compensação",
+        "Altura da camada: camadas grossas pedem mais compensação",
+      ],
+      generates:
+        "Compensação correta gera encaixes precisos; insuficiente gera parafuso travado; excessiva gera furo solto.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Sem compensação", "Furos menores que o CAD", "Peças sem encaixe"],
+          ["Compensação adequada", "Furo no diâmetro exato", "Parafusos, pinos"],
+          ["Compensação excessiva", "Furo maior que o CAD", "Peças com folga proposital"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Compensação de contornos XY", "Complementar (contornos externos)", "Manter equilibrado"],
+          ["Fluxo (Flow)", "Afeta o tamanho final", "Calibrar fluxo PRIMEIRO"],
+          ["Pressure Advance", "Reduz arredondamento", "Calibrar PA antes da compensação"],
+        ],
+      },
+      howTo: [
+        { step: "1. Calibrar Flow e PA primeiro", path: "Calibration › Flow / PA", desc: "Sem isso, qualquer compensação é chute." },
+        { step: "2. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "3. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir." },
+        { step: "4. Campo dedicado", path: "Compensação de furos XY", desc: "Começar em +0,05 mm e ajustar." },
+      ],
+      example: {
+        piece: "Tampa de caixa com furos M3 (CAD 3,0 mm)",
+        config: "Compensação +0,10 mm em PLA",
+        result: "Furo impresso ≈ 3,05 mm; parafuso M3 entra com firmeza.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Parafuso não entra", "Compensação insuficiente", "Aumentar +0,05 mm"],
+          ["Parafuso solto", "Compensação excessiva", "Reduzir −0,05 mm"],
+          ["Furo ovalizado", "Não é compensação", "Verificar fluxo, PA, vibração"],
+        ],
+      },
+      goldenRule:
+        "Furos sempre saem menores. +0,05 mm para furos pequenos, +0,10 mm para furos médios. Teste e ajuste.",
+      summaryTable: {
+        title: "Compensação por diâmetro × material",
+        headers: ["Diâmetro", "PLA", "PETG", "ABS", "Nylon"],
+        rows: [
+          ["2–5 mm", "+0,05", "+0,08", "+0,10", "+0,15"],
+          ["5–10 mm", "+0,08", "+0,12", "+0,15", "+0,20"],
+          ["10–20 mm", "+0,10", "+0,15", "+0,20", "+0,25"],
+        ],
+      },
+    },
+    {
+      name: "Precisão › Compensação de contornos XY",
+      value: "0 mm",
+      whatIs:
+        "Ajuste dimensional aplicado ao contorno EXTERNO da peça. Positivo aumenta as dimensões externas; negativo reduz. Espelha a compensação de furos, mas para o perímetro externo.",
+      whyAdjust:
+        "Encaixes do tipo 'peça dentro de outra peça' exigem folga (negativo) ou aperto (positivo). Em vez de mexer no CAD, ajusta-se aqui.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0 mm", "Sem compensação", "Peças isoladas, sem encaixe"],
+          ["−0,05 mm", "Peça levemente menor", "Encaixes justos (press-fit leve)"],
+          ["−0,10 mm", "Peça menor", "Encaixes deslizantes precisos"],
+          ["+0,05 mm", "Peça levemente maior", "Compensa peça que saiu pequena"],
+        ],
+      },
+      influences:
+        "Tamanho externo da peça, qualidade de encaixes macho-fêmea e tolerâncias mecânicas.",
+      generates:
+        "Compensação negativa gera peças que encaixam dentro de outras; positiva gera peças que ganham dimensão para compensar contração.",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Compensação de furos XY", "Espelham-se", "Ajustar em conjunto"],
+          ["Compensação de pé de elefante", "Atua só na base", "Combinar p/ encaixes na base"],
+        ],
+      },
+      howTo: [
+        { step: "1. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir." },
+        { step: "2. Campo dedicado", path: "Compensação de contornos XY", desc: "Ex.: −0,05 mm p/ encaixe justo." },
+      ],
+      goldenRule:
+        "Para encaixes, use −0,05 mm. Para folgas, use +0,05 mm. Teste em peça pequena antes da peça final.",
+    },
+    {
+      name: "Precisão › Compensação de pé de elefante",
+      value: "0,1 mm",
+      whatIs:
+        "Reduz o tamanho da PRIMEIRA camada (e opcionalmente as próximas) para eliminar o 'pé de elefante' — alargamento da base causado pelo plástico esmagado contra a mesa quente.",
+      whyAdjust:
+        "Sem compensação, a base da peça fica visivelmente mais larga que o resto, prejudicando encaixes que apoiam na mesa (ex.: pé de prateleira, base de cubo de calibração).",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0 mm", "Sem compensação", "Peças pequenas ou já dimensionadas no CAD"],
+          ["0,1 mm — PADRÃO", "Compensação leve", "Uso geral"],
+          ["0,2 mm", "Compensação média", "Peças grandes, ABS"],
+          ["0,3 mm", "Compensação alta", "Peças muito grandes, materiais que contraem"],
+        ],
+      },
+      influences:
+        "Largura real da base da peça, qualidade de encaixes apoiados na base e precisão dimensional na primeira camada.",
+      influencesList: [
+        "Temperatura da mesa: mais quente = mais pé de elefante",
+        "Altura da primeira camada: mais grossa = mais esmagamento",
+        "Largura da primeira camada: mais larga = mais alargamento",
+        "Z-Offset baixo = mais esmagamento",
+      ],
+      generates:
+        "Compensação correta gera base no diâmetro exato do CAD; excessiva gera base levemente menor (cantos arredondados na base).",
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Altura 1ª camada", "Mais grossa = mais pé", "Reduzir altura OU subir compensação"],
+          ["T° mesa", "Mais quente = mais pé", "PLA 60 °C; reduzir se exagerar"],
+          ["Z-Offset", "Mais baixo = mais pé", "Calibrar antes"],
+        ],
+      },
+      howTo: [
+        { step: "1. Qualidade › Precisão", path: "Processo › Qualidade › Precisão", desc: "Expandir." },
+        { step: "2. Campo dedicado", path: "Compensação de pé de elefante", desc: "Ex.: 0,1 mm." },
+      ],
+      goldenRule:
+        "O pé de elefante é o inimigo dos encaixes na base. Use 0,1 mm para a maioria das peças.",
+    },
+    {
+      name: "Precisão › Densidade das camadas do pé de elefante",
+      value: "100%",
+      whatIs:
+        "Define em quantas camadas a compensação do pé de elefante é DISTRIBUÍDA. 100% aplica tudo na primeira camada (mudança abrupta); valores menores espalham a correção por várias camadas (transição suave).",
+      whyAdjust:
+        "Compensação total na primeira camada cria um 'degrau' visível entre a 1ª camada e a 2ª. Distribuir por mais camadas suaviza a transição.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["100% — PADRÃO", "Toda a compensação na primeira camada"],
+          ["50%", "Compensação dividida em 2 camadas (transição suave)"],
+          ["33%", "Compensação dividida em 3 camadas (transição muito suave)"],
+        ],
+      },
+      influences:
+        "Visibilidade da transição entre base e corpo da peça e suavidade da compensação.",
+      generates:
+        "100% gera correção total mas com 'degrau' visível; valores menores geram base ligeiramente afunilada de forma suave.",
+      goldenRule:
+        "100% basta na maioria. Reduza apenas se o degrau de compensação ficar visível.",
+    },
+    {
+      name: "Precisão › Camadas de compensação de pé de elefante",
+      value: "Checkbox",
+      whatIs:
+        "Toggle que define se a compensação atua APENAS na primeira camada ou se também é aplicada nas próximas camadas até o efeito sumir naturalmente.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Compensação em múltiplas camadas (atenuação progressiva)"],
+          ["Desativado", "Compensação somente na primeira camada"],
+        ],
+      },
+      influences:
+        "Suavidade da transição entre base e corpo e visibilidade da correção.",
+      generates:
+        "Ativado gera base suavemente afunilada (invisível); desativado gera correção concentrada com possível 'degrau'.",
+      goldenRule:
+        "Ative em peças onde a base e a 2ª camada precisam de transição invisível.",
+    },
+    {
+      name: "Precisão › Parede precisa",
+      value: "Checkbox",
+      whatIs:
+        "Força o Orca a recalcular o FLUXO de cada parede individualmente para garantir que a largura final seja EXATAMENTE a configurada. Sacrifica fluxo constante em troca de precisão dimensional.",
+      whyAdjust:
+        "Sem este recurso, o Orca tolera pequenas variações de largura para manter o fluxo constante. Em peças com tolerâncias críticas (encaixes, engrenagens), essas variações estragam o encaixe.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Largura exata, fluxo variável", "Peças com tolerância crítica"],
+          ["Desativado", "Largura aproximada, fluxo constante", "Uso geral, peças estéticas"],
+        ],
+      },
+      influences:
+        "Precisão dimensional das paredes, consistência do fluxo e qualidade visual (pequenas variações de brilho onde o fluxo muda).",
+      generates:
+        "Ativado gera paredes com largura exata mas pequenas variações visuais; desativado gera paredes visualmente uniformes mas dimensionalmente aproximadas.",
+      goldenRule:
+        "Ative para peças com encaixes precisos. Desative para peças estéticas.",
+    },
+    {
+      name: "Precisão › Altura Z precisa",
+      value: "Checkbox",
+      whatIs:
+        "Garante que a altura TOTAL da peça seja exatamente a definida no CAD, ajustando a espessura da ÚLTIMA camada para 'fechar' a altura exata. Sem isso, a altura final é arredondada ao múltiplo da altura de camada.",
+      whyAdjust:
+        "Projete 10,05 mm com camadas de 0,2 mm — sem Altura Z Precisa, o Orca arredonda para 10,00 ou 10,20. Com o recurso ativo, a última camada vira 0,25 mm para fechar exato.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Altura final exatamente igual ao CAD"],
+          ["Desativado", "Altura final arredondada ao múltiplo da camada"],
+        ],
+      },
+      influences:
+        "Precisão dimensional em Z, encaixes verticais e empilhamento de peças.",
+      generates:
+        "Ativado gera altura final precisa com possível variação visual na última camada; desativado gera altura ligeiramente diferente do CAD.",
+      goldenRule:
+        "Ative em peças que precisam encaixar verticalmente ou empilhar com precisão.",
+    },
+    {
+      name: "Precisão › Converter furos em polifuros",
+      value: "Checkbox",
+      whatIs:
+        "Transforma furos CIRCULARES em POLÍGONOS (hexágonos, octógonos) no G-code. Como FDM produz furos menores que o CAD, um polígono ligeiramente maior 'inscrito' compensa esse erro, gerando furos finais mais precisos dimensionalmente.",
+      whyAdjust:
+        "É uma alternativa elegante à Compensação de Furos XY: em vez de engordar o círculo, redesenha como polígono. Funciona melhor em furos pequenos para parafusos.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Furos viram polígonos (mais precisos)", "Furos p/ parafusos, pinos"],
+          ["Desativado", "Furos circulares normais", "Furos estéticos visíveis"],
+        ],
+      },
+      influences:
+        "Precisão dimensional de furos pequenos e aparência visual interna do furo.",
+      generates:
+        "Ativado gera furos com diâmetro mais próximo do CAD (paredes ligeiramente facetadas); desativado gera furos circulares com diâmetro menor.",
+      goldenRule:
+        "Ative para furos de parafuso. Desative para furos estéticos visíveis.",
+    },
+
+    // ───────────── MÓDULO 3: ALISAMENTO (IRONING) ─────────────
+    {
+      name: "Alisamento › Tipo de Alisamento",
+      value: "Dropdown",
+      whatIs:
+        "Define ONDE o Orca aplica o Ironing — passada extra do bico quente sem (ou quase sem) extrusão, derretendo as micro-rugosidades da superfície e preenchendo vales entre linhas. Cria acabamento espelhado.",
+      whyAdjust:
+        "Topo de uma peça FDM nunca é perfeitamente liso — há sulcos entre passadas. Ironing 'derrete e nivela' esses sulcos, transformando o topo em uma superfície quase polida. Custo: tempo extra significativo no topo.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Desativado", "Sem alisamento", "Peças estruturais, economia de tempo"],
+          ["Top surfaces", "Apenas o último topo da peça", "Padrão — peças com topo visível"],
+          ["All solid surfaces", "Todas as superfícies sólidas", "Peças com várias faces planas"],
+          ["All surfaces", "Tudo, incluindo bases sólidas internas", "Casos especiais, peças pequenas"],
+        ],
+      },
+      influences:
+        "Acabamento visual do topo (espelhado vs sulcado), tempo de impressão (Ironing dobra o tempo do topo) e consumo extra de filamento (Ironing Flow > 0).",
+      influencesList: [
+        "Material: PLA aliasa muito bem; PETG razoável; ABS difícil",
+        "Largura da linha do topo: menor = melhor base p/ Ironing",
+        "Velocidade do Ironing: 20–30 mm/s típico",
+        "Ironing Flow: 10–15% (apenas o suficiente p/ preencher sulcos)",
+      ],
+      generates:
+        "Top surfaces gera topo quase espelhado; All surfaces gera tempo de impressão muito maior em troca de acabamento total.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Desativado", "Topo com sulcos visíveis", "Estruturais"],
+          ["Top surfaces", "Topo liso, brilhante", "Padrão estético"],
+          ["All solid surfaces", "Todas as faces sólidas alisadas", "Peças multi-face"],
+          ["All surfaces", "Tudo alisado (muito lento)", "Casos especiais"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Largura linha topo", "Menor = melhor Ironing", "0,35–0,42 mm"],
+          ["Ironing Flow", "Excesso causa caroços", "10–15%"],
+          ["Velocidade Ironing", "Alta = ineficaz", "20–30 mm/s"],
+          ["Ironing Spacing", "Espaçamento entre passadas", "0,10–0,15 mm"],
+        ],
+      },
+      howTo: [
+        { step: "1. Prepare", path: "Aba Prepare", desc: "OrcaSlicer 2.4." },
+        { step: "2. Qualidade › Alisamento", path: "Processo › Qualidade › Alisamento", desc: "Expandir." },
+        { step: "3. Tipo", path: "Dropdown Tipo de Alisamento", desc: "Selecionar 'Top surfaces' como padrão." },
+      ],
+      example: {
+        piece: "Tampa de caixa em PLA",
+        config: "Top surfaces · Flow 12% · 25 mm/s · Spacing 0,12 mm",
+        result: "Topo com brilho quase espelhado, sem sulcos visíveis.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Caroços no topo", "Ironing Flow alto demais", "Reduzir para 10%"],
+          ["Topo ainda com sulcos", "Spacing largo demais", "Reduzir para 0,10 mm"],
+          ["Topo queimado", "Velocidade muito baixa", "Subir para 25 mm/s"],
+          ["Tempo total dobrou", "All surfaces selecionado", "Voltar para Top surfaces"],
+        ],
+      },
+      goldenRule:
+        "Use 'Top surfaces' para a maioria das peças. Desative para economizar tempo. 'All surfaces' só em casos especiais.",
+    },
+    {
+      name: "Alisamento › Contorno em Z",
+      value: "Checkbox (experimental)",
+      whatIs:
+        "Recurso EXPERIMENTAL que aplica Ironing acompanhando a CURVATURA da superfície em Z — alisa topos curvos (calotas, cúpulas) seguindo o ângulo da superfície. Sem isso, Ironing só funciona em topos planos.",
+      whyAdjust:
+        "Topos curvos (esferas, domos) ficam sempre 'escamados' porque cada camada tem topo planar diferente. Z Contour acompanha a curva, alisando como se fosse uma superfície contínua.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Desativado", "Ironing só em topos planos"],
+          ["Ativado", "Ironing acompanha curvas em Z (experimental)"],
+        ],
+      },
+      influences:
+        "Acabamento de topos curvos, tempo de impressão extra e estabilidade do recurso (ainda em beta).",
+      generates:
+        "Ativado gera topos curvos alisados pela primeira vez no Orca; desativado deixa topos curvos com 'escamas' de camadas.",
+      goldenRule:
+        "Mantenha desativado por padrão (experimental). Ative apenas se a peça tiver topo curvo crítico.",
+    },
+    {
+      name: "Alisamento › Contorno em Z habilitado",
+      value: "Checkbox",
+      whatIs:
+        "Habilita efetivamente o motor de Z Contour para processar as superfícies. É o 'liga/desliga' interno que controla se o Orca calcula o caminho curvo do Ironing. Funciona em conjunto com o checkbox anterior.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Motor de Z Contour calcula caminhos curvos"],
+          ["Desativado", "Motor desligado, Z Contour não atua mesmo se marcado acima"],
+        ],
+      },
+      influences:
+        "Funcionamento efetivo do Z Contour e tempo de processamento do fatiamento.",
+      generates:
+        "Ativado gera Ironing curvo funcional; desativado anula qualquer configuração de Z Contour.",
+      goldenRule:
+        "Ative em conjunto com 'Contorno em Z' quando quiser alisar topos curvos.",
+    },
+  ],
 };
