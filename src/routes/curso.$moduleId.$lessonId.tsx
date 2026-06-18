@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { modules } from "@/data/modules";
+import { modules, type Lesson, type Module, type ParamRow, type Integration, type ErrorItem } from "@/data/modules";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/curso/$moduleId/$lessonId")({
 });
 
 function LessonPage() {
-  const { module: m, lesson: l, prev, next } = Route.useLoaderData();
+  const { module: m, lesson: l, prev, next } = Route.useLoaderData() as { module: Module; lesson: Lesson; prev: Lesson | null; next: Lesson | null };
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -65,7 +65,7 @@ function LessonPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-balance">{l.title}</h1>
 
         <div className="mt-6 flex flex-wrap gap-2">
-          {l.topics.map((t) => (
+          {l.topics.map((t: string) => (
             <span key={t} className="text-xs rounded-md border border-border bg-card/60 px-2.5 py-1 text-muted-foreground">{t}</span>
           ))}
         </div>
@@ -73,7 +73,7 @@ function LessonPage() {
         {l.theory && l.theory.length > 0 && (
           <Section title="Conteúdo Teórico">
             <div className="space-y-4 text-lg leading-relaxed text-foreground/90">
-              {l.theory.map((p, i) => <p key={i}>{p}</p>)}
+              {l.theory.map((p: string, i: number) => <p key={i}>{p}</p>)}
             </div>
           </Section>
         )}
@@ -81,7 +81,7 @@ function LessonPage() {
         {l.integrations && l.integrations.length > 0 && (
           <Section title="Integrações Teóricas">
             <div className="space-y-3">
-              {l.integrations.map((it, i) => (
+              {l.integrations.map((it: Integration, i: number) => (
                 <div key={i} className="rounded-xl border-l-4 border-primary bg-card/50 p-5">
                   <div className="mono text-xs text-primary mb-1">{it.module}</div>
                   <div className="text-foreground/90">{it.text}</div>
@@ -120,7 +120,7 @@ function LessonPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {l.params.map((p, i) => (
+                  {l.params.map((p: ParamRow, i: number) => (
                     <tr key={i} className="hover:bg-card/40 transition">
                       <td className="px-5 py-3 border-b border-border font-medium">{p.param}</td>
                       <td className="px-5 py-3 border-b border-border mono text-primary">{p.value}</td>
@@ -153,7 +153,7 @@ function LessonPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {l.errors.map((e, i) => (
+                  {l.errors.map((e: ErrorItem, i: number) => (
                     <tr key={i}>
                       <td className="px-5 py-3 border-b border-border">{e.error}</td>
                       <td className="px-5 py-3 border-b border-border text-primary">{e.solution}</td>
@@ -168,7 +168,7 @@ function LessonPage() {
         {l.exercise && l.exercise.length > 0 && (
           <Section title="Exercício Prático Autônomo">
             <ol className="space-y-3">
-              {l.exercise.map((step, i) => (
+              {l.exercise.map((step: string, i: number) => (
                 <li key={i} className="flex items-start gap-4 rounded-xl border border-border bg-card/40 p-5">
                   <span className="mono text-primary shrink-0">{String(i + 1).padStart(2, "0")}</span>
                   <span>{step}</span>
