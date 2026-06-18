@@ -2560,4 +2560,347 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       },
     },
   ],
+
+  // ====================================================================
+  // TELA 22 — RESISTÊNCIA (Preenchimento avançado · Direção · Âncoras · Pontes)
+  // ====================================================================
+  "tela-22-resistencia-padroes-infill": [
+    // ───────────── MÓDULO 1: PREENCHIMENTO (INFILL) ─────────────
+    {
+      name: "Direção do preenchimento",
+      value: "45° (padrão)",
+      whatIs:
+        "Ângulo (em graus em relação ao eixo X da mesa) das linhas que formam o INFILL esparso. Define a orientação das 'vigas' internas da peça e, portanto, em qual direção ela é mais resistente.",
+      whyAdjust:
+        "Alinhar o infill com a direção da força aplicada pode aumentar a resistência da peça em até 50%. O ângulo certo distribui ou concentra a resistência onde você precisa.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0°", "Linhas horizontais (eixo X)", "Forças na direção X"],
+          ["45°", "Padrão — distribuição uniforme", "Uso geral"],
+          ["90°", "Linhas verticais (eixo Y)", "Forças na direção Y"],
+          ["45° / 135°", "Cruzado", "Forças em múltiplas direções"],
+          ["0° / 90°", "Grade", "Estruturas leves, decorativas"],
+        ],
+      },
+      influences: "Resistência mecânica por direção, eficiência de extrusão, aparência do infill quando visível.",
+      influencesList: [
+        "Direção da força: alinhe o infill com a carga principal",
+        "Padrão: Gyroid/Cubic dependem menos do ângulo; Grid depende muito",
+        "Geometria: retangulares se beneficiam de 0°/90°; circulares de 45°",
+        "Material: ABS contrai — alinhe ao eixo de menor contração",
+        "Visual: infill visível ganha estética com ângulos consistentes",
+      ],
+      generates: "Peça mais resistente na direção alinhada, mais fraca na perpendicular.",
+      generatesTable: {
+        headers: ["Configuração", "Resistência", "Quando usar"],
+        rows: [
+          ["0°", "Máxima em X, mínima em Y", "Carga horizontal"],
+          ["45°", "Uniforme em X e Y", "Uso geral, multidirecional"],
+          ["90°", "Máxima em Y, mínima em X", "Carga vertical"],
+          ["0°/90°", "Moderada em ambas", "Decorativo, estruturas leves"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste recomendado"],
+        rows: [
+          ["Padrão de infill", "Define sensibilidade ao ângulo", "Gyroid = direção menos crítica"],
+          ["Densidade do infill", "Direção certa multiplica densidade", "Alinhe ANTES de aumentar densidade"],
+          ["Paredes", "Infill não substitui paredes", "Manter ≥3–4 paredes"],
+          ["Alinhar ao modelo", "Automatiza a escolha", "Ativar em geometrias complexas"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Aba Prepare", desc: "Abra o OrcaSlicer 2.4" },
+        { step: "2", path: "Resistência › Preenchimento (Infill)", desc: "Expanda no painel esquerdo" },
+        { step: "3", path: "Direção do preenchimento", desc: "Digite o ângulo (ex.: 45)" },
+      ],
+      example: {
+        piece: "Suporte de parede que carrega 5kg verticalmente",
+        config: "Direção = 90° + Padrão Cubic + 30%",
+        result: "Linhas verticais alinhadas com a carga; suporte não flexiona",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Peça quebra na direção da carga", "Infill perpendicular à força", "Alinhar com a carga"],
+          ["Padrão visual irregular", "Direção não otimizada", "Usar 45° ou 0°/90°"],
+          ["Resistência inconsistente entre peças", "Direção mudou com a rotação no plate", "Padronizar direção"],
+          ["Tempo de impressão alto", "Direção gera muitos travels", "Tentar 0°/90°"],
+        ],
+      },
+      goldenRule:
+        "45° para a maioria. Alinhe com a força para resistência máxima. Infill alinhado = resistência garantida.",
+      summaryTable: {
+        headers: ["Tipo de peça", "Direção", "Motivo"],
+        rows: [
+          ["Suporte de parede", "90°", "Carga vertical"],
+          ["Prateleira", "0°", "Carga horizontal"],
+          ["Caixa/container", "45°", "Carga uniforme"],
+          ["Engrenagem", "45°", "Torque multidirecional"],
+          ["Tampa", "0°/90°", "Simplicidade"],
+          ["Figura orgânica", "45°", "Adaptação"],
+        ],
+      },
+    },
+    {
+      name: "Gabarito de rotação de preenchimento",
+      value: "Padrão",
+      whatIs:
+        "Define o PONTO DE REFERÊNCIA a partir do qual o ângulo de rotação do infill é aplicado. Pode ser um conjunto de regras predefinido ou uma lista personalizada de ângulos por camada.",
+      whyAdjust:
+        "Permite ROTACIONAR o infill camada a camada, criando intertravamento entre camadas (camada 1 a 45°, camada 2 a 135°, camada 3 a 45°...). Aumenta resistência sem aumentar densidade.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Padrão", "Sem rotação — usa Direção do preenchimento fixa", "Uso geral"],
+          ["Personalizado", "Lista de ângulos rotacionados por camada", "Peças estruturais, intertravamento"],
+        ],
+      },
+      influences: "Intertravamento entre camadas, isotropia da peça.",
+      generates: "Peça com resistência mais uniforme entre camadas quando personalizado.",
+      goldenRule: "Use padrão para a maioria. Personalize em peças críticas para reforço entre camadas.",
+    },
+    {
+      name: "Comprimento máximo da âncora de preenchimento",
+      value: "12 mm (padrão)",
+      whatIs:
+        "Comprimento MÁXIMO permitido para uma 'âncora' — pequena extensão da linha de infill que se prolonga sobre a parede interna para ancorá-la, evitando que pontas soltas do infill levantem.",
+      whyAdjust:
+        "Sem âncoras, a ponta da linha de infill termina no ar sobre a parede e pode 'curvar para cima' (curling). Âncoras grudam a ponta na parede.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0 mm", "Sem âncoras", "Peças leves/decorativas"],
+          ["5–10 mm", "Âncoras moderadas", "Uso geral"],
+          ["10–20 mm", "Âncoras longas", "Peças que precisam de máxima ancoragem"],
+        ],
+      },
+      influences: "Estabilidade das pontas de infill, conexão infill↔parede, gasto leve de material extra.",
+      generates: "Infill sem curling nas pontas com âncoras adequadas.",
+      goldenRule: "5–12mm para a maioria. Âncoras conectam o infill à parede.",
+    },
+    {
+      name: "Comprimento da âncora de preenchimento",
+      value: "2,5 mm (padrão)",
+      whatIs:
+        "Comprimento ALVO (preferido) das âncoras — o slicer tenta usar este valor, limitado ao máximo definido acima.",
+      whyAdjust: "Define o tamanho 'normal' das âncoras. Pequeno = economia; grande = mais segurança contra curling.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0,5–1,0 mm", "Âncoras curtas, mínimo material extra"],
+          ["1,0–2,5 mm", "Padrão"],
+          ["2,5–3,0 mm", "Âncoras longas, máxima ancoragem"],
+        ],
+      },
+      influences: "Estabilidade da ponta, material extra usado.",
+      generates: "Pontas firmemente ancoradas com valor adequado.",
+      goldenRule: "2–3mm cobre a maioria. Diminua só em miniaturas.",
+    },
+    {
+      name: "Padrão de preenchimento sólido interno",
+      value: "Rectilinear (padrão)",
+      whatIs:
+        "Padrão usado especificamente em áreas de INFILL SÓLIDO INTERNO — camadas 100% preenchidas entre o infill esparso e as cascas superiores/inferiores (não é o padrão do infill esparso).",
+      whyAdjust:
+        "O padrão sólido interno influencia adesão entre camadas sólidas e padrão de stress nas zonas mais densas da peça.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Rectilinear", "Linhas retas, padrão clássico", "Uso geral, boa resistência"],
+          ["Concentric", "Acompanha o perímetro", "Peças com furos, formas circulares"],
+          ["Aligned Rectilinear", "Linhas alinhadas todas iguais", "Quando força só em uma direção"],
+          ["Hilbert Curve", "Curva fractal contínua", "Estética/visual interno"],
+          ["Monotonic Line", "Linhas em monotônico", "Acabamento mais uniforme"],
+        ],
+      },
+      influences: "Adesão entre camadas sólidas internas, distribuição de tensão, integração com pontes internas.",
+      generates: "Camadas sólidas internas com padrão geométrico distinto.",
+      goldenRule: "Rectilinear para a maioria. Concentric em formas redondas/furadas.",
+    },
+    {
+      name: "Direção do preenchimento sólido",
+      value: "45°",
+      whatIs:
+        "Ângulo aplicado especificamente ao infill SÓLIDO interno (não ao esparso). Pode ser diferente do ângulo do infill esparso.",
+      whyAdjust:
+        "Permite combinar direções diferentes: esparso a 45° + sólido a 0°, criando intertravamento camada a camada.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0°", "Linhas horizontais"],
+          ["45°", "Padrão diagonal"],
+          ["90°", "Linhas verticais"],
+        ],
+      },
+      influences: "Distribuição de tensão nas regiões sólidas, intertravamento com o infill esparso.",
+      generates: "Padrões sólidos alinhados de acordo com a escolha.",
+      goldenRule: "45° na maioria. Use outro ângulo se quiser cruzar com o esparso.",
+    },
+    {
+      name: "Gabarito de rotação de preenchimento sólido",
+      value: "Padrão",
+      whatIs:
+        "Equivalente ao gabarito do infill esparso, mas aplicado APENAS às camadas sólidas. Permite rotacionar o sólido camada a camada.",
+      whyAdjust: "Cria intertravamento camada-a-camada nas regiões sólidas, aumentando resistência.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Padrão", "Sem rotação"],
+          ["Personalizado", "Lista de ângulos alternados por camada"],
+        ],
+      },
+      influences: "Intertravamento entre camadas sólidas.",
+      generates: "Sólido com resistência mais uniforme quando personalizado.",
+      goldenRule: "Padrão para a maioria; personalize em peças críticas.",
+    },
+    {
+      name: "Aplicar preenchimento de vão",
+      value: "Ativado (padrão)",
+      whatIs:
+        "Ativa o GAP FILL — preenchimento automático de pequenos vazios que sobram entre paredes (regiões finas demais para uma parede inteira, mas que ficariam vazias sem preenchimento).",
+      whyAdjust:
+        "Sem gap fill, áreas estreitas entre paredes ficam ocas, comprometendo resistência e qualidade. Com gap fill, o slicer adiciona linhas curtas para fechar essas lacunas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Preenche vãos pequenos automaticamente", "Uso geral, peças estruturais"],
+          ["Desativado", "Deixa vãos vazios → mais rápido", "Decorativos, velocidade"],
+        ],
+      },
+      influences: "Resistência, fechamento de regiões finas, presença de blobs em micro-regiões.",
+      generates: "Peças totalmente fechadas e sólidas quando ativado.",
+      goldenRule: "Ative sempre, exceto em decorativos rápidos.",
+    },
+    {
+      name: "Filtrar vazios pequenos",
+      value: "Ativado",
+      whatIs:
+        "Remove vazios MUITO pequenos identificados pelo gap fill que não fariam diferença estrutural, evitando o tempo extra e os blobs gerados pelo preenchimento dessas regiões minúsculas.",
+      whyAdjust:
+        "Vazios minúsculos preenchidos podem gerar pings, blobs e excesso. Filtrá-los simplifica o G-code.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Ignora vãos minúsculos"],
+          ["Desativado", "Tenta preencher todos os vãos"],
+        ],
+      },
+      influences: "Tempo, defeitos em micro-regiões.",
+      generates: "Menos blobs e impressão mais limpa quando ativado.",
+      goldenRule: "Mantenha ativado por padrão.",
+    },
+    {
+      name: "Sobreposição de preenchimento/parede",
+      value: "20–25% (padrão)",
+      whatIs:
+        "Quanto as linhas do INFILL ESPARSO avançam para DENTRO da parede mais interna, ancorando o infill à parede. Diferente da sobreposição topo/base — esta é específica do esparso.",
+      whyAdjust:
+        "Sem sobreposição, infill e parede só se encostam — podem separar. Com sobreposição, o infill 'morde' a parede e se ancora.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0–10%", "Pouca conexão, risco de separação", "Decorativos sem carga"],
+          ["15–25%", "Padrão — boa ancoragem", "Uso geral"],
+          ["30–40%", "Forte ancoragem, pode marcar parede externa", "Estruturais sob carga"],
+        ],
+      },
+      influences: "Ancoragem infill↔parede, qualidade da parede externa, lacunas internas.",
+      generates: "Peça com infill bem ancorado às paredes com 20%.",
+      goldenRule: "20% para a maioria. A sobreposição conecta o infill à parede.",
+    },
+
+    // ───────────── MÓDULO 2: AVANÇADO ─────────────
+    {
+      name: "Avançado › Alinhar direção do preenchimento ao modelo",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Faz o slicer ROTACIONAR automaticamente a direção do infill em cada ilha (região contínua de infill) para se alinhar à geometria local — em vez de usar um ângulo fixo global.",
+      whyAdjust:
+        "Em peças com geometria complexa/orgânica, um ângulo fixo não é ótimo em todas as regiões. O alinhamento automático otimiza região por região.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Slicer adapta direção a cada região", "Peças orgânicas, complexas"],
+          ["Desativado", "Usa Direção do preenchimento global", "Peças simples/geométricas"],
+        ],
+      },
+      influences: "Eficiência estrutural do infill em peças complexas.",
+      generates: "Resistência mais uniforme em geometrias variadas quando ativado.",
+      goldenRule: "Ative para geometrias complexas. Mantenha desativado para peças geométricas simples.",
+    },
+    {
+      name: "Avançado › Inserir camadas sólidas",
+      value: "0 (padrão)",
+      whatIs:
+        "Insere CAMADAS 100% SÓLIDAS adicionais em intervalos regulares no meio do infill esparso, criando 'reforços horizontais' periódicos que aumentam dramaticamente a rigidez vertical.",
+      whyAdjust:
+        "Peças longas verticalmente com infill baixo podem ceder. Camadas sólidas intermediárias funcionam como 'lajes' que enrijecem a estrutura.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0", "Sem camadas extras", "Padrão, uso geral"],
+          ["A cada 2–3mm", "Reforço periódico", "Peças estruturais altas"],
+          ["A cada 1mm ou menos", "Reforço intenso", "Alta resistência vertical"],
+        ],
+      },
+      influences: "Rigidez vertical, peso, tempo de impressão.",
+      generates: "Peça muito mais rígida verticalmente; impressão mais lenta.",
+      goldenRule: "0 para uso geral. Use em peças altas e finas que precisam de rigidez vertical.",
+    },
+    {
+      name: "Avançado › Direção de preenchimento de ponte externa",
+      value: "0° (auto)",
+      whatIs:
+        "Ângulo das linhas de extrusão que formam a PONTE EXTERNA. Por padrão, o slicer detecta automaticamente o melhor ângulo (perpendicular ao vão).",
+      whyAdjust:
+        "A direção da ponte é crítica — linhas precisam atravessar o vão pela menor distância possível. Ângulo errado = ponte falha.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0° (auto)", "Slicer escolhe melhor ângulo", "Recomendado"],
+          ["Valor fixo", "Força um ângulo específico", "Quando o automático erra"],
+        ],
+      },
+      influences: "Sucesso da ponte, comprimento de cada linha de ponte.",
+      generates: "Ponte que atravessa o menor caminho possível.",
+      goldenRule: "Deixe em 0° (auto). Só altere se a ponte estiver falhando com ângulo automático.",
+    },
+    {
+      name: "Avançado › Direção de preenchimento de ponte interna",
+      value: "0° (auto)",
+      whatIs:
+        "Ângulo das pontes INTERNAS (sobre infill esparso, formando a base do topo). Mesmo princípio das externas, mas para pontes que não são visíveis.",
+      whyAdjust: "Define quão eficiente é a 'laje' interna que apoia o topo sólido.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0° (auto)", "Slicer escolhe automaticamente"],
+          ["Valor fixo", "Força ângulo específico"],
+        ],
+      },
+      influences: "Qualidade do apoio do topo sólido, pillowing.",
+      generates: "Topo sólido bem apoiado com auto.",
+      goldenRule: "Deixe em auto. Altere apenas em casos específicos de pillowing.",
+    },
+    {
+      name: "Avançado › Ângulo relativo de ponte (Relative bridge angle)",
+      value: "Desativado",
+      whatIs:
+        "Quando ATIVADO, os ângulos das pontes (externa e interna) são interpretados como RELATIVOS à orientação local da geometria, em vez de absolutos em relação à mesa.",
+      whyAdjust:
+        "Em peças rotacionadas no plate ou com pontes em ângulos não-cardinais, o ângulo relativo se adapta à peça em vez de à máquina — mantém a estratégia de ponte consistente independente da rotação.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Ângulo medido em relação à geometria da ponte"],
+          ["Desativado", "Ângulo medido em relação ao eixo X da mesa"],
+        ],
+      },
+      influences: "Consistência da estratégia de ponte ao rotacionar a peça.",
+      generates: "Pontes sempre cruzando o vão de forma ótima, independente da rotação.",
+      goldenRule: "Ative se rotaciona peças no plate e quer manter o comportamento da ponte.",
+    },
+  ],
 };
