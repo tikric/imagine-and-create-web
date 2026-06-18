@@ -184,7 +184,7 @@ function DeepDive() {
       ],
     },
     {
-      tag: "MOD.06",
+      tag: "MOD.24",
       title: "Pós-processamento profissional",
       bullets: [
         "Lixamento progressivo (grits 120 → 2000) e primer filler",
@@ -193,7 +193,7 @@ function DeepDive() {
       ],
     },
     {
-      tag: "MOD.07",
+      tag: "MOD.06",
       title: "Design paramétrico para impressão",
       bullets: [
         "Tolerâncias reais para snap-fit, press-fit e roscas impressas",
