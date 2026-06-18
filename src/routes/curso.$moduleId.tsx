@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { modules } from "@/data/modules";
+import { modules, type Lesson } from "@/data/modules";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 
 export const Route = createFileRoute("/curso/$moduleId")({
@@ -74,7 +74,7 @@ function ModulePage() {
         </div>
 
         <ol className="space-y-3">
-          {m.lessons.map((l, i) => (
+          {m.lessons.map((l: Lesson, i: number) => (
             <li key={i} className="group rounded-xl border border-border bg-card/40 hover:bg-card hover:border-primary/40 transition p-6">
               <div className="flex items-start gap-6">
                 <div className="mono text-primary text-lg shrink-0">
@@ -86,7 +86,7 @@ function ModulePage() {
                     <span className="mono text-xs text-muted-foreground shrink-0">{l.duration}</span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {l.topics.map((t) => (
+                    {l.topics.map((t: string) => (
                       <span key={t} className="text-xs rounded-md border border-border bg-background/60 px-2.5 py-1 text-muted-foreground">
                         {t}
                       </span>
