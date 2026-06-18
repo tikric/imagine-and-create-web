@@ -184,7 +184,7 @@ function DeepDive() {
       ],
     },
     {
-      tag: "MOD.06",
+      tag: "MOD.24",
       title: "Pós-processamento profissional",
       bullets: [
         "Lixamento progressivo (grits 120 → 2000) e primer filler",
@@ -193,12 +193,12 @@ function DeepDive() {
       ],
     },
     {
-      tag: "MOD.07",
-      title: "Design paramétrico para impressão",
+      tag: "MOD.06 + MOD.13",
+      title: "Engenharia mecânica e design para impressão",
       bullets: [
-        "Tolerâncias reais para snap-fit, press-fit e roscas impressas",
-        "Orientação e divisão de peças para eliminar suportes na origem",
-        "Modelagem paramétrica (Fusion / FreeCAD) com foco em manufaturabilidade FDM",
+        "Anisotropia e orientação de carga: por que a peça quebra em Z",
+        "Tolerâncias reais para snap-fit, press-fit e roscas (h7/g6 impressos)",
+        "4 paredes + 25% Gyroid: a receita estrutural validada",
       ],
     },
     {
