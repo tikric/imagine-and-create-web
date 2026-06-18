@@ -16,6 +16,9 @@ export type Lesson = {
   economy?: string;
   finance?: string;
   exercise?: string[];
+  deepDive?: string[];
+  checklist?: string[];
+  caseStudy?: string;
 };
 
 export type Module = {
