@@ -2723,7 +2723,6 @@ export const modules: Module[] = [
           ],
           goldenRule: "Calibre Input Shaper antes de mexer em Jerk. Sem IS, manter Jerk em 7–9 mm/s é o ponto seguro para Klipper/Marlin.",
         }),
-    ],
       L(11, "tela-41-suporte-ativar-tipo", "Tela 11 — Suporte: Ativar, Tipo (Árvore), Estilo e Jangada", "15min",
         ["Aba Suporte", "Ativar suporte", "Tipo: Árvore", "Jangada", "Filamento de suporte"], {
           screens: [{
