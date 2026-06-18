@@ -74,26 +74,33 @@ function ModulePage() {
         </div>
 
         <ol className="space-y-3">
-          {m.lessons.map((l: Lesson, i: number) => (
-            <li key={i} className="group rounded-xl border border-border bg-card/40 hover:bg-card hover:border-primary/40 transition p-6">
-              <div className="flex items-start gap-6">
-                <div className="mono text-primary text-lg shrink-0">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline justify-between gap-4 flex-wrap mb-3">
-                    <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition">{l.title}</h3>
-                    <span className="mono text-xs text-muted-foreground shrink-0">{l.duration}</span>
+          {m.lessons.map((l: Lesson) => (
+            <li key={l.id}>
+              <Link
+                to="/curso/$moduleId/$lessonId"
+                params={{ moduleId: m.id, lessonId: l.id }}
+                className="group block rounded-xl border border-border bg-card/40 hover:bg-card hover:border-primary/40 transition p-6"
+              >
+                <div className="flex items-start gap-6">
+                  <div className="mono text-primary text-lg shrink-0">
+                    {String(l.number).padStart(2, "0")}
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {l.topics.map((t: string) => (
-                      <span key={t} className="text-xs rounded-md border border-border bg-background/60 px-2.5 py-1 text-muted-foreground">
-                        {t}
-                      </span>
-                    ))}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-4 flex-wrap mb-3">
+                      <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition">{l.title}</h3>
+                      <span className="mono text-xs text-muted-foreground shrink-0">{l.duration}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {l.topics.map((t: string) => (
+                        <span key={t} className="text-xs rounded-md border border-border bg-background/60 px-2.5 py-1 text-muted-foreground">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
+                  <div className="text-primary opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition shrink-0 mt-1">→</div>
                 </div>
-              </div>
+              </Link>
             </li>
           ))}
         </ol>
