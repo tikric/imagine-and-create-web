@@ -1390,4 +1390,505 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         "Ative em conjunto com 'Contorno em Z' quando quiser alisar topos curvos.",
     },
   ],
+
+  // ====================================================================
+  // TELA 13 — RESISTÊNCIA (Gerador de paredes · Paredes/Superfícies · Pontes)
+  // ====================================================================
+  "tela-13-resistencia-gerador-paredes": [
+    // ───────────── MÓDULO 1: GERADOR DE PAREDES ─────────────
+    {
+      name: "Gerador de paredes",
+      value: "Clássico | Arachne",
+      whatIs:
+        "Algoritmo que o OrcaSlicer usa para gerar as trajetórias das paredes. Clássico desenha com largura de linha fixa (como um pincel de tamanho único); Arachne ajusta a largura dinamicamente para preencher qualquer espaço (como um pincel que muda de tamanho).",
+      whyAdjust:
+        "Define a qualidade das paredes, a precisão dos detalhes finos, a resistência estrutural e o tempo de impressão. É a decisão fundamental de como a peça será 'desenhada' camada a camada.",
+      optionsTable: {
+        headers: ["Opção", "Descrição", "Melhor para"],
+        rows: [
+          ["Clássico (Classic)", "Largura de linha fixa, caminhos constantes e previsíveis", "Peças simples, estruturais, furos com dimensão precisa"],
+          ["Arachne", "Largura de linha variável, adapta-se ao espaço disponível", "Detalhes finos, textos em relevo, engrenagens, paredes <1mm"],
+        ],
+      },
+      influences:
+        "Espessura mínima de paredes preenchíveis, qualidade de detalhes finos, previsibilidade dimensional, velocidade de fatiamento e visual da parede.",
+      influencesList: [
+        "Espessura das paredes: Clássico falha em paredes < largura do bico; Arachne ajusta",
+        "Detalhes finos: Clássico deixa lacunas em textos; Arachne preenche tudo",
+        "Previsibilidade: Clássico = caminhos sempre iguais; Arachne = caminhos variam",
+        "Velocidade: Clássico geralmente mais rápido; Arachne mais lento em geometria complexa",
+        "Visual: Clássico uniforme com possíveis lacunas; Arachne sem lacunas mas largura variável",
+      ],
+      generates:
+        "Clássico produz paredes uniformes mas pode deixar lacunas finas; Arachne elimina lacunas mas pode mostrar variação de largura.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado visual", "Quando usar"],
+        rows: [
+          ["Clássico", "Paredes uniformes, possíveis lacunas em paredes finas", "Peças simples, estruturas, furos precisos"],
+          ["Arachne", "Paredes sem lacunas, largura variável visível", "Peças detalhadas, textos, miniaturas"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação com Gerador", "Ajuste recomendado"],
+        rows: [
+          ["Largura da linha", "Arachne substitui dinamicamente", "Manter valores padrão"],
+          ["Parede precisa", "Funciona com ambos", "Ativar para Arachne"],
+          ["Evitar atravessar paredes", "Funciona com ambos", "Ativar para qualidade"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Aba Prepare", desc: "Abra o OrcaSlicer 2.4 na aba Prepare" },
+        { step: "2", path: "Resistência › Gerador de paredes", desc: "Expanda no painel esquerdo" },
+        { step: "3", path: "Gerador de paredes", desc: "Escolha Clássico ou Arachne" },
+      ],
+      example: {
+        piece: "Chaveiro com nome em relevo de 1mm",
+        config: "Arachne",
+        result: "Letras perfeitas, sem lacunas, totalmente preenchidas",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Lacunas em paredes finas", "Clássico com paredes <0.4mm", "Mudar para Arachne"],
+          ["Textos ilegíveis", "Clássico não preenche letras finas", "Mudar para Arachne"],
+          ["Largura inconsistente", "Arachne em peça simples", "Mudar para Clássico"],
+          ["Fatiamento lento", "Arachne em peça complexa", "Aceitar ou usar Clássico"],
+        ],
+      },
+      goldenRule:
+        "Arachne para detalhes, textos e paredes finas. Clássico para estruturas simples e previsíveis. A escolha certa elimina lacunas.",
+      summaryTable: {
+        title: "Decisão rápida por tipo de peça",
+        headers: ["Tipo de peça", "Gerador", "Motivo"],
+        rows: [
+          ["Textos, logotipos", "Arachne", "Preenche letras finas"],
+          ["Miniaturas", "Arachne", "Detalhes complexos"],
+          ["Engrenagens", "Arachne", "Dentes precisos sem lacunas"],
+          ["Caixas, estruturas", "Clássico", "Previsível"],
+          ["Paredes <1mm", "Arachne", "Evita lacunas"],
+          ["Furos precisos", "Clássico", "Dimensões controladas"],
+        ],
+      },
+    },
+
+    // ───────────── MÓDULO 2: PAREDES E SUPERFÍCIES ─────────────
+    {
+      name: "Ordem de impressão das paredes",
+      value: "Interior/Exterior (padrão)",
+      whatIs:
+        "Define a sequência em que paredes externas e internas são impressas. A externa é a superfície visível; a interna dá suporte estrutural. A ordem define qual é priorizada em qualidade e precisão.",
+      whyAdjust:
+        "Impacta diretamente a qualidade visual (parede externa lisa), a resistência e a precisão dimensional da peça.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Interior/Exterior", "Internas primeiro, externa por último apoiada nelas", "Melhor qualidade visual e dimensional"],
+          ["Exterior/Interior", "Externa primeiro, internas reforçam por dentro", "Melhor resistência estrutural"],
+          ["Exterior/Interior/Exterior", "Alternado", "Mecanismos com tolerâncias precisas"],
+        ],
+      },
+      influences: "Qualidade visual da parede externa, resistência da peça e precisão dimensional.",
+      influencesList: [
+        "Visual: Interior/Exterior deixa parede externa mais lisa",
+        "Resistência: Exterior/Interior dá melhor ancoragem entre paredes",
+        "Precisão: Interior/Exterior produz dimensões mais previsíveis",
+      ],
+      generates: "Interior/Exterior = peça mais bonita e precisa. Exterior/Interior = peça mais forte.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Interior/Exterior", "Parede externa lisa e precisa", "Peças estéticas, visíveis"],
+          ["Exterior/Interior", "Parede externa menos lisa, mais resistente", "Peças estruturais"],
+        ],
+      },
+      goldenRule: "Interior/Exterior para peças bonitas. Exterior/Interior para peças fortes. A ordem define a prioridade.",
+    },
+    {
+      name: "Preenchimento primeiro",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Faz o preenchimento (infill) ser impresso ANTES das paredes da mesma camada, em vez de depois. Inverte a sequência clássica parede→infill.",
+      whyAdjust:
+        "Pode reduzir movimentos de deslocamento (travel) e acelerar a impressão em peças com infill denso, ao custo de qualidade nas paredes externas (o infill pode 'empurrar' a parede).",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Infill impresso primeiro", "Peças com infill muito denso, foco em velocidade"],
+          ["Desativado", "Paredes impressas primeiro", "Uso geral, melhor qualidade visual"],
+        ],
+      },
+      influences: "Qualidade da parede externa, tempo de impressão e quantidade de travel.",
+      generates: "Ativado = mais rápido mas pode marcar a parede; desativado = parede mais limpa.",
+      goldenRule: "Desative para qualidade. Ative para velocidade em peças densas.",
+    },
+    {
+      name: "Direção da volta da parede",
+      value: "Anti-horário (padrão)",
+      whatIs:
+        "Define o sentido (horário ou anti-horário) em que o bico percorre cada parede. O sentido afeta como o plástico é 'puxado' e depositado, influenciando a textura final.",
+      whyAdjust:
+        "Pequenas variações de textura e brilho podem aparecer conforme o sentido; o padrão anti-horário foi calibrado pela equipe do OrcaSlicer.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Anti-horário", "Padrão, melhor visual na maioria das máquinas"],
+          ["Horário", "Alternativo, testar caso a parede saia com defeito direcional"],
+        ],
+      },
+      influences: "Textura e direção de eventuais marcas visuais na parede externa.",
+      generates: "Mudança sutil na aparência das camadas; raramente perceptível.",
+      goldenRule: "Mantenha anti-horário. Inverta apenas se notar artefato direcional consistente.",
+    },
+    {
+      name: "Taxa de fluxo em superfície superior",
+      value: "1,00 (padrão)",
+      whatIs:
+        "Multiplicador aplicado ao fluxo de extrusão APENAS nas camadas que formam a superfície superior visível da peça. Ajuste fino para o acabamento do 'teto'.",
+      whyAdjust:
+        "A superfície superior é o que o olho vê primeiro. Excesso de fluxo gera bolhas/excesso; pouco fluxo gera lacunas/listras visíveis.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,90–0,95", "Menos plástico", "Topo com excesso, blobs, sobreposição"],
+          ["1,00", "Padrão", "Uso geral, calibração correta"],
+          ["1,05–1,10", "Mais plástico", "Topo com lacunas, listras, brilho irregular"],
+        ],
+      },
+      influences: "Aparência do topo: brilho, lacunas, excesso de material, marcas de Ironing.",
+      generates: "Topo perfeitamente liso (valor correto) ou com defeitos (valor errado).",
+      goldenRule: "1,00 para a maioria. 0,95 se sobrar plástico. 1,05 se faltar plástico.",
+    },
+    {
+      name: "Taxa de fluxo em superfície inferior",
+      value: "1,00 (padrão)",
+      whatIs:
+        "Multiplicador de fluxo aplicado às camadas inferiores (a base da peça que toca a mesa ou primeiras camadas após brim).",
+      whyAdjust:
+        "A base define adesão e aparência inferior. Excesso causa 'pé de elefante' e sobreposição; falta gera lacunas que comprometem adesão.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,95", "Menos plástico", "Base com excesso, pé de elefante"],
+          ["1,00", "Padrão", "Uso geral"],
+          ["1,05", "Mais plástico", "Base com lacunas, má adesão"],
+        ],
+      },
+      influences: "Qualidade da primeira/última camada inferior, adesão e aparência da base.",
+      generates: "Base sólida e limpa (correto) ou com defeitos visíveis (errado).",
+      goldenRule: "1,00 padrão. Ajuste em ±0,05 conforme a base sai com excesso ou lacuna.",
+    },
+    {
+      name: "Definir outros fluxos",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Habilita o ajuste individual de fluxo para tipos específicos de linha (paredes, infill, suporte etc.) separadamente do fluxo global.",
+      whyAdjust:
+        "Permite calibração fina por tipo de linha — útil quando uma região específica (ex: infill) sai com excesso enquanto o restante está correto.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Libera campos de fluxo por tipo de linha"],
+          ["Desativado", "Usa apenas o fluxo padrão global"],
+        ],
+      },
+      influences: "Granularidade do controle de fluxo na peça.",
+      generates: "Calibração mais precisa quando ativado; mais simples quando desativado.",
+      goldenRule: "Ative apenas se já calibrou o fluxo global e precisa de ajustes pontuais.",
+    },
+    {
+      name: "Parede única na primeira camada",
+      value: "Desativado",
+      whatIs:
+        "Força a primeira camada a usar APENAS UMA parede ao redor do contorno, em vez do número normal de paredes definido na peça.",
+      whyAdjust:
+        "Melhora adesão da primeira camada e reduz pé-de-elefante, especialmente em peças com base de detalhe fino.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Uma única parede na primeira camada → melhor adesão, menos pé-de-elefante"],
+          ["Desativado", "Número normal de paredes desde a camada 1"],
+        ],
+      },
+      influences: "Adesão à mesa, formação de pé-de-elefante, precisão dimensional da base.",
+      generates: "Base mais limpa e bem aderida com o recurso ativo.",
+      goldenRule: "Ative para peças com base detalhada ou histórico de pé-de-elefante.",
+    },
+    {
+      name: "Parede única em superfícies superiores",
+      value: "Desativado",
+      whatIs:
+        "Usa apenas UMA parede ao redor das camadas que formam a superfície superior, melhorando o fechamento do topo.",
+      whyAdjust:
+        "Uma parede única no topo se acomoda melhor sobre o infill, evitando 'pillowing' (deformação por bolhas de ar) e melhorando o acabamento.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Uma parede no topo → topo mais liso"],
+          ["Desativado", "Número normal de paredes no topo"],
+        ],
+      },
+      influences: "Acabamento do topo, pillowing, integração com Ironing.",
+      generates: "Topo visivelmente mais uniforme quando ativado.",
+      goldenRule: "Ative em peças com infill baixo (<25%) e topo visível.",
+    },
+    {
+      name: "Limiar de parede única",
+      value: "300% (padrão)",
+      whatIs:
+        "Espessura máxima (em % da largura da linha) para que uma região seja impressa com UMA ÚNICA parede em vez de duas paredes finas. Acima do limiar, o OrcaSlicer cria duas paredes; abaixo, mantém uma só.",
+      whyAdjust:
+        "Em paredes muito finas, duas paredes lado a lado podem deixar uma fenda no meio. Uma parede única elimina essa fenda.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["200%", "Apenas paredes muito finas usam linha única", "Peças com detalhes finos isolados"],
+          ["300%", "Padrão", "Uso geral"],
+          ["400%", "Mais regiões usam linha única", "Peças com muitas paredes finas"],
+        ],
+      },
+      influences: "Existência de fendas em paredes finas, resistência e tempo de impressão.",
+      generates: "Paredes finas sólidas sem fenda central quando bem dimensionado.",
+      goldenRule: "300% para a maioria. Aumente para peças com muitas regiões finas.",
+    },
+    {
+      name: "Evitar atravessar paredes",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Faz o bico CONTORNAR paredes já impressas durante movimentos de deslocamento (travel), em vez de passar por cima delas.",
+      whyAdjust:
+        "Quando o bico passa sobre uma parede já impressa, pode raspar, derrubar ou marcar a superfície. Evitar travessias preserva a qualidade.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Bico desvia das paredes → qualidade superior", "Peças com paredes finas, foco em visual"],
+          ["Desativado", "Bico atravessa livremente → mais rápido", "Peças robustas, foco em velocidade"],
+        ],
+      },
+      influences: "Qualidade superficial, tempo de impressão, comprimento dos travels.",
+      generates: "Paredes sem marcas de raspagem quando ativado; impressão mais rápida quando desativado.",
+      goldenRule: "Ative para qualidade. Desative para velocidade. Paredes finas merecem o desvio.",
+    },
+    {
+      name: "Compensação de fluxo de área pequena (beta)",
+      value: "Desativado",
+      whatIs:
+        "Recurso beta que detecta áreas muito pequenas (<1mm²) e reduz automaticamente o fluxo nelas para evitar excesso de plástico/blobs.",
+      whyAdjust:
+        "Em áreas minúsculas, o tempo de extrusão é tão curto que o fluxo configurado deposita material em excesso. A compensação ajusta para evitar 'blobs'.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Compensação automática em áreas <1mm²"],
+          ["Desativado", "Fluxo normal em todas as áreas"],
+        ],
+      },
+      influences: "Qualidade de detalhes finos, formação de blobs em pequenas regiões.",
+      generates: "Detalhes finos mais limpos quando ativado.",
+      goldenRule: "Ative para peças com detalhes pequenos (miniaturas). Desative em peças grandes.",
+    },
+
+    // ───────────── MÓDULO 3: PONTES ─────────────
+    {
+      name: "Pontes › Taxa de fluxo em ponte",
+      value: "1,00 (padrão)",
+      whatIs:
+        "Multiplicador de fluxo aplicado quando o OrcaSlicer detecta uma PONTE EXTERNA — linha que cruza um vão sem suporte abaixo. Controla quanto plástico é depositado por mm de ponte.",
+      whyAdjust:
+        "A ponte é esticada entre duas paredes. Excesso = linha pesada que cai/curva; falta = linha fina que rompe. O fluxo correto deixa a ponte tensionada e firme.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,85–0,90", "Linha mais fina, mais esticada", "Vãos longos (>50mm)"],
+          ["0,95–1,00", "Padrão", "Vãos médios (30–50mm)"],
+          ["1,00–1,05", "Linha mais grossa, mais reforçada", "Vãos curtos (<30mm)"],
+        ],
+      },
+      influences: "Sucesso da ponte (curva ou estica), aparência inferior, necessidade de suporte.",
+      influencesList: [
+        "Comprimento do vão: longos pedem fluxo menor; curtos toleram mais",
+        "Material: PLA 0,90–1,00 · PETG 0,95–1,00 · ABS 0,85–0,95",
+        "Velocidade: fluxo menor com velocidade maior, e vice-versa",
+        "Resfriamento: bom cooling permite fluxo normal; cooling fraco exige fluxo menor",
+      ],
+      generates: "Ponte tensionada e reta (correto) ou ponte caída/rompida (errado).",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando usar"],
+        rows: [
+          ["Fluxo 0,85", "Ponte esticada, vãos longos vencidos", "Vãos >50mm"],
+          ["Fluxo 1,00", "Ponte sólida padrão", "Vãos 30–50mm"],
+          ["Fluxo 1,05", "Ponte reforçada", "Vãos curtos <30mm"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação com Ponte", "Ajuste recomendado"],
+        rows: [
+          ["Velocidade da ponte", "Inversamente proporcional ao fluxo", "30–50 mm/s"],
+          ["Cooling Fan", "Essencial para solidificar rápido", "100% durante pontes"],
+          ["Largura da linha › Ponte", "Fluxo × largura definem a corda", "Ajustar em conjunto"],
+        ],
+      },
+      example: {
+        piece: "Telhado de uma casinha com vão de 60mm sem suporte",
+        config: "Fluxo 0,88 + Cooling 100% + Velocidade 35 mm/s",
+        result: "Ponte esticada, reta, sem curvatura — atravessa o vão limpo",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Ponte caída no meio", "Fluxo alto demais", "Reduzir para 0,85–0,90"],
+          ["Ponte rompida", "Fluxo baixo demais", "Aumentar para 1,00"],
+          ["Linhas separadas na ponte", "Densidade ou largura inadequadas", "Revisar densidade externa"],
+        ],
+      },
+      goldenRule: "0,85 para vãos longos, 1,00 para vãos médios. O fluxo da ponte define se a linha estica ou cai.",
+    },
+    {
+      name: "Pontes › Taxa de fluxo em ponte interna",
+      value: "1,00 (padrão)",
+      whatIs:
+        "Multiplicador de fluxo para PONTES INTERNAS — pontes não visíveis, geralmente formadas sobre infill esparso para apoiar camadas superiores sólidas.",
+      whyAdjust:
+        "Ponte interna não precisa ser tão estética quanto a externa, mas precisa de estrutura. Ajuste separado permite reforçar internamente sem afetar o visual externo.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0,90", "Mais fina", "Quando há excesso visível por dentro"],
+          ["1,00", "Padrão", "Uso geral"],
+          ["1,10", "Mais grossa", "Quando topo de infill afunda"],
+        ],
+      },
+      influences: "Solidez da base do topo, pillowing, integração entre infill e top.",
+      generates: "Topo mais firme com fluxo correto da ponte interna.",
+      goldenRule: "1,00 padrão. Aumente se o topo apresentar pillowing.",
+    },
+    {
+      name: "Pontes › Densidade de ponte externa",
+      value: "100% (padrão)",
+      whatIs:
+        "Define a quantidade de linhas paralelas usadas para formar a PONTE EXTERNA. 100% = linhas encostadas; valores menores = espaçamento entre linhas.",
+      whyAdjust:
+        "Pontes externas são visíveis — densidade alta dá acabamento sólido. Densidade reduzida economiza tempo/material mas mostra os 'cordões' por baixo.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["100%", "Linhas coladas, ponte sólida", "Qualidade visual"],
+          ["75%", "Pequenos espaços", "Compromisso"],
+          ["50%", "Linhas bem separadas", "Velocidade extrema"],
+        ],
+      },
+      influences: "Aparência inferior da peça, tempo de impressão, peso.",
+      generates: "Superfície inferior sólida (100%) ou listrada (75–50%).",
+      goldenRule: "100% para qualidade, 75% para velocidade.",
+    },
+    {
+      name: "Pontes › Densidade de ponte interna",
+      value: "100% (padrão)",
+      whatIs:
+        "Define a densidade das pontes que formam a base de topos sólidos sobre infill esparso. Não é visível externamente.",
+      whyAdjust:
+        "Densidade interna alta dá base sólida para o topo se acomodar sem pillowing; densidade baixa economiza tempo mas pode comprometer o topo.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["100%", "Base sólida para o topo", "Topo perfeito, padrão"],
+          ["75%", "Economia leve", "Peças funcionais sem topo crítico"],
+        ],
+      },
+      influences: "Qualidade do topo, pillowing, integração infill→top.",
+      generates: "Topos sem pillowing com 100%.",
+      goldenRule: "100% para estruturas e topos visíveis, 75% para economia em peças funcionais.",
+    },
+    {
+      name: "Pontes › Pontes externas grossas",
+      value: "Desativado",
+      whatIs:
+        "Faz as pontes externas usarem linhas mais grossas (largura aumentada) para ganhar resistência e melhor aparência ao atravessar vãos.",
+      whyAdjust:
+        "Linhas mais grossas suportam melhor o próprio peso ao atravessar o vão, reduzindo a chance de curvatura no meio.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Linhas mais grossas → ponte mais resistente"],
+          ["Desativado", "Largura normal"],
+        ],
+      },
+      influences: "Resistência da ponte e aparência inferior.",
+      generates: "Pontes mais sólidas com ativado; melhor em vãos longos.",
+      goldenRule: "Ative em vãos >40mm ou materiais que cedem (PETG, ABS).",
+    },
+    {
+      name: "Pontes › Pontes internas grossas",
+      value: "Desativado",
+      whatIs:
+        "Equivalente ao anterior, mas para pontes INTERNAS (sobre infill). Aumenta a largura das linhas que formam a base do topo.",
+      whyAdjust:
+        "Linhas internas mais grossas formam plataforma mais sólida para o topo, eliminando pillowing.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Base interna mais sólida para o topo"],
+          ["Desativado", "Largura normal"],
+        ],
+      },
+      influences: "Solidez do topo, pillowing.",
+      generates: "Topo mais limpo quando ativado.",
+      goldenRule: "Ative se notar pillowing no topo, mesmo com densidade 100%.",
+    },
+    {
+      name: "Pontes › Camadas extras de ponte (beta)",
+      value: "Desativado (padrão)",
+      whatIs:
+        "Imprime CAMADAS ADICIONAIS de ponte sobre uma ponte original, reforçando-a antes de continuar com camadas normais por cima.",
+      whyAdjust:
+        "Em vãos críticos, uma única camada de ponte pode não suportar bem o peso das camadas superiores. Camadas extras criam uma 'laje' reforçada.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["Desativado", "Apenas a camada de ponte original", "Uso geral"],
+          ["1 camada", "Um reforço extra", "Vãos médios críticos"],
+          ["2–3 camadas", "Reforço forte", "Vãos longos, peças mecânicas"],
+        ],
+      },
+      influences: "Resistência estrutural das pontes, peso e tempo de impressão.",
+      generates: "Pontes muito mais resistentes; impressão mais lenta.",
+      goldenRule: "Use 1 camada extra em vãos longos. Não exagere — adiciona tempo significativo.",
+    },
+    {
+      name: "Pontes › Filtrar pontes internas pequenas",
+      value: "Filtrar (padrão)",
+      whatIs:
+        "Remove pontes internas muito pequenas (curtas demais para fazer diferença estrutural), economizando tempo e evitando defeitos em micro-vãos.",
+      whyAdjust:
+        "Pontes minúsculas raramente são úteis e podem gerar defeitos (blobs, paradas). Filtrá-las simplifica o G-code.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Filtrar", "Remove pontes internas pequenas → mais rápido"],
+          ["Não filtrar", "Mantém todas as pontes → mais conservador"],
+        ],
+      },
+      influences: "Tempo de impressão, presença de defeitos em micro-pontes.",
+      generates: "Menos blobs em regiões minúsculas com filtragem ativada.",
+      goldenRule: "Mantenha filtrado por padrão. Desative se notar buracos onde havia ponte pequena.",
+    },
+    {
+      name: "Pontes › Pontes para furos rebaixados",
+      value: "Nenhum (padrão)",
+      whatIs:
+        "Otimização específica para furos com REBAIXO/CHANFRO (countersunk), onde a ponte precisa começar em uma borda inclinada em vez de uma parede reta.",
+      whyAdjust:
+        "Furos rebaixados (típicos de parafusos escareados) têm geometria especial. A otimização ajusta a ponte para acompanhar o chanfro.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Nenhum", "Pontes tratadas de forma padrão"],
+          ["Automático", "OrcaSlicer detecta e ajusta o padrão da ponte"],
+          ["Manual", "Ajuste fino caso a caso"],
+        ],
+      },
+      influences: "Qualidade de furos para parafusos escareados.",
+      generates: "Furos rebaixados limpos e prontos para parafuso quando otimizado.",
+      goldenRule: "Ative Automático apenas em peças com furos para parafusos escareados.",
+    },
+  ],
 };
