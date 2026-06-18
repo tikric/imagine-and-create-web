@@ -20,6 +20,14 @@ export type Lesson = {
   checklist?: string[];
   caseStudy?: string;
   screens?: { src: string; tela: string; panel: string; tool: string; caption: string }[];
+  paramDetails?: {
+    name: string;
+    value: string;
+    whatIs: string;
+    types?: { label: string; desc: string }[];
+    influences: string;
+    generates: string;
+  }[];
 };
 
 export type Module = {
@@ -2898,6 +2906,15 @@ export const modules: Module[] = [
     ],
   },
 ];
+
+// Merge per-lesson item-by-item explanations from the orca-param-details file
+import { orcaParamDetails } from "./orca-param-details";
+for (const m of modules) {
+  for (const l of m.lessons) {
+    const details = orcaParamDetails[l.id];
+    if (details) l.paramDetails = details;
+  }
+}
 
 export const courseStats = {
   modules: modules.length,
