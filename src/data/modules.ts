@@ -16,6 +16,9 @@ export type Lesson = {
   economy?: string;
   finance?: string;
   exercise?: string[];
+  deepDive?: string[];
+  checklist?: string[];
+  caseStudy?: string;
 };
 
 export type Module = {
@@ -379,6 +382,20 @@ export const modules: Module[] = [
             "Anote Tg e contração nas notas do perfil",
             "Pese 1 metro de cada e confirme densidade",
           ],
+          deepDive: [
+            "A ciência da secagem: todo termoplástico polar (PETG, PA, PC, TPU, ASA) absorve água por difusão de Fick — quanto maior a área exposta e a umidade relativa, maior a captação. Uma bobina de Nylon a 60% UR satura em 36-48h; em 90% UR, em menos de 12h. A água absorvida vira vapor superaquecido dentro do hotend e explode microbolhas que aparecem como 'pipoca', estrias e perda de brilho.",
+            "Curva de secagem operacional: PLA 45°C por 4h (raramente necessário), PETG 65°C por 6h, ABS/ASA 80°C por 4h, Nylon e PA-CF 80°C por 12-16h, TPU 50°C por 8h, PC 80°C por 8h. Acima da Tg do material, a bobina deforma — nunca seque PLA a 65°C numa estufa comum, ele vira disco.",
+            "Armazenamento de longo prazo: caixa hermética com 200-400g de sílica gel indicadora (azul → rosa = trocar), umidade-alvo abaixo de 20% UR, higrômetro digital interno. Filamentos premium vêm com saquinho de dessecante — mantenha dentro da caixa durante o uso, não jogue fora.",
+            "Identificação rápida de filamento úmido: (1) som de estouros (pop-pop) no bico, (2) vapor saindo da extrusora, (3) extrusão fofa/sem brilho, (4) stringing que NÃO melhora ao calibrar retração, (5) adesão entre camadas caindo sem motivo. Dois ou mais sinais = pare e seque antes de continuar.",
+          ],
+          checklist: [
+            "Higrômetro digital dentro de cada drybox em uso",
+            "Sílica gel indicadora trocada/regenerada a cada 30 dias",
+            "Etiqueta na bobina: marca, material, cor, data de abertura, horas de secagem acumuladas",
+            "Estufa/secadora calibrada com termômetro independente (não confie no display)",
+            "PETG, TPU e Nylon nunca ficam fora da drybox durante a impressão",
+          ],
+          caseStudy: "Cliente devolveu 80 peças de PETG transparente com aspecto leitoso e quebradiço. Análise: bobina aberta há 3 semanas em ambiente costeiro (UR média 78%), nenhuma drybox. Solução: secagem 6h a 65°C antes de reimprimir, peças saíram cristalinas. Custo do prejuízo: R$ 340 em filamento + 14h de máquina. Custo da secadora que evitaria tudo: R$ 280.",
         }),
       L(2, "pla-petg", "PLA e PETG — Características Térmicas e Mecânicas", "30min",
         ["PLA rígido", "PETG tenaz", "Stringing"], {
@@ -1059,6 +1076,20 @@ export const modules: Module[] = [
             "Escolha o tipo padrão por categoria (figura, técnica, decorativa)",
             "Salve nos perfis dedicados",
           ],
+          deepDive: [
+            "Rear (traseira): a seam é forçada ao ponto de maior coordenada Y do contorno em cada camada. Funciona para peças com 'frente e trás' definidos — busts, figuras humanoides, placas de identificação. O lado de trás vira uma linha vertical limpa que some quando a peça é montada contra parede ou base.",
+            "Aligned (alinhada): em cada camada, o slicer escolhe o vértice mais próximo da costura da camada anterior, gerando uma linha contínua. Ideal para sólidos com aresta natural (cubos, prismas, peças mecânicas) onde a linha cai numa quina física — visualmente desaparece.",
+            "Nearest (mais próxima): cada camada começa no ponto mais perto de onde o bico terminou a camada anterior, minimizando viagem. Resultado: seam aleatória mas curta — perfeita para protótipos funcionais e peças onde o tempo de impressão importa mais que a estética. Costuma reduzir o tempo total em 3-7%.",
+            "Random (aleatória): distribui pontos de início espalhados pela camada. A 'cicatriz' deixa de existir como linha e vira ruído imperceptível em superfícies orgânicas e cilíndricas lisas (vasos, esferas, bustos). Em PETG e materiais que blob facilmente, pode gerar pontos visíveis — combine com PA bem calibrado.",
+            "Decisão prática: peça mecânica → Aligned. Bust/figura → Rear + Seam Painting. Vaso/cilindro liso → Random ou Scarf. Protótipo → Nearest. Quando dúvida, faça uma plate de teste com a peça repetida 4 vezes, uma com cada modo.",
+          ],
+          checklist: [
+            "Definiu a categoria da peça (mecânica/figura/decorativa/protótipo) antes de escolher seam",
+            "Pressure Advance calibrado para o material atual (sem PA, qualquer modo blobeia)",
+            "Wipe Distance entre 1.0 e 2.0mm no perfil do material",
+            "Para peças vendidas: orientação no slicer trava a posição esperada do Rear",
+            "Modelo salvo como .3mf após decisão final (Seam Painting persiste)",
+          ],
         }),
       L(4, "esconder-seam", "Como Esconder e Posicionar a Seam", "30min",
         ["Seam Painting", "Pintura vermelho/azul", "Quinas internas"], {
@@ -1721,6 +1752,19 @@ export const modules: Module[] = [
             "Fotografe macro do texto",
             "Documente diferença e adote padrão",
           ],
+          deepDive: [
+            "Arachne quebra a regra clássica do FDM ('paredes têm a largura do bico') usando o esqueleto medial da geometria: para cada região da peça, calcula o eixo central e ajusta a largura de extrusão entre min_wall_width (default 0.85× nozzle) e max_wall_width (default 1.5× nozzle). Em uma região de 1.1mm com bico 0.4, Classic gera 2 paredes de 0.4 + gap fill caótico; Arachne gera 2 paredes de 0.55mm encostadas, sem vazio.",
+            "Wall Transition Angle e Wall Transition Length controlam onde Arachne pode 'mudar de ideia' sobre o número de paredes. Valores baixos geram transições agressivas (paredes aparecem e desaparecem em pouco caminho), gerando ondulação visível. Default 10° / 0.4mm funciona em 95% dos casos; aumente para 20° em superfícies estéticas se notar ondulação.",
+            "Onde Classic ainda vence: peças com tolerância dimensional crítica (encaixes h7/g6 impressos), perfis comerciais onde você precisa prever exatamente a massa por peça, e setups com Pressure Advance mal calibrado (PA errado + largura variável = oscilação de fluxo visível). Em qualquer outro cenário, Arachne é a escolha default no Orca moderno por bom motivo.",
+            "Caso clássico de letra fina: texto Arial 6pt extrudado 0.4mm fica ilegível no Classic (gera 1 parede sozinha sem fechar a letra 'o'). Arachne preenche com paredes de 0.34mm encostadas, fechando o 'o' e mantendo a letra legível. Para letras menores que 0.8mm de largura total, Arachne é praticamente obrigatório.",
+          ],
+          checklist: [
+            "Verificou o tipo de peça: estética/texto = Arachne; mecânica de precisão = Classic",
+            "Min/Max Wall Width nos defaults (0.85× / 1.5× nozzle) salvo prova em contrário",
+            "Pressure Advance calibrado para o material (Arachne amplifica erros de PA)",
+            "Em peças com texto: faça plate de teste Classic vs Arachne antes de produção em lote",
+            "Compensação dimensional via Horizontal Expansion calibrada por bico, não por algoritmo",
+          ],
         }),
     ],
   },
@@ -1849,6 +1893,19 @@ export const modules: Module[] = [
             "Gere suporte Normal e Tree para a mesma miniatura.",
             "Compare gramatura estimada e tempo no preview.",
             "Imprima ambos e avalie esforço de remoção.",
+          ],
+          deepDive: [
+            "Tree Organic é um algoritmo gerativo (introduzido pelo Cura, refinado no Orca) que parte do overhang e cresce ramos curvos para baixo evitando colisão com a peça. Cada nó da árvore decide onde se ramificar baseado em três parâmetros físicos: Branch Angle (inclinação máxima do ramo, default 40°), Branch Distance (espaçamento entre pontas de apoio, default 1.0mm), e Branch Diameter (espessura da base, default 5mm).",
+            "Diferença prática para Normal Grid em uma miniatura de 80mm: Tree usa ~12-18g de filamento contra ~35-45g do Normal — economia de 60-65% no suporte, sem perder estabilidade. O tempo de impressão cai 25-40% porque o slicer não precisa preencher blocos densos camada por camada.",
+            "Quando Tree FALHA e Normal vence: overhangs amplos e contínuos (ex: parte inferior de uma asa horizontal de 60×40mm) — Tree vai gerar dezenas de ramos finos que oscilam e desabam. Use Normal Grid com 10-15% density nesse cenário, ou divida a peça em duas partes coladas depois. Tree é para geometrias orgânicas, irregulares e localizadas.",
+            "Tree Organic Hybrid (modo do Orca) combina os dois: Tree onde a geometria é orgânica, Normal Grid onde há overhang chapado. É o default ideal para peças mistas (figuras com base plana, modelos com partes técnicas e estéticas).",
+          ],
+          checklist: [
+            "Identificou se a peça é orgânica (Tree), chapada (Normal) ou mista (Hybrid)",
+            "Branch Diameter ≥ 5mm em peças >50mm de altura para evitar tombamento",
+            "Top Interface Layers ≥ 2 para todo Tree em peça visível",
+            "Plate testada antes de produção em lote — Tree pode falhar em geometrias incomuns",
+            "Filamento de suporte seco (PETG e PVA acumulam umidade que mata estabilidade do ramo)",
           ],
         }),
       L(2, "interface-layers", "Interface Layers — Camadas Densas Separadoras", "25min",
@@ -2358,6 +2415,65 @@ export const modules: Module[] = [
             "Imprima cilindro com Fuzzy Skin Thickness 0.15, 0.3 e 0.5mm.",
             "Compare toque e visual.",
             "Salve as duas variantes mais usadas como presets.",
+          ],
+        }),
+      L(4, "pos-processamento-pro", "Pós-Processamento Profissional: Lixa, Acetona, Pintura e Insertos", "55min",
+        ["Lixamento progressivo", "Alisamento químico (acetona)", "Primer + pintura", "Insertos heat-set", "Adesivos por material"], {
+          theory: [
+            "Pós-processamento é o que separa a peça 'impressa' do produto vendável. As quatro famílias de técnica: subtrativa (lixa, dremel), química (acetona, THF, MEK), aditiva (primer, tinta, verniz) e mecânica (insertos termofixados, parafusos, colagem).",
+            "Cada material aceita um subconjunto: ABS/ASA aceitam acetona; PLA não (precisa de THF, mais perigoso); PETG só aceita lixa + tinta; Nylon aceita tingimento por imersão em corante para tecido a 60°C — vira preto-fosco perfeito.",
+            "Insertos termofixados (heat-set inserts) são buchas de latão instaladas a quente no plástico, gerando rosca metálica permanente. Ferro de solda a 220°C + insert + 3-5s de pressão = encaixe profissional que aguenta torque de 2-4 Nm sem espanar.",
+            "Ordem canônica do acabamento premium: (1) remover suportes → (2) lixar 220 → 400 → 800 → 1500 → 2000 → (3) limpar com álcool isopropílico → (4) primer filler 2 demãos → (5) lixa 1500 a seco → (6) tinta base acrílica → (7) verniz acetinado/fosco/brilho conforme briefing.",
+          ],
+          deepDive: [
+            "Alisamento químico com acetona (somente ABS/ASA): câmara fechada (pote de vidro grande ou caixa de ferramenta selada), 30-50ml de acetona em papel-toalha nas paredes (NÃO em contato com a peça), peça suspensa por arame por cima do líquido, tempo 8-15 minutos para vapor agir. RISCOS REAIS: vapor de acetona é inflamável (limite inferior 2.6%) e tóxico — janelas abertas, longe de chamas, luvas nitrílica, respirador com cartucho VOC tipo A. Nunca use em ambiente fechado, nunca perto de gás de cozinha, NUNCA com criança no recinto.",
+            "Lixamento progressivo eficiente: pular grit destrói tempo. Sequência testada 220 → 320 → 400 → 600 → 800 → 1500 → 2000. Cada grit remove os riscos do anterior; pular do 220 direto pro 800 deixa marcas que só aparecem na pintura. Use água + sabão neutro a partir do 600 (lixa d'água) — reduz pó, melhora corte, evita aquecer a peça (PLA derrete localmente com fricção seca).",
+            "Insertos heat-set (M3 e M4 são os padrões makers): furo no CAD com tolerância correta — M3 short = furo Ø4.0mm, profundidade 5mm; M3 long = Ø4.0mm × 8mm; M4 = Ø5.6mm × 8mm. Use ferro de solda com ponta cônica dedicada (R$ 15-30), temperatura 220°C para PLA/PETG, 250°C para ABS. Pressione com pulso firme e VERTICAL — torto, o insert fica oblíquo e a rosca vira inutilizável.",
+            "Adesivos por material (compatibilidade testada): PLA = CA gel (Loctite 480) ou epóxi 5min; PETG = epóxi obrigatório, CA não cola bem; ABS = solda química com acetona pura (junta vira monolítica) ou CA; Nylon = só epóxi 2 componentes; TPU = adesivo PU flexível (Sika Flex) ou cola sapateiro. Lixe a superfície antes de colar — área lisa não tem ancoragem mecânica.",
+            "Pintura que dura: spray automotivo (Etna, Colorgin Akzo Nobel) sobre primer filler é o padrão. Demãos finas e cruzadas (vertical → horizontal → diagonal), 15-20cm de distância, tempo de cura entre demãos respeitado. Verniz final UV-resistente para peças externas. Em peças que serão manuseadas, finalize com 2 demãos de verniz acetinado — protege a tinta de unhas e atrito.",
+          ],
+          integrations: [
+            { module: "Módulo 2 (Materiais)", text: "Escolha do material define o pós-processamento disponível — ABS para acetona, Nylon para tingimento, PETG para pintura simples." },
+            { module: "Módulo 7 (Design)", text: "Projete já com furos para insertos e tolerâncias de pintura (+0.2mm em encaixes que vão receber 3-4 demãos)." },
+            { module: "Módulo 15 (Comercial)", text: "Peça pintada + envernizada custa R$ 8-15 a mais em insumos e tempo, mas vende por 2-3× o valor da crua." },
+          ],
+          params: [
+            { param: "Temperatura ferro p/ insert (PLA/PETG)", value: "220°C", action: "Funde plástico ao redor sem queimar" },
+            { param: "Temperatura ferro p/ insert (ABS)", value: "250°C", action: "ABS exige mais calor para escoar" },
+            { param: "Tempo vapor acetona (ABS, peça pequena)", value: "8-12 min", action: "Mais que isso = perda de detalhe" },
+            { param: "Grit final antes do primer", value: "800-1500", action: "Superfície aceita primer uniformemente" },
+            { param: "Tolerância furo M3 heat-set", value: "Ø 4.0 × 5.0 mm", action: "Insert curto padrão McMaster/Aliexpress" },
+            { param: "Tolerância furo M4 heat-set", value: "Ø 5.6 × 8.0 mm", action: "Insert para carga estrutural" },
+            { param: "Distância spray", value: "15-20 cm", action: "Mais perto escorre, mais longe vira casca de laranja" },
+          ],
+          goldenRule: "Pós-processamento começa no CAD: peça projetada para acabamento (orientação, furos para inserto, chanfros) economiza 70% do tempo de pós em relação a 'consertar' depois.",
+          errors: [
+            { error: "Insert termofixado entortado e rosca espanada", solution: "Use guia perpendicular (gabarito impresso) e ferro com ponta dedicada — nunca à mão livre" },
+            { error: "Peça ABS derretida demais na acetona (perdeu detalhe)", solution: "Reduza tempo de exposição em 50% e ventile o pote a cada 3 min para reduzir saturação do vapor" },
+            { error: "Tinta descascando em horas após pintura", solution: "Faltou primer filler ou superfície gordurosa — limpe com álcool isopropílico e aplique primer ANTES da tinta colorida" },
+            { error: "CA não colou PETG", solution: "PETG quase não reage com cianoacrilato — troque para epóxi 5min e lixe a junta antes" },
+            { error: "Marcas de lixa visíveis sob a tinta", solution: "Você pulou grits. Volte do 320 fazendo 320→400→600→800→1500 antes do primer" },
+          ],
+          checklist: [
+            "Ventilação adequada (janela aberta + ventilador exaustor) sempre que usar acetona, primer ou tinta spray",
+            "EPI: luvas nitrílica + óculos de segurança + respirador com cartucho VOC tipo A",
+            "Bancada coberta com papelão/jornal trocado a cada projeto",
+            "Insertos heat-set comprados na medida correta (M3/M4) antes de modelar o furo",
+            "Lixas em sequência completa (220/320/400/600/800/1500/2000) — sem pular grits",
+            "Primer e tinta da mesma marca/linha (compatibilidade química garantida)",
+            "Tempo de cura entre demãos respeitado (ler embalagem — pressa = casca de laranja)",
+            "Foto antes/depois para portfólio comercial",
+          ],
+          economy: "Pós-processamento dobra o tempo total da peça mas multiplica o preço por 2-3×. Margem líquida por hora trabalhada cresce de R$ 18-25 (peça crua) para R$ 45-70 (peça acabada premium).",
+          finance: "Kit inicial profissional: lixas progressivas (R$ 35), primer filler 2 latas (R$ 80), 3 cores de tinta spray (R$ 90), verniz (R$ 45), 50 insertos M3+M4 (R$ 60), ferro de solda dedicado (R$ 60) = R$ 370. Retorno em 8-10 peças premium vendidas.",
+          caseStudy: "Encomenda: 20 cases para controlador de drone, ABS preto, acabamento 'industrial fosco'. Processo: impressão 14h, lixa 320→600 (40min/peça), vapor de acetona 10min/peça em pote 5L com 4 peças por ciclo, instalação de 4 insertos M3 por case (5min/peça), verniz fosco preto fosco 2 demãos. Tempo total pós: 1h45 por peça × 20 = 35h. Preço de venda: R$ 95/un (vs R$ 35 da peça crua). Margem extra: R$ 1.200 — equivalente a R$ 34/h líquidos de pós-processamento.",
+          exercise: [
+            "Imprima 3 cubos 30mm em ABS",
+            "Aplique no cubo 1: só lixa 220 → 800",
+            "Aplique no cubo 2: lixa 220 → 800 + primer + tinta",
+            "Aplique no cubo 3: vapor de acetona 10min + secagem 24h",
+            "Compare brilho, toque, e tempo gasto em cada — escolha o fluxo padrão para seu produto",
+            "Instale 2 insertos M3 em uma peça de teste e parafuse — confirme torque sem espanar",
           ],
         }),
     ],

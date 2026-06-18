@@ -78,6 +78,37 @@ function LessonPage() {
           </Section>
         )}
 
+        {l.deepDive && l.deepDive.length > 0 && (
+          <Section title="Aprofundamento Técnico">
+            <div className="space-y-5 text-base leading-relaxed text-foreground/90 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-6 md:p-8">
+              <div className="mono text-xs uppercase tracking-wider text-primary">▼ Deep Dive</div>
+              {l.deepDive.map((p: string, i: number) => <p key={i}>{p}</p>)}
+            </div>
+          </Section>
+        )}
+
+        {l.caseStudy && (
+          <Section title="Estudo de Caso">
+            <div className="rounded-2xl border border-chart-3/40 bg-chart-3/5 p-6 md:p-8">
+              <div className="mono text-xs uppercase tracking-wider text-chart-3 mb-3">◆ Caso real</div>
+              <p className="text-foreground/90 leading-relaxed">{l.caseStudy}</p>
+            </div>
+          </Section>
+        )}
+
+        {l.checklist && l.checklist.length > 0 && (
+          <Section title="Checklist Operacional">
+            <ul className="space-y-2 rounded-xl border border-border bg-card/40 p-5">
+              {l.checklist.map((c: string, i: number) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mono text-primary mt-0.5">☐</span>
+                  <span className="text-foreground/90">{c}</span>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+
         {l.integrations && l.integrations.length > 0 && (
           <Section title="Integrações Teóricas">
             <div className="space-y-3">
