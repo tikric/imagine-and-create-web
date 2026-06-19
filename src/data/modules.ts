@@ -1,6 +1,8 @@
 import { orcaParamDetails } from "./orca-param-details";
 import anatomiaInterface from "@/assets/orca/modulo1-anatomia-interface.jpeg.asset.json";
 import errosComuns from "@/assets/orca/modulo1-erros-comuns.jpeg.asset.json";
+import barraSuperior from "@/assets/orca/modulo1-barra-superior.jpeg.asset.json";
+import ferramentasAvancadas from "@/assets/orca/modulo1-ferramentas-avancadas.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
