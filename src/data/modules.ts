@@ -2916,7 +2916,48 @@ export const modules: Module[] = [
         }),
     ],
   },
+  {
+    id: "novidades-orcaslicer-3-2",
+    number: 26,
+    title: "Novidades do OrcaSlicer 3.2",
+    tagline: "Visualização realista, Troubleshoot Center, pontes e Lightning configurável",
+    level: "Avançado",
+    duration: "1h 30min",
+    methodology: "Walkthrough das funcionalidades introduzidas no OrcaSlicer 3.2 (beta), com explicação item-a-item de cada novidade: o que é, por que ajustar, como aplicar, exemplos e regra de ouro.",
+    objective: "Dominar os novos recursos do OrcaSlicer 3.2: visualização Phong+SSAO, sliders aprimorados, Troubleshoot Center, pontes dedicadas, filamento padrão, Moonraker nativo e Lightning Infill configurável.",
+    lessons: [
+      L(1, "modulo-orcaslicer-3-2-novidades", "Todas as novidades do OrcaSlicer 3.2", "1h 30min",
+        ["Visualização Phong+SSAO", "Sliders", "Troubleshoot Center", "Pontes dedicadas", "Moonraker", "Lightning Infill"], {
+          theory: [
+            "O OrcaSlicer 3.2 traz uma reformulação visual, novas ferramentas de diagnóstico e melhorias profundas em pontes, infill Lightning e integração com hosts Klipper.",
+            "Cada item abaixo é uma novidade explicada em detalhe: o que é, por que importa, como configurar e exemplo de uso.",
+          ],
+          goldenRule: "Atualize para 3.2 quando precisar de Troubleshoot Center, pontes mais fortes ou Moonraker nativo — mantenha 2.4 para perfis de produção já calibrados.",
+        }),
+    ],
+  },
+  {
+    id: "novidades-orcaslicer-3-3",
+    number: 27,
+    title: "Novidades do OrcaSlicer 3.3",
+    tagline: "UI refresh, Cloud Slicing, suportes em árvore com ponta fina e Purge Mode",
+    level: "Avançado",
+    duration: "1h 15min",
+    methodology: "Estudo das novidades do OrcaSlicer 3.3: nova interface, fatiamento na nuvem, melhorias em suportes em árvore, modo de purga multimaterial e Fuzzy Skin contínuo. Cada recurso é destrinchado item-a-item.",
+    objective: "Dominar os recursos da versão 3.3: nova UI, Cloud Slicing, suportes em árvore com diâmetro de ponta configurável, Purge Mode multimaterial, pular etapas de pós-processamento e Fuzzy Skin contínuo.",
+    lessons: [
+      L(1, "modulo-orcaslicer-3-3-novidades", "Todas as novidades do OrcaSlicer 3.3", "1h 15min",
+        ["UI Refresh", "Cloud Slicing", "Suporte Árvore", "Purge Mode", "Fuzzy Skin contínuo"], {
+          theory: [
+            "O OrcaSlicer 3.3 foca em produtividade: nova interface, fatiamento remoto na nuvem, suportes em árvore com remoção mais limpa e economia em multimaterial via Purge Mode.",
+            "Cada item abaixo detalha uma novidade — o que é, por que ativar, como configurar e impacto real.",
+          ],
+          goldenRule: "Ative Purge Mode em qualquer projeto multimaterial — economia de até 60% de filamento sem perder qualidade.",
+        }),
+    ],
+  },
 ];
+
 
 // Merge per-lesson item-by-item explanations from the orca-param-details file
 import { orcaParamDetails } from "./orca-param-details";
