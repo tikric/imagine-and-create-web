@@ -5759,7 +5759,7 @@ export const modules: Module[] = [
   {
     id: "protocolo-calibracao", number: 21, title: "Protocolo de Calibração Completo",
     tagline: "A ordem exata do zero ao perfil impecável",
-    level: "Avançado/Profissional", duration: "2h",
+    level: "Profissional", duration: "2h",
     methodology: "Protocolo científico de 8 passos em ordem rígida, relação termodinâmica entre temperatura/fluxo/PA, e manutenção preventiva diária/semanal/mensal.",
     objective: "Estabelecer um protocolo científico e sistemático de calibração para qualquer filamento e impressora, eliminando o achismo com um roteiro claro e repetível.",
     lessons: [
