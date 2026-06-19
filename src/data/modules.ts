@@ -5196,6 +5196,50 @@ export const modules: Module[] = [
             { param: "Top Interface Layers", value: "3", action: "Grade de alta densidade para acabamento" },
             { param: "Support Z Distance", value: "0.18 mm", action: "Descola sem cair durante impressão" },
           ],
+          paramDetails: [{
+            name: "Interface Layers — Z Gap, XY e Padrões",
+            value: "Z Gap 0.20mm · 2-3 interface · XY 0.35mm",
+            whatIs: "Camadas densas no topo do suporte que recebem o overhang, separadas da peça por um Z Gap vertical e uma distância XY horizontal. Define facilidade de remoção e qualidade da face inferior.",
+            whyAdjust: "Z Gap pequeno demais solda o suporte; grande demais deixa face áspera e fios. XY mal calibrado faz o suporte grudar lateralmente ou tombar.",
+            optionsTable: {
+              headers: ["Z Gap", "Remoção", "Acabamento", "Quando usar"],
+              rows: [
+                ["0.05–0.10mm", "Muito difícil", "Excelente (liso)", "Peças visíveis críticas (PVA)"],
+                ["0.15mm", "Moderada", "Bom", "PLA fino, acabamento alto"],
+                ["0.20mm", "Boa (padrão)", "Aceitável", "Uso geral PLA/PETG"],
+                ["0.25–0.30mm", "Muito fácil", "Áspero", "Protótipo, peça interna"],
+              ],
+            },
+            influences: "Qualidade da superfície inferior, tempo de pós-processamento, risco de soldagem suporte-peça e estabilidade lateral.",
+            generates: "Suporte que sustenta sem fundir e se descola limpo, deixando face inferior pronta para uso.",
+            howTo: [
+              { step: "1. Definir Z Gap", path: "Support › Support Z Distance", desc: "Múltiplo da altura de camada — 0.20mm para camada 0.20mm." },
+              { step: "2. Configurar interface", path: "Support › Top Interface Layers", desc: "2-3 camadas, densidade 90-95%, padrão Rectilinear." },
+              { step: "3. Ajustar XY", path: "Support › XY Distance", desc: "0.35mm padrão; aumentar para 0.50mm em PETG." },
+              { step: "4. Espaçamento interface", path: "Support › Interface Spacing", desc: "0.5mm padrão; 0.2-0.3mm para acabamento premium." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Suporte soldado na peça", "Z Gap pequeno", "Aumentar Z Gap em 0.05-0.10mm"],
+                ["Face inferior áspera", "Z Gap grande", "Reduzir Z Gap e adicionar 1 camada de interface"],
+                ["Fiapos pendentes", "Sem interface ou densidade baixa", "Top Interface ≥2 camadas a 95%"],
+                ["Suporte cai durante impressão", "XY muito grande", "Reduzir XY Distance para 0.30mm"],
+              ],
+            },
+            summaryTable: {
+              title: "Receita por Material",
+              headers: ["Material", "Z Gap", "Interface", "XY"],
+              rows: [
+                ["PLA", "0.20mm", "2 camadas", "0.35mm"],
+                ["PETG", "0.25mm", "3 camadas", "0.40mm"],
+                ["ABS / ASA", "0.20mm", "2 camadas", "0.35mm"],
+                ["TPU", "0.20mm", "2 camadas", "0.40mm"],
+                ["PVA solúvel", "0.10mm", "3 camadas", "0.20mm"],
+              ],
+            },
+            goldenRule: "Z Gap 0.20mm + 2-3 interface + XY 0.35mm = remoção fácil com face limpa. Ajuste por material.",
+          }],
           goldenRule: "Use suportes solúveis (PVA, BVOH) para acabamento absolutamente impecável.",
           errors: [
             { error: "Suporte funde na peça", solution: "Aumente Z Gap em 0.05mm e reduza temperatura de interface." },
