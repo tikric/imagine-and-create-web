@@ -1325,15 +1325,12 @@ export const modules: Module[] = [
             { param: "Resistência por Grama", value: "Carga máx ÷ peso", action: "Quanto maior, mais eficiente estruturalmente" },
             { param: "Produtividade", value: "Peças ÷ hora", action: "Mede ganho real de processo" },
           ],
-          optionsTable: {
-            headers: ["Estratégia", "Resultado", "Quando Usar"],
-            rows: [
-              ["Lightning Infill", "−60% material, −30% tempo", "Decorativos, sem carga"],
-              ["Bico 0.6mm", "−50% tempo, +20% resistência", "Peças grandes/estruturais"],
-              ["Camadas 0.28mm", "−40% tempo, qualidade aceitável", "Protótipos rápidos"],
-              ["Adaptive Layers", "−25% tempo, mesma qualidade", "Áreas planas + curvas"],
-            ],
-          },
+          deepDive: [
+            "Lightning Infill: −60% material, −30% tempo — ideal para decorativos sem carga.",
+            "Bico 0.6mm: −50% tempo e +20% resistência — perfeito para peças grandes/estruturais.",
+            "Camadas 0.28mm: −40% tempo com qualidade aceitável — bom para protótipos rápidos.",
+            "Adaptive Layers: −25% tempo mantendo qualidade — ideal em áreas planas + curvas.",
+          ],
           goldenRule: "Otimize onde ninguém vê. Invista material e tempo onde é realmente necessário.",
           errors: [
             { error: "Peça quebra em uso", solution: "Otimização excessiva em área crítica — aumentar paredes/infill na zona de carga" },
