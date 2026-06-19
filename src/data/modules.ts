@@ -4886,7 +4886,51 @@ export const modules: Module[] = [
             { param: "Infill Pattern", value: "Grid / Lines", action: "Rápido para visualização" },
             { param: "Infill Density", value: "10–15%", action: "Suficiente para protótipo conceitual" },
           ],
+          paramDetails: [{
+            name: "Infills Básicos — Grid, Lines, Rectilinear, Honeycomb",
+            value: "2D, simples, rápidos",
+            whatIs: "Padrões 2D tradicionais que se repetem camada a camada. Grid/Rectilinear cruzam em 90°, Lines vai em direção única (alternada por camada), Honeycomb usa hexágonos.",
+            whyAdjust: "Infill errado destrói relação resistência/peso/tempo. Grid gera vibração no cruzamento, Lines é frágil em Y, Honeycomb é estrutural mas mais lento.",
+            optionsTable: {
+              headers: ["Padrão", "Estrutura", "Densidade típica", "Melhor para"],
+              rows: [
+                ["Grid", "Linhas cruzadas 90°", "10-20%", "Protótipos, peças simples"],
+                ["Lines", "Linhas paralelas 1D", "5-15%", "Decorativos, vasos"],
+                ["Rectilinear", "Grade retangular", "15-25%", "Uso geral básico"],
+                ["Honeycomb", "Hexágonos 2D", "20-30%", "Painéis estruturais leves"],
+              ],
+            },
+            influences: "Tempo de impressão, consumo de filamento, resistência X/Y, vibração no infill e qualidade da superfície superior.",
+            generates: "Peça funcional rápida com custo material baixo — ideal para validação de geometria antes da peça final.",
+            howTo: [
+              { step: "1. Abrir Resistência > Preenchimento", path: "OrcaSlicer › Processo", desc: "Selecionar Padrão Esparso." },
+              { step: "2. Escolher padrão por aplicação", path: "Tabela acima", desc: "Grid/Lines para rápido; Honeycomb para estrutura leve." },
+              { step: "3. Ajustar densidade", path: "Sparse Infill Density", desc: "10-30% conforme uso." },
+              { step: "4. Validar superfície superior", path: "Top Shell Layers", desc: "Aumentar para 4-5 se infill esparso." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Bico raspa no infill", "Grid/Rectilinear cruza na mesma camada", "Trocar para Gyroid"],
+                ["Peça quebra fácil", "Lines/Grid em peça estrutural", "Migrar para Gyroid ou Cubic"],
+                ["Superfície superior afundada", "Infill esparso demais", "Aumentar densidade ou Top Layers"],
+                ["Tempo alto sem benefício", "Honeycomb em peça simples", "Voltar para Grid/Rectilinear"],
+              ],
+            },
+            summaryTable: {
+              title: "Comparativo Básicos",
+              headers: ["Padrão", "Velocidade", "Resistência", "Material"],
+              rows: [
+                ["Grid", "Muito rápido", "Baixa", "Baixo"],
+                ["Lines", "Muito rápido", "Muito baixa", "Mínimo"],
+                ["Rectilinear", "Rápido", "Baixa", "Baixo"],
+                ["Honeycomb", "Médio", "Alta", "Médio"],
+              ],
+            },
+            goldenRule: "Básicos são para protótipos e decoração. Para resistência real use Gyroid ou Cubic.",
+          }],
           goldenRule: "Evite Grid em impressões estruturais rápidas — o cruzamento gera vibração.",
+
           errors: [
             { error: "Ruído metálico no infill", solution: "Troque Grid por Rectilinear ou reduza velocidade." },
             { error: "Peça quebra na direção Z", solution: "Aumente paredes (4+) — o infill 2D não ajuda em tração Z." },
@@ -4913,7 +4957,51 @@ export const modules: Module[] = [
             { param: "Infill Pattern", value: "Gyroid", action: "Padrão 3D isotrópico — peças funcionais" },
             { param: "Infill Pattern", value: "Lightning", action: "Apenas sustenta topo — economia máxima" },
           ],
+          paramDetails: [{
+            name: "Infills Avançados — Gyroid, Cubic, Lightning, Adaptive",
+            value: "3D, isotrópicos, eficientes",
+            whatIs: "Padrões tridimensionais que distribuem forças em múltiplas direções. Gyroid é onda senoidal 3D isotrópica; Cubic forma células cúbicas; Lightning cria 'raízes' só onde necessário; Adaptive Cubic concentra material onde precisa.",
+            whyAdjust: "Avançados eliminam cruzamento na mesma camada (sem vibração no bico) e oferecem resistência superior por grama de filamento — base de peças funcionais profissionais.",
+            optionsTable: {
+              headers: ["Padrão", "Estrutura", "Densidade típica", "Melhor para"],
+              rows: [
+                ["Gyroid", "Onda senoidal 3D", "15-35%", "Peças estruturais multidirecionais"],
+                ["Cubic", "Células cúbicas 3D", "20-40%", "Estruturas com carga uniforme"],
+                ["Lightning", "Raízes localizadas", "5-10%", "Decorativos, economia extrema"],
+                ["Adaptive Cubic", "Cúbico adaptativo", "15-25%", "Estruturas otimizadas por região"],
+              ],
+            },
+            influences: "Resistência isotrópica, peso final da peça, tempo de impressão e consumo de filamento.",
+            generates: "Peça funcional com relação resistência/peso superior — base do produto industrial 3D.",
+            howTo: [
+              { step: "1. Selecionar Gyroid como default", path: "Resistência > Padrão", desc: "Cobre 80% das aplicações estruturais." },
+              { step: "2. Lightning para decorativos grandes", path: "Resistência > Padrão", desc: "Economia até 60% de filamento." },
+              { step: "3. Configurar ângulos do Lightning", path: "Lightning Settings", desc: "Saliência 60-70°, Poda 40-50°, Endireitamento 20-30°." },
+              { step: "4. Adaptive Cubic para otimização", path: "Resistência > Padrão", desc: "Quando carga concentra em região específica." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra apesar de denso", "Padrão errado para tipo de carga", "Trocar para Gyroid isotrópico"],
+                ["Tempo de fatiamento alto", "Gyroid em peça gigante simples", "Voltar para Cubic ou Lightning"],
+                ["Topo afundando em Lightning", "Density baixa demais", "Aumentar Top Shell Layers para 5-6"],
+                ["Material excessivo", "Densidade alta desnecessária", "Reduzir para 20-25%"],
+              ],
+            },
+            summaryTable: {
+              title: "Comparativo Avançados",
+              headers: ["Padrão", "Resistência", "Material", "Isotropia"],
+              rows: [
+                ["Gyroid", "Excelente", "Médio", "Sim"],
+                ["Cubic", "Excelente", "Médio", "Parcial"],
+                ["Lightning", "Muito baixa", "Mínimo", "Não"],
+                ["Adaptive Cubic", "Alta", "Otimizado", "Parcial"],
+              ],
+            },
+            goldenRule: "Gyroid para resistência. Lightning para economia. Cubic para estrutura uniforme.",
+          }],
           goldenRule: "Use Gyroid para qualquer peça que sofrerá torção e compressão multidirecional.",
+
           errors: [
             { error: "Topo afundado com Lightning", solution: "Aumente Top Shell Layers para 6+." },
             { error: "Gyroid lento demais", solution: "Aumente Infill Speed gradualmente até aparecer ruído, depois recue 10%." },
@@ -4940,7 +5028,55 @@ export const modules: Module[] = [
             { param: "Estratégia de Infill", value: "Adaptive Cubic", action: "Concentra material onde tensões são altas" },
             { param: "Adaptive Quality", value: "0.6", action: "Equilíbrio entre economia e rigidez" },
           ],
+          paramDetails: [{
+            name: "Otimização de Forças X, Y e Z",
+            value: "Direção da carga + isotropia + densidade variável",
+            whatIs: "Análise de como cada infill distribui forças nos três eixos. FDM é naturalmente fraco em Z (entre camadas); o padrão de infill compensa ou amplifica essa fragilidade.",
+            whyAdjust: "Peça quebra na direção da carga quando o infill não está alinhado. Escolha consciente do padrão + densidade variável por região define resistência real.",
+            optionsTable: {
+              headers: ["Infill", "Força X", "Força Y", "Força Z", "Isotropia"],
+              rows: [
+                ["Grid", "Boa", "Boa", "Ruim", "Não"],
+                ["Lines", "Excelente", "Ruim", "Ruim", "Não"],
+                ["Honeycomb", "Excelente", "Excelente", "Média", "Parcial"],
+                ["Gyroid", "Excelente", "Excelente", "Excelente", "Sim"],
+                ["Cubic", "Excelente", "Excelente", "Boa", "Parcial"],
+                ["Lightning", "Ruim", "Ruim", "Ruim", "Não"],
+              ],
+            },
+            influences: "Resistência efetiva por direção, peso final, capacidade de suportar torção/compressão/flexão e durabilidade sob fadiga.",
+            generates: "Peça com resistência sob medida para a carga real — não desperdiça material em direções que não importam.",
+            howTo: [
+              { step: "1. Identificar direção da carga", path: "Briefing técnico", desc: "Tração X/Y, compressão Z, torção multidirecional." },
+              { step: "2. Escolher infill conforme direção", path: "Tabela acima", desc: "Multidirecional → Gyroid; uniforme → Cubic; leve → Lightning." },
+              { step: "3. Aplicar Modifier Mesh por região", path: "OrcaSlicer › Modifier", desc: "Densidade alta em área de carga, baixa em decoração." },
+              { step: "4. Testar sob carga real", path: "Bancada", desc: "Pendurar peso ou aplicar torque controlado." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra em direção específica", "Infill não alinhado com carga", "Trocar para Gyroid isotrópico"],
+                ["Peso excessivo", "Densidade uniforme alta", "Modifier Mesh com densidade variável"],
+                ["Tempo alto sem ganho", "Gyroid em peça decorativa", "Voltar para Lightning"],
+                ["Falha em área específica", "Densidade uniforme baixa", "Modifier Mesh local 40-50%"],
+              ],
+            },
+            summaryTable: {
+              title: "Infill por Tipo de Carga",
+              headers: ["Carga", "Infill", "Densidade"],
+              rows: [
+                ["Tração horizontal", "Gyroid, Cubic", "20-30%"],
+                ["Compressão vertical", "Gyroid, Cubic", "25-35%"],
+                ["Flexão", "Gyroid, Cubic", "20-30%"],
+                ["Torção", "Gyroid", "25-40%"],
+                ["Carga leve / decorativa", "Lightning, Lines", "5-10%"],
+                ["Multidirecional", "Gyroid", "25-35%"],
+              ],
+            },
+            goldenRule: "Direção da carga define o infill. Modifier Mesh refina por região — força onde precisa, leveza no resto.",
+          }],
           goldenRule: "Use Adaptive Cubic para protótipos industriais — força onde precisa, leveza no resto.",
+
           errors: [
             { error: "Casca externa afunda", solution: "Reduza Adaptive Quality para 0.4 (mais material perto da parede)." },
             { error: "Peça muito leve quebra fácil", solution: "Aumente paredes para 4 — Adaptive não compensa parede fina." },
