@@ -5800,6 +5800,8 @@ export const modules: Module[] = [
                   ["8", "Retração", "Elimina fiapos", "PA + Flow Rate"],
                 ],
               },
+              influences: "Define o tempo total de calibração e a previsibilidade de cada parâmetro final.",
+              generates: "Roteiro reproduzível que qualquer técnico do estúdio pode seguir.",
               goldenRule: "Cada etapa pressupõe a anterior — siga 1→8 em ordem rígida.",
             },
             {
@@ -5818,6 +5820,8 @@ export const modules: Module[] = [
                   ["8", "Retração", "DD 0.5–1.5mm@30–50 / Bowden 3–6mm@40–60"],
                 ],
               },
+              influences: "Direciona o intervalo de testes durante a calibração e evita varreduras desnecessárias.",
+              generates: "Perfil base 'PLA Genérico' pronto para refinamento por marca.",
             },
           ],
           params: [
