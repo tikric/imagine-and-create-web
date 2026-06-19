@@ -2907,7 +2907,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // ====================================================================
   // TELA 23 — RESISTÊNCIA (Sólido Interno · Avançado)
   // ====================================================================
-  "tela-23-resistencia-solido-interno-avancado": [
+  "tela-23-resistencia-avancado": [
     {
       name: "Sólido interno › Direção do preenchimento sólido",
       value: "45°",
@@ -3172,7 +3172,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // ====================================================================
   // TELA 31 — VELOCIDADE (Primeira camada · Outras camadas · Saliências)
   // ====================================================================
-  "tela-31-velocidade-primeira-outras-saliencias": [
+  "tela-31-velocidade-primeira-camada": [
     // ───────────── MÓDULO 1: VELOCIDADE DA PRIMEIRA CAMADA ─────────────
     {
       name: "Primeira camada",
