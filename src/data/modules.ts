@@ -977,6 +977,8 @@ export const modules: Module[] = [
                 ["Entupimento frequente", "Aditivos ruins ou umidade", "Trocar marca + secar"],
               ],
             },
+            image: { src: mod4Img41.url, alt: "Tolerância de diâmetro, umidade, densidade do perfil e estratégia térmica", caption: "Os 4 fundamentos do filamento: diâmetro consistente, umidade <15%, densidade correta no perfil e estratégia térmica contra subextrusão." },
+            errorsImage: { src: mod4Img42.url, alt: "Sintomas de filamento úmido e diâmetro irregular", caption: "Sintomas e soluções: estalos no bico, superfície áspera, peça quebradiça, variação de diâmetro e entupimento por umidade ou aditivos ruins." },
             goldenRule: "Filamento seco é fundação. Sem isso, nenhum outro ajuste resolve.",
           }],
           checklist: [
