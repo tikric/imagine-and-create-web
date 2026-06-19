@@ -5147,14 +5147,17 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Permite criar peças com propriedades híbridas (macia por fora, rígida por dentro), economizar filamento caro usando-o só onde aparece, e combinar cores para efeitos visuais.",
       influences: "Custo da impressão, tempo (mais trocas = mais tempo), complexidade visual e funcional.",
       generates: "Cabo de ferramenta: TPU nas paredes externas (pegada macia) + PETG no resto (resistência). Caixa decorativa: PLA Silk nas paredes + PLA básico no infill (economia).",
-      optionsTable: [
-        { option: "Paredes externas", effect: "Superfície visível", when: "Cor/material de acabamento" },
-        { option: "Paredes internas", effect: "Estrutura interna", when: "Material resistente barato" },
-        { option: "Preenchimento", effect: "Infill invisível", when: "Material econômico" },
-        { option: "Preenchimento sólido", effect: "Infill denso", when: "Material estrutural" },
-        { option: "Topo/Base", effect: "Superfícies visíveis", when: "Cor de acabamento" },
-        { option: "Torre de limpeza", effect: "Material descartado", when: "Sobras/material barato" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Paredes externas", "Superfície visível", "Cor/material de acabamento"],
+          ["Paredes internas", "Estrutura interna", "Material resistente barato"],
+          ["Preenchimento", "Infill invisível", "Material econômico"],
+          ["Preenchimento sólido", "Infill denso", "Material estrutural"],
+          ["Topo/Base", "Superfícies visíveis", "Cor de acabamento"],
+          ["Torre de limpeza", "Material descartado", "Sobras/material barato"],
+        ],
+      },
       goldenRule: "Use Filamento por Recurso para criar peças híbridas: macia por fora, rígida por dentro — ou econômicas: cara fora, barata dentro.",
     },
     {
@@ -5164,10 +5167,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "É a 'cara' da peça. Pode-se usar um filamento premium (Silk, Matte, TPU) só aqui, mantendo material econômico no resto.",
       influences: "Aparência final, sensação tátil, custo total da impressão.",
       generates: "Cabo de chave de fenda: TPU externo (pegada macia) + PETG interno (resistência). Resultado: confortável e durável.",
-      optionsTable: [
-        { option: "Padrão", effect: "Usa filamento principal", when: "Uso geral, peça monocromática" },
-        { option: "Filamento específico", effect: "Usa outro filamento", when: "Cor ou material de acabamento diferente" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Usa filamento principal", "Uso geral, peça monocromática"],
+          ["Filamento específico", "Usa outro filamento", "Cor ou material de acabamento diferente"],
+        ],
+      },
       goldenRule: "Reserve o filamento mais caro/bonito para as paredes externas — é o único que será visto.",
     },
     {
@@ -5177,10 +5183,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Como não são vistas, podem usar material mais resistente, mais barato ou sobras — sem comprometer a estética.",
       influences: "Resistência mecânica da peça, custo, peso.",
       generates: "Peça estrutural: PETG nas paredes internas (resistência) + PLA Silk nas externas (visual). Combina força e beleza.",
-      optionsTable: [
-        { option: "Padrão", effect: "Mesmo filamento das externas", when: "Peça simples" },
-        { option: "Filamento específico", effect: "Material estrutural diferente", when: "Quer reforçar internamente" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Mesmo filamento das externas", "Peça simples"],
+          ["Filamento específico", "Material estrutural diferente", "Quer reforçar internamente"],
+        ],
+      },
       goldenRule: "Paredes internas são invisíveis — use material focado em função, não em estética.",
     },
     {
@@ -5190,10 +5199,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Como o infill é 100% invisível, é o lugar perfeito para usar material barato, sobras ou rolos quase terminando.",
       influences: "Custo total da impressão, peso da peça, aproveitamento de sobras.",
       generates: "Peça grande com 30% infill: usar sobras de rolos antigos = economia de 30-40% no filamento nobre.",
-      optionsTable: [
-        { option: "Padrão", effect: "Usa filamento principal", when: "Impressão simples" },
-        { option: "Filamento barato", effect: "Economia", when: "Peça grande, sobras disponíveis" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Usa filamento principal", "Impressão simples"],
+          ["Filamento barato", "Economia", "Peça grande, sobras disponíveis"],
+        ],
+      },
       goldenRule: "Infill é o cemitério ideal para sobras de filamento — ninguém vai ver.",
     },
     {
@@ -5203,10 +5215,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Esse infill sólido pode 'vazar' visualmente pelas camadas superiores se a cor for muito diferente. Cuidado com contraste.",
       influences: "Aparência das superfícies visíveis, custo.",
       generates: "Topo branco com infill sólido preto → manchas escuras visíveis. Use cor similar ao topo.",
-      optionsTable: [
-        { option: "Padrão", effect: "Cor do filamento principal", when: "Uso geral" },
-        { option: "Cor combinando", effect: "Sem vazamento visual", when: "Topo de cor clara" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Cor do filamento principal", "Uso geral"],
+          ["Cor combinando", "Sem vazamento visual", "Topo de cor clara"],
+        ],
+      },
       goldenRule: "Combine a cor do infill sólido com a cor do topo — evita 'fantasmas' nas superfícies.",
     },
     {
@@ -5216,10 +5231,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Topo é uma das partes mais visíveis. Permite usar cor de destaque ou acabamento especial só aqui.",
       influences: "Estética do topo, contraste visual com paredes.",
       generates: "Caixa preta com tampa dourada: usar filamento ouro só no topo = efeito premium com custo controlado.",
-      optionsTable: [
-        { option: "Padrão", effect: "Mesmo das paredes", when: "Visual uniforme" },
-        { option: "Cor de destaque", effect: "Topo diferente", when: "Efeito decorativo" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Mesmo das paredes", "Visual uniforme"],
+          ["Cor de destaque", "Topo diferente", "Efeito decorativo"],
+        ],
+      },
       goldenRule: "Topo + paredes externas formam 90% do visual — coordene cores entre eles.",
     },
     {
@@ -5229,10 +5247,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Pode usar filamento com melhor adesão (ex: PETG) só na base, mantendo PLA no resto.",
       influences: "Adesão à mesa, aparência da base (se visível).",
       generates: "Peça funcional: PETG na base (adesão forte) + PLA no resto (fácil de imprimir).",
-      optionsTable: [
-        { option: "Padrão", effect: "Mesmo filamento", when: "Uso geral" },
-        { option: "Filamento de adesão", effect: "Base mais aderente", when: "Peças propensas a soltar" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Mesmo filamento", "Uso geral"],
+          ["Filamento de adesão", "Base mais aderente", "Peças propensas a soltar"],
+        ],
+      },
       goldenRule: "Se a base solta, considere um filamento dedicado de adesão só ali.",
     },
     {
@@ -5242,10 +5263,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "A torre vai pro lixo. Usar filamento barato ou sobras nela economiza material nobre.",
       influences: "Custo do desperdício, sustentabilidade.",
       generates: "Impressão 4 cores: torre construída com filamento de sobra = zero desperdício de material novo.",
-      optionsTable: [
-        { option: "Padrão", effect: "Usa o filamento ativo", when: "Uso geral" },
-        { option: "Filamento descarte", effect: "Material barato", when: "Tem sobras disponíveis" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Padrão", "Usa o filamento ativo", "Uso geral"],
+          ["Filamento descarte", "Material barato", "Tem sobras disponíveis"],
+        ],
+      },
       goldenRule: "A torre de purga é descartada — atribua sempre o filamento mais barato ou sobras.",
     },
     {
@@ -5255,10 +5279,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Em sistemas single-nozzle (AMS, MMU), normalmente não precisa. Em dual-extruder ou com filamentos higroscópicos (Nylon, TPU mal armazenado), é essencial.",
       influences: "Limpeza das trocas, tempo extra de impressão, desperdício de filamento.",
       generates: "AMS single-nozzle: deixar off (não vaza). Dual-extruder com Nylon úmido: ativar (evita gotas na peça).",
-      optionsTable: [
-        { option: "Ativado", effect: "Controla a purga", when: "Dual-extruder, filamentos úmidos" },
-        { option: "Desativado", effect: "Sem controle extra", when: "Single-nozzle (AMS/MMU)" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Controla a purga", "Dual-extruder, filamentos úmidos"],
+          ["Desativado", "Sem controle extra", "Single-nozzle (AMS/MMU)"],
+        ],
+      },
       goldenRule: "Single nozzle: off. Dual extruder: on. Filamento higroscópico: sempre on.",
     },
     {
@@ -5268,11 +5295,14 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "A escolha determina o desperdício total. Purgar na torre = mais lixo. Purgar no infill/suporte = quase zero desperdício.",
       influences: "Quantidade de filamento desperdiçado, tempo de impressão, possível contaminação visual.",
       generates: "Peça funcional com infill denso + suportes: purgar em ambos = desperdício quase zero.",
-      optionsTable: [
-        { option: "Torre de limpeza", effect: "Purga descartada", when: "Padrão seguro, peças sem infill" },
-        { option: "Preenchimento", effect: "Purga vira infill", when: "Peças opacas com infill denso" },
-        { option: "Suportes", effect: "Purga vira suporte", when: "Peças com suportes (descartados)" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Torre de limpeza", "Purga descartada", "Padrão seguro, peças sem infill"],
+          ["Preenchimento", "Purga vira infill", "Peças opacas com infill denso"],
+          ["Suportes", "Purga vira suporte", "Peças com suportes (descartados)"],
+        ],
+      },
       goldenRule: "Sempre que possível, priorize purgar em suportes/infill antes da torre — economia de 40-70%.",
     },
     {
@@ -5282,10 +5312,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Economia máxima. Mas pode contaminar visivelmente o infill (que vira multicor) — risco em paredes finas ou filamentos translúcidos.",
       influences: "Desperdício total, possível contaminação visual em paredes finas ou peças translúcidas.",
       generates: "Peça opaca densa (3+ paredes, 30%+ infill): ativar = desperdício quase zero. Peça translúcida ou parede de 1 perímetro: cores vão aparecer.",
-      optionsTable: [
-        { option: "Ativado", effect: "Purga no infill", when: "Peças opacas, infill denso, paredes ≥ 3" },
-        { option: "Desativado", effect: "Purga na torre", when: "Translúcido, paredes finas, peças decorativas" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Purga no infill", "Peças opacas, infill denso, paredes ≥ 3"],
+          ["Desativado", "Purga na torre", "Translúcido, paredes finas, peças decorativas"],
+        ],
+      },
       goldenRule: "Peça funcional opaca: ativar (até 50% menos desperdício). Peça decorativa/translúcida: nunca ativar.",
     },
     {
@@ -5295,10 +5328,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "É o recurso de economia mais importante em multimaterial. Pode reduzir desperdício em 40-60% sem efeito colateral algum.",
       influences: "Tamanho da torre de purga, custo da impressão, sustentabilidade.",
       generates: "Peça AMS 4 cores com suporte normal: torre encolhe ~70% quando ativado. Praticamente elimina o desperdício.",
-      optionsTable: [
-        { option: "Ativado", effect: "Purga nos suportes", when: "Peça TEM suportes (sempre ativar)" },
-        { option: "Desativado", effect: "Purga na torre", when: "Peça sem suportes" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Purga nos suportes", "Peça TEM suportes (sempre ativar)"],
+          ["Desativado", "Purga na torre", "Peça sem suportes"],
+        ],
+      },
       goldenRule: "Se a peça tem suporte, SEMPRE ative — é grátis e elimina quase toda a torre.",
     },
     {
@@ -5308,10 +5344,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Materiais quimicamente diferentes (PLA + TPU, PETG + Nylon) não aderem bem. O intertravamento mecânico evita delaminação na junção.",
       influences: "Resistência da junção entre materiais, complexidade do slicing, tempo.",
       generates: "PLA rígido + TPU flexível na mesma peça sem interlock = delaminação garantida. Com interlock = junção mecânica robusta.",
-      optionsTable: [
-        { option: "Ativado", effect: "Intercala camadas", when: "Materiais físico-químicos diferentes" },
-        { option: "Desativado", effect: "Junção simples", when: "Mesma família de material (multi-cor)" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Intercala camadas", "Materiais físico-químicos diferentes"],
+          ["Desativado", "Junção simples", "Mesma família de material (multi-cor)"],
+        ],
+      },
       goldenRule: "Multi-COR (mesmo PLA, cores diferentes): off. Multi-MATERIAL (PLA+TPU, PETG+Nylon): on.",
     },
     {
@@ -5321,10 +5360,13 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Complementa o intertravamento de viga. Em materiais difíceis de aderir, as cascas extras criam mais área de contato.",
       influences: "Resistência da junção, peso da peça, tempo de impressão.",
       generates: "Peça PLA+TPU com interface shells: junção significativamente mais resistente à tração.",
-      optionsTable: [
-        { option: "Ativado", effect: "Cascas extras na interface", when: "Materiais com adesão fraca" },
-        { option: "Desativado", effect: "Sem reforço", when: "Mesmo material ou compatíveis" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["Ativado", "Cascas extras na interface", "Materiais com adesão fraca"],
+          ["Desativado", "Sem reforço", "Mesmo material ou compatíveis"],
+        ],
+      },
       goldenRule: "Use junto com intertravamento de viga sempre que combinar PLA com flexíveis ou Nylon.",
     },
     {
@@ -5334,11 +5376,14 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Segmentos menores = mais interlocks = mais resistência, mas também mais tempo de slicing e impressão.",
       influences: "Densidade de intertravamento, tempo de processamento, resistência da junção.",
       generates: "Largura 2mm em área grande: dezenas de interlocks (muito forte, muito lento). Largura 20mm: poucos interlocks (rápido, junção mais fraca).",
-      optionsTable: [
-        { option: "2-5mm", effect: "Interlocks densos", when: "Detalhes finos, junção crítica" },
-        { option: "5-10mm", effect: "Padrão equilibrado", when: "Uso geral multimaterial" },
-        { option: "10-20mm", effect: "Interlocks esparsos", when: "Áreas grandes, prioridade em velocidade" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["2-5mm", "Interlocks densos", "Detalhes finos, junção crítica"],
+          ["5-10mm", "Padrão equilibrado", "Uso geral multimaterial"],
+          ["10-20mm", "Interlocks esparsos", "Áreas grandes, prioridade em velocidade"],
+        ],
+      },
       goldenRule: "Mantenha 5-10mm para uso geral. Reduza só se a junção estiver falhando.",
     },
     {
@@ -5348,11 +5393,14 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whyAdjust: "Profundidade maior = ancoragem mais forte, mas também mais contaminação visual e tempo. Equilíbrio entre força e limpeza.",
       influences: "Resistência da junção, aparência visual na fronteira, tempo de impressão.",
       generates: "Profundidade 0.5mm: junção delicada, visual limpo. Profundidade 3mm: junção robusta, fronteira 'borrada' visível.",
-      optionsTable: [
-        { option: "0.5-1mm", effect: "Intertravamento leve", when: "Materiais compatíveis, visual importa" },
-        { option: "1-2mm", effect: "Padrão equilibrado", when: "Uso geral" },
-        { option: "2-3mm", effect: "Intertravamento profundo", when: "Materiais incompatíveis, função crítica" },
-      ],
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando Usar"],
+        rows: [
+          ["0.5-1mm", "Intertravamento leve", "Materiais compatíveis, visual importa"],
+          ["1-2mm", "Padrão equilibrado", "Uso geral"],
+          ["2-3mm", "Intertravamento profundo", "Materiais incompatíveis, função crítica"],
+        ],
+      },
       goldenRule: "1-2mm cobre 95% dos casos. Aumente só em PLA+TPU ou peças sob tração.",
     },
   ],
