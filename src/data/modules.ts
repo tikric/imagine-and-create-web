@@ -27,6 +27,7 @@ export type Lesson = {
     value: string;
     whatIs: string;
     whyAdjust?: string;
+    image?: { src: string; alt: string; caption?: string };
     types?: { label: string; desc: string }[];
     optionsTable?: { headers: string[]; rows: string[][] };
     influences: string;
@@ -37,6 +38,7 @@ export type Lesson = {
     howTo?: { step: string; path: string; desc: string }[];
     example?: { piece: string; config: string; result: string };
     errorsTable?: { headers: string[]; rows: string[][] };
+    errorsImage?: { src: string; alt: string; caption?: string };
     goldenRule?: string;
     summaryTable?: { title?: string; headers: string[]; rows: string[][] };
   }[];
