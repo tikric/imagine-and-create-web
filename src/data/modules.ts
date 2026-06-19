@@ -5931,9 +5931,11 @@ export const modules: Module[] = [
           ],
           paramDetails: [
             {
-              label: "Cronograma de Manutenção",
-              color: "primary",
-              data: {
+              name: "Cronograma de Manutenção Preventiva",
+              value: "Diária / Semanal / Mensal",
+              whatIs: "Calendário de tarefas que mantém a impressora dentro da tolerância de calibração ao longo do tempo.",
+              whyAdjust: "Sem rotina, parâmetros calibrados deterioram e voltam a gerar refugo.",
+              optionsTable: {
                 headers: ["Tarefa", "Frequência", "Tempo", "Observação"],
                 rows: [
                   ["Limpar mesa (álcool isopropílico)", "Diária", "1min", "Adesão consistente"],
@@ -5947,11 +5949,15 @@ export const modules: Module[] = [
                   ["Limpar/lubrificar fuso Z", "Mensal", "10min", "Evita Z-Banding"],
                 ],
               },
+              influences: "Determina a frequência com que será necessário refazer o protocolo de calibração.",
+              generates: "Vida útil maior da máquina e índice de retrabalho menor.",
             },
             {
-              label: "Correções Recorrentes",
-              color: "destructive",
-              data: {
+              name: "Mapa de Correções Recorrentes",
+              value: "Sintoma → Causa → Solução",
+              whatIs: "Tabela de diagnóstico para os defeitos que aparecem com mais frequência fora do contexto de calibração.",
+              whyAdjust: "Antes de mexer em parâmetros do slicer, descartar hardware/material elimina causas mais prováveis.",
+              errorsTable: {
                 headers: ["Problema", "Causa", "Solução"],
                 rows: [
                   ["Ghosting / Ringing", "Correias frouxas", "Tensionar a ~150Hz"],
@@ -5962,6 +5968,8 @@ export const modules: Module[] = [
                   ["Layer shift", "Correias/polias", "Tensionar e apertar parafusos"],
                 ],
               },
+              influences: "Reduz drasticamente o tempo de diagnóstico no chão de produção.",
+              generates: "Procedimento padronizado de troubleshooting para a equipe.",
             },
           ],
           params: [
