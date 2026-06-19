@@ -645,7 +645,7 @@ export const modules: Module[] = [
   {
     id: "materiais-filamentos", number: 4, title: "Materiais e Filamentos",
     tagline: "PLA, PETG, ABS, ASA, TPU e Nylon",
-    level: "Iniciante/Intermediário", duration: "1h 30min",
+    level: "Intermediário", duration: "1h 30min",
     methodology: "Tabelas comparativas, perfis prontos por material, técnicas de armazenamento e secagem.",
     objective: "Dominar as principais famílias de filamentos, suas propriedades, aplicações e configuração no OrcaSlicer.",
     lessons: [
