@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CursoRouteImport } from './routes/curso'
+import { Route as CalibracaoRouteImport } from './routes/calibracao'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CursoIndexRouteImport } from './routes/curso.index'
 import { Route as CursoModuleIdIndexRouteImport } from './routes/curso.$moduleId.index'
@@ -18,6 +19,11 @@ import { Route as CursoModuleIdLessonIdRouteImport } from './routes/curso.$modul
 const CursoRoute = CursoRouteImport.update({
   id: '/curso',
   path: '/curso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalibracaoRoute = CalibracaoRouteImport.update({
+  id: '/calibracao',
+  path: '/calibracao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,6 +49,7 @@ const CursoModuleIdLessonIdRoute = CursoModuleIdLessonIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calibracao': typeof CalibracaoRoute
   '/curso': typeof CursoRouteWithChildren
   '/curso/': typeof CursoIndexRoute
   '/curso/$moduleId/$lessonId': typeof CursoModuleIdLessonIdRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calibracao': typeof CalibracaoRoute
   '/curso': typeof CursoIndexRoute
   '/curso/$moduleId/$lessonId': typeof CursoModuleIdLessonIdRoute
   '/curso/$moduleId': typeof CursoModuleIdIndexRoute
@@ -57,6 +65,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calibracao': typeof CalibracaoRoute
   '/curso': typeof CursoRouteWithChildren
   '/curso/': typeof CursoIndexRoute
   '/curso/$moduleId/$lessonId': typeof CursoModuleIdLessonIdRoute
@@ -66,15 +75,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/calibracao'
     | '/curso'
     | '/curso/'
     | '/curso/$moduleId/$lessonId'
     | '/curso/$moduleId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/curso' | '/curso/$moduleId/$lessonId' | '/curso/$moduleId'
+  to:
+    | '/'
+    | '/calibracao'
+    | '/curso'
+    | '/curso/$moduleId/$lessonId'
+    | '/curso/$moduleId'
   id:
     | '__root__'
     | '/'
+    | '/calibracao'
     | '/curso'
     | '/curso/'
     | '/curso/$moduleId/$lessonId'
@@ -83,6 +99,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalibracaoRoute: typeof CalibracaoRoute
   CursoRoute: typeof CursoRouteWithChildren
 }
 
@@ -93,6 +110,13 @@ declare module '@tanstack/react-router' {
       path: '/curso'
       fullPath: '/curso'
       preLoaderRoute: typeof CursoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calibracao': {
+      id: '/calibracao'
+      path: '/calibracao'
+      fullPath: '/calibracao'
+      preLoaderRoute: typeof CalibracaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -142,18 +166,9 @@ const CursoRouteWithChildren = CursoRoute._addFileChildren(CursoRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalibracaoRoute: CalibracaoRoute,
   CursoRoute: CursoRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
