@@ -97,7 +97,7 @@ function ModulePage() {
         <div className="rounded-2xl border border-border bg-card/40 p-6">
           <div className="mono text-xs uppercase tracking-wider text-primary mb-4">Índice — {m.lessons.length} aulas</div>
           <ol className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {m.lessons.map((l) => (
+            {m.lessons.map((l: Lesson) => (
               <li key={l.id}>
                 <a href={`#${l.id}`} className="flex items-baseline gap-3 rounded-lg px-3 py-2 hover:bg-card transition">
                   <span className="mono text-primary text-sm">{String(l.number).padStart(2, "0")}</span>
