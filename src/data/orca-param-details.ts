@@ -3578,6 +3578,479 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   ],
 
   // ====================================================================
+  // TELA 32 — VELOCIDADE: Saliências, Travel e Aceleração
+  // ====================================================================
+  "tela-32-velocidade-saliencias-aceleracao": [
+    {
+      name: "Velocidade em saliências (tabela por %)",
+      value: "10%=0 · 25%=50 · 50%=30 · 75%=10 mm/s",
+      whatIs: "Tabela que reduz a velocidade conforme o grau de overhang (porcentagem da linha que está suspensa no ar). Quanto maior o overhang, mais lento o bocal viaja, dando tempo do cooling solidificar o plástico antes que ele caia.",
+      whyAdjust: "Velocidades altas em saliências causam droop (queda), stringing e camadas mal formadas. A tabela faz a redução automática só onde necessário — preservando velocidade no resto.",
+      influences: "Qualidade de overhangs sem suporte, necessidade de árvores de suporte, acabamento da face inferior em áreas inclinadas.",
+      generates: "Overhangs limpos até 60–70° em PLA. Sem isso, qualquer saliência >45° apresenta deformação visível.",
+      howTo: [
+        { step: "1. Abrir aba Velocidade", path: "Painel Esquerdo › Velocidade › Velocidade em saliências", desc: "Localizar a tabela de 4 colunas (10/25/50/75%)" },
+        { step: "2. Ajustar conforme material", path: "PLA: manter padrão · PETG: dobrar a redução · ABS: reduzir mais ainda", desc: "Materiais com cooling pior precisam de velocidades menores" },
+      ],
+      goldenRule: "Em peças com overhangs críticos: 10%=máx, 25%=80% da normal, 50%=50%, 75%=20%. Ative cooling 100% em paralelo.",
+    },
+    {
+      name: "Velocidade de deslocamento (Travel)",
+      value: "300 mm/s",
+      whatIs: "Velocidade dos movimentos aéreos do bico (sem extrusão) entre uma região impressa e outra. Não afeta qualidade direta da extrusão, mas afeta stringing e tempo de impressão.",
+      whyAdjust: "Travel alto reduz tempo morto e diminui chance de stringing (puxa o fio mais rápido que ele consegue escorrer). Travel muito alto pode causar layer shift em máquinas mal calibradas.",
+      influences: "Tempo total de impressão, stringing entre objetos, ruído mecânico, risco de layer shift.",
+      generates: "Em uma peça com muitas ilhas, travel 300 mm/s economiza 15–25% do tempo total vs. 150 mm/s.",
+      goldenRule: "Core XY: 300–500 mm/s. Cartesiano (Ender, Prusa): 150–200 mm/s. Sempre combinar com Z-hop em peças altas.",
+    },
+    {
+      name: "Aceleração — Parede externa",
+      value: "500–1000 mm/s² (reduzir de 2000)",
+      whatIs: "Quão rapidamente o bico atinge velocidade na parede externa. Aceleração alta significa que o bico chega à velocidade alvo em milissegundos — mas isso gera oscilação mecânica (ghosting/ringing).",
+      whyAdjust: "Parede externa é a face VISÍVEL da peça. Acelerações altas aqui = ondulações fantasmas após cantos. Reduzir para 500–1000 mm/s² mata o ghosting, custando segundos por camada.",
+      influences: "Qualidade visual da superfície, presença de ghosting/ringing, definição de cantos retos.",
+      generates: "Cubo de calibração: aceleração 2000 = ondulações visíveis após cada canto. Aceleração 500 = canto limpo, parede lisa.",
+      goldenRule: "Calibre Input Shaping ANTES de aceitar acelerações altas em parede externa. Sem IS, máximo 1000 mm/s² nesta linha.",
+    },
+    {
+      name: "Aceleração — Infill esparso e Travel",
+      value: "Infill 5000 · Travel 10000 mm/s²",
+      whatIs: "Infill é interno (invisível), travel é aéreo (sem extrusão) — ambos podem usar aceleração alta sem custo visual. Ganho direto de tempo.",
+      influences: "Tempo total de impressão (infill costuma ser 40–60% do tempo).",
+      generates: "Aceleração infill 5000 vs 2000 reduz tempo de infill em ~30% sem afetar qualidade externa.",
+      goldenRule: "Aceleração baixa onde se VÊ (parede externa, topo). Aceleração alta onde NÃO se vê (infill, travel, parede interna).",
+      summaryTable: {
+        headers: ["Tipo de linha", "Aceleração ideal", "Razão"],
+        rows: [
+          ["Parede externa", "500–1000", "Mata ghosting"],
+          ["Parede interna", "2000–4000", "Equilíbrio"],
+          ["Infill esparso", "5000+", "Invisível, ganha tempo"],
+          ["Superfície topo", "1000–2000", "Acabamento liso"],
+          ["Travel", "10000", "Sem extrusão, máx velocidade"],
+        ],
+      },
+    },
+  ],
+
+  // ====================================================================
+  // TELA 33 — VELOCIDADE: Jerk(XY), Decel e Suavização de Extrusão
+  // ====================================================================
+  "tela-33-velocidade-jerk-extrusao": [
+    {
+      name: "Habilitar accel_to_decel (50%)",
+      value: "Ativado · 50%",
+      whatIs: "Recurso do Klipper que limita a aceleração máxima usada em movimentos curtos. Em segmentos curtos, o firmware nunca atinge a velocidade alvo — o accel_to_decel reduz a aceleração permitida nesses casos, suavizando o movimento.",
+      whyAdjust: "Sem accel_to_decel, segmentos curtos (cantos, detalhes finos) recebem aceleração total e geram vibração que aparece como ringing. Com 50%, o firmware nivela a resposta mecânica.",
+      influences: "Qualidade em detalhes finos, ringing em cantos, suavidade de curvas complexas.",
+      generates: "Texto em relevo de 2mm fica nítido vs. borrado. Curvas orgânicas sem 'degraus' de vibração.",
+      goldenRule: "Klipper: ativar accel_to_decel em 50% é gratuito (zero perda de tempo) e melhora visivelmente detalhes pequenos.",
+    },
+    {
+      name: "Jerk(XY) — Padrão",
+      value: "9 mm/s",
+      whatIs: "Quanto a impressora pode mudar de velocidade INSTANTANEAMENTE sem acelerar suavemente. Jerk alto = bico muda direção brusco; Jerk baixo = transição suave.",
+      whyAdjust: "Jerk alto melhora qualidade em cantos pequenos (o bico não desacelera tanto), mas gera vibração mecânica. Em Input Shaper bem calibrado, jerk pode ser baixo (5–9) sem perda — o IS compensa.",
+      influences: "Definição de cantos, ressonância da máquina, ghosting, ruído.",
+      generates: "Jerk 20 sem IS = ringing severo. Jerk 9 com IS = cantos limpos sem custo de tempo.",
+      goldenRule: "Sem Input Shaper: 7–9 mm/s. Com IS calibrado: 5–9 mm/s. Nunca >12 mm/s em parede externa.",
+    },
+    {
+      name: "Jerk — Parede externa",
+      value: "5–9 mm/s",
+      whatIs: "Jerk específico da linha visível. Mantido baixo para garantir que cantos da face externa não vibrem.",
+      influences: "Qualidade visual de cantos retos (cubos, prismas), nitidez de chanfros.",
+      generates: "Jerk parede externa 5 mm/s + aceleração 1000 = canto perfeito, sem ondulação.",
+      goldenRule: "Parede externa sempre com o Jerk MENOR de toda a tabela. É a linha visível.",
+    },
+    {
+      name: "Suavização da extrusão (Avançado)",
+      value: "0 mm³/s² (off)",
+      whatIs: "Suaviza variações no fluxo de extrusão, reduzindo picos quando o bico desacelera/acelera. Funciona em conjunto com Pressure Advance no Klipper.",
+      whyAdjust: "Ativar sem PA calibrado piora a qualidade. Só ative depois de PA bem ajustado — aí, suaviza ainda mais transições de velocidade.",
+      influences: "Bleeding em cantos, qualidade quando há muita variação de velocidade.",
+      generates: "Com PA + suavização: cantos sem 'gota' de excesso de plástico.",
+      goldenRule: "Mantenha em 0 até calibrar Pressure Advance. Depois teste valores 0.01–0.05 mm³/s².",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 41 — SUPORTE: Ativar, Tipo (Árvore), Estilo e Jangada
+  // ====================================================================
+  "tela-41-suporte-ativar-tipo": [
+    {
+      name: "Ativar suporte",
+      value: "Ativado / Desativado",
+      whatIs: "Liga ou desliga a geração automática de estruturas de suporte para overhangs e pontes. Sem suporte, áreas com overhang > 45° tendem a colapsar.",
+      whyAdjust: "Algumas peças não precisam de suporte (geometrias simples). Outras precisam imperativamente. Ativar gera, desativar respeita pintura manual de suporte.",
+      influences: "Viabilidade da impressão, tempo, consumo de filamento, qualidade da face inferior.",
+      generates: "Peças orgânicas (figuras, miniaturas) sem suporte = falham; com Tree = imprimem perfeitas.",
+      goldenRule: "Em dúvida, ative e revise o preview. Se o suporte estiver mínimo, mantenha; se for excessivo, desative e use pintura manual.",
+    },
+    {
+      name: "Tipo: Árvore (auto)",
+      value: "Árvore (auto)",
+      whatIs: "Algoritmo moderno que gera suportes em forma de galhos orgânicos que se ramificam apenas onde precisam tocar a peça. Substitui o suporte Normal (grade vertical sólida).",
+      whyAdjust: "Tree usa 40–60% menos filamento que Normal, deixa menos marcas, e remove com puxão. Ideal para geometrias orgânicas.",
+      types: [
+        { label: "Normal (auto)", desc: "Pilares verticais em grade — robusto, mais filamento, mais marcas" },
+        { label: "Árvore (auto)", desc: "Ramos orgânicos — econômico, fácil remoção, ideal para curvas" },
+        { label: "Híbrido", desc: "Tree para alturas grandes + Normal para áreas planas" },
+      ],
+      influences: "Consumo de filamento, qualidade da face inferior, facilidade de remoção, tempo de impressão.",
+      generates: "Miniatura 60mm de altura: Normal = 18g de suporte. Tree = 7g. Mesma peça, mesma qualidade.",
+      goldenRule: "Orgânico/curvo = Tree. Mecânico/plano = Normal+Snug. Quando em dúvida = Tree Organic.",
+    },
+    {
+      name: "Ângulo limiar",
+      value: "30°",
+      whatIs: "Inclinação mínima (medida a partir da vertical) acima da qual o Orca considera a face uma overhang que precisa de suporte. 30° = qualquer face inclinada mais que 30° do prumo recebe suporte.",
+      whyAdjust: "Reduzir (15–20°) gera MAIS suporte (mais conservador). Aumentar (40–60°) gera MENOS (confiando que o material aguenta).",
+      influences: "Quantidade total de suporte, áreas que recebem ou não suporte, tempo.",
+      generates: "Ângulo 30° = padrão seguro PLA. Ângulo 45° = mais econômico mas pode falhar em overhangs longos.",
+      goldenRule: "PLA: 30–45°. PETG: 25–35°. ABS/ASA: 20–30°. Quanto pior o cooling, menor o ângulo limiar.",
+    },
+    {
+      name: "Apenas na placa de impressão",
+      value: "Ativado",
+      whatIs: "Restringe o suporte a tocar APENAS a mesa de impressão — nunca em cima da peça. Sem isso, o Orca pode pousar suporte sobre superfícies da peça, deixando marcas.",
+      whyAdjust: "Marca de suporte em cima da peça é difícil de remover e deixa imperfeição visível. Ativar evita totalmente.",
+      influences: "Acabamento da face superior, marcas visíveis após remoção.",
+      generates: "Figura com braço estendido: sem 'Apenas placa' = suporte pousa no ombro, marca visível. Com ativo = suporte sai do chão, sem marca.",
+      goldenRule: "Sempre ativado em peças visuais. Desative apenas em peças funcionais internas onde marcas não importam.",
+    },
+    {
+      name: "Densidade da primeira camada (Jangada/Raft)",
+      value: "90%",
+      whatIs: "Densidade da primeira camada do suporte (base que toca a mesa). 90% = quase sólida, garantindo adesão firme do suporte à plataforma.",
+      influences: "Adesão do suporte à mesa, risco de descolamento do suporte durante a impressão.",
+      generates: "Sem densidade alta na base, o suporte solta no meio da impressão = peça arruinada.",
+      goldenRule: "Manter 80–100%. Não tente economizar aqui — suporte solto = impressão perdida.",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 42 — SUPORTE: Avançado, Z Gap, Interface e Padrão
+  // ====================================================================
+  "tela-42-suporte-avancado-interface": [
+    {
+      name: "Distância Z (superior e inferior)",
+      value: "0,15–0,20 mm",
+      whatIs: "Espaço vertical entre o topo do suporte e a face da peça que está sendo suportada. Z Gap pequeno = suporte gruda; grande = solta fácil mas deixa face áspera.",
+      whyAdjust: "É o parâmetro MAIS CRÍTICO da seção. 0,2mm é o padrão; 0,15mm dá face mais lisa mas grudenta; 0,25mm solta limpo mas com textura visível.",
+      influences: "Acabamento da face inferior da peça, esforço para remover o suporte, possibilidade de quebrar a peça ao remover.",
+      generates: "Z Gap 0,1 = não consegue separar sem destruir. 0,15 = puxa com alicate, face lisa. 0,2 = remove com a mão, face com pequena textura. 0,3 = cai sozinho, face muito áspera.",
+      goldenRule: "PLA: 0,15mm. PETG: 0,20mm (PETG cola muito). ABS: 0,18mm. Sempre múltiplo de altura de camada.",
+    },
+    {
+      name: "Camadas de interface (superior)",
+      value: "2–3 camadas",
+      whatIs: "Quantas camadas densas o Orca imprime no TOPO do suporte (logo abaixo da peça). Mais camadas = superfície de contato mais lisa para a peça pousar.",
+      whyAdjust: "Sem interface densa, a face inferior da peça mostra os espaços do padrão de suporte. Com 2–3 camadas de interface, a peça pousa em uma 'tampa' lisa.",
+      influences: "Acabamento da face inferior, consumo extra de filamento, tempo.",
+      generates: "0 camadas = face com listras visíveis. 2 camadas = face quase lisa. 4 camadas = praticamente perfeita mas mais filamento.",
+      goldenRule: "Mínimo 2 camadas para qualquer peça visual. 3 camadas para superfícies críticas.",
+    },
+    {
+      name: "Espaçamento da interface",
+      value: "0,5 mm (denso ≈100%)",
+      whatIs: "Espaçamento entre linhas da camada de interface. 0,5mm com largura 0,42 = praticamente 100% densidade, formando superfície sólida.",
+      influences: "Lisura da face inferior, esforço de remoção.",
+      generates: "Espaçamento 0,5 = topo do suporte LISO, peça pousa perfeito. Espaçamento 2,0 = listras visíveis na peça.",
+      goldenRule: "Para acabamento perfeito: espaçamento 0,4–0,5mm. Para economia: 1,0mm (aceita pequenas linhas).",
+    },
+    {
+      name: "Distância XY entre suporte e objeto",
+      value: "0,35 mm",
+      whatIs: "Separação horizontal entre paredes do suporte e paredes laterais da peça. Define se o suporte 'cola' nas laterais ou se separa cleanly.",
+      whyAdjust: "Pequeno demais = suporte funde com a peça (não sai). Grande demais = suporte instável e overhangs sem cobertura adequada.",
+      influences: "Facilidade de remoção lateral, qualidade de paredes verticais da peça.",
+      generates: "XY 0,2 = não desencaixa. XY 0,35 = puxa limpo. XY 0,5 = solta fácil mas suporte pode tombar.",
+      goldenRule: "PLA: 0,35mm. PETG: 0,4mm. Sempre testar primeiro em uma peça pequena antes de imprimir grande.",
+    },
+    {
+      name: "Comprimento máximo de ponte (sem suporte)",
+      value: "10 mm",
+      whatIs: "Vão livre que o Orca aceita sem gerar suporte (assume que é uma ponte que o filamento aguenta). Acima desse valor, força suporte.",
+      influences: "Quantidade de suporte gerado, qualidade de pontes longas.",
+      generates: "10mm = padrão seguro. Aumentar p/ 20mm = arrisca pontes ruins. Reduzir p/ 5mm = mais suporte em qualquer vão.",
+      goldenRule: "PLA: até 15mm seguro. PETG: até 10mm. Para mais, sempre suporte.",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 43 — SUPORTE: Árvore (Tree) — Geometria e Densidade
+  // ====================================================================
+  "tela-43-suporte-arvore": [
+    {
+      name: "Diâmetro da ponta",
+      value: "0,4–0,8 mm",
+      whatIs: "Espessura da extremidade do ramo que toca a peça. Quanto menor, menor a marca deixada — mas se for muito fina (<0,4mm), o ramo quebra antes de chegar ao destino.",
+      whyAdjust: "Marca visível na peça depende diretamente do diâmetro da ponta. 0,4mm = marca quase invisível; 0,8mm = marca leve mas circular.",
+      influences: "Qualidade da face suportada, robustez do suporte, facilidade de quebrar antes da impressão terminar.",
+      generates: "Ponta 0,4 + Tree Organic = peça quase sem marca de suporte. Ponta 1,2 = marca grosseira mas suporte super-confiável.",
+      goldenRule: "PLA: 0,4–0,6mm. PETG (cola mais): 0,6–0,8mm. Nunca <0,4mm — quebra.",
+    },
+    {
+      name: "Densidade da ramificação",
+      value: "30–40%",
+      whatIs: "Quão denso é o padrão interno dos ramos. Densidade alta = ramos sólidos, robustos; baixa = ocos, econômicos.",
+      influences: "Robustez do suporte, consumo de filamento, tempo.",
+      generates: "30% = padrão Orca, econômico. 50% = ramos sólidos para suportes muito altos. 20% = arrisca quebra em meio à impressão.",
+      goldenRule: "Suporte <50mm de altura: 30%. Suporte 50–150mm: 35–40%. Suporte >150mm: 45–50%.",
+    },
+    {
+      name: "Diâmetro do ramo de suporte",
+      value: "2 mm",
+      whatIs: "Espessura do tronco principal dos galhos. Define resistência mecânica do suporte como um todo.",
+      influences: "Estabilidade da árvore, possibilidade de tombamento, consumo.",
+      generates: "Ramo 2mm = padrão estável. Ramo 1mm = árvore frágil, tomba. Ramo 3mm = super robusto, mais filamento.",
+      goldenRule: "2mm é o sweet spot para 95% dos casos. Aumente apenas em suportes muito altos (>200mm).",
+    },
+    {
+      name: "Ângulo de ramificação",
+      value: "40°",
+      whatIs: "Ângulo máximo que um ramo pode abrir a partir do tronco. 40° = ramo se inclina até 40° do prumo para alcançar pontos distantes.",
+      whyAdjust: "Maior ângulo = árvore alcança áreas mais afastadas do centro com menos pilares. Menor = mais pilares verticais, mais filamento.",
+      influences: "Eficiência da árvore, alcance lateral, estabilidade.",
+      generates: "40° = cobre overhangs laterais. 60° = arrisca quedar; 25° = árvore mais vertical, mais filamento.",
+      goldenRule: "30–40° é o ideal. Aumente apenas se a peça tiver overhangs laterais muito extensos.",
+    },
+    {
+      name: "Ângulo preferido (curvatura)",
+      value: "25°",
+      whatIs: "Ângulo natural que o algoritmo TENTA manter ao curvar os ramos. Define a aparência 'orgânica' das árvores.",
+      influences: "Estética dos suportes, suavidade das curvas dos ramos.",
+      generates: "25° = curvas suaves e elegantes (Tree Organic). 0° = ramos retos (Tree clássico). 45° = curvas exageradas.",
+      goldenRule: "Tree Organic recomendado: ângulo preferido 25° + diâmetro ponta 0,5mm + ramo 2mm. Acabamento perfeito.",
+      summaryTable: {
+        headers: ["Caso", "Ponta", "Ramo", "Densidade", "Ângulo"],
+        rows: [
+          ["Miniatura visual", "0,4", "1,5", "30%", "25°"],
+          ["Peça mecânica", "0,8", "2,5", "40%", "30°"],
+          ["Suporte alto >150mm", "0,6", "3", "45%", "30°"],
+        ],
+      },
+    },
+  ],
+
+  // ====================================================================
+  // TELA 51 — MULTIMATERIAL: Torre de Preparo (Wipe Tower)
+  // ====================================================================
+  "tela-51-multimaterial-torre-preparo": [
+    {
+      name: "Ativar Torre de Preparo",
+      value: "Ativado em multimaterial",
+      whatIs: "Habilita a geração da Wipe Tower — estrutura auxiliar onde a impressora purga o material antigo durante cada troca de cor/filamento. Sem ela, a primeira porção da nova cor sai contaminada na peça.",
+      whyAdjust: "Obrigatória em AMS, MMU e qualquer setup multi-filamento. Sem torre, a transição entre cores fica com 'fantasma' da cor anterior.",
+      influences: "Pureza das cores após cada troca, desperdício de filamento, tempo extra de impressão.",
+      generates: "Sem torre em troca AMS = primeiros 10–30mm da nova cor saem misturados, manchando a peça.",
+      goldenRule: "Sempre ativada em multi-cor. Em mono-filamento, manter desativada (economiza tempo e filamento).",
+    },
+    {
+      name: "Largura da torre",
+      value: "30 mm (padrão)",
+      whatIs: "Dimensão lateral da torre quadrada. Define quanto volume de purga cabe em cada camada da torre.",
+      whyAdjust: "Torre pequena = pouca área para purgar, exige altura maior. Torre grande = mais área, menos altura, mas ocupa mais espaço da mesa.",
+      influences: "Estabilidade da torre, área útil da mesa, fluxo de purga por camada.",
+      generates: "30mm × 30mm = padrão estável para até 4 cores. Para 8+ cores, aumentar para 40–50mm.",
+      goldenRule: "2 cores: 25mm. 4 cores: 30mm. 8+ cores ou muita saturação: 40–50mm.",
+    },
+    {
+      name: "Volume de preparo (purga)",
+      value: "30 mm³",
+      whatIs: "Quantidade mínima de filamento extrudada na torre a cada troca, suficiente para limpar o filamento anterior do bico.",
+      whyAdjust: "Pouco = cor contaminada. Muito = desperdício. Volume varia conforme par de cores (claro→escuro precisa menos; escuro→claro precisa muito mais).",
+      influences: "Pureza da cor após troca, desperdício, tempo.",
+      generates: "Branco→preto: 30mm³ basta. Preto→branco: precisa 80–120mm³.",
+      goldenRule: "Calibrar matriz de purga no Orca (Calibrate › Flushing volumes) é a única forma de otimizar de verdade.",
+    },
+    {
+      name: "Purgar nos suportes (Avançado)",
+      value: "Ativado",
+      whatIs: "Em vez de jogar a purga na torre dedicada, usa o filamento purgado para imprimir as estruturas de suporte. O suporte fica multicolor, mas isso é jogado fora depois.",
+      whyAdjust: "Economia ENORME: a torre fica muito menor (ou sumirá) porque a purga vira material útil de suporte.",
+      influences: "Tamanho da torre, desperdício total, viabilidade econômica do multimaterial.",
+      generates: "Peça AMS 4 cores: sem este recurso = 25g de desperdício na torre. Com purgar nos suportes = 8g.",
+      goldenRule: "Sempre ativado se a peça tiver suporte. Economia de até 60% do desperdício multimaterial.",
+    },
+    {
+      name: "Parede chanfrada (Bevel)",
+      value: "Ativada",
+      whatIs: "Inclina as paredes da torre formando um cone trapezoidal. Facilita drasticamente a remoção da torre da mesa após a impressão.",
+      influences: "Facilidade de remoção, integridade da torre durante impressão.",
+      generates: "Torre vertical = gruda muito na mesa, precisa de espátula. Chanfrada = solta com leve torção da mão.",
+      goldenRule: "Sempre ativada em multi-filamento. Custo zero, benefício alto.",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 52 — MULTIMATERIAL: Filamento por Recurso e Opções de Purga
+  // ====================================================================
+  "tela-52-multimaterial-filamento-purga": [
+    {
+      name: "Filamento para Recursos",
+      value: "Padrão (todos)",
+      whatIs: "Define qual extrusora/cor é usada para cada tipo de linha: paredes externas, paredes internas, infill, superfície superior, base, suporte, torre. 'Padrão' = mantém a ferramenta atualmente atribuída ao objeto.",
+      whyAdjust: "Permite economizar filamento caro (ex: usar PLA básico no infill e PLA Silk apenas nas paredes externas) ou criar efeitos visuais.",
+      types: [
+        { label: "Paredes externas", desc: "Cor visível principal — use filamento bom" },
+        { label: "Paredes internas", desc: "Invisível — pode ser barato" },
+        { label: "Infill", desc: "100% invisível — material mais barato/restos" },
+        { label: "Topo/Base", desc: "Visível — cor coordenada com paredes" },
+        { label: "Torre/Suporte", desc: "Descartado — material barato/sobras" },
+      ],
+      influences: "Economia de filamento, complexidade do gerenciamento de cores, tempo (mais trocas = mais tempo).",
+      generates: "Peça grande: infill em PLA básico + paredes em PLA Silk = 50% de economia no Silk caro.",
+      goldenRule: "Em peças funcionais grandes, sempre atribua material barato ao infill. Em multi-cor, mantenha consistência por região.",
+    },
+    {
+      name: "Prevenção de vazamento",
+      value: "Desativado (padrão)",
+      whatIs: "Adiciona um wiper extra em cada troca para evitar que filamento mole vaze do bico inativo. Útil em multi-bico ou filamentos higroscópicos.",
+      whyAdjust: "Ativar adiciona tempo e desperdício. Só necessário em Nylon/TPU mal armazenados ou setups dual-extruder.",
+      influences: "Limpeza das trocas, tempo extra, desperdício de filamento.",
+      generates: "Single bico AMS: manter off (não vaza). Dual extruder com Nylon: ativar (evita gotas).",
+      goldenRule: "Single nozzle (AMS, MMU): off. Dual extruder: on. Filamento muito molhado: on.",
+    },
+    {
+      name: "Purgar nos suportes",
+      value: "Ativado",
+      whatIs: "Reaproveita filamento purgado para imprimir o suporte. Em vez de jogar fora na torre, o material vira estrutura útil (que será descartada com o suporte).",
+      whyAdjust: "É o recurso de economia mais importante do multimaterial. Pode reduzir desperdício em 40–60%.",
+      influences: "Tamanho da torre, custo de impressão multi-cor, sustentabilidade.",
+      generates: "Peça AMS 4 cores com suporte: torre encolhe ~70% quando ativado.",
+      goldenRule: "Se a peça tem suporte, SEMPRE ative. Praticamente elimina a torre de purga.",
+    },
+    {
+      name: "Purgar no preenchimento dos objetos",
+      value: "Desativado",
+      whatIs: "Como 'purgar nos suportes', mas usando o INFILL da peça final. Aproveita o infill para receber a purga, eliminando ainda mais a torre.",
+      whyAdjust: "Economia máxima — mas pode contaminar visivelmente o infill (que vira multicor). Em peças funcionais, ok; em peças visuais com paredes finas, pode escapar.",
+      influences: "Desperdício total, possível contaminação visual em paredes finas ou translúcidas.",
+      generates: "Peça opaca densa: ativar = desperdício quase zero. Peça translúcida ou parede fina: manter off (cores aparecem).",
+      goldenRule: "Peça funcional opaca: ativar. Peça decorativa/visual: manter off. Filamento translúcido: NUNCA ativar.",
+    },
+    {
+      name: "Intertravamento de viga (Beam Interlock)",
+      value: "Desativado",
+      whatIs: "Recurso avançado que cria interligações mecânicas entre regiões de cores diferentes (úteis em multimaterial estrutural — ex: rígido + flexível). Sem isso, regiões diferentes podem delaminar.",
+      whyAdjust: "Só é necessário em peças multi-material com materiais MECANICAMENTE diferentes (PETG + TPU, PLA + Nylon). Em multi-cor com mesmo material, não precisa.",
+      influences: "Resistência da junção entre materiais, complexidade do slicing.",
+      generates: "Suporte solúvel + peça rígida sem interlock = ok. PLA rígido + TPU flexível na mesma peça sem interlock = delaminação garantida.",
+      goldenRule: "Multi-COR (mesma família de material): off. Multi-MATERIAL (físico-químico diferente): on.",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 61 — OUTROS: Saia (Skirt), Borda (Brim) e Modo Vaso
+  // ====================================================================
+  "tela-61-outros-saia-borda-vaso": [
+    {
+      name: "Saia (Skirt) — Voltas",
+      value: "1–3 voltas",
+      whatIs: "Linhas de extrusão impressas ao redor (mas sem tocar) da peça antes que a impressão real comece. Servem para purgar o bico, ativar fluxo e dar tempo para você verificar a primeira camada.",
+      whyAdjust: "0 voltas = começa direto na peça (risco de bolha de ar nas primeiras linhas). 3 voltas = bico aquecido e estável quando começa a peça.",
+      influences: "Qualidade do início da primeira camada, perda de filamento, tempo extra (segundos).",
+      generates: "Sem skirt: primeira linha da peça pode falhar. Com 2 voltas: peça começa com fluxo perfeito.",
+      goldenRule: "1 volta = teste rápido. 3 voltas = padrão seguro. Para peças críticas, sempre 3 voltas.",
+    },
+    {
+      name: "Tipo de Borda (Brim)",
+      value: "Auto",
+      whatIs: "Estrutura plana de uma camada ao redor da base da peça, aumentando a área em contato com a mesa para combater warping (encurvamento por contração).",
+      types: [
+        { label: "Auto", desc: "Orca decide com base no formato (ativa onde há risco)" },
+        { label: "Externo", desc: "Brim só por fora — visual" },
+        { label: "Interno", desc: "Brim em furos internos — combate warping em ilhas" },
+        { label: "Brim em todos os lugares", desc: "Externo + interno — máxima adesão" },
+        { label: "Nenhum", desc: "Sem brim — só para PLA com excelente adesão" },
+      ],
+      influences: "Adesão da peça, warping em ABS/PETG, tempo de remoção, marca na base.",
+      generates: "ABS sem brim = warp garantido. ABS com brim 10mm = peça plana.",
+      goldenRule: "PLA: nenhum ou Auto. PETG/ABS/ASA: Externo 5–10mm. Peça com cantos finos: 'Em todos os lugares'.",
+    },
+    {
+      name: "Largura da borda",
+      value: "5–10 mm",
+      whatIs: "Quantos milímetros de extensão o brim se estende para fora da peça. Mais largo = mais adesão, mas mais material e mais tempo para limpar.",
+      influences: "Força de adesão à mesa, esforço de remoção, marca na base.",
+      generates: "Brim 5mm = adesão dobrada vs sem brim. Brim 10mm = ABS sem warp. Brim 15+mm = excessivo.",
+      goldenRule: "PLA: 3–5mm. PETG: 5–8mm. ABS/ASA: 8–12mm. Peça muito alta e fina: 12–15mm.",
+    },
+    {
+      name: "Espaço entre borda e objeto",
+      value: "0,0–0,1 mm",
+      whatIs: "Folga horizontal entre o brim e a parede da peça. 0 = colado (precisa cortar com canivete). 0,1 = leve folga (se quebra mais fácil).",
+      influences: "Facilidade de remoção do brim, qualidade da base da peça após remoção.",
+      generates: "Gap 0 = remoção perfeita mas com canivete. Gap 0,15 = remove com a mão mas pode soltar antes da hora.",
+      goldenRule: "Padrão 0 (colado). Aumente para 0,1 só se quiser remoção sem ferramenta.",
+    },
+    {
+      name: "Modo Vaso (Espiral)",
+      value: "Ativar para vasos",
+      whatIs: "Modo especial de fatiamento onde a peça é impressa em UMA espiral helicoidal contínua, sem camadas distintas, sem topo, sem infill — apenas uma parede que sobe espiralando.",
+      whyAdjust: "Resultado mágico: vasos sem costura visível, transição perfeita entre camadas, impressão muito rápida (só uma parede). Mas: só funciona em peças ocas com 1 parede e sem detalhes superiores.",
+      influences: "Aplicável apenas a vasos, copos, abajures, peças decorativas ocas.",
+      generates: "Vaso espiral 200mm de altura: tempo ~1h vs 4h normal. Visual: sem costura vertical, perfeitamente liso.",
+      goldenRule: "Modo Vaso + filamento Silk + 1 parede + altura camada 0,3mm = vasos profissionais em 1h.",
+    },
+  ],
+
+  // ====================================================================
+  // TELA 62 — OUTROS: Textura Difusa (Fuzzy Skin) e Opções de G-code
+  // ====================================================================
+  "tela-62-outros-textura-difusa-gcode": [
+    {
+      name: "Textura Difusa (Fuzzy Skin)",
+      value: "Somente pintada",
+      whatIs: "Aplica um padrão de ruído nas paredes externas, criando textura tátil tipo 'lixa fina' ou 'casca de árvore'. Útil para esconder linhas de camada e dar acabamento profissional.",
+      types: [
+        { label: "Desativado", desc: "Sem textura — padrão" },
+        { label: "Contorno externo", desc: "Aplica em toda a face externa visível" },
+        { label: "Em todas as paredes", desc: "Aplica também nas paredes internas (mais material)" },
+        { label: "Somente pintada", desc: "Aplica APENAS onde você pintou na peça — controle cirúrgico" },
+      ],
+      whyAdjust: "Esconde imperfeições de impressão, dá toque/aderência (punhos), oculta a costura Z, visual artesanal.",
+      influences: "Acabamento visual, aderência tátil, leve aumento de tempo e filamento (~5–10%).",
+      generates: "Empunhadura de ferramenta com Fuzzy Skin: aderência instantânea, parece couro. Sem: liso e escorregadio.",
+      goldenRule: "Use 'Somente pintada' + pintura em punhos/empunhaduras. Resultado profissional sem custo em áreas que devem ser lisas.",
+    },
+    {
+      name: "Distância do ponto (frequência)",
+      value: "0,5–1,0 mm",
+      whatIs: "Distância entre os deslocamentos de ruído. Menor = textura mais densa/fina; maior = textura mais espaçada/grosseira.",
+      influences: "Aparência visual da textura, granulometria.",
+      generates: "0,5mm = textura fina tipo lixa. 1mm = textura média. 2mm = quase ondulações.",
+      goldenRule: "Aderência (punhos): 0,5mm. Visual decorativo: 0,8–1,0mm.",
+    },
+    {
+      name: "Espessura da textura (amplitude)",
+      value: "0,2–0,4 mm",
+      whatIs: "Quanto o ruído desloca a parede para dentro e para fora. Define a 'profundidade' da textura.",
+      influences: "Intensidade visual e tátil da textura.",
+      generates: "0,2mm = textura sutil. 0,4mm = textura forte, muito visível. >0,5mm = pode comprometer parede.",
+      goldenRule: "Nunca usar amplitude > 50% da largura de linha (0,42mm = max 0,2mm). Acima disso, parede vira queijo suíço.",
+    },
+    {
+      name: "Etiquetar objetos (M486)",
+      value: "Ativado",
+      whatIs: "Insere comandos M486 no G-code que identificam cada objeto separadamente. Permite cancelar UMA peça falhada no painel da impressora sem parar a impressão inteira.",
+      whyAdjust: "Em fazendas de impressão ou placas com múltiplas peças, salvar 90% do trabalho quando UMA peça falha é regra de ouro.",
+      influences: "Capacidade de cancelar objetos individualmente, tamanho marginal do G-code.",
+      generates: "Plate com 10 peças, 1 solta da mesa: sem M486 = perde tempo continuando ou aborta tudo. Com M486 = cancela só aquela.",
+      goldenRule: "Sempre ativado em impressoras Bambu, Prusa MK4, Klipper modernos. Único custo é alguns KB no G-code.",
+    },
+    {
+      name: "Reduzir retração durante o preenchimento",
+      value: "Ativado",
+      whatIs: "Evita executar retrações dentro do infill (onde não importa estética). Reduz drasticamente o desgaste do extrusor e o tempo perdido em retrações desnecessárias.",
+      influences: "Vida útil do extrusor, tempo de impressão em peças com muito infill, qualidade (zero impacto pois é interno).",
+      generates: "Peça grande com infill denso: retrações reduzidas de 8000 para 2000 = extrusor dura muito mais.",
+      goldenRule: "Sempre ativado. Zero downside, alto upside na vida útil mecânica.",
+    },
+  ],
+
+  // ====================================================================
   // MÓDULO 3.2 — NOVIDADES DO ORCASLICER 3.2
   // ====================================================================
   "modulo-orcaslicer-3-2-novidades": [
