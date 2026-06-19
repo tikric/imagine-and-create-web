@@ -3691,54 +3691,83 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 32 — VELOCIDADE: Saliências, Travel e Aceleração
   // ====================================================================
   "tela-32-velocidade-saliencias-aceleracao": [
+    // ───────── AULA 1 ─────────
     {
-      name: "Velocidade em saliências (tabela por %)",
-      value: "10%=0 · 25%=50 · 50%=30 · 75%=10 mm/s",
-      whatIs: "Tabela que reduz a velocidade conforme o grau de overhang (porcentagem da linha que está suspensa no ar). Quanto maior o overhang, mais lento o bocal viaja, dando tempo do cooling solidificar o plástico antes que ele caia.",
-      whyAdjust: "Velocidades altas em saliências causam droop (queda), stringing e camadas mal formadas. A tabela faz a redução automática só onde necessário — preservando velocidade no resto.",
-      influences: "Qualidade de overhangs sem suporte, necessidade de árvores de suporte, acabamento da face inferior em áreas inclinadas.",
-      generates: "Overhangs limpos até 60–70° em PLA. Sem isso, qualquer saliência >45° apresenta deformação visível.",
-      howTo: [
-        { step: "1. Abrir aba Velocidade", path: "Painel Esquerdo › Velocidade › Velocidade em saliências", desc: "Localizar a tabela de 4 colunas (10/25/50/75%)" },
-        { step: "2. Ajustar conforme material", path: "PLA: manter padrão · PETG: dobrar a redução · ABS: reduzir mais ainda", desc: "Materiais com cooling pior precisam de velocidades menores" },
-      ],
-      goldenRule: "Em peças com overhangs críticos: 10%=máx, 25%=80% da normal, 50%=50%, 75%=20%. Ative cooling 100% em paralelo.",
-    },
-    {
-      name: "Velocidade de deslocamento (Travel)",
-      value: "300 mm/s",
-      whatIs: "Velocidade dos movimentos aéreos do bico (sem extrusão) entre uma região impressa e outra. Não afeta qualidade direta da extrusão, mas afeta stringing e tempo de impressão.",
-      whyAdjust: "Travel alto reduz tempo morto e diminui chance de stringing (puxa o fio mais rápido que ele consegue escorrer). Travel muito alto pode causar layer shift em máquinas mal calibradas.",
-      influences: "Tempo total de impressão, stringing entre objetos, ruído mecânico, risco de layer shift.",
-      generates: "Em uma peça com muitas ilhas, travel 300 mm/s economiza 15–25% do tempo total vs. 150 mm/s.",
-      goldenRule: "Core XY: 300–500 mm/s. Cartesiano (Ender, Prusa): 150–200 mm/s. Sempre combinar com Z-hop em peças altas.",
-    },
-    {
-      name: "Aceleração — Parede externa",
-      value: "500–1000 mm/s² (reduzir de 2000)",
-      whatIs: "Quão rapidamente o bico atinge velocidade na parede externa. Aceleração alta significa que o bico chega à velocidade alvo em milissegundos — mas isso gera oscilação mecânica (ghosting/ringing).",
-      whyAdjust: "Parede externa é a face VISÍVEL da peça. Acelerações altas aqui = ondulações fantasmas após cantos. Reduzir para 500–1000 mm/s² mata o ghosting, custando segundos por camada.",
-      influences: "Qualidade visual da superfície, presença de ghosting/ringing, definição de cantos retos.",
-      generates: "Cubo de calibração: aceleração 2000 = ondulações visíveis após cada canto. Aceleração 500 = canto limpo, parede lisa.",
-      goldenRule: "Calibre Input Shaping ANTES de aceitar acelerações altas em parede externa. Sem IS, máximo 1000 mm/s² nesta linha.",
-    },
-    {
-      name: "Aceleração — Infill esparso e Travel",
-      value: "Infill 5000 · Travel 10000 mm/s²",
-      whatIs: "Infill é interno (invisível), travel é aéreo (sem extrusão) — ambos podem usar aceleração alta sem custo visual. Ganho direto de tempo.",
-      influences: "Tempo total de impressão (infill costuma ser 40–60% do tempo).",
-      generates: "Aceleração infill 5000 vs 2000 reduz tempo de infill em ~30% sem afetar qualidade externa.",
-      goldenRule: "Aceleração baixa onde se VÊ (parede externa, topo). Aceleração alta onde NÃO se vê (infill, travel, parede interna).",
-      summaryTable: {
-        headers: ["Tipo de linha", "Aceleração ideal", "Razão"],
+      name: "Reduzir velocidade para perímetros encurvados (Slow Down for Curled Perimeters)",
+      value: "Checkbox (Ativar/Desativar)",
+      whatIs:
+        "Função que reduz automaticamente a velocidade do bocal em áreas onde as paredes podem se curvar ou enrolar (saliências severas e pontes), evitando que o filamento recém-depositado seja arrastado pelo bico.",
+      whyAdjust:
+        "Em saliências, o filamento não adere bem ao ar; velocidades altas pioram o problema. Reduzir automaticamente melhora a adesão e a integridade da camada — especialmente útil em overhangs acima de 45°.",
+      influences:
+        "Qualidade de overhangs, adesão entre camadas em áreas críticas, risco de curling (enrolamento das bordas).",
+      generates:
+        "Saliências mais limpas e estáveis, menos defeitos visíveis na face inferior das áreas suspensas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
         rows: [
-          ["Parede externa", "500–1000", "Mata ghosting"],
-          ["Parede interna", "2000–4000", "Equilíbrio"],
-          ["Infill esparso", "5000+", "Invisível, ganha tempo"],
-          ["Superfície topo", "1000–2000", "Acabamento liso"],
-          ["Travel", "10000", "Sem extrusão, máx velocidade"],
+          ["Ativado", "Reduz velocidade em áreas críticas", "Peças com saliências > 45°"],
+          ["Desativado", "Mantém velocidade normal", "Peças sem saliências"],
         ],
       },
+      goldenRule:
+        "Ative para qualquer peça com overhangs. A velocidade reduzida automática salva a qualidade em áreas críticas sem custo de configuração.",
+    },
+    // ───────── AULA 2 ─────────
+    {
+      name: "Velocidade em saliências (Overhang Speed)",
+      value: "30 mm/s (padrão)",
+      whatIs:
+        "Velocidade específica aplicada às áreas classificadas como saliência (ângulos acima de ~45°). Substitui a velocidade normal da parede sempre que o slicer detecta overhang.",
+      whyAdjust:
+        "Saliências são as áreas mais frágeis da camada — velocidade baixa dá tempo para o cooling solidificar a linha antes que ela caia. Quanto maior o ângulo de saliência, menor deve ser a velocidade.",
+      influences: "Adesão da saliência, droop (queda do filamento), acabamento da face inferior em áreas inclinadas.",
+      generates:
+        "Em PLA com cooling 100%, overhangs até 70° ficam limpos com 20–30 mm/s. Acima de 60 mm/s as bordas começam a cair.",
+      optionsTable: {
+        headers: ["Ângulo da saliência", "Velocidade recomendada"],
+        rows: [
+          ["25–45°", "40–60 mm/s"],
+          ["45–60°", "20–30 mm/s"],
+          ["60–75°", "10–20 mm/s"],
+          ["75–90°", "5–10 mm/s"],
+        ],
+      },
+      goldenRule: "Saliências severas pedem velocidade baixa. 30 mm/s atende a maioria dos casos em PLA/PETG.",
+    },
+    // ───────── AULAS 3–13: Velocidade de deslocamento (Travel) ─────────
+    {
+      name: "Velocidade de deslocamento (Travel) — visão geral",
+      value: "Combinação de valores absolutos (mm/s) e percentuais (%)",
+      whatIs:
+        "Conjunto de velocidades para os movimentos do bico SEM extrusão (entre regiões impressas). Pode ser configurada em valor absoluto (mm/s) ou em porcentagem da velocidade padrão.",
+      whyAdjust:
+        "Travel não afeta diretamente a extrusão, mas impacta tempo total de impressão, stringing e risco de layer shift. Definir bem cada faixa equilibra eficiência e estabilidade mecânica.",
+      influences: "Tempo total, stringing, ruído, risco de layer shift em máquinas cartesianas.",
+      generates: "Travel bem ajustado economiza 15–25% do tempo em peças com muitas ilhas.",
+      optionsTable: {
+        headers: ["Valor da tela", "Tipo / Aplicação", "Quando usar"],
+        rows: [
+          ["150% (ou mm/s)", "Percentual sobre a velocidade padrão", "Equilíbrio (recomendado)"],
+          ["100% (mm/s ou %)", "Igual à velocidade padrão", "Configuração conservadora"],
+          ["30 mm/s", "Travel em áreas críticas", "Qualidade > eficiência"],
+          ["300 mm/s", "Travel em áreas não críticas", "Equilíbrio entre tempo e estabilidade"],
+          ["500 mm/s (ou %)", "Travel rápido", "Máquinas Core XY bem calibradas"],
+          ["600 mm/s", "Travel agressivo", "Bambu / Voron com IS"],
+          ["2000 mm/s", "Aceleração de travel (mm/s²)", "Movimentos aéreos rápidos"],
+          ["4000 mm/s", "Aceleração intermediária (mm/s²)", "Travel + parede interna"],
+          ["5000 mm/s (ou %)", "Aceleração alta (mm/s²)", "Infill / ponte"],
+          ["10000 mm/s", "Aceleração máxima de travel (mm/s²)", "Apenas movimentos aéreos"],
+          ["0 mm/s (ou %)", "Desativado / sem limite", "Usa o padrão da máquina"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Painel Esquerdo › Velocidade › Velocidade de deslocamento", desc: "Expandir a seção" },
+        { step: "2", path: "Travel principal", desc: "Core XY: 300–500 mm/s · Cartesiano: 150–200 mm/s" },
+        { step: "3", path: "Aceleração travel", desc: "5000–10000 mm/s² apenas se a estrutura permitir" },
+      ],
+      goldenRule:
+        "Velocidade baixa onde a qualidade conta (saliências, primeira camada). Velocidade e aceleração altas onde o bico está no AR (travel) — é onde se ganha tempo sem perder qualidade.",
     },
   ],
 
