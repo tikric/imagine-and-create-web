@@ -4714,7 +4714,51 @@ export const modules: Module[] = [
             { param: "Wall Generator", value: "Classic", action: "Trajetórias simétricas uniformes" },
             { param: "Gap Fill", value: "Nowhere/Everywhere", action: "Preenche vazios remanescentes" },
           ],
+          paramDetails: [{
+            name: "Classic — Loops de Extrusão Fixa",
+            value: "Largura única, máxima previsibilidade",
+            whatIs: "Algoritmo que cria loops concêntricos com largura de linha fixa (definida pelo usuário). Se a parede é mais fina que a largura, deixa lacuna; se mais grossa, usa múltiplos loops.",
+            whyAdjust: "Em peças mecânicas com encaixe preciso (h7/g6) você precisa saber exatamente quanto plástico vai onde. Classic entrega isso; Arachne não.",
+            optionsTable: {
+              headers: ["Parâmetro", "Função", "Valor Recomendado"],
+              rows: [
+                ["Largura da linha", "Largura fixa de extrusão", "0.42mm (bico 0.4)"],
+                ["Wall Loops", "Número de paredes", "3-4"],
+                ["Precise Wall", "Garante largura exata", "Ativado"],
+                ["Gap Fill", "Preenche vazios", "Nowhere/Everywhere conforme caso"],
+              ],
+            },
+            influences: "Precisão dimensional, encaixe de peças mecânicas, previsibilidade de massa e tempo de fatiamento.",
+            generates: "Peça com tolerância centesimal previsível — base para Horizontal Expansion calibrada.",
+            howTo: [
+              { step: "1. Abrir Resistência > Gerador de paredes", path: "OrcaSlicer › Processo", desc: "Selecionar Classic." },
+              { step: "2. Configurar largura da linha", path: "Quality > Line Width", desc: "Ex: 0.42mm para bico 0.4." },
+              { step: "3. Configurar Wall Loops", path: "Strength > Walls", desc: "3-4 loops para resistência típica." },
+              { step: "4. Calibrar Horizontal Expansion", path: "Quality > Precision", desc: "Compensar dilatação por bico/material." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Lacunas em paredes finas", "Classic falha <bico", "Trocar para Arachne nessa peça"],
+                ["Textos ilegíveis", "Classic em letras pequenas", "Arachne obrigatório"],
+                ["Gap fill criando bolhas", "Gap Fill Everywhere", "Mudar para Nowhere"],
+                ["Detalhes finos perdidos", "Largura fixa demais", "Reduzir largura ou usar Arachne"],
+              ],
+            },
+            summaryTable: {
+              title: "Quando Usar Classic",
+              headers: ["Cenário", "Motivo", "Exemplo"],
+              rows: [
+                ["Peças estruturais", "Previsível, resistente", "Suportes, ferramentas"],
+                ["Paredes grossas (>1.5mm)", "Preenchimento eficiente", "Caixas, recipientes"],
+                ["Peças simples", "Rápido, confiável", "Cubos, cilindros"],
+                ["Furos precisos", "Dimensões controladas", "Encaixes, roscas"],
+              ],
+            },
+            goldenRule: "Classic é para peças simples e estruturais com paredes >1.5mm — previsível, rápido e confiável.",
+          }],
           goldenRule: "Use Classic para máxima rigidez em fatiados lineares e geometrias previsíveis.",
+
           errors: [
             { error: "Lacunas em textos pequenos é sintoma típico de Classic em geometria fina.", solution: "Troque para Arachne nessa peça" },
             { error: "Gap fill criando bolhas indesejadas", solution: "Mude Gap Fill para Nowhere e refatiamento" },
