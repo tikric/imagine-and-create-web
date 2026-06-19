@@ -18,6 +18,10 @@ import mod3Img35 from "@/assets/orca/modulo3-img35.jpeg.asset.json";
 import mod3Img36 from "@/assets/orca/modulo3-img36.jpeg.asset.json";
 import mod3Img37 from "@/assets/orca/modulo3-img37.jpeg.asset.json";
 import mod3Img38 from "@/assets/orca/modulo3-img38.jpeg.asset.json";
+import mod4Img41 from "@/assets/orca/modulo4-img41.jpeg.asset.json";
+import mod4Img42 from "@/assets/orca/modulo4-img42.jpeg.asset.json";
+import mod4Img43 from "@/assets/orca/modulo4-img43.jpeg.asset.json";
+import mod4Img44 from "@/assets/orca/modulo4-img44.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -973,6 +977,8 @@ export const modules: Module[] = [
                 ["Entupimento frequente", "Aditivos ruins ou umidade", "Trocar marca + secar"],
               ],
             },
+            image: { src: mod4Img41.url, alt: "Tolerância de diâmetro, umidade, densidade do perfil e estratégia térmica", caption: "Os 4 fundamentos do filamento: diâmetro consistente, umidade <15%, densidade correta no perfil e estratégia térmica contra subextrusão." },
+            errorsImage: { src: mod4Img42.url, alt: "Sintomas de filamento úmido e diâmetro irregular", caption: "Sintomas e soluções: estalos no bico, superfície áspera, peça quebradiça, variação de diâmetro e entupimento por umidade ou aditivos ruins." },
             goldenRule: "Filamento seco é fundação. Sem isso, nenhum outro ajuste resolve.",
           }],
           checklist: [
@@ -1085,6 +1091,7 @@ export const modules: Module[] = [
                 ["PLA quebra fácil", "Característica do material", "PLA+ ou PETG"],
               ],
             },
+            errorsImage: { src: mod4Img43.url, alt: "Erros típicos de PLA e PETG", caption: "PETG arranca PEI (cola/esfriar a 40°C), stringing por umidade (secar 6h/65°C), PLA deforma >60°C, blob no bico (−5°C ou +Z-Offset) e fragilidade do PLA (PLA+/PETG)." },
             goldenRule: "PLA visual, PETG funcional. Perfil dedicado para cada um — não tente usar o mesmo.",
           }],
         }),
@@ -1217,6 +1224,7 @@ export const modules: Module[] = [
                 ["Automotivo motor", "ASA ou Nylon", "Enclosure"],
               ],
             },
+            errorsImage: { src: mod4Img44.url, alt: "Erros de materiais técnicos: ABS/ASA, TPU, Nylon", caption: "Warping ABS/ASA (enclosure + Brim 8mm), TPU clog (Direct Drive + 15-30mm/s), Nylon com bolhas (secador ativo), ABS amarelando (trocar por ASA), desgaste de bico com CF (aço/rubi) e VOCs do ABS (ventilação + filtro carvão)." },
             goldenRule: "Sem enclosure não tente ABS/ASA/Nylon. Sem Direct Drive não tente TPU. Sem bico aço não tente Nylon-CF. Infraestrutura é pré-requisito, não opcional.",
           }],
           checklist: [
