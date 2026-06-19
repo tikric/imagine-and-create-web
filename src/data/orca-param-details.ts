@@ -4397,116 +4397,143 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   ],
 
   "modulo-orcaslicer-3-3-novidades": [
+    // ───────────── SEÇÃO 1: INTERFACE E ACESSIBILIDADE ─────────────
     {
-      name: "Nova Interface de Usuário (UI Refresh)",
-      value: "Layout modernizado",
+      name: "Acesso Rápido às Configurações de Perfil de Filamento",
+      value: "Botão direto na aba Preparar",
       whatIs:
-        "O OrcaSlicer 3.3 traz uma reformulação visual da interface: ícones redesenhados, espaçamentos otimizados, agrupamento mais lógico de parâmetros e melhor contraste entre seções. Painéis de Prepare, Preview e Device foram reorganizados para reduzir cliques em tarefas comuns.",
+        "A seção 'Personalização do Perfil de Filamento' foi reorganizada e agora expõe um botão de configuração direta na aba Preparar, ao lado da lista de perfis. Antes, esse acesso exigia navegar pelos menus gerais do slicer.",
       whyAdjust:
-        "Interface mais clara reduz curva de aprendizado para novos usuários e acelera fluxo de trabalho para usuários avançados.",
+        "Reduz cliques e simplifica o fluxo de trabalho — ideal para quem troca de filamento com frequência e precisa ajustar fluxo, temperatura ou adesão da primeira camada rapidamente.",
       howTo: [
-        { step: "1", path: "Prepare / Preview / Device", desc: "Explore os painéis reorganizados" },
-        { step: "2", path: "Preferências > Tema", desc: "Escolha entre tema claro/escuro otimizado" },
+        { step: "1", path: "Preparar", desc: "Abrir a aba Preparar" },
+        { step: "2", path: "Botão de configuração ao lado do perfil", desc: "Clicar para abrir configurações personalizadas" },
+        { step: "3", path: "Ajustes rápidos", desc: "Editar fluxo, temperatura ou adesão e salvar" },
       ],
-      influences: "Velocidade de trabalho e clareza visual em todas as abas.",
-      generates: "Experiência mais fluida e profissional no slicer.",
-      goldenRule: "Reserve 10 minutos para explorar a nova UI — você economizará horas depois.",
+      influences: "Velocidade de troca de perfil de filamento e clareza do fluxo de ajustes.",
+      generates: "Atalho direto para personalizações de filamento sem sair da aba Preparar.",
+      goldenRule: "Use o atalho na Preparar para ajustar fluxo/temperatura ao trocar de filamento — sem dar voltas pelos menus.",
     },
     {
-      name: "Fatiamento na Nuvem (Cloud Slicing — Web)",
-      value: "Beta",
+      name: "Tradução e Suporte a Idiomas",
+      value: "Chinês simplificado, japonês e coreano",
       whatIs:
-        "Permite enviar o modelo para fatiamento em servidor remoto e receber o G-code de volta, sem usar CPU local. Ideal para dispositivos leves (Chromebook, tablets, notebooks fracos) ou para acelerar fatiamentos pesados em farms.",
+        "O OrcaSlicer 3.3 incorpora traduções oficiais para chinês simplificado, japonês e coreano. A padronização do código de localização também limpa a base do projeto, facilitando contribuições futuras em outros idiomas.",
       whyAdjust:
-        "Libera o computador local durante fatiamentos longos e permite usar OrcaSlicer em hardware modesto.",
+        "Melhora a experiência de usuários não falantes de inglês e prepara o terreno para mais traduções comunitárias.",
+      howTo: [
+        { step: "1", path: "Preferências > Idioma", desc: "Selecionar o idioma desejado" },
+        { step: "2", path: "Reiniciar", desc: "Reabrir o OrcaSlicer para aplicar" },
+      ],
+      influences: "Acessibilidade global e adoção do slicer em mercados asiáticos.",
+      generates: "Interface localizada em mais idiomas oficiais.",
+      goldenRule: "Idioma certo = menos erros de interpretação de parâmetros técnicos.",
+    },
+
+    // ───────────── SEÇÃO 2: NOVOS ALGORITMOS DE FATIAMENTO ─────────────
+    {
+      name: "Fatiamento na Nuvem Baseado em Web (Web-based Slicing)",
+      value: "Beta · Desativado por padrão",
+      whatIs:
+        "Serviço de fatiamento baseado em nuvem: o usuário envia o projeto (3MF), o servidor realiza o fatiamento e o G-code é devolvido para download ou impressão. Permite fatiar em máquinas fracas, navegadores web ou dispositivos móveis, dependendo da implementação do host (ex.: Bambu Lab).",
+      whyAdjust:
+        "Libera CPU local em peças grandes, viabiliza uso em hardware modesto e centraliza slicing em farms de impressão.",
       optionsTable: {
         headers: ["Cenário", "Vantagem"],
         rows: [
-          ["Notebook fraco", "Fatiamento sem travar a máquina"],
+          ["Notebook/Chromebook fraco", "Fatiamento sem travar a máquina"],
           ["Farm de impressão", "Fila centralizada de slicing"],
           ["Mobile/Tablet", "Acesso via navegador"],
         ],
       },
       howTo: [
-        { step: "1", path: "Preferências > Cloud", desc: "Ativar fatiamento na nuvem" },
-        { step: "2", path: "Conta", desc: "Fazer login na conta OrcaSlicer Cloud" },
-        { step: "3", path: "Slice", desc: "Escolher 'Slice on Cloud'" },
+        { step: "1", path: "Preferências > Cloud", desc: "Ativar fatiamento na nuvem (off por padrão)" },
+        { step: "2", path: "Conta", desc: "Fazer login no serviço suportado pelo host" },
+        { step: "3", path: "Slice on Cloud", desc: "Enviar projeto e baixar o G-code gerado" },
       ],
-      influences: "Carga da CPU local e tempo total de fatiamento em hardware fraco.",
-      generates: "G-code gerado remotamente, baixado automaticamente ao fim.",
-      goldenRule: "Use cloud slicing para peças grandes em máquinas fracas — sua CPU agradece.",
+      influences: "Carga da CPU local e tempo total em hardware fraco.",
+      generates: "G-code gerado remotamente, baixado automaticamente ao final.",
+      goldenRule: "Cloud para máquina fraca; local para controle total.",
     },
     {
-      name: "Diâmetro da Ponta de Suportes em Árvore",
-      value: "Configurável",
+      name: "Melhorias no Algoritmo de Suporte Árvore (Organic Supports)",
+      value: "Estrutura mais leve + Diâmetro da Ponta",
       whatIs:
-        "Novo parâmetro que controla o diâmetro da ponta dos ramos de suporte em árvore (tree supports). Pontas mais finas deixam menos marcas na peça e são mais fáceis de remover; pontas mais grossas oferecem maior estabilidade.",
+        "Os suportes Orgânicos (Árvore) ficaram mais leves (menos material, remoção mais fácil), ganharam o parâmetro Diâmetro da Ponta (espessura do ramo que toca a peça) e foram otimizados para multimaterial — em especial com filamentos de suporte solúveis combinados ao novo Purge Mode.",
       whyAdjust:
-        "Reduz marcas residuais na superfície inferior de overhangs e facilita pós-processamento.",
+        "Pontas finas reduzem marcas em superfícies curvas; pontas grossas dão firmeza onde overhangs pesam. A nova geração ainda economiza filamento e tempo.",
       optionsTable: {
-        headers: ["Diâmetro da Ponta", "Efeito", "Recomendado"],
+        headers: ["Diâmetro da Ponta", "Uso ideal"],
         rows: [
-          ["0.2–0.4 mm", "Mínima marca, fácil remoção", "Peças estéticas"],
-          ["0.5–0.7 mm", "Equilíbrio", "Uso geral (padrão)"],
-          ["0.8–1.2 mm", "Máxima estabilidade", "Overhangs pesados"],
+          ["0.2 mm", "Superfícies curvas e detalhadas"],
+          ["0.3 mm", "Equilíbrio (padrão recomendado)"],
+          ["0.4 mm+", "Suportes estruturais / overhangs pesados"],
         ],
       },
       howTo: [
-        { step: "1", path: "Suporte > Árvore", desc: "Selecionar tipo Tree (organic)" },
-        { step: "2", path: "Diâmetro da ponta", desc: "Definir conforme acabamento desejado" },
+        { step: "1", path: "Suporte > Suportes de Árvore", desc: "Selecionar tipo Tree (organic)" },
+        { step: "2", path: "Diâmetro da Ponta", desc: "Ajustar conforme acabamento desejado" },
+        { step: "3", path: "Purge Mode", desc: "Configurar limpeza no suporte para multimaterial" },
       ],
-      influences: "Marcas residuais, facilidade de remoção e estabilidade do suporte.",
-      generates: "Suportes em árvore com pontas otimizadas para a aplicação.",
-      goldenRule: "Pontas finas (0.3 mm) para acabamento; pontas grossas (1.0 mm) para segurança estrutural.",
+      influences: "Marcas residuais, facilidade de remoção, consumo de filamento.",
+      generates: "Suportes árvore mais leves e com ponta otimizada.",
+      goldenRule: "Diâmetro da Ponta fino para estética; grosso para segurança estrutural.",
     },
     {
       name: "Modo de Limpeza de Bico (Purge Mode)",
-      value: "Otimizado",
+      value: "Nos Suportes / Preenchimento / Torre",
       whatIs:
-        "Novo modo de purga reduz drasticamente o desperdício de filamento em impressões multimaterial (AMS, MMU). Em vez de descartar todo o material na torre de purga, parte é reutilizada em paredes internas, infill ou suporte.",
+        "Substitui a antiga opção 'Purgar nos Suportes dos Objetos', que era ambígua. O novo Purge Mode controla explicitamente onde o filamento residual é despejado durante trocas: na torre de purga, dentro dos suportes ou dentro do infill.",
       whyAdjust:
-        "Economia significativa de filamento em peças coloridas/multimaterial sem perder qualidade da troca.",
+        "Mais clareza sobre o destino da purga e redução real de desperdício em impressões multimaterial — em alguns casos elimina a necessidade da torre.",
       optionsTable: {
         headers: ["Modo", "Desperdício", "Quando usar"],
         rows: [
-          ["Torre de purga padrão", "Alto", "Cores muito contrastantes"],
-          ["Reutilizar em infill", "Médio", "Padrão recomendado"],
-          ["Reutilizar em suporte", "Baixo", "Quando suporte é descartável"],
+          ["Na Torre de Purga", "Alto", "Cores muito contrastantes"],
+          ["Nos Suportes", "Médio", "Multicor com suporte descartável"],
+          ["No Preenchimento", "Mínimo", "Padrão recomendado para economia"],
         ],
       },
       howTo: [
-        { step: "1", path: "Multimaterial > Purga", desc: "Abrir parâmetros de purga" },
-        { step: "2", path: "Modo de limpeza", desc: "Selecionar 'Reutilizar em infill/suporte'" },
+        { step: "1", path: "Multimaterial > Purgar", desc: "Abrir parâmetros de purga" },
+        { step: "2", path: "Modo de Limpeza de Bico", desc: "Escolher destino da purga" },
+        { step: "3", path: "Diâmetro da Ponta", desc: "Combinar com tree supports para evitar marcas" },
       ],
       influences: "Quantidade de filamento desperdiçado em trocas de cor/material.",
-      generates: "Impressões multimaterial mais econômicas.",
-      goldenRule: "Reutilize purga no infill — você pode economizar até 60% de filamento em peças multicor.",
+      generates: "Impressões multimaterial mais econômicas e sem torre, se desejado.",
+      goldenRule: "'Nos Suportes' para 2 cores sem torre; sempre ajuste o Diâmetro da Ponta para não marcar a peça.",
     },
+
+    // ───────────── SEÇÃO 3: PERFORMANCE ─────────────
     {
-      name: "Pular Etapas de Pós-processamento",
-      value: "Opcional",
+      name: "Pular Etapas de Pós-Processamento",
+      value: "Configurável",
       whatIs:
-        "Permite desativar etapas específicas de pós-processamento do G-code (ex.: arc fitting, otimizações de viagem, inserção de comentários) quando não são necessárias, acelerando o fatiamento final.",
+        "Correção e expansão da opção 'Pular Pontos de Pós-Processamento': permite que a torre de limpeza ignore etapas específicas de purga, especialmente útil em impressoras IDEX (dual-extrusor).",
       whyAdjust:
-        "Reduz tempo de fatiamento em iterações rápidas (testes, calibrações) onde otimizações finais não importam.",
+        "Reduz drasticamente tempo e filamento em multimaterial IDEX, e oferece mais flexibilidade para perfis customizados de calibração.",
       howTo: [
-        { step: "1", path: "Outros > Pós-processamento", desc: "Abrir lista de etapas" },
-        { step: "2", path: "Desativar etapas", desc: "Marcar quais pular em modo rápido" },
+        { step: "1", path: "Multimaterial > Torre de Purga", desc: "Abrir opções da torre" },
+        { step: "2", path: "Pular Pontos de Pós-Processamento", desc: "Ativar" },
+        { step: "3", path: "Etapas", desc: "Selecionar quais etapas ignorar" },
       ],
-      influences: "Tempo de fatiamento e tamanho final do G-code.",
-      generates: "Fatiamento mais rápido para protótipos e testes.",
-      goldenRule: "Em testes de calibração, pule pós-processamento — você economiza minutos por iteração.",
+      influences: "Tempo total de impressão e filamento gasto em torre/purga.",
+      generates: "Fatiamentos IDEX mais rápidos e econômicos.",
+      goldenRule: "Em IDEX, pule pontos de purga onde não há contaminação — economize tempo e material.",
     },
+
+    // ───────────── SEÇÃO 4: PÓS-PROCESSAMENTO ─────────────
     {
-      name: "Fuzzy Skin Contínuo",
-      value: "Ativado",
+      name: "Geração de Texturas (Fuzzy Skin) Aprimorada",
+      value: "Modo Contínuo",
       whatIs:
-        "Melhoria no algoritmo de Fuzzy Skin (textura rugosa em paredes) que mantém continuidade entre camadas, evitando 'costuras' ou faixas visíveis onde a textura quebrava. O ruído agora é coerente verticalmente.",
+        "Fuzzy Skin recebe um Modo Contínuo: a textura é aplicada de forma coerente entre camadas, sem 'costuras' nem faixas visíveis. A geração dos pontos de textura também ficou mais controlada, com padrão mais preciso.",
       whyAdjust:
-        "Acabamento texturizado mais uniforme e profissional, sem artefatos de descontinuidade entre camadas.",
+        "Acabamento texturizado uniforme em peças altas, sem artefatos de descontinuidade — ideal para cabos, pegadas e superfícies decorativas.",
       howTo: [
-        { step: "1", path: "Resistência > Fuzzy Skin", desc: "Ativar Fuzzy Skin" },
+        { step: "1", path: "Acabamento > Fuzzy Skin", desc: "Ativar Fuzzy Skin" },
         { step: "2", path: "Modo", desc: "Selecionar 'Contínuo' (novo padrão)" },
+        { step: "3", path: "Densidade / Espessura", desc: "Ajustar para o efeito desejado" },
       ],
       example: {
         piece: "Cabo / pegada texturizada",
@@ -4514,17 +4541,18 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         result: "Textura uniforme de cima a baixo, sem faixas visíveis",
       },
       influences: "Qualidade visual e tátil de superfícies texturizadas.",
-      generates: "Fuzzy Skin com aparência uniforme em toda a altura.",
+      generates: "Fuzzy Skin com aparência uniforme em toda a altura da peça.",
       goldenRule: "Fuzzy Skin Contínuo é o novo padrão — sempre prefira ao modo clássico.",
       summaryTable: {
         title: "Resumo das novidades do OrcaSlicer 3.3",
         headers: ["Categoria", "Funcionalidade", "Impacto Principal"],
         rows: [
-          ["Interface", "Nova UI", "Mais clareza e produtividade"],
-          ["Fatiamento", "Cloud Slicing", "Impressão em dispositivos leves"],
+          ["Interface", "Acesso rápido ao perfil de filamento", "Fluxo de trabalho mais rápido"],
+          ["Idiomas", "Traduções para chinês, japonês e coreano", "Acessibilidade global"],
+          ["Fatiamento", "Fatiamento na nuvem (Web-based)", "Impressão em dispositivos leves"],
           ["Suportes", "Diâmetro da Ponta (Árvore)", "Remoção mais fácil e menos marcas"],
-          ["Suportes", "Modo de Limpeza de Bico", "Menos desperdício em multi-material"],
-          ["Performance", "Pular pós-processamento", "Redução de tempo e filamento"],
+          ["Suportes", "Modo de Limpeza de Bico (Purge Mode)", "Menos desperdício em multi-material"],
+          ["Performance", "Pular etapas de pós-processamento", "Redução de tempo e filamento"],
           ["Acabamento", "Fuzzy Skin Contínuo", "Acabamento mais uniforme"],
         ],
       },
