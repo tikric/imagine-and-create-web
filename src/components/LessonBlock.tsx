@@ -24,7 +24,9 @@ const TELA_MAP: Record<string, { url: string }> = {
   tela_61: tela61, tela_62: tela62,
 };
 
-export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean }) {
+export function LessonBlock({ l, isFirst = true, withDivider = false, compact = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean; compact?: boolean }) {
+  const S = ({ title, children }: { title: string; children: React.ReactNode }) =>
+    compact ? <div className="mt-10">{children}</div> : <Section title={title}>{children}</Section>;
   return (
     <section id={l.id} className={`scroll-mt-24 ${!isFirst && withDivider ? "mt-20 pt-16 border-t border-border" : ""}`}>
       <div className="flex items-center gap-3 flex-wrap mb-4 mono text-xs">
