@@ -4302,7 +4302,52 @@ export const modules: Module[] = [
             { param: "Detecção IA", value: "Ativa", action: "Pausa automática em espaguete/descolamento" },
             { param: "Alerta Celular", value: "On", action: "Notificação imediata 24/7" },
           ],
-          
+          paramDetails: [{
+            name: "Monitoramento Remoto e Automação",
+            value: "Câmera + IA + Alertas",
+            whatIs: "Conjunto de software (Obico, Klipper/Moonraker, OctoPrint) e hardware (câmera, sensores de filamento, termostatos inteligentes) que detecta falhas e dispara ações automáticas.",
+            whyAdjust: "Sem monitoramento, uma falha noturna queima 500g de filamento (R$ 60-150) + horas de tempo de máquina. Detecção em <30s pausa antes do prejuízo.",
+            optionsTable: {
+              headers: ["Sistema", "Função", "Custo"],
+              rows: [
+                ["OctoPrint", "Controle remoto básico", "Gratuito"],
+                ["Obico", "Detecção de falhas por IA", "Gratuito/Pago"],
+                ["Klipper + Moonraker", "Controle avançado + câmera", "Gratuito"],
+                ["Bambu Studio", "Controle nativo (Bambu)", "Incluso"],
+                ["Câmeras IP", "Monitoramento visual", "Baixo"],
+              ],
+            },
+            influences: "Taxa de falha real, perda de filamento, tempo de máquina ocioso e capacidade de operar 24/7 sem presença física.",
+            generates: "Operação autônoma com resposta imediata a falhas e dados históricos para melhorar perfis.",
+            howTo: [
+              { step: "1. Instalar plugin Obico", path: "OctoPrint > Plugin Manager", desc: "Buscar 'Obico for OctoPrint' e instalar." },
+              { step: "2. Criar conta na plataforma", path: "app.obico.io", desc: "Vincular impressora à conta com token." },
+              { step: "3. Posicionar câmera", path: "Hardware", desc: "Enquadrar peça + bico, não a impressora inteira." },
+              { step: "4. Configurar alertas no celular", path: "App Obico", desc: "Push notification + pausa automática." },
+              { step: "5. Validar com falha controlada", path: "Teste", desc: "Puxar filamento e medir tempo de detecção." },
+            ],
+            errorsTable: {
+              headers: ["Alerta", "Ação Automática"],
+              rows: [
+                ["Falha de impressão (espaguete)", "Pausar impressão imediatamente"],
+                ["Fim de filamento (sensor)", "Pausar e notificar"],
+                ["Temperatura alta (overheat)", "Desligar impressora via Sonoff/Shelly"],
+                ["Umidade alta (higrômetro)", "Notificar para secar estoque"],
+              ],
+            },
+            summaryTable: {
+              title: "Automações da Fazenda",
+              headers: ["Automação", "O que faz", "Benefício"],
+              rows: [
+                ["Remoção automática", "Limpa a mesa entre prints", "Operação contínua sem operador"],
+                ["Fila de impressão", "Gerencia ordem das tarefas", "Maximiza uso das máquinas"],
+                ["Sensor de filamento", "Detecta fim do spool", "Evita falha por falta de material"],
+                ["Secadores automáticos", "Mantém filamento seco", "Qualidade consistente"],
+                ["Troca dupla de filamento", "Alterna spools sem parar", "Produção 24/7"],
+              ],
+            },
+            goldenRule: "Monitoramento remoto não é luxo — é a diferença entre produção em escala e prejuízo silencioso.",
+          }],
 
           goldenRule: "Monitoramento remoto não é luxo, é necessidade para produção em escala.",
           errors: [
