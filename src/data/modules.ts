@@ -4637,7 +4637,55 @@ export const modules: Module[] = [
             { param: "Wall Generator", value: "Arachne (default)", action: "Largura variável" },
             { param: "Wall Generator", value: "Classic", action: "Largura fixa, máxima previsibilidade" },
           ],
+          paramDetails: [{
+            name: "Wall Generator — Classic vs Arachne",
+            value: "Classic (fixo) · Arachne (variável)",
+            whatIs: "Algoritmo que define como as paredes da peça são geradas. Classic usa largura de linha fixa em loops concêntricos; Arachne usa largura variável baseada em diagramas de Voronoi para preencher fendas.",
+            whyAdjust: "Escolha errada destrói qualidade: Classic em texto fino deixa lacunas; Arachne em peça mecânica perde previsibilidade dimensional.",
+            optionsTable: {
+              headers: ["Critério", "Classic", "Arachne"],
+              rows: [
+                ["Largura de linha", "Fixa (ex: 0.42mm)", "Variável (0.2-0.6mm)"],
+                ["Preenchimento de lacunas", "Falha em paredes <bico", "Preenche automaticamente"],
+                ["Textos pequenos", "Pode ficar ilegível", "Excelente"],
+                ["Previsibilidade dimensional", "Alta", "Média"],
+                ["Velocidade de fatiamento", "Mais rápido", "Mais lento"],
+                ["Melhor para", "Estruturas, encaixes", "Detalhes, textos, orgânicas"],
+              ],
+            },
+            influences: "Qualidade de paredes finas, legibilidade de textos, precisão dimensional para encaixes e tempo de fatiamento.",
+            generates: "Decisão consciente de algoritmo por tipo de peça — sem retrabalho de relegibilidade ou tolerância.",
+            howTo: [
+              { step: "1. Identificar tipo da peça", path: "Briefing", desc: "Mecânica/encaixe → Classic. Estética/texto → Arachne." },
+              { step: "2. Abrir Resistência > Gerador de paredes", path: "OrcaSlicer › Processo", desc: "Selecionar Classic ou Arachne." },
+              { step: "3. Testar paralelo se incerto", path: "Plate A/B", desc: "Imprimir mesma peça com ambos e comparar." },
+              { step: "4. Documentar no perfil", path: "Salvar preset", desc: "Marcar perfil 'mecânico-classic' vs 'estético-arachne'." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Texto pequeno ilegível", "Classic em parede fina", "Trocar para Arachne"],
+                ["Peça mecânica fora de medida", "Arachne em encaixe", "Voltar para Classic + Horizontal Expansion"],
+                ["Lacunas em chaveiro", "Classic em letras", "Arachne obrigatório"],
+                ["Tempo de fatiamento alto", "Arachne em peça grande simples", "Voltar para Classic"],
+              ],
+            },
+            summaryTable: {
+              title: "Tabela de Decisão Rápida",
+              headers: ["Tipo de Peça", "Gerador", "Motivo"],
+              rows: [
+                ["Textos, logotipos", "Arachne", "Preenche letras finas"],
+                ["Miniaturas", "Arachne", "Detalhes complexos"],
+                ["Engrenagens", "Arachne", "Dentes precisos"],
+                ["Caixas, estruturas", "Classic", "Previsível"],
+                ["Paredes <1mm", "Arachne", "Evita lacunas"],
+                ["Furos precisos", "Classic", "Dimensões controladas"],
+              ],
+            },
+            goldenRule: "Arachne para detalhes; Classic para estruturas. A escolha certa elimina lacunas.",
+          }],
           goldenRule: "Use Arachne para relevos delicados, letras e logos — Classic deixaria gaps.",
+
           errors: [
             { error: "Texto pequeno ilegível em Classic", solution: "Troque para Arachne" },
             { error: "Peça mecânica fora de medida em Arachne", solution: "Volte para Classic + Horizontal Expansion" },
