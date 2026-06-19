@@ -431,6 +431,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Perfil da Impressora", value: "Personalizado por máquina",
             whatIs: "Arquivo de configuração que descreve dimensões, firmware, limites e extrusão da impressora para o OrcaSlicer gerar G-code compatível.",
+            image: {
+              src: mod2Img21.url,
+              alt: "Três abas do perfil da impressora: General, Machine Limits e Extruder",
+              caption: "As 3 abas do Perfil: General (identificação) · Machine Limits (físicos) · Extruder (extrusão).",
+            },
             whyAdjust: "Define os limites que o fatiador nunca pode ultrapassar — é o que evita colisões, subextrusão e travamentos.",
             optionsTable: { headers: ["Área", "Função", "Descrição"], rows: [
               ["General", "Identificação e básico", "Nome, modelo, fabricante, firmware"],
