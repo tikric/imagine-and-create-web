@@ -678,6 +678,7 @@ export const modules: Module[] = [
               { step: "4", path: "Primeira camada", desc: "100–150% da normal (ex.: 0.24–0.30mm) para adesão" },
               { step: "5", path: "Adaptive Layer Height", desc: "Ativar variação (ex.: 0.08–0.20mm) para otimizar" },
             ],
+            howToImage: { src: mod3Img34.url, alt: "Matriz de altura de camada vs diâmetro do bico", caption: "Matriz de altura de camada vs diâmetro do bico (0.4 / 0.6 / 0.8mm) por tipo de aplicação" },
             example: { piece: "Miniatura D&D 28mm", config: "Bico 0.4mm + 0.08mm", result: "Detalhes nítidos; 3h vs 1.5h em 0.20mm" },
             errorsTable: { headers: ["Sintoma", "Causa", "Solução"], rows: [
               ["Linhas não se tocam", "Camada muito grossa", "Reduzir para ≤75% do bico"],
