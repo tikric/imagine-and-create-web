@@ -1,6 +1,8 @@
 import { orcaParamDetails } from "./orca-param-details";
 import anatomiaInterface from "@/assets/orca/modulo1-anatomia-interface.jpeg.asset.json";
 import errosComuns from "@/assets/orca/modulo1-erros-comuns.jpeg.asset.json";
+import barraSuperior from "@/assets/orca/modulo1-barra-superior.jpeg.asset.json";
+import ferramentasAvancadas from "@/assets/orca/modulo1-ferramentas-avancadas.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -273,6 +275,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Barra Superior", value: "Centro de comando",
             whatIs: "Conjunto de botões e menus que controlam todo o projeto, da importação à exportação do G-code.",
+            image: {
+              src: barraSuperior.url,
+              alt: "Comandos da barra superior do OrcaSlicer: Adicionar Placa, Importar, Desfazer/Refazer, Fatiar Placa e Seleção de Perfis",
+              caption: "Os 5 comandos principais da Barra Superior — decore a posição de cada um.",
+            },
             whyAdjust: "Conhecer cada botão acelera o fluxo e evita perda de configurações.",
             optionsTable: { headers: ["Botão", "Função", "Descrição"], rows: [
               ["Arquivo", "Projeto", "Novo, Abrir, Salvar, Importar, Exportar"],
@@ -354,6 +361,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Edição Avançada", value: "Cut / Seam / Support / Modifier",
             whatIs: "Conjunto de ferramentas para dividir modelos, controlar costura, controlar suportes e aplicar configurações por região.",
+            image: {
+              src: ferramentasAvancadas.url,
+              alt: "Quatro casos das ferramentas avançadas: Rejeitar Suporte em furos, Bloquear Cicatriz, Ferramenta Cut e Modifier Mesh",
+              caption: "Os 4 casos clássicos: suporte em furo → rejeitar; costura visível → bloquear; peça grande → Cut; parâmetro por região → Modifier Mesh.",
+            },
             whyAdjust: "Permite impressões que cabem na mesa, com costura escondida, suportes mínimos e regiões com configurações específicas.",
             optionsTable: { headers: ["Ferramenta", "Função", "Cores / Opções"], rows: [
               ["Corte (Cut)", "Divide o modelo em planos", "Pinos e encaixes opcionais"],
