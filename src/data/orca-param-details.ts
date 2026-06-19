@@ -4312,48 +4312,249 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 42 — SUPORTE: Avançado, Z Gap, Interface e Padrão
   // ====================================================================
   "tela-42-suporte-avancado-interface": [
+    // ───────── AULA 1 ─────────
     {
-      name: "Distância Z (superior e inferior)",
-      value: "0,15–0,20 mm",
-      whatIs: "Espaço vertical entre o topo do suporte e a face da peça que está sendo suportada. Z Gap pequeno = suporte gruda; grande = solta fácil mas deixa face áspera.",
-      whyAdjust: "É o parâmetro MAIS CRÍTICO da seção. 0,2mm é o padrão; 0,15mm dá face mais lisa mas grudenta; 0,25mm solta limpo mas com textura visível.",
-      influences: "Acabamento da face inferior da peça, esforço para remover o suporte, possibilidade de quebrar a peça ao remover.",
-      generates: "Z Gap 0,1 = não consegue separar sem destruir. 0,15 = puxa com alicate, face lisa. 0,2 = remove com a mão, face com pequena textura. 0,3 = cai sozinho, face muito áspera.",
-      goldenRule: "PLA: 0,15mm. PETG: 0,20mm (PETG cola muito). ABS: 0,18mm. Sempre múltiplo de altura de camada.",
+      name: "Distância Z superior (Top Z Distance)",
+      value: "0,2 mm (padrão)",
+      whatIs:
+        "Espaço vertical entre a última camada do suporte e a primeira camada da peça. É o parâmetro mais crítico para o sucesso da remoção dos suportes.",
+      whyAdjust:
+        "Z Gap pequeno demais funde o suporte na peça; grande demais deixa a face inferior áspera. O valor ideal varia com material, altura de camada e temperatura.",
+      influences: "Altura da camada (proporcional), material (PLA 1×, PETG 1,2–1,5×, ABS 1–1,2×), temperatura do bico, acabamento da face inferior.",
+      generates: "0,10 mm = suporte soldado; 0,20 mm = solta facilmente (recomendado); 0,25 mm = solta sozinho, face áspera.",
+      optionsTable: {
+        headers: ["Z Gap", "Remoção", "Acabamento", "Quando usar"],
+        rows: [
+          ["0,05–0,10 mm", "Muito difícil", "Excelente", "Superfícies críticas"],
+          ["0,15 mm", "Moderada", "Bom", "PLA com acabamento"],
+          ["0,20 mm", "Fácil", "Aceitável", "Uso geral"],
+          ["0,25–0,30 mm", "Muito fácil", "Áspero", "Protótipos / peças internas"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Suporte › Avançado › Distância Z superior", desc: "Definir como múltiplo da altura de camada" },
+      ],
+      goldenRule: "PLA: 0,20 mm. Reduza para acabamento, aumente para remoção fácil. Sempre múltiplo da altura de camada.",
     },
+    // ───────── AULA 2 ─────────
     {
-      name: "Camadas de interface (superior)",
-      value: "2–3 camadas",
-      whatIs: "Quantas camadas densas o Orca imprime no TOPO do suporte (logo abaixo da peça). Mais camadas = superfície de contato mais lisa para a peça pousar.",
-      whyAdjust: "Sem interface densa, a face inferior da peça mostra os espaços do padrão de suporte. Com 2–3 camadas de interface, a peça pousa em uma 'tampa' lisa.",
-      influences: "Acabamento da face inferior, consumo extra de filamento, tempo.",
-      generates: "0 camadas = face com listras visíveis. 2 camadas = face quase lisa. 4 camadas = praticamente perfeita mas mais filamento.",
-      goldenRule: "Mínimo 2 camadas para qualquer peça visual. 3 camadas para superfícies críticas.",
+      name: "Distância Z inferior (Bottom Z Distance)",
+      value: "0,2 mm (padrão)",
+      whatIs: "Espaço vertical entre a primeira camada do suporte e a mesa de impressão (ou peça abaixo, quando o suporte pousa sobre o objeto).",
+      influences: "Adesão do suporte à mesa, risco de queda do suporte durante a impressão, dano potencial à mesa.",
+      generates: "0,0–0,1 mm = suporte muito grudado; 0,2 mm = padrão; 0,3 mm = solta fácil mas pode cair.",
+      optionsTable: {
+        headers: ["Z Gap inferior", "Efeito", "Quando usar"],
+        rows: [
+          ["0,0–0,1 mm", "Suporte bem grudado", "Suportes altos / pesados"],
+          ["0,2 mm", "Padrão", "Uso geral"],
+          ["0,3 mm+", "Solta fácil", "Suportes pequenos"],
+        ],
+      },
+      goldenRule: "Use 0,2 mm. Aumente se o suporte estiver difícil de remover da base da peça.",
     },
+    // ───────── AULA 3 ─────────
     {
-      name: "Espaçamento da interface",
-      value: "0,5 mm (denso ≈100%)",
-      whatIs: "Espaçamento entre linhas da camada de interface. 0,5mm com largura 0,42 = praticamente 100% densidade, formando superfície sólida.",
-      influences: "Lisura da face inferior, esforço de remoção.",
-      generates: "Espaçamento 0,5 = topo do suporte LISO, peça pousa perfeito. Espaçamento 2,0 = listras visíveis na peça.",
-      goldenRule: "Para acabamento perfeito: espaçamento 0,4–0,5mm. Para economia: 1,0mm (aceita pequenas linhas).",
+      name: "Voltas de parede de suporte (Support Wall Loops)",
+      value: "0 (padrão)",
+      whatIs: "Número de paredes ao redor da estrutura interna do suporte.",
+      influences: "Estabilidade do suporte, consumo de filamento, facilidade de remoção.",
+      generates: "0 = suporte leve e fácil de remover; 1–2 = suporte mais rígido para colunas altas, mais difícil de remover.",
+      optionsTable: {
+        headers: ["Voltas", "Efeito", "Quando usar"],
+        rows: [
+          ["0", "Padrão — leve", "Uso geral"],
+          ["1", "Parede extra", "Suportes altos"],
+          ["2", "Duas paredes", "Suportes muito altos"],
+        ],
+      },
+      goldenRule: "0 para a maioria. Adicione paredes apenas se os suportes estiverem caindo.",
     },
+    // ───────── AULA 4 ─────────
     {
-      name: "Distância XY entre suporte e objeto",
-      value: "0,35 mm",
-      whatIs: "Separação horizontal entre paredes do suporte e paredes laterais da peça. Define se o suporte 'cola' nas laterais ou se separa cleanly.",
-      whyAdjust: "Pequeno demais = suporte funde com a peça (não sai). Grande demais = suporte instável e overhangs sem cobertura adequada.",
+      name: "Padrão da base (Base Pattern)",
+      value: "Padrão",
+      whatIs: "Padrão de preenchimento das camadas internas (não-interface) do suporte.",
+      influences: "Adesão à mesa, estabilidade vertical, facilidade de remoção.",
+      generates: "Cada padrão tem trade-off entre rigidez e facilidade de remoção.",
+      types: [
+        { label: "Padrão", desc: "Equilíbrio entre estabilidade e remoção — uso geral" },
+        { label: "Rectilinear", desc: "Linhas paralelas — ótimo para superfícies planas" },
+        { label: "Concêntrico", desc: "Anéis — ideal para peças circulares" },
+        { label: "Hexagonal", desc: "Colmeia — máxima estabilidade para suportes altos" },
+      ],
+      goldenRule: "Padrão para uso geral. Hexagonal apenas quando a torre de suporte é muito alta.",
+    },
+    // ───────── AULA 5 ─────────
+    {
+      name: "Espaçamento do padrão de base (Base Pattern Spacing)",
+      value: "2,5 mm (padrão)",
+      whatIs: "Distância entre as linhas do padrão interno do suporte.",
+      influences: "Densidade do suporte, consumo de filamento, estabilidade, tempo de impressão.",
+      generates: "Menor = suporte mais denso e estável; maior = mais leve, fácil de remover.",
+      optionsTable: {
+        headers: ["Espaçamento", "Efeito", "Quando usar"],
+        rows: [
+          ["1–2 mm", "Base densa", "Suportes pesados"],
+          ["2–3 mm", "Padrão", "Uso geral"],
+          ["3–5 mm", "Base esparsa", "Suportes leves"],
+        ],
+      },
+      goldenRule: "2,5 mm equilibra peso, tempo e estabilidade para a maioria das peças.",
+    },
+    // ───────── AULA 6 ─────────
+    {
+      name: "Ângulo de padrão (Pattern Angle)",
+      value: "0° (padrão)",
+      whatIs: "Ângulo das linhas do padrão de base em relação aos eixos X/Y da mesa.",
+      influences: "Distribuição da carga sobre a mesa, alinhamento das linhas com a geometria da peça.",
+      generates: "0° = linhas paralelas ao eixo X; 45° = distribuição diagonal mais uniforme.",
+      optionsTable: {
+        headers: ["Ângulo", "Efeito", "Quando usar"],
+        rows: [
+          ["0°", "Padrão", "Uso geral"],
+          ["45°", "Diagonal", "Distribuição uniforme de carga"],
+          ["90°", "Vertical (eixo Y)", "Reforço em direção específica"],
+        ],
+      },
+      goldenRule: "Mantenha 0° salvo se houver razão geométrica para girar o padrão.",
+    },
+    // ───────── AULA 7 ─────────
+    {
+      name: "Camadas de interface superior (Top Interface Layers)",
+      value: "2 camadas (padrão)",
+      whatIs: "Número de camadas densas no topo do suporte, logo abaixo da peça. Formam a 'tampa' lisa onde a peça pousa.",
+      influences: "Acabamento da face inferior da peça, consumo de filamento, tempo de impressão.",
+      generates: "0 = listras visíveis; 2 = face quase lisa; 3–4 = face praticamente perfeita.",
+      optionsTable: {
+        headers: ["Camadas", "Efeito", "Quando usar"],
+        rows: [
+          ["0", "Sem interface", "Suportes simples / internos"],
+          ["2", "Padrão — bom acabamento", "Uso geral"],
+          ["3–4", "Acabamento excelente", "Peças visuais"],
+        ],
+      },
+      goldenRule: "Use 2 camadas para o equilíbrio acabamento × remoção. 3 para superfícies críticas.",
+    },
+    // ───────── AULA 8 ─────────
+    {
+      name: "Camadas de interface inferior (Bottom Interface Layers)",
+      value: "0 (padrão)",
+      whatIs: "Número de camadas densas na base do suporte (quando o suporte pousa sobre a peça).",
+      influences: "Estabilidade da base do suporte, marca deixada na face superior da peça abaixo.",
+      generates: "0 é suficiente quando o suporte nasce na mesa; >0 ajuda quando o suporte pousa sobre o objeto.",
+      goldenRule: "0 para a maioria. Adicione 1–2 se o suporte estiver instável ou pousar sobre a peça.",
+    },
+    // ───────── AULA 9 ─────────
+    {
+      name: "Padrão de interface (Interface Pattern)",
+      value: "Padrão",
+      whatIs: "Padrão das camadas de interface (topo e/ou base) do suporte.",
+      influences: "Lisura da face inferior da peça, esforço de remoção da interface.",
+      generates: "Padrão liso = peça pousa bem; concêntrico segue formas curvas; rectilinear acompanha planos.",
+      types: [
+        { label: "Padrão", desc: "Recomendado para uso geral" },
+        { label: "Concêntrico", desc: "Melhor para formas curvas" },
+        { label: "Rectilinear", desc: "Melhor para superfícies planas" },
+      ],
+      goldenRule: "Padrão para 90% dos casos. Concêntrico apenas em peças predominantemente curvas.",
+    },
+    // ───────── AULA 10 ─────────
+    {
+      name: "Espaçamento da interface superior (Top Interface Spacing)",
+      value: "0,5 mm (padrão)",
+      whatIs: "Distância entre linhas da camada de interface superior. 0,5 mm com largura ~0,42 mm ≈ 100% de densidade.",
+      influences: "Lisura da face inferior, esforço para remover a interface.",
+      generates: "0,2–0,3 mm = topo praticamente sólido; 0,5 mm = liso e removível; 1,0 mm = listras visíveis.",
+      optionsTable: {
+        headers: ["Espaçamento", "Efeito", "Quando usar"],
+        rows: [
+          ["0,2–0,3 mm", "Muito denso", "Acabamento excelente"],
+          ["0,5 mm", "Padrão", "Uso geral"],
+          ["1,0 mm", "Esparso", "Remoção fácil"],
+        ],
+      },
+      goldenRule: "0,4–0,5 mm para acabamento perfeito; 1,0 mm quando a prioridade é economizar e remover fácil.",
+    },
+    // ───────── AULA 11 ─────────
+    {
+      name: "Espaçamento da interface inferior (Bottom Interface Spacing)",
+      value: "0,5 mm (padrão)",
+      whatIs: "Distância entre linhas da camada de interface inferior (quando suporte pousa sobre a peça).",
+      influences: "Marca deixada na face superior da peça abaixo, estabilidade do suporte.",
+      generates: "Menor espaçamento = base mais sólida e mais marca; maior = remoção fácil.",
+      goldenRule: "Mantenha 0,5 mm. Reduza apenas se precisar de base muito firme sobre a peça.",
+    },
+    // ───────── AULA 12 ─────────
+    {
+      name: "Expansão normal de suporte (Support Expansion)",
+      value: "0 (padrão)",
+      whatIs: "Expansão horizontal extra aplicada à área do suporte normal (não-árvore).",
+      influences: "Tamanho da base do suporte, estabilidade lateral, marcas na peça.",
+      generates: "0 = suporte exato ao overhang; >0 = base maior, mais estável, mas mais material e marca.",
+      goldenRule: "Use 0 para a maioria. Aumente apenas para suportes muito pequenos ou instáveis.",
+    },
+    // ───────── AULA 13 ─────────
+    {
+      name: "Distância XY entre suporte e objeto (XY Separation)",
+      value: "0,35 mm (padrão)",
+      whatIs: "Separação horizontal entre paredes do suporte e paredes laterais da peça.",
+      whyAdjust: "Pequeno demais funde com a peça; grande demais deixa o suporte instável e overhangs sem cobertura.",
       influences: "Facilidade de remoção lateral, qualidade de paredes verticais da peça.",
-      generates: "XY 0,2 = não desencaixa. XY 0,35 = puxa limpo. XY 0,5 = solta fácil mas suporte pode tombar.",
-      goldenRule: "PLA: 0,35mm. PETG: 0,4mm. Sempre testar primeiro em uma peça pequena antes de imprimir grande.",
+      generates: "0,2 mm = não desencaixa; 0,35 mm = puxa limpo; 0,5 mm = solta fácil mas suporte pode tombar.",
+      optionsTable: {
+        headers: ["Distância XY", "Efeito", "Quando usar"],
+        rows: [
+          ["0,2–0,3 mm", "Suporte próximo", "Suportes precisos"],
+          ["0,35 mm", "Padrão", "Uso geral"],
+          ["0,5 mm", "Mais espaço", "Remoção fácil"],
+        ],
+      },
+      goldenRule: "PLA: 0,35 mm. PETG: 0,4 mm. Sempre teste antes em peça pequena.",
     },
+    // ───────── AULA 14 ─────────
     {
-      name: "Comprimento máximo de ponte (sem suporte)",
-      value: "10 mm",
-      whatIs: "Vão livre que o Orca aceita sem gerar suporte (assume que é uma ponte que o filamento aguenta). Acima desse valor, força suporte.",
-      influences: "Quantidade de suporte gerado, qualidade de pontes longas.",
-      generates: "10mm = padrão seguro. Aumentar p/ 20mm = arrisca pontes ruins. Reduzir p/ 5mm = mais suporte em qualquer vão.",
-      goldenRule: "PLA: até 15mm seguro. PETG: até 10mm. Para mais, sempre suporte.",
+      name: "Vão na primeira camada entre suporte e objeto",
+      value: "0,2 mm (padrão)",
+      whatIs: "Espaço na primeira camada entre suporte e peça, válido quando o suporte e a peça nascem juntos da mesa.",
+      influences: "Adesão da primeira camada do suporte, separação inicial em relação à peça.",
+      generates: "Vão pequeno = primeira camada fundida; vão padrão (0,2 mm) = separa limpo desde o início.",
+      goldenRule: "Mantenha 0,2 mm — geralmente igual ao Z Gap superior.",
+    },
+    // ───────── AULA 15 ─────────
+    {
+      name: "Comprimento máximo de ponte (Max Bridge Length)",
+      value: "10 mm (padrão)",
+      whatIs: "Vão livre que o Orca aceita sem gerar suporte (assume ponte). Acima desse valor, força suporte.",
+      influences: "Quantidade de suporte gerada, qualidade de pontes longas, tempo de impressão.",
+      generates: "5 mm = mais suporte, ponte sempre limpa; 10 mm = padrão; 20 mm = arrisca pontes ruins.",
+      optionsTable: {
+        headers: ["Comprimento", "Efeito", "Quando usar"],
+        rows: [
+          ["5 mm", "Conservador", "Acabamento crítico"],
+          ["10 mm", "Padrão", "Uso geral"],
+          ["20 mm", "Agressivo", "Impressões rápidas"],
+        ],
+      },
+      goldenRule: "PLA: até 15 mm seguro. PETG: até 10 mm. Acima disso, sempre suporte.",
+    },
+    // ───────── AULA 16 ─────────
+    {
+      name: "Diâmetro da ponta (Tree Tip Diameter)",
+      value: "0,8 mm (padrão)",
+      whatIs: "Espessura da extremidade do galho do suporte de árvore (Tree) que toca a peça.",
+      influences: "Marca deixada na peça, estabilidade da ponta do galho, risco de quebra antes do toque.",
+      generates: "0,2 mm = quase invisível mas frágil; 0,4 mm = pouca marca; 0,8 mm = estável; 1,0 mm = marca visível.",
+      optionsTable: {
+        headers: ["Diâmetro", "Marca", "Quando usar"],
+        rows: [
+          ["0,2 mm", "Mínima", "Peças estéticas (risco de quebrar)"],
+          ["0,4 mm", "Pequena", "Uso geral"],
+          ["0,8 mm", "Aceitável", "Suportes estáveis (padrão)"],
+          ["1,0 mm", "Visível", "Suportes grandes / pesados"],
+        ],
+      },
+      goldenRule: "0,8 mm para estabilidade, 0,4 mm para menos marcas. Abaixo de 0,4 mm o galho pode quebrar antes de tocar.",
     },
   ],
 
