@@ -663,6 +663,7 @@ export const modules: Module[] = [
               ["Média (0.20mm)", "Equilíbrio qualidade/tempo", "Funcional, protótipos"],
               ["Grossa (0.28mm)", "Linhas visíveis, degraus", "Peças grandes, testes"],
             ]},
+            generatesImage: { src: mod3Img31.url, alt: "Detalhes em curvas vs paredes retas e equação tempo vs adesão Z", caption: "Detalhes em curvas (0.08-0.28mm), paredes retas e equação prática tempo vs adesão em Z" },
             integrationsTable: { headers: ["Parâmetro", "Relação", "Ajuste"], rows: [
               ["Velocidade", "Finas pedem velocidade menor", "−20–30% para 0.12mm"],
               ["Temperatura", "Finas precisam de mais calor", "+5°C para 0.12mm"],
