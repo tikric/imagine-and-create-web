@@ -269,7 +269,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
         </S>
       )}
 
-      {l.exercise && l.exercise.length > 0 && (
+      {!compact && l.exercise && l.exercise.length > 0 && (
         <S title="Exercício Prático Autônomo">
           <ol className="space-y-3">
             {l.exercise.map((step: string, i: number) => (
