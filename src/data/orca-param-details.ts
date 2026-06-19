@@ -4295,6 +4295,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       whatIs:
         "Espaço vertical entre o topo do suporte e a parte inferior da peça. Um dos parâmetros mais críticos: define facilidade de remoção × acabamento da face inferior.",
       influences: "Acabamento da face inferior, esforço de remoção, risco de quebrar a peça ao remover.",
+      generates: "0,1 mm = não desencaixa; 0,2 mm = remove com a mão, pequena textura; 0,3 mm = cai sozinho, mas face áspera.",
       optionsTable: {
         headers: ["Z Gap", "Efeito", "Quando usar"],
         rows: [
