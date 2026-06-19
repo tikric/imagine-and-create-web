@@ -10,6 +10,14 @@ import mod2Img24 from "@/assets/orca/modulo2-img24.jpeg.asset.json";
 import mod2Img25 from "@/assets/orca/modulo2-img25.jpeg.asset.json";
 import mod2Img26 from "@/assets/orca/modulo2-img26.jpeg.asset.json";
 import mod2Img27 from "@/assets/orca/modulo2-img27.jpeg.asset.json";
+import mod3Img31 from "@/assets/orca/modulo3-img31.jpeg.asset.json";
+import mod3Img32 from "@/assets/orca/modulo3-img32.jpeg.asset.json";
+import mod3Img33 from "@/assets/orca/modulo3-img33.jpeg.asset.json";
+import mod3Img34 from "@/assets/orca/modulo3-img34.jpeg.asset.json";
+import mod3Img35 from "@/assets/orca/modulo3-img35.jpeg.asset.json";
+import mod3Img36 from "@/assets/orca/modulo3-img36.jpeg.asset.json";
+import mod3Img37 from "@/assets/orca/modulo3-img37.jpeg.asset.json";
+import mod3Img38 from "@/assets/orca/modulo3-img38.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
