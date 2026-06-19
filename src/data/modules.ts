@@ -3284,7 +3284,6 @@ export const modules: Module[] = [
             },
             influences: "Aparência final, percepção de qualidade, necessidade de pós-processamento e tempo de lixamento.",
             generates: "Critério visual para decidir estratégia de Seam antes mesmo de abrir as opções do slicer.",
-            goldenRule: "A costura é a cicatriz da impressão. O objetivo não é eliminá-la, mas escondê-la onde ninguém vai ver.",
           }],
           goldenRule: "A costura é a cicatriz da impressão. O objetivo não é eliminá-la, mas escondê-la onde ninguém vai ver.",
         }),
@@ -3560,7 +3559,7 @@ export const modules: Module[] = [
             ],
             influences: "Aparência das paredes externas, definição dos cantos, vibração da máquina e tempo total da peça.",
             generates: "Perfis de velocidade assimétricos que economizam tempo sem prejudicar o que o cliente vê.",
-            goldenRule: "Velocidade é um sistema: hotend + estrutura + aceleração + material. Comece baixo, suba gradualmente.",
+            
           }],
           goldenRule: "Velocidade é um sistema: hotend + estrutura + aceleração + material. Comece com 60 mm/s na parede externa, 100 mm/s no infill, aceleração baixa nas paredes externas (500-1000 mm/s²) e jerk moderado (5-8 mm/s). Aumente gradualmente.",
         }),
@@ -3632,7 +3631,7 @@ export const modules: Module[] = [
             },
             influences: "Decisão entre detalhe (altura baixa) e velocidade efetiva (altura alta).",
             generates: "Critério para escolher altura de camada em função do MVS real do hotend.",
-            goldenRule: "Exceder a MVS causa subextrusão e falhas. Sempre calcule antes de subir velocidade.",
+            
           }],
           goldenRule: "A MVS define o teto de velocidade da sua impressora. Calibre-a e respeite-a. Velocidade = MVS / (Altura × Largura). Exceder a MVS causa subextrusão e falhas.",
         }),
@@ -3814,7 +3813,7 @@ export const modules: Module[] = [
             },
             influences: "Diâmetro real de furos, ajuste de roscas, precisão de bases e qualidade visual.",
             generates: "Perfil dimensional confiável: o que está no CAD vira o que sai impresso.",
-            goldenRule: "Furos sempre saem menores, eixos sempre saem maiores. Compense no OrcaSlicer ou no CAD — nunca confie no nominal.",
+            
           }],
           goldenRule: "Nunca confie nas dimensões do CAD para encaixes. Sempre teste com um Gap Test. Furos sempre saem menores, eixos sempre saem maiores. Compense no OrcaSlicer ou no design.",
         }),
@@ -3926,7 +3925,7 @@ export const modules: Module[] = [
             },
             influences: "Durabilidade da montagem, número de ciclos de montagem/desmontagem suportados, percepção de qualidade do produto final.",
             generates: "Peças funcionais com rosca metálica em corpo plástico, prontas para uso profissional.",
-            goldenRule: "Use heat inserts para roscas duráveis e reutilizáveis. Furo = inserto - 0.2 mm, ferro a 200 °C, pressão constante até nivelar.",
+            
           }],
           goldenRule: "Use heat inserts para roscas duráveis e reutilizáveis. Furo = inserto - 0.2 mm, ferro de solda a 200 °C, pressão constante até nivelar. Roscas impressas são uma alternativa mais rápida, mas menos durável.",
           exercise: [
@@ -4019,7 +4018,7 @@ export const modules: Module[] = [
             ],
             influences: "Velocidade e precisão do diagnóstico, qualidade do suporte recebido em fóruns e comunidades.",
             generates: "Relatórios técnicos completos para reportar bugs ou pedir ajuda profissional.",
-            goldenRule: "Diagnosticar é mais importante que imprimir. Use o checklist, documente os sintomas, teste uma variável por vez.",
+            
           }],
           goldenRule: "Diagnosticar é mais importante que imprimir. Uma boa análise economiza horas de frustração — use o checklist, documente os sintomas, teste uma variável por vez.",
         }),
@@ -4102,7 +4101,7 @@ export const modules: Module[] = [
             ],
             influences: "Acabamento superficial, precisão dimensional vertical e vida útil da mecânica.",
             generates: "Perfil de aceleração otimizado e mecânica em ordem.",
-            goldenRule: "Ghosting é vibração — reduza aceleração ou calibre Input Shaping. Z-Banding é mecânico — verifique o eixo Z.",
+            
           }],
           goldenRule: "Stringing é umidade ou retração. Ghosting é vibração — reduza aceleração ou calibre Input Shaping. Z-Banding é problema mecânico no eixo Z.",
         }),
