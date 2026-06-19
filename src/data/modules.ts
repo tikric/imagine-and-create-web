@@ -1,4 +1,6 @@
 import { orcaParamDetails } from "./orca-param-details";
+import anatomiaInterface from "@/assets/orca/modulo1-anatomia-interface.jpeg.asset.json";
+import errosComuns from "@/assets/orca/modulo1-erros-comuns.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -27,6 +29,7 @@ export type Lesson = {
     value: string;
     whatIs: string;
     whyAdjust?: string;
+    image?: { src: string; alt: string; caption?: string };
     types?: { label: string; desc: string }[];
     optionsTable?: { headers: string[]; rows: string[][] };
     influences: string;
@@ -37,6 +40,7 @@ export type Lesson = {
     howTo?: { step: string; path: string; desc: string }[];
     example?: { piece: string; config: string; result: string };
     errorsTable?: { headers: string[]; rows: string[][] };
+    errorsImage?: { src: string; alt: string; caption?: string };
     goldenRule?: string;
     summaryTable?: { title?: string; headers: string[]; rows: string[][] };
   }[];
@@ -215,6 +219,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Aba Preparar", value: "Workspace principal",
             whatIs: "Tela inicial onde modelos são importados, posicionados na mesa virtual e configurados antes do fatiamento.",
+            image: {
+              src: anatomiaInterface.url,
+              alt: "Anatomia da interface do OrcaSlicer: Barra Superior, Mesa Virtual, Painel Esquerdo, Painel Direito e Barra Inferior",
+              caption: "Anatomia da interface: as 5 zonas do OrcaSlicer que você precisa dominar.",
+            },
             whyAdjust: "Um bom posicionamento e perfil escolhido resolvem ~50% dos problemas de impressão antes mesmo do G-code.",
             optionsTable: { headers: ["Área", "Função", "Descrição"], rows: [
               ["Barra Superior", "Comandos principais", "Importar, Adicionar Placa, Fatiar, Salvar"],
@@ -247,6 +256,11 @@ export const modules: Module[] = [
               ["Não cabe na mesa", "Escala muito grande", "Escalar ou cortar o modelo"],
               ["Configurações perdidas", "Salvou como STL", "Sempre salvar como .3mf"],
             ]},
+            errorsImage: {
+              src: errosComuns.url,
+              alt: "Quatro erros visuais comuns no OrcaSlicer: formato inválido, modelo flutuando, modelo não cabe na mesa e configurações perdidas",
+              caption: "Os 4 erros visuais mais comuns ao importar — e como reconhecer cada um na tela.",
+            },
             goldenRule: "Antes de configurar qualquer parâmetro térmico, posicione corretamente o modelo. Bom posicionamento resolve 50% dos problemas.",
           }],
         }),
