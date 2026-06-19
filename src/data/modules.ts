@@ -4142,7 +4142,51 @@ export const modules: Module[] = [
             { param: "Temperatura", value: "20-25°C", action: "AC e ventilação controlada" },
             { param: "Zoneamento", value: "Por material", action: "PLA / PETG / ABS / TPU / Nylon separados" },
           ],
-          
+          paramDetails: [{
+            name: "Estrutura e Zoneamento da Fazenda",
+            value: "Salas + Zonas por material",
+            whatIs: "Organização física dividida em Sala de Impressão, Preparação, Pós-processamento, Embalagem e Escritório, com impressoras agrupadas em zonas por material (PLA, PETG, ABS/ASA, TPU, Nylon).",
+            whyAdjust: "Sem zoneamento, perfis se misturam, manutenção fica caótica e qualidade oscila entre máquinas. Zonas dedicadas padronizam perfis e simplificam treinamento da equipe.",
+            optionsTable: {
+              headers: ["Zona", "Equipamentos", "Quantidade típica"],
+              rows: [
+                ["Zona PLA", "Impressoras padrão", "4-6 máquinas"],
+                ["Zona PETG", "Impressoras com perfil PETG", "2-4 máquinas"],
+                ["Zona ABS/ASA", "Impressoras com enclosure", "2-3 máquinas"],
+                ["Zona TPU", "Direct Drive obrigatório", "1-2 máquinas"],
+                ["Zona Nylon", "Bico endurecido + secador", "1-2 máquinas"],
+              ],
+            },
+            influences: "Produtividade, consistência de qualidade, tempo de troca de perfil, facilidade de manutenção e curva de aprendizado da equipe.",
+            generates: "Operação previsível com fluxo padronizado e capacidade de escalar sem perder controle.",
+            howTo: [
+              { step: "1. Receber pedido", path: "Escritório", desc: "Validar especificações e prazo." },
+              { step: "2. Fatiar e preparar G-codes", path: "Sala de Preparação", desc: "Usar perfil padrão da zona do material." },
+              { step: "3. Distribuir nas máquinas", path: "Sala de Impressão", desc: "Alocar na zona correta conforme material." },
+              { step: "4. Monitorar progresso", path: "Painel central / app", desc: "Acompanhar tempo restante e alertas." },
+              { step: "5. Liberar para próximo lote", path: "Sala de Pós-processamento", desc: "Remover peça e liberar mesa." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Produtividade baixa", "Filas desorganizadas", "Implementar zoneamento e gestão de fila"],
+                ["Qualidade inconsistente", "Perfis diferentes por máquina", "Padronizar perfil por zona"],
+                ["Filamentos úmidos", "Armazenamento aberto", "Caixas herméticas + sílica + secador"],
+                ["Máquinas paradas", "Falta de buffer", "Manter estoque de itens recorrentes"],
+              ],
+            },
+            summaryTable: {
+              title: "Níveis de Escalabilidade",
+              headers: ["Nível", "Impressoras", "Produção/dia", "Investimento"],
+              rows: [
+                ["Iniciante", "1-3", "5-15 peças", "Baixo"],
+                ["Intermediário", "4-10", "20-50 peças", "Médio"],
+                ["Profissional", "11-30", "50-200 peças", "Alto"],
+                ["Industrial", "30+", "200+ peças", "Muito alto"],
+              ],
+            },
+            goldenRule: "Zoneamento + gestão de fila + controle ambiental valem mais que máquinas extras desorganizadas.",
+          }],
 
           goldenRule: "Uma fazenda bem organizada é mais produtiva que muitas impressoras desorganizadas.",
           errors: [
@@ -4177,7 +4221,54 @@ export const modules: Module[] = [
             { param: "Amostragem QC", value: "100% em peças finais", action: "Inspeção visual e tátil obrigatória" },
             { param: "Custo Embalagem", value: "~R$ 4,00/peça", action: "Saco + bolha + caixa + fita + etiqueta" },
           ],
-          
+          paramDetails: [{
+            name: "Sistema de Controle de Qualidade e Embalagem",
+            value: "Checklist + Documentação + Embalagem dimensionada",
+            whatIs: "Processo completo de QC com checklist de 6 itens (dimensões, superfície, camadas, suportes, acabamento, funcionalidade), documentação por lote e embalagem proporcional ao peso/fragilidade.",
+            whyAdjust: "Sem QC, defeitos chegam ao cliente e devoluções consomem margem. Sem embalagem adequada, peças quebram no transporte — perda total.",
+            optionsTable: {
+              headers: ["Tipo de Peça", "Embalagem", "Material"],
+              rows: [
+                ["Pequenas (<100g)", "Saco zíper + caixa", "Polietileno + papelão"],
+                ["Médias (100-500g)", "Papel bolha + caixa", "Plástico bolha + papelão"],
+                ["Grandes (>500g)", "Isopor + caixa reforçada", "EPS + papelão reforçado"],
+                ["Frágil/Detalhada", "Suporte interno + caixa", "Espuma + papelão"],
+                ["Múltiplas peças", "Divisórias + caixa", "Papelão com divisórias"],
+              ],
+            },
+            influences: "Taxa de devolução, satisfação do cliente, reputação no marketplace e margem real do produto.",
+            generates: "Rastreabilidade total (ficha técnica + QC + fotos) e proteção da peça do bico até o cliente.",
+            howTo: [
+              { step: "1. Medir dimensões críticas", path: "Bancada de QC", desc: "Paquímetro nos pontos especificados (±0.2mm)." },
+              { step: "2. Inspecionar superfície", path: "Visual + tátil", desc: "Sem lacunas, fiapos ou warping visível." },
+              { step: "3. Testar funcionalidade", path: "Encaixe/movimento", desc: "Quando aplicável, validar ajuste real." },
+              { step: "4. Registrar na ficha técnica", path: "Planilha do lote", desc: "Material, perfil, tempo, peso, QC, fotos." },
+              { step: "5. Embalar conforme categoria", path: "Sala de Embalagem", desc: "Etiqueta com cliente, peça, data, QR code." },
+            ],
+            errorsTable: {
+              headers: ["Defeito", "Critério de aprovação"],
+              rows: [
+                ["Fiapos em peça visível", "Tolerância zero"],
+                ["Subextrusão / Sobreextrusão", "Tolerância zero"],
+                ["Warping (cantos levantados)", "Tolerância zero"],
+                ["Ghosting", "Aceitável apenas em peças internas"],
+                ["Marcas de suporte", "Apenas em áreas não visíveis"],
+              ],
+            },
+            summaryTable: {
+              title: "Custo de Embalagem por Unidade",
+              headers: ["Item", "Custo unitário", "Total"],
+              rows: [
+                ["Saco zíper", "R$ 0,50", "R$ 0,50"],
+                ["Papel bolha", "R$ 1,00", "R$ 1,00"],
+                ["Caixa", "R$ 2,00", "R$ 2,00"],
+                ["Fita adesiva", "R$ 0,20", "R$ 0,20"],
+                ["Etiqueta", "R$ 0,30", "R$ 0,30"],
+                ["Total por peça", "—", "R$ 4,00"],
+              ],
+            },
+            goldenRule: "QC não é opcional — é a diferença entre hobby e negócio sério.",
+          }],
 
           goldenRule: "Documente cada lote, inspecione cada peça, embale com cuidado — o cliente merece o melhor.",
           errors: [
@@ -4211,7 +4302,52 @@ export const modules: Module[] = [
             { param: "Detecção IA", value: "Ativa", action: "Pausa automática em espaguete/descolamento" },
             { param: "Alerta Celular", value: "On", action: "Notificação imediata 24/7" },
           ],
-          
+          paramDetails: [{
+            name: "Monitoramento Remoto e Automação",
+            value: "Câmera + IA + Alertas",
+            whatIs: "Conjunto de software (Obico, Klipper/Moonraker, OctoPrint) e hardware (câmera, sensores de filamento, termostatos inteligentes) que detecta falhas e dispara ações automáticas.",
+            whyAdjust: "Sem monitoramento, uma falha noturna queima 500g de filamento (R$ 60-150) + horas de tempo de máquina. Detecção em <30s pausa antes do prejuízo.",
+            optionsTable: {
+              headers: ["Sistema", "Função", "Custo"],
+              rows: [
+                ["OctoPrint", "Controle remoto básico", "Gratuito"],
+                ["Obico", "Detecção de falhas por IA", "Gratuito/Pago"],
+                ["Klipper + Moonraker", "Controle avançado + câmera", "Gratuito"],
+                ["Bambu Studio", "Controle nativo (Bambu)", "Incluso"],
+                ["Câmeras IP", "Monitoramento visual", "Baixo"],
+              ],
+            },
+            influences: "Taxa de falha real, perda de filamento, tempo de máquina ocioso e capacidade de operar 24/7 sem presença física.",
+            generates: "Operação autônoma com resposta imediata a falhas e dados históricos para melhorar perfis.",
+            howTo: [
+              { step: "1. Instalar plugin Obico", path: "OctoPrint > Plugin Manager", desc: "Buscar 'Obico for OctoPrint' e instalar." },
+              { step: "2. Criar conta na plataforma", path: "app.obico.io", desc: "Vincular impressora à conta com token." },
+              { step: "3. Posicionar câmera", path: "Hardware", desc: "Enquadrar peça + bico, não a impressora inteira." },
+              { step: "4. Configurar alertas no celular", path: "App Obico", desc: "Push notification + pausa automática." },
+              { step: "5. Validar com falha controlada", path: "Teste", desc: "Puxar filamento e medir tempo de detecção." },
+            ],
+            errorsTable: {
+              headers: ["Alerta", "Ação Automática"],
+              rows: [
+                ["Falha de impressão (espaguete)", "Pausar impressão imediatamente"],
+                ["Fim de filamento (sensor)", "Pausar e notificar"],
+                ["Temperatura alta (overheat)", "Desligar impressora via Sonoff/Shelly"],
+                ["Umidade alta (higrômetro)", "Notificar para secar estoque"],
+              ],
+            },
+            summaryTable: {
+              title: "Automações da Fazenda",
+              headers: ["Automação", "O que faz", "Benefício"],
+              rows: [
+                ["Remoção automática", "Limpa a mesa entre prints", "Operação contínua sem operador"],
+                ["Fila de impressão", "Gerencia ordem das tarefas", "Maximiza uso das máquinas"],
+                ["Sensor de filamento", "Detecta fim do spool", "Evita falha por falta de material"],
+                ["Secadores automáticos", "Mantém filamento seco", "Qualidade consistente"],
+                ["Troca dupla de filamento", "Alterna spools sem parar", "Produção 24/7"],
+              ],
+            },
+            goldenRule: "Monitoramento remoto não é luxo — é a diferença entre produção em escala e prejuízo silencioso.",
+          }],
 
           goldenRule: "Monitoramento remoto não é luxo, é necessidade para produção em escala.",
           errors: [
@@ -4257,7 +4393,52 @@ export const modules: Module[] = [
             { param: "Infill", value: "0% (vaso) / Lightning 10% (escultura)", action: "Decorativo sem carga" },
             { param: "Costura", value: "Random / Seam Painting", action: "Esconder linha visível" },
           ],
+          paramDetails: [{
+            name: "3 Casos Estéticos Avançados",
+            value: "Vaso Void · Escultura · Luminária",
+            whatIs: "Configurações específicas para três tipos clássicos de peça decorativa, cada uma com altura, paredes, infill e costura otimizados para o efeito visual desejado.",
+            whyAdjust: "Peças estéticas vivem do acabamento. Camadas grossas, costura visível ou suporte mal escolhido destroem o valor percebido.",
+            optionsTable: {
+              headers: ["Caso", "Camada", "Paredes", "Infill", "Material"],
+              rows: [
+                ["Vaso Void", "0.12mm", "3", "0%", "PLA branco (translúcido)"],
+                ["Escultura Orgânica", "0.10mm", "3", "Lightning 10%", "PLA Matte"],
+                ["Luminária Vazada", "0.12mm", "2", "0%", "PLA branco/translúcido"],
+              ],
+            },
+            influences: "Acabamento visível, translucidez para luminárias, qualidade dos detalhes em esculturas e tempo de pós-processamento.",
+            generates: "Peça com valor agregado 3-5× maior que a peça crua equivalente.",
+            howTo: [
+              { step: "1. Escolher caso e material", path: "Briefing", desc: "Vaso/escultura/luminária define camada e paredes." },
+              { step: "2. Configurar perfil", path: "OrcaSlicer › Processo", desc: "Aplicar valores da tabela de cada caso." },
+              { step: "3. Suportes Tree Organic", path: "Suporte > Tipo", desc: "Apenas onde necessário; usar Support Painting." },
+              { step: "4. Seam Painting", path: "Modelo > Pintar costura", desc: "Mover linha para região oculta da peça." },
+              { step: "5. Pós-processamento", path: "Bancada", desc: "Lixa 400-600 → primer filler → aerógrafo." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Superfície áspera", "Camada grossa", "Reduzir para 0.10-0.12mm"],
+                ["Marcas de suporte", "Grid em escultura", "Trocar por Tree Organic"],
+                ["Costura visível em curva", "Seam Random", "Usar Seam Painting na região oculta"],
+                ["Linhas de camada após pintura", "Sem primer", "Aplicar primer filler antes de pintar"],
+              ],
+            },
+            summaryTable: {
+              title: "Técnicas de Acabamento",
+              headers: ["Técnica", "O que faz", "Quando usar"],
+              rows: [
+                ["Ironing", "Alisa superfície superior", "Superfícies planas visíveis"],
+                ["Vapor Smoothing (acetona)", "Funde superfície de ABS/ASA", "Peças curvas em ABS"],
+                ["Primer Filler", "Preenche linhas de camada", "Antes da pintura"],
+                ["Lixamento Úmido (600)", "Alisa sem marcar", "Acabamento final"],
+                ["Pintura com Aerógrafo", "Acabamento profissional", "Peças premium"],
+              ],
+            },
+            goldenRule: "Peças estéticas exigem paciência: camadas 0.10-0.12mm, Tree Organic, Seam Painting e pós-processamento.",
+          }],
           goldenRule: "Peças estéticas exigem paciência: camadas 0.10-0.12mm, Tree Organic, Seam Painting e pós-processamento cuidadoso.",
+
           errors: [
             { error: "Superfície áspera em escultura", solution: "Reduzir camada para 0.10-0.12mm" },
             { error: "Marcas de suporte visíveis", solution: "Trocar Grid por Tree Organic" },
@@ -4291,7 +4472,50 @@ export const modules: Module[] = [
             { param: "Modo", value: "Spiral Vase (vaso) / Normal", action: "Sem costuras em vaso" },
             { param: "Ironing", value: "Ativo (capa)", action: "Superfície lisa visível" },
           ],
+          paramDetails: [{
+            name: "3 Produtos Virais de Marketplace",
+            value: "Organizador · Vaso Spiral · Capa Celular",
+            whatIs: "Configurações otimizadas para produtos de alta demanda em Shopee, Mercado Livre e Etsy — foco em velocidade, custo baixo e repetibilidade.",
+            whyAdjust: "Produto viral só dá lucro se for rápido e barato de produzir. Bico errado, camada fina demais ou costura visível eliminam a margem.",
+            optionsTable: {
+              headers: ["Caso", "Bico", "Camada", "Modo", "Tempo"],
+              rows: [
+                ["Organizador de Mesa", "0.6mm", "0.28mm", "Normal", "4-6h"],
+                ["Vaso Spiral", "0.4mm", "0.12mm", "Spiral Vase", "~40min"],
+                ["Capa de Celular", "0.4mm", "0.16mm", "Normal + Ironing", "2-3h"],
+              ],
+            },
+            influences: "Velocidade de produção, custo por unidade, margem real e capacidade de cumprir prazo de 2-3 dias do marketplace.",
+            generates: "Catálogo com margem 60-80% e capacidade de escalar via volume.",
+            howTo: [
+              { step: "1. Escolher produto de alta busca", path: "Pesquisa Shopee/ML", desc: "Validar demanda antes de configurar perfil." },
+              { step: "2. Aplicar perfil otimizado", path: "Tabela do caso", desc: "Bico, camada e modo conforme tipo." },
+              { step: "3. Calcular custo real", path: "Planilha", desc: "Filamento + energia + tempo + embalagem." },
+              { step: "4. Tirar fotos profissionais", path: "Sessão fotográfica", desc: "Fundo neutro, luz natural, ângulos múltiplos." },
+              { step: "5. Publicar com descrição detalhada", path: "Marketplace", desc: "Especificações, prazo, variações de cor." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Baixas vendas", "Preço alto ou fotos ruins", "Revisar precificação e fotos profissionais"],
+                ["Reclamações de qualidade", "Perfis inconsistentes", "Padronizar e ativar QC obrigatório"],
+                ["Prazo não cumprido", "Produção lenta", "Bico 0.6 + camada 0.28 + buffer"],
+                ["Margem abaixo de 50%", "Custo alto", "Trocar para bico 0.6 e otimizar tempo"],
+              ],
+            },
+            summaryTable: {
+              title: "Margem por Produto",
+              headers: ["Produto", "Custo", "Preço", "Margem"],
+              rows: [
+                ["Organizador (PLA)", "R$ 15-20", "R$ 50-80", "60-70%"],
+                ["Vaso Spiral (PLA Silk)", "R$ 8-12", "R$ 40-60", "70-80%"],
+                ["Capa de Celular (TPU/PLA)", "R$ 5-10", "R$ 30-50", "70-80%"],
+              ],
+            },
+            goldenRule: "Viral é rápido, barato e tem demanda — fotos + descrição + produção eficiente.",
+          }],
           goldenRule: "Viral é rápido, barato e tem demanda — invista em fotos, descrição e produção eficiente.",
+
           errors: [
             { error: "Baixas vendas em marketplace", solution: "Revisar fotos profissionais e preço competitivo" },
             { error: "Reclamações de qualidade", solution: "Padronizar perfis e ativar QC obrigatório" },
@@ -4326,7 +4550,53 @@ export const modules: Module[] = [
             { param: "Infill", value: "Gyroid 35-40%", action: "Distribuição multidirecional de forças" },
             { param: "Bico", value: "Aço Endurecido / Rubi", action: "Sobrevive a fibras abrasivas" },
           ],
+          paramDetails: [{
+            name: "3 Casos Industriais de Alta Resistência",
+            value: "Engrenagem · Suporte de Motor · Ferramenta",
+            whatIs: "Configurações para peças B2B de engenharia: máxima resistência, durabilidade e precisão dimensional usando Nylon+CF, ABS, PETG ou PETG+CF.",
+            whyAdjust: "Peça industrial não pode falhar. Material errado, paredes insuficientes ou orientação contra a carga = quebra em serviço e perda de cliente.",
+            optionsTable: {
+              headers: ["Caso", "Material", "Bico", "Paredes", "Infill"],
+              rows: [
+                ["Engrenagem Nylon+CF", "Nylon+CF", "0.4mm aço endurecido", "6", "Gyroid 40%"],
+                ["Suporte de Motor (5kg)", "PETG ou ABS", "0.6mm", "6", "Gyroid 35%"],
+                ["Ferramenta de Trabalho", "PETG+CF", "0.6mm", "6", "Gyroid 40%"],
+              ],
+            },
+            influences: "Resistência mecânica, durabilidade sob fadiga, resistência ao calor e capacidade de substituir peças metálicas.",
+            generates: "Contrato B2B recorrente com peças a 1/3 do preço e 1/5 do prazo da alternativa metálica.",
+            howTo: [
+              { step: "1. Validar material x aplicação", path: "Briefing técnico", desc: "Carga, temperatura e ambiente definem material." },
+              { step: "2. Secar filamento", path: "Secador 70-90°C", desc: "Nylon: 8-12h obrigatório antes de imprimir." },
+              { step: "3. Bico endurecido", path: "Hardware", desc: "Aço/Rubi obrigatório para qualquer fibra (CF/GF)." },
+              { step: "4. Orientação alinhada com carga", path: "OrcaSlicer › Posicionar", desc: "Camadas perpendiculares à direção da força." },
+              { step: "5. Teste sob carga real", path: "Bancada", desc: "Validar antes da entrega — sem suposições." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra sob carga", "Material/orientação errados", "Trocar para Nylon ou PETG+CF e aumentar paredes"],
+                ["Deformação em ambiente quente", "PLA/PETG insuficiente", "Migrar para ABS ou ASA"],
+                ["Desgaste rápido em engrenagem", "Material mole", "Usar Nylon+CF (carbono lubrifica)"],
+                ["Bico latão destruído", "Fibra abrasiva sem hardened", "Trocar imediato por aço/rubi"],
+              ],
+            },
+            summaryTable: {
+              title: "Materiais Industriais",
+              headers: ["Material", "Resistência", "Calor", "Preço"],
+              rows: [
+                ["PETG", "Média", "~80°C", "Médio"],
+                ["ABS", "Alta", "~100°C", "Médio"],
+                ["ASA", "Alta + UV", "~100°C", "Alto"],
+                ["Nylon", "Altíssima", "~120°C", "Muito alto"],
+                ["Nylon+CF", "Altíssima + rígido", "~120°C", "Muito alto"],
+                ["PETG+CF", "Alta + rígido", "~80°C", "Alto"],
+              ],
+            },
+            goldenRule: "Material certo + paredes alinhadas com a carga + teste sob carga real = peça que substitui metal.",
+          }],
           goldenRule: "Material certo + configuração precisa + validação rigorosa. Teste sob carga antes da entrega.",
+
           errors: [
             { error: "Peça quebra sob carga", solution: "Trocar para Nylon ou PETG+CF e aumentar wall loops" },
             { error: "Deformação em ambiente quente", solution: "Migrar para ABS ou ASA" },
