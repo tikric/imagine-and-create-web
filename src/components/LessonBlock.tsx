@@ -117,6 +117,12 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                     <p className="text-foreground/90 leading-relaxed">{p.generates}</p>
                   </div>
                   {p.generatesTable && <MiniTable label="▸ Consequências práticas" color="primary" data={p.generatesTable} />}
+                  {p.generatesImage && (
+                    <figure className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+                      <img src={p.generatesImage.src} alt={p.generatesImage.alt} loading="lazy" className="w-full h-auto block" />
+                      {p.generatesImage.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.generatesImage.caption}</figcaption>}
+                    </figure>
+                  )}
                   {p.integrationsTable && <MiniTable label="▸ Integração com outros parâmetros" color="chart-3" data={p.integrationsTable} />}
                   {p.howTo && p.howTo.length > 0 && (
                     <div>
@@ -131,6 +137,12 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                         ))}
                       </ol>
                     </div>
+                  )}
+                  {p.howToImage && (
+                    <figure className="rounded-2xl border border-chart-3/30 bg-card/40 overflow-hidden">
+                      <img src={p.howToImage.src} alt={p.howToImage.alt} loading="lazy" className="w-full h-auto block" />
+                      {p.howToImage.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.howToImage.caption}</figcaption>}
+                    </figure>
                   )}
                   {p.example && (
                     <div className="rounded-xl border border-chart-3/40 bg-chart-3/5 p-4">

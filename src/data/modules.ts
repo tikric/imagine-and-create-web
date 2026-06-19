@@ -3,6 +3,13 @@ import anatomiaInterface from "@/assets/orca/modulo1-anatomia-interface.jpeg.ass
 import errosComuns from "@/assets/orca/modulo1-erros-comuns.jpeg.asset.json";
 import barraSuperior from "@/assets/orca/modulo1-barra-superior.jpeg.asset.json";
 import ferramentasAvancadas from "@/assets/orca/modulo1-ferramentas-avancadas.jpeg.asset.json";
+import mod2Img21 from "@/assets/orca/modulo2-img21.jpeg.asset.json";
+import mod2Img22 from "@/assets/orca/modulo2-img22.jpeg.asset.json";
+import mod2Img23 from "@/assets/orca/modulo2-img23.jpeg.asset.json";
+import mod2Img24 from "@/assets/orca/modulo2-img24.jpeg.asset.json";
+import mod2Img25 from "@/assets/orca/modulo2-img25.jpeg.asset.json";
+import mod2Img26 from "@/assets/orca/modulo2-img26.jpeg.asset.json";
+import mod2Img27 from "@/assets/orca/modulo2-img27.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -38,8 +45,10 @@ export type Lesson = {
     influencesList?: string[];
     generates: string;
     generatesTable?: { headers: string[]; rows: string[][] };
+    generatesImage?: { src: string; alt: string; caption?: string };
     integrationsTable?: { headers: string[]; rows: string[][] };
     howTo?: { step: string; path: string; desc: string }[];
+    howToImage?: { src: string; alt: string; caption?: string };
     example?: { piece: string; config: string; result: string };
     errorsTable?: { headers: string[]; rows: string[][] };
     errorsImage?: { src: string; alt: string; caption?: string };
@@ -422,6 +431,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Perfil da Impressora", value: "Personalizado por máquina",
             whatIs: "Arquivo de configuração que descreve dimensões, firmware, limites e extrusão da impressora para o OrcaSlicer gerar G-code compatível.",
+            image: {
+              src: mod2Img21.url,
+              alt: "Três abas do perfil da impressora: General, Machine Limits e Extruder",
+              caption: "As 3 abas do Perfil: General (identificação) · Machine Limits (físicos) · Extruder (extrusão).",
+            },
             whyAdjust: "Define os limites que o fatiador nunca pode ultrapassar — é o que evita colisões, subextrusão e travamentos.",
             optionsTable: { headers: ["Área", "Função", "Descrição"], rows: [
               ["General", "Identificação e básico", "Nome, modelo, fabricante, firmware"],
@@ -446,6 +460,11 @@ export const modules: Module[] = [
               ["Comandos não reconhecidos", "Firmware errado", "Selecionar firmware correto"],
               ["Impressora não conecta", "Host configurado errado", "Verificar host e porta"],
             ]},
+            howToImage: {
+              src: mod2Img25.url,
+              alt: "Protocolo de 5 passos para configurar o perfil da impressora",
+              caption: "Protocolo completo: 1·Abrir Limites → 2·Formato X/Y/Z → 3·Firmware → 4·Velocidade/Aceleração/Jerk → 5·Salvar.",
+            },
             goldenRule: "Nunca use perfis genéricos. Crie um perfil específico para sua impressora e mantenha-o atualizado.",
           }],
         }),
@@ -458,6 +477,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Machine Limits", value: "Tetos físicos e elétricos",
             whatIs: "Conjunto de parâmetros que limita área útil, altura Z e cinemática da impressora para garantir G-code seguro.",
+            image: {
+              src: mod2Img23.url,
+              alt: "Firmware (Marlin/Klipper/RepRap), limites cinemáticos de aceleração e área da mesa no OrcaSlicer",
+              caption: "Os 3 eixos do Machine Limits: Firmware (compatibilidade) · Limites cinemáticos (aceleração/jerk) · Área da mesa (volume máximo).",
+            },
             whyAdjust: "Limites corretos evitam colisões e ghosting; limites incorretos são a causa nº 1 de falhas catastróficas.",
             optionsTable: { headers: ["Parâmetro", "Descrição", "Exemplo (Ender 3)"], rows: [
               ["Formato", "Retangular ou circular", "Retangular"],
@@ -484,6 +508,11 @@ export const modules: Module[] = [
               ["Área correta", "Posicionamento confiável", "Sempre"],
               ["Área incorreta", "Não cabe ou colide", "Nunca"],
             ]},
+            generatesImage: {
+              src: mod2Img24.url,
+              alt: "Limites altos vs baixos (velocidade/vibração) e área correta vs incorreta de posicionamento",
+              caption: "Limites altos = rápido com vibração (impressoras robustas) · Limites baixos = lento e suave (impressoras leves) · Área correta = sempre · Área incorreta = nunca.",
+            },
             integrationsTable: { headers: ["Parâmetro", "Relação", "Ajuste"], rows: [
               ["Velocidade (Processo)", "Nunca pode exceder o limite", "Sempre respeitar"],
               ["Aceleração (Processo)", "Nunca pode exceder o limite", "Sempre respeitar"],
@@ -502,6 +531,11 @@ export const modules: Module[] = [
               ["G-code não funciona", "Firmware errado", "Selecionar correto"],
               ["Impressão lenta", "Limites muito baixos", "Aumentar (se seguro)"],
             ]},
+            errorsImage: {
+              src: mod2Img22.url,
+              alt: "Quatro erros comuns: colisão com a mesa, peça não cabe, comandos não reconhecidos e sem conexão",
+              caption: "Os 4 erros clássicos de Machine Limits: colisão Z · área de impressão errada · firmware errado · host/porta sem conexão.",
+            },
             goldenRule: "Configure limites com valores reais. Meça a área e consulte o manual — limites incorretos são a causa nº 1 de falhas catastróficas.",
           }],
         }),
@@ -514,6 +548,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Extruder (Bico, Tipo e Fluxo)", value: "Bico 0.4mm padrão",
             whatIs: "Conjunto de parâmetros do sistema de extrusão: bico, extrusor, retração e MVS.",
+            image: {
+              src: mod2Img26.url,
+              alt: "Quatro diâmetros de bico: 0.2mm detalhes, 0.4mm padrão, 0.6mm funcional, 0.8mm protótipos",
+              caption: "Os 4 diâmetros de bico: 0.2mm (detalhes/miniaturas) · 0.4mm (padrão) · 0.6mm (funcional rápido) · 0.8mm (protótipos e grandes volumes).",
+            },
             whyAdjust: "Define largura real da linha, comportamento da retração e velocidade máxima útil sem subextrusão.",
             optionsTable: { headers: ["Diâmetro", "Uso", "Observação"], rows: [
               ["0.2 mm", "Detalhes finos, miniaturas", "Lento, fácil entupir"],
@@ -557,6 +596,11 @@ export const modules: Module[] = [
               ["Entupimento", "Retração longa ou heat creep", "Reduzir retração ou melhorar cooling"],
               ["TPU falha", "Bowden em TPU", "Usar Direct Drive"],
             ]},
+            errorsImage: {
+              src: mod2Img27.url,
+              alt: "Quatro problemas de extrusão: subextrusão, fiapos (stringing), entupimento (clog) e falha com TPU",
+              caption: "Os 4 problemas clássicos do extrusor: subextrusão (MVS alto) · stringing (calibrar retração) · clog (retração longa/heat creep) · TPU falha (trocar para Direct Drive).",
+            },
             goldenRule: "Use bicos de aço endurecido para filamentos abrasivos (CF, GF, madeira, glow). Bronze se desgasta rápido.",
             summaryTable: { title: "Resumo do Módulo 2", headers: ["Aula", "Tópico", "Aprendizados"], rows: [
               ["2.1", "Perfil Geral", "Identificação, firmware, básico"],
