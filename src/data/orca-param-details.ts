@@ -4194,6 +4194,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         "Ângulo a partir do qual o OrcaSlicer começa a gerar suportes. 0° = horizontal, 90° = vertical. Faces inclinadas mais do que esse valor recebem suporte.",
       whyAdjust: "Reduzir gera MAIS suporte (mais conservador). Aumentar gera MENOS (confia que o material aguenta).",
       influences: "Quantidade total de suporte, áreas que recebem ou não suporte, tempo de impressão.",
+      generates: "30° = mais suporte e mais segurança; 55° = menos suporte mas maior risco de overhangs feios.",
       optionsTable: {
         headers: ["Ângulo", "Quando usar"],
         rows: [
