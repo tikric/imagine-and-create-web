@@ -2543,6 +2543,8 @@ export const modules: Module[] = [
             value: "Custo Total ÷ (1 − Margem)",
             whatIs: "Modelo de cálculo que integra custos diretos, indiretos e ocultos com margem de lucro para chegar ao preço de venda sustentável.",
             whyAdjust: "Cada item omitido vira prejuízo silencioso. A planilha torna visível o que normalmente é esquecido — base para decisões financeiras reais.",
+            influences: "Margem real, sustentabilidade financeira, capacidade de investir em melhorias, posicionamento no mercado e poder de negociação.",
+            generates: "Preço de venda calculado por fórmula auditável: Custo Total ÷ (1 − Margem). Sem chute, sem prejuízo silencioso.",
             optionsTable: {
               headers: ["Item", "Valor Unitário", "Quantidade exemplo", "Subtotal"],
               rows: [
