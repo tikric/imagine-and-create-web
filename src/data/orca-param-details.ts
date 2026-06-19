@@ -4228,6 +4228,8 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       name: "Expansão da primeira camada",
       value: "2–5 mm (padrão)",
       whatIs: "Quanto a base do suporte se expande lateralmente para melhorar a adesão à mesa.",
+      influences: "Estabilidade da torre de suporte, área ocupada na mesa, consumo de filamento na base.",
+      generates: "Base larga = suporte não tomba mesmo com altura grande; base estreita = suporte fino balança e pode cair.",
       optionsTable: {
         headers: ["Expansão", "Efeito", "Quando usar"],
         rows: [
