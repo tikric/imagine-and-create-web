@@ -4142,28 +4142,8 @@ export const modules: Module[] = [
             { param: "Temperatura", value: "20-25°C", action: "AC e ventilação controlada" },
             { param: "Zoneamento", value: "Por material", action: "PLA / PETG / ABS / TPU / Nylon separados" },
           ],
-          paramDetails: {
-            optionsTable: {
-              title: "Estratégias de Fila de Impressão",
-              headers: ["Estratégia", "Descrição", "Quando Usar"],
-              rows: [
-                ["Lote por Lote", "Imprime todas peças de um pedido", "Pedidos grandes (>10 peças)"],
-                ["Peça por Peça", "Imprime uma peça por vez", "Protótipos, peças únicas"],
-                ["Escalonado", "Múltiplas impressoras em paralelo", "Pedidos urgentes"],
-                ["Buffer", "Mantém estoque pronto", "Produtos recorrentes"],
-              ],
-            },
-            howTo: {
-              title: "Fluxo de Gestão de Fila",
-              steps: [
-                "Receba o pedido e valide especificações",
-                "Fatie e prepare os G-codes",
-                "Distribua pelas impressoras disponíveis por zona",
-                "Monitore o progresso em tempo real",
-                "Libere espaço imediatamente para próximos pedidos",
-              ],
-            },
-          },
+          
+
           goldenRule: "Uma fazenda bem organizada é mais produtiva que muitas impressoras desorganizadas.",
           errors: [
             { error: "Produtividade baixa", solution: "Zoneamento por material e gestão de fila ativa" },
