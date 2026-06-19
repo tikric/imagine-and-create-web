@@ -4472,7 +4472,50 @@ export const modules: Module[] = [
             { param: "Modo", value: "Spiral Vase (vaso) / Normal", action: "Sem costuras em vaso" },
             { param: "Ironing", value: "Ativo (capa)", action: "Superfície lisa visível" },
           ],
+          paramDetails: [{
+            name: "3 Produtos Virais de Marketplace",
+            value: "Organizador · Vaso Spiral · Capa Celular",
+            whatIs: "Configurações otimizadas para produtos de alta demanda em Shopee, Mercado Livre e Etsy — foco em velocidade, custo baixo e repetibilidade.",
+            whyAdjust: "Produto viral só dá lucro se for rápido e barato de produzir. Bico errado, camada fina demais ou costura visível eliminam a margem.",
+            optionsTable: {
+              headers: ["Caso", "Bico", "Camada", "Modo", "Tempo"],
+              rows: [
+                ["Organizador de Mesa", "0.6mm", "0.28mm", "Normal", "4-6h"],
+                ["Vaso Spiral", "0.4mm", "0.12mm", "Spiral Vase", "~40min"],
+                ["Capa de Celular", "0.4mm", "0.16mm", "Normal + Ironing", "2-3h"],
+              ],
+            },
+            influences: "Velocidade de produção, custo por unidade, margem real e capacidade de cumprir prazo de 2-3 dias do marketplace.",
+            generates: "Catálogo com margem 60-80% e capacidade de escalar via volume.",
+            howTo: [
+              { step: "1. Escolher produto de alta busca", path: "Pesquisa Shopee/ML", desc: "Validar demanda antes de configurar perfil." },
+              { step: "2. Aplicar perfil otimizado", path: "Tabela do caso", desc: "Bico, camada e modo conforme tipo." },
+              { step: "3. Calcular custo real", path: "Planilha", desc: "Filamento + energia + tempo + embalagem." },
+              { step: "4. Tirar fotos profissionais", path: "Sessão fotográfica", desc: "Fundo neutro, luz natural, ângulos múltiplos." },
+              { step: "5. Publicar com descrição detalhada", path: "Marketplace", desc: "Especificações, prazo, variações de cor." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Baixas vendas", "Preço alto ou fotos ruins", "Revisar precificação e fotos profissionais"],
+                ["Reclamações de qualidade", "Perfis inconsistentes", "Padronizar e ativar QC obrigatório"],
+                ["Prazo não cumprido", "Produção lenta", "Bico 0.6 + camada 0.28 + buffer"],
+                ["Margem abaixo de 50%", "Custo alto", "Trocar para bico 0.6 e otimizar tempo"],
+              ],
+            },
+            summaryTable: {
+              title: "Margem por Produto",
+              headers: ["Produto", "Custo", "Preço", "Margem"],
+              rows: [
+                ["Organizador (PLA)", "R$ 15-20", "R$ 50-80", "60-70%"],
+                ["Vaso Spiral (PLA Silk)", "R$ 8-12", "R$ 40-60", "70-80%"],
+                ["Capa de Celular (TPU/PLA)", "R$ 5-10", "R$ 30-50", "70-80%"],
+              ],
+            },
+            goldenRule: "Viral é rápido, barato e tem demanda — fotos + descrição + produção eficiente.",
+          }],
           goldenRule: "Viral é rápido, barato e tem demanda — invista em fotos, descrição e produção eficiente.",
+
           errors: [
             { error: "Baixas vendas em marketplace", solution: "Revisar fotos profissionais e preço competitivo" },
             { error: "Reclamações de qualidade", solution: "Padronizar perfis e ativar QC obrigatório" },
