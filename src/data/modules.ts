@@ -687,6 +687,7 @@ export const modules: Module[] = [
               ["Quebra entre camadas", "Camada grossa", "Reduzir ou aumentar T°"],
               ["Tempo alto", "Camada fina demais", "Subir para 0.20mm"],
             ]},
+            errorsImage: { src: mod3Img33.url, alt: "Erros comuns de altura de camada e correções", caption: "Erros comuns: linhas separadas (75%), plástico não sai (25%), degraus (Adaptive), delaminação e tempo alto" },
             goldenRule: "Para bico 0.4mm: 0.12mm = detalhe, 0.20mm = padrão, 0.28mm = rapidez.",
             summaryTable: { title: "Decisão Rápida", headers: ["Peça", "0.4mm", "0.6mm", "0.8mm"], rows: [
               ["Miniatura/Detalhe", "0.08–0.12", "—", "—"],
