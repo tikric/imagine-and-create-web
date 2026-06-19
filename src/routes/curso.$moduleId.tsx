@@ -112,7 +112,7 @@ function ModulePage() {
 
       {/* Conteúdo de todas as aulas */}
       <article className="mx-auto max-w-4xl px-6 py-8">
-        {m.lessons.map((l, li) => (
+        {m.lessons.map((l: Lesson, li: number) => (
           <LessonBlock key={l.id} l={l} isFirst={li === 0} />
         ))}
       </article>
