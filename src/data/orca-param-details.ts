@@ -4212,6 +4212,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       value: "100% (padrão)",
       whatIs: "Porcentagem de preenchimento da primeira camada do suporte. Camada mais densa = melhor adesão à mesa.",
       influences: "Adesão do suporte à mesa, risco de descolamento durante a impressão.",
+      generates: "Densidade alta = base firme; densidade baixa = risco de a torre de suporte soltar no meio da impressão.",
       optionsTable: {
         headers: ["Densidade", "Efeito", "Quando usar"],
         rows: [
