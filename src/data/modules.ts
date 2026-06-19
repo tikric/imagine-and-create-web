@@ -4221,7 +4221,54 @@ export const modules: Module[] = [
             { param: "Amostragem QC", value: "100% em peças finais", action: "Inspeção visual e tátil obrigatória" },
             { param: "Custo Embalagem", value: "~R$ 4,00/peça", action: "Saco + bolha + caixa + fita + etiqueta" },
           ],
-          
+          paramDetails: [{
+            name: "Sistema de Controle de Qualidade e Embalagem",
+            value: "Checklist + Documentação + Embalagem dimensionada",
+            whatIs: "Processo completo de QC com checklist de 6 itens (dimensões, superfície, camadas, suportes, acabamento, funcionalidade), documentação por lote e embalagem proporcional ao peso/fragilidade.",
+            whyAdjust: "Sem QC, defeitos chegam ao cliente e devoluções consomem margem. Sem embalagem adequada, peças quebram no transporte — perda total.",
+            optionsTable: {
+              headers: ["Tipo de Peça", "Embalagem", "Material"],
+              rows: [
+                ["Pequenas (<100g)", "Saco zíper + caixa", "Polietileno + papelão"],
+                ["Médias (100-500g)", "Papel bolha + caixa", "Plástico bolha + papelão"],
+                ["Grandes (>500g)", "Isopor + caixa reforçada", "EPS + papelão reforçado"],
+                ["Frágil/Detalhada", "Suporte interno + caixa", "Espuma + papelão"],
+                ["Múltiplas peças", "Divisórias + caixa", "Papelão com divisórias"],
+              ],
+            },
+            influences: "Taxa de devolução, satisfação do cliente, reputação no marketplace e margem real do produto.",
+            generates: "Rastreabilidade total (ficha técnica + QC + fotos) e proteção da peça do bico até o cliente.",
+            howTo: [
+              { step: "1. Medir dimensões críticas", path: "Bancada de QC", desc: "Paquímetro nos pontos especificados (±0.2mm)." },
+              { step: "2. Inspecionar superfície", path: "Visual + tátil", desc: "Sem lacunas, fiapos ou warping visível." },
+              { step: "3. Testar funcionalidade", path: "Encaixe/movimento", desc: "Quando aplicável, validar ajuste real." },
+              { step: "4. Registrar na ficha técnica", path: "Planilha do lote", desc: "Material, perfil, tempo, peso, QC, fotos." },
+              { step: "5. Embalar conforme categoria", path: "Sala de Embalagem", desc: "Etiqueta com cliente, peça, data, QR code." },
+            ],
+            errorsTable: {
+              headers: ["Defeito", "Critério de aprovação"],
+              rows: [
+                ["Fiapos em peça visível", "Tolerância zero"],
+                ["Subextrusão / Sobreextrusão", "Tolerância zero"],
+                ["Warping (cantos levantados)", "Tolerância zero"],
+                ["Ghosting", "Aceitável apenas em peças internas"],
+                ["Marcas de suporte", "Apenas em áreas não visíveis"],
+              ],
+            },
+            summaryTable: {
+              title: "Custo de Embalagem por Unidade",
+              headers: ["Item", "Custo unitário", "Total"],
+              rows: [
+                ["Saco zíper", "R$ 0,50", "R$ 0,50"],
+                ["Papel bolha", "R$ 1,00", "R$ 1,00"],
+                ["Caixa", "R$ 2,00", "R$ 2,00"],
+                ["Fita adesiva", "R$ 0,20", "R$ 0,20"],
+                ["Etiqueta", "R$ 0,30", "R$ 0,30"],
+                ["Total por peça", "—", "R$ 4,00"],
+              ],
+            },
+            goldenRule: "QC não é opcional — é a diferença entre hobby e negócio sério.",
+          }],
 
           goldenRule: "Documente cada lote, inspecione cada peça, embale com cuidado — o cliente merece o melhor.",
           errors: [
