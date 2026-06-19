@@ -5182,11 +5182,13 @@ export const modules: Module[] = [
             "Filamento de suporte seco (PETG e PVA acumulam umidade que mata estabilidade do ramo)",
           ],
         }),
-      L(2, "interface-layers", "Interface Layers — Camadas Densas Separadoras", "25min",
-        ["Z Gap 0.15-0.20mm", "3 camadas densas", "Solúveis"], {
+      L(2, "interface-layers", "Interface Layers — Z Gap, Distância XY e Padrões", "30min",
+        ["Z Gap 0.20mm", "2-3 interface", "XY 0.35mm"], {
           theory: [
-            "Z Gap (0.15–0.20mm) é o espaço que descola o suporte da peça sem soltar no ar.",
-            "Top Interface (3 camadas densas a 90%) cria uma plataforma uniforme que recebe o overhang sem deixar fios.",
+            "Z Gap (0.15–0.25mm) é o espaço vertical que descola o suporte da peça sem deixar o overhang no ar.",
+            "Top Interface (2-3 camadas a 90-95%) cria uma plataforma uniforme que recebe o overhang sem fios pendentes.",
+            "Distância XY (0.35mm padrão) define o espaço lateral entre suporte e peça — evita soldagem e facilita remoção.",
+            "Espaçamento da interface (0.5mm padrão) regula densidade — 0.2-0.3mm para acabamento premium, 0.8mm para protótipo.",
             "Filamentos solúveis (PVA, BVOH) em impressoras multi-material dão acabamento absolutamente limpo.",
           ],
           integrations: [
