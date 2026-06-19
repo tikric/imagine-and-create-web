@@ -4393,7 +4393,52 @@ export const modules: Module[] = [
             { param: "Infill", value: "0% (vaso) / Lightning 10% (escultura)", action: "Decorativo sem carga" },
             { param: "Costura", value: "Random / Seam Painting", action: "Esconder linha visível" },
           ],
+          paramDetails: [{
+            name: "3 Casos Estéticos Avançados",
+            value: "Vaso Void · Escultura · Luminária",
+            whatIs: "Configurações específicas para três tipos clássicos de peça decorativa, cada uma com altura, paredes, infill e costura otimizados para o efeito visual desejado.",
+            whyAdjust: "Peças estéticas vivem do acabamento. Camadas grossas, costura visível ou suporte mal escolhido destroem o valor percebido.",
+            optionsTable: {
+              headers: ["Caso", "Camada", "Paredes", "Infill", "Material"],
+              rows: [
+                ["Vaso Void", "0.12mm", "3", "0%", "PLA branco (translúcido)"],
+                ["Escultura Orgânica", "0.10mm", "3", "Lightning 10%", "PLA Matte"],
+                ["Luminária Vazada", "0.12mm", "2", "0%", "PLA branco/translúcido"],
+              ],
+            },
+            influences: "Acabamento visível, translucidez para luminárias, qualidade dos detalhes em esculturas e tempo de pós-processamento.",
+            generates: "Peça com valor agregado 3-5× maior que a peça crua equivalente.",
+            howTo: [
+              { step: "1. Escolher caso e material", path: "Briefing", desc: "Vaso/escultura/luminária define camada e paredes." },
+              { step: "2. Configurar perfil", path: "OrcaSlicer › Processo", desc: "Aplicar valores da tabela de cada caso." },
+              { step: "3. Suportes Tree Organic", path: "Suporte > Tipo", desc: "Apenas onde necessário; usar Support Painting." },
+              { step: "4. Seam Painting", path: "Modelo > Pintar costura", desc: "Mover linha para região oculta da peça." },
+              { step: "5. Pós-processamento", path: "Bancada", desc: "Lixa 400-600 → primer filler → aerógrafo." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Superfície áspera", "Camada grossa", "Reduzir para 0.10-0.12mm"],
+                ["Marcas de suporte", "Grid em escultura", "Trocar por Tree Organic"],
+                ["Costura visível em curva", "Seam Random", "Usar Seam Painting na região oculta"],
+                ["Linhas de camada após pintura", "Sem primer", "Aplicar primer filler antes de pintar"],
+              ],
+            },
+            summaryTable: {
+              title: "Técnicas de Acabamento",
+              headers: ["Técnica", "O que faz", "Quando usar"],
+              rows: [
+                ["Ironing", "Alisa superfície superior", "Superfícies planas visíveis"],
+                ["Vapor Smoothing (acetona)", "Funde superfície de ABS/ASA", "Peças curvas em ABS"],
+                ["Primer Filler", "Preenche linhas de camada", "Antes da pintura"],
+                ["Lixamento Úmido (600)", "Alisa sem marcar", "Acabamento final"],
+                ["Pintura com Aerógrafo", "Acabamento profissional", "Peças premium"],
+              ],
+            },
+            goldenRule: "Peças estéticas exigem paciência: camadas 0.10-0.12mm, Tree Organic, Seam Painting e pós-processamento.",
+          }],
           goldenRule: "Peças estéticas exigem paciência: camadas 0.10-0.12mm, Tree Organic, Seam Painting e pós-processamento cuidadoso.",
+
           errors: [
             { error: "Superfície áspera em escultura", solution: "Reduzir camada para 0.10-0.12mm" },
             { error: "Marcas de suporte visíveis", solution: "Trocar Grid por Tree Organic" },
