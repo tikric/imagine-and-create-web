@@ -5783,9 +5783,11 @@ export const modules: Module[] = [
           ],
           paramDetails: [
             {
-              label: "Tabela dos 8 Passos",
-              color: "primary",
-              data: {
+              name: "Tabela dos 8 Passos do Protocolo",
+              value: "Sequência obrigatória",
+              whatIs: "Mapa que define a ordem em que cada calibração deve ser feita e a dependência entre etapas.",
+              whyAdjust: "Pular ou inverter qualquer etapa propaga erro para todas as seguintes e impede convergência.",
+              optionsTable: {
                 headers: ["Etapa", "Nome", "O que faz", "Depende de"],
                 rows: [
                   ["1", "Nivelamento", "Garante primeira camada", "Nada"],
@@ -5798,11 +5800,14 @@ export const modules: Module[] = [
                   ["8", "Retração", "Elimina fiapos", "PA + Flow Rate"],
                 ],
               },
+              goldenRule: "Cada etapa pressupõe a anterior — siga 1→8 em ordem rígida.",
             },
             {
-              label: "Valores Típicos por Etapa (PLA Genérico)",
-              color: "chart-3",
-              data: {
+              name: "Valores Típicos por Etapa (PLA Genérico)",
+              value: "Referência inicial",
+              whatIs: "Faixas de partida para cada parâmetro durante o protocolo de calibração com PLA.",
+              whyAdjust: "Servem como ponto de partida; o valor final depende de máquina, hotend e marca do filamento.",
+              summaryTable: {
                 headers: ["Etapa", "Parâmetro", "Valor referência"],
                 rows: [
                   ["3", "Temperatura", "195–210°C"],
