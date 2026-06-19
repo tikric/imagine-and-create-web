@@ -256,6 +256,11 @@ export const modules: Module[] = [
               ["Não cabe na mesa", "Escala muito grande", "Escalar ou cortar o modelo"],
               ["Configurações perdidas", "Salvou como STL", "Sempre salvar como .3mf"],
             ]},
+            errorsImage: {
+              src: errosComuns.url,
+              alt: "Quatro erros visuais comuns no OrcaSlicer: formato inválido, modelo flutuando, modelo não cabe na mesa e configurações perdidas",
+              caption: "Os 4 erros visuais mais comuns ao importar — e como reconhecer cada um na tela.",
+            },
             goldenRule: "Antes de configurar qualquer parâmetro térmico, posicione corretamente o modelo. Bom posicionamento resolve 50% dos problemas.",
           }],
         }),
