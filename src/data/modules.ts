@@ -531,6 +531,11 @@ export const modules: Module[] = [
               ["G-code não funciona", "Firmware errado", "Selecionar correto"],
               ["Impressão lenta", "Limites muito baixos", "Aumentar (se seguro)"],
             ]},
+            errorsImage: {
+              src: mod2Img22.url,
+              alt: "Quatro erros comuns: colisão com a mesa, peça não cabe, comandos não reconhecidos e sem conexão",
+              caption: "Os 4 erros clássicos de Machine Limits: colisão Z · área de impressão errada · firmware errado · host/porta sem conexão.",
+            },
             goldenRule: "Configure limites com valores reais. Meça a área e consulte o manual — limites incorretos são a causa nº 1 de falhas catastróficas.",
           }],
         }),
