@@ -5267,6 +5267,53 @@ export const modules: Module[] = [
             { param: "Ângulo Limite", value: "45°", action: "Limite físico para deposição estável" },
             { param: "Overhang Threshold", value: "55°", action: "Aciona suporte apenas além desse ângulo" },
           ],
+          paramDetails: [{
+            name: "Design Anti-Suporte — 45°, Chanfros, Filetes e Divisão",
+            value: "Overhangs ≤45° · chanfros · divisão de peça · orientação",
+            whatIs: "Conjunto de decisões de CAD e orientação que tornam a peça autoportante: respeitar o limite de 45°, substituir quinas vivas por chanfros/filetes, dividir partes complexas e aplicar Place on Face.",
+            whyAdjust: "Cada suporte eliminado economiza material, tempo, pós-processamento e remove o risco de marca na face inferior. Reprojetar é mais barato que reimprimir.",
+            optionsTable: {
+              headers: ["Técnica", "Quando aplicar", "Ganho"],
+              rows: [
+                ["Ângulo ≤45°", "Todo overhang", "Elimina suporte automaticamente"],
+                ["Chanfro 45°", "Quina viva de 90°", "Substitui suporte por face autoportante"],
+                ["Filete", "Transição entre faces", "Reduz tensão e overhang"],
+                ["Divisão de peça", "Geometria com muitos overhangs", "Cada parte impressa em orientação ideal"],
+                ["Place on Face", "Toda peça nova", "Reorienta para minimizar suporte"],
+                ["Support Painting", "Suporte localizado", "Suporta só onde realmente precisa"],
+              ],
+            },
+            influences: "Tempo total de impressão, consumo de filamento, qualidade da face inferior e custo unitário em produção.",
+            generates: "Peça que imprime sem suporte (ou com mínimo), pronta para uso com menos pós-processo.",
+            howTo: [
+              { step: "1. Mapear overhangs", path: "OrcaSlicer › Overhang detection", desc: "Identificar regiões >45° destacadas em vermelho." },
+              { step: "2. Aplicar chanfros/filetes", path: "CAD", desc: "Substituir quinas críticas por chanfro de 45° ou filete." },
+              { step: "3. Reorientar peça", path: "OrcaSlicer › Place on Face", desc: "Assentar maior face plana na mesa." },
+              { step: "4. Dividir se necessário", path: "CAD › Split / Cut", desc: "Separar partes que ainda demandam muito suporte; encaixar com pino + cola." },
+              { step: "5. Validar no slice", path: "Slice › Preview", desc: "Confirmar overhangs verdes e suportes mínimos." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Excesso de suportes gerados", "Quinas de 90° no CAD", "Adicionar chanfros 45° em bordas"],
+                ["Suporte em área interna inacessível", "Orientação errada", "Place on Face ou dividir peça"],
+                ["Furo horizontal oval", "Topo do furo overhang 90°", "Modelar como losango ou chanfro superior"],
+                ["Peça grande com hora extra de suporte", "Não dividida", "Cortar em 2-3 partes e colar"],
+              ],
+            },
+            summaryTable: {
+              title: "Checklist Anti-Suporte",
+              headers: ["Item", "OK?"],
+              rows: [
+                ["Todos os overhangs ≤45°", "—"],
+                ["Quinas substituídas por chanfros/filetes", "—"],
+                ["Maior face apoiada na mesa (Place on Face)", "—"],
+                ["Furos horizontais com chanfro superior", "—"],
+                ["Peças complexas avaliadas para divisão", "—"],
+              ],
+            },
+            goldenRule: "O melhor suporte é o que você não imprime. Chanfros 45°, orientação correta e divisão eliminam suportes antes do slicer.",
+          }],
           goldenRule: "Aplique chanfros em todos furos horizontais maiores que 5mm.",
           errors: [
             { error: "Overhang 50° feio sem suporte", solution: "Adicione chanfro de 45° no CAD ou rotacione a peça." },
