@@ -1366,15 +1366,12 @@ export const modules: Module[] = [
             { param: "Adaptive Layer Height", value: "On (variação 0.08-0.28mm)", action: "Qualidade onde importa, velocidade onde não" },
             { param: "Paredes (leve / estrutural)", value: "2 / 4", action: "Ajustar à função da peça" },
           ],
-          optionsTable: {
-            headers: ["Necessidade", "Bico", "Altura", "Infill", "Paredes", "Tempo Relativo"],
-            rows: [
-              ["Máxima qualidade", "0.4mm", "0.12mm", "Gyroid 30%", "4", "100%"],
-              ["Equilíbrio", "0.4mm", "0.20mm", "Gyroid 20%", "4", "70%"],
-              ["Rápido", "0.6mm", "0.24mm", "Lightning 15%", "3", "50%"],
-              ["Ultra rápido", "0.6mm", "0.28mm", "Lightning 10%", "2", "35%"],
-            ],
-          },
+          deepDive: [
+            "Máxima qualidade: bico 0.4mm, 0.12mm camada, Gyroid 30%, 4 paredes → 100% do tempo base.",
+            "Equilíbrio: bico 0.4mm, 0.20mm camada, Gyroid 20%, 4 paredes → 70% do tempo.",
+            "Rápido: bico 0.6mm, 0.24mm camada, Lightning 15%, 3 paredes → 50% do tempo.",
+            "Ultra rápido: bico 0.6mm, 0.28mm camada, Lightning 10%, 2 paredes → 35% do tempo.",
+          ],
           goldenRule: "Lightning Infill para decorativos, bico 0.6mm para estruturais grandes, Adaptive Layers para qualidade onde importa.",
           errors: [
             { error: "Peça quebra com Lightning", solution: "Lightning é decorativo — use Gyroid/Cubic em funcional" },
