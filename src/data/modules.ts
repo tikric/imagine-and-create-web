@@ -5028,7 +5028,55 @@ export const modules: Module[] = [
             { param: "Estratégia de Infill", value: "Adaptive Cubic", action: "Concentra material onde tensões são altas" },
             { param: "Adaptive Quality", value: "0.6", action: "Equilíbrio entre economia e rigidez" },
           ],
+          paramDetails: [{
+            name: "Otimização de Forças X, Y e Z",
+            value: "Direção da carga + isotropia + densidade variável",
+            whatIs: "Análise de como cada infill distribui forças nos três eixos. FDM é naturalmente fraco em Z (entre camadas); o padrão de infill compensa ou amplifica essa fragilidade.",
+            whyAdjust: "Peça quebra na direção da carga quando o infill não está alinhado. Escolha consciente do padrão + densidade variável por região define resistência real.",
+            optionsTable: {
+              headers: ["Infill", "Força X", "Força Y", "Força Z", "Isotropia"],
+              rows: [
+                ["Grid", "Boa", "Boa", "Ruim", "Não"],
+                ["Lines", "Excelente", "Ruim", "Ruim", "Não"],
+                ["Honeycomb", "Excelente", "Excelente", "Média", "Parcial"],
+                ["Gyroid", "Excelente", "Excelente", "Excelente", "Sim"],
+                ["Cubic", "Excelente", "Excelente", "Boa", "Parcial"],
+                ["Lightning", "Ruim", "Ruim", "Ruim", "Não"],
+              ],
+            },
+            influences: "Resistência efetiva por direção, peso final, capacidade de suportar torção/compressão/flexão e durabilidade sob fadiga.",
+            generates: "Peça com resistência sob medida para a carga real — não desperdiça material em direções que não importam.",
+            howTo: [
+              { step: "1. Identificar direção da carga", path: "Briefing técnico", desc: "Tração X/Y, compressão Z, torção multidirecional." },
+              { step: "2. Escolher infill conforme direção", path: "Tabela acima", desc: "Multidirecional → Gyroid; uniforme → Cubic; leve → Lightning." },
+              { step: "3. Aplicar Modifier Mesh por região", path: "OrcaSlicer › Modifier", desc: "Densidade alta em área de carga, baixa em decoração." },
+              { step: "4. Testar sob carga real", path: "Bancada", desc: "Pendurar peso ou aplicar torque controlado." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra em direção específica", "Infill não alinhado com carga", "Trocar para Gyroid isotrópico"],
+                ["Peso excessivo", "Densidade uniforme alta", "Modifier Mesh com densidade variável"],
+                ["Tempo alto sem ganho", "Gyroid em peça decorativa", "Voltar para Lightning"],
+                ["Falha em área específica", "Densidade uniforme baixa", "Modifier Mesh local 40-50%"],
+              ],
+            },
+            summaryTable: {
+              title: "Infill por Tipo de Carga",
+              headers: ["Carga", "Infill", "Densidade"],
+              rows: [
+                ["Tração horizontal", "Gyroid, Cubic", "20-30%"],
+                ["Compressão vertical", "Gyroid, Cubic", "25-35%"],
+                ["Flexão", "Gyroid, Cubic", "20-30%"],
+                ["Torção", "Gyroid", "25-40%"],
+                ["Carga leve / decorativa", "Lightning, Lines", "5-10%"],
+                ["Multidirecional", "Gyroid", "25-35%"],
+              ],
+            },
+            goldenRule: "Direção da carga define o infill. Modifier Mesh refina por região — força onde precisa, leveza no resto.",
+          }],
           goldenRule: "Use Adaptive Cubic para protótipos industriais — força onde precisa, leveza no resto.",
+
           errors: [
             { error: "Casca externa afunda", solution: "Reduza Adaptive Quality para 0.4 (mais material perto da parede)." },
             { error: "Peça muito leve quebra fácil", solution: "Aumente paredes para 4 — Adaptive não compensa parede fina." },
