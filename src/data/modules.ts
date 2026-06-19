@@ -2422,6 +2422,8 @@ export const modules: Module[] = [
             value: "Perfis + QA + Embalagem + Fluxo",
             whatIs: "Sistema integrado de processos que garante que toda peça produzida atenda ao mesmo padrão de qualidade, do orçamento à entrega.",
             whyAdjust: "Sem padronização, cada peça vira projeto novo — custo de setup explode e qualidade vira loteria. Com padronização, escala vira possibilidade real.",
+            influences: "Consistência entre lotes, taxa de retrabalho, confiança do cliente, capacidade de escalar e profissionalismo percebido.",
+            generates: "Operação previsível: mesmo perfil → mesmo tempo, mesmo custo, mesma qualidade — base de qualquer fazenda comercial.",
             optionsTable: {
               headers: ["Perfil", "Uso", "Configuração"],
               rows: [
