@@ -4211,39 +4211,8 @@ export const modules: Module[] = [
             { param: "Detecção IA", value: "Ativa", action: "Pausa automática em espaguete/descolamento" },
             { param: "Alerta Celular", value: "On", action: "Notificação imediata 24/7" },
           ],
-          paramDetails: {
-            optionsTable: {
-              title: "Sistemas de Monitoramento",
-              headers: ["Sistema", "Função", "Custo"],
-              rows: [
-                ["OctoPrint", "Controle remoto básico", "Gratuito"],
-                ["Obico", "Detecção de falhas por IA", "Gratuito/Pago"],
-                ["Klipper + Moonraker", "Controle avançado", "Gratuito"],
-                ["Bambu Studio", "Controle nativo (Bambu)", "Incluso"],
-                ["Câmeras IP", "Monitoramento visual", "Baixo"],
-              ],
-            },
-            howTo: {
-              title: "Configurando Obico",
-              steps: [
-                "Instale o plugin Obico no OctoPrint",
-                "Crie conta na plataforma Obico",
-                "Conecte a câmera enquadrando peça e bico",
-                "Configure alertas no aplicativo",
-                "Force uma falha controlada para validar",
-              ],
-            },
-            errorsTable: {
-              title: "Alertas e Ações",
-              headers: ["Alerta", "Ação Automática"],
-              rows: [
-                ["Falha de impressão (espaguete)", "Pausar impressão imediatamente"],
-                ["Fim de filamento (sensor)", "Pausar e notificar"],
-                ["Temperatura alta (overheat)", "Desligar impressora"],
-                ["Umidade alta (higrômetro)", "Notificar para secar estoque"],
-              ],
-            },
-          },
+          
+
           goldenRule: "Monitoramento remoto não é luxo, é necessidade para produção em escala.",
           errors: [
             { error: "Falha não detectada — perde 500g de filamento", solution: "Obico com câmera bem posicionada evita 100%" },
