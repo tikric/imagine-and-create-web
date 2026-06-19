@@ -3743,174 +3743,354 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   ],
 
   // ====================================================================
-  // TELA 33 — VELOCIDADE: Jerk(XY), Decel e Suavização de Extrusão
+  // TELA 33 — VELOCIDADE: Aceleração, Jerk(XY) e Suavização da Extrusão
   // ====================================================================
   "tela-33-velocidade-jerk-extrusao": [
-    // ───────────── ACELERAÇÃO (continuação) ─────────────
+    // ───────────── ACELERAÇÃO ─────────────
     {
-      name: "Habilitar accel_to_decel (Klipper)",
-      value: "Ativado · 50%",
+      name: "Aceleração — Conceitos Gerais",
+      value: "mm/s²",
       whatIs:
-        "Recurso do Klipper que limita a aceleração máxima usada em movimentos curtos. Em segmentos pequenos, o firmware nunca chega à velocidade alvo — o accel_to_decel reduz a aceleração permitida nesses casos, suavizando o movimento e reduzindo vibração mecânica.",
+        "A Aceleração define a rapidez com que a cabeça de impressão muda de velocidade, medida em mm/s². Aceleração alta reduz tempo de impressão; aceleração baixa reduz vibrações (ghosting/ringing) e aumenta a qualidade visual.",
       whyAdjust:
-        "Sem accel_to_decel, segmentos curtos (cantos, textos, detalhes finos) recebem aceleração total e geram ringing visível. Com 50%, o firmware nivela a resposta mecânica sem perda real de tempo de impressão.",
+        "É um dos parâmetros mais críticos da qualidade. A aceleração define o equilíbrio entre tempo de impressão e fidelidade dimensional. Estruturas robustas (Voron, Bambu) toleram acelerações altas; estruturas leves (Ender, Anycubic) precisam de valores conservadores. Input Shaping permite 2–3× mais aceleração sem ghosting.",
+      optionsTable: {
+        headers: ["Tipo de aceleração", "Valor da tela", "Quando usar"],
+        rows: [
+          ["Padrão", "5000 mm/s²", "Teto máximo da máquina"],
+          ["Parede externa", "500 mm/s²", "Peças estéticas, superfícies visíveis"],
+          ["Parede interna", "1000 mm/s²", "Estrutural, não visível"],
+          ["Preenchimento", "2000 mm/s²", "Infill, área interna"],
+          ["Superfície superior", "2000 mm/s²", "Topo visível"],
+          ["Primeira camada", "500 mm/s²", "Adesão à mesa"],
+          ["Travel 1ª camada", "2000 mm/s²", "Movimentos aéreos na base"],
+          ["Deslocamento (Travel)", "10000 mm/s²", "Movimentos sem extrusão"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Prepare > Velocidade > Aceleração", desc: "Expandir a seção" },
+        { step: "2", path: "Parede externa", desc: "500–1000 mm/s² para qualidade visual" },
+        { step: "3", path: "Preenchimento", desc: "2000–4000 mm/s² para ganhar tempo" },
+        { step: "4", path: "Travel", desc: "5000–10000 mm/s² (máximo da máquina)" },
+      ],
+      example: {
+        piece: "Busto decorativo de 80 mm",
+        config: "Parede externa 500 mm/s² · Preenchimento 1500 mm/s² · Travel 8000 mm/s²",
+        result: "Superfície lisa sem ghosting, tempo ligeiramente maior compensado pela qualidade.",
+      },
+      influences: "Ghosting/ringing, precisão dimensional, tempo de impressão, vibração mecânica.",
+      generates: "Aceleração alta sem Input Shaping = fantasmas visíveis nas paredes. Aceleração baixa na parede externa = superfície espelhada.",
+      goldenRule:
+        "Parede externa = qualidade (500–1000). Preenchimento = velocidade (2000–4000). Travel = máximo (5000–10000). A aceleração define o equilíbrio entre qualidade e tempo.",
+    },
+    {
+      name: "Aceleração — Padrão",
+      value: "5000 mm/s²",
+      whatIs:
+        "Valor base usado quando nenhuma aceleração específica está definida. Funciona como teto máximo para todos os movimentos da máquina.",
+      whyAdjust:
+        "Se a aceleração padrão for muito alta, a máquina vibra mesmo em movimentos genéricos. Muito baixa e a impressão fica lenta sem motivo.",
+      optionsTable: {
+        headers: ["Valor", "Tipo de máquina", "Observação"],
+        rows: [
+          ["2000–3000 mm/s²", "Ender, Anycubic (estrutura leve)", "Conservador"],
+          ["3000–5000 mm/s²", "Prusa, Creality K1 (estrutura média)", "Padrão"],
+          ["5000–8000 mm/s²", "Voron, Bambu Lab (estrutura robusta)", "Agressivo"],
+          ["8000+ mm/s²", "CoreXY com Input Shaping calibrado", "Extremo"],
+        ],
+      },
+      influences: "Teto de todas as demais acelerações, vibração geral da máquina.",
+      generates: "Padrão 8000 sem IS = ringing em qualquer movimento. Padrão 5000 com IS = velocidade real sem perda.",
+      goldenRule: "A aceleração padrão define o teto da sua impressora. Respeite os limites mecânicos da máquina.",
+    },
+    {
+      name: "Aceleração — Parede externa",
+      value: "500 mm/s²",
+      whatIs:
+        "Aceleração da linha visível da peça. É o valor mais crítico para qualidade estética: define se cantos e curvas terão ghosting ou serão limpos.",
+      whyAdjust:
+        "A parede externa é a 'cara' da peça. Toda vibração aqui aparece como ondulação ou fantasma. Vale sacrificar tempo para ganhar acabamento.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando usar"],
         rows: [
-          ["Desativado", "Aceleração total em qualquer segmento", "Não recomendado"],
-          ["50% (padrão)", "Limita aceleração em segmentos curtos", "Recomendado para Klipper"],
-          ["25%", "Muito conservador, suaviza ao extremo", "Máquinas com ringing severo"],
-          ["75–100%", "Pouco efeito", "Apenas se accel base já for baixo"],
+          ["300–500 mm/s²", "Máxima qualidade", "Peças estéticas, miniaturas"],
+          ["500–800 mm/s²", "Recomendado", "Uso geral"],
+          ["800–1200 mm/s²", "Boa qualidade", "Peças funcionais"],
+          ["1200–2000 mm/s²", "Aceitável", "Protótipos"],
         ],
       },
-      howTo: [
-        { step: "1", path: "Velocidade > Aceleração > Avançado", desc: "Localizar accel_to_decel" },
-        { step: "2", path: "Ativar", desc: "Marcar a opção" },
-        { step: "3", path: "Valor", desc: "Definir 50% (padrão recomendado)" },
-      ],
-      example: {
-        piece: "Texto em relevo de 2 mm",
-        config: "accel_to_decel 50% + IS calibrado",
-        result: "Letras nítidas, sem borrão de vibração nos cantos",
+      influences: "Ghosting, ringing, definição de cantos, brilho da superfície.",
+      generates: "Parede externa 500 = canto perfeito. Parede externa 2000 = ondulação visível depois de cada canto.",
+      goldenRule: "Parede externa lenta = qualidade. 500–800 mm/s² para a maioria. 300 mm/s² para perfeição.",
+    },
+    {
+      name: "Aceleração — Parede interna",
+      value: "1000 mm/s²",
+      whatIs:
+        "Aceleração das paredes estruturais internas, escondidas pela externa. Pode ser maior pois não impacta o visual.",
+      whyAdjust:
+        "Aumentar aqui acelera a impressão sem prejuízo estético. Mas exagerar transmite vibração à parede externa.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["800–1200 mm/s²", "Recomendado", "Uso geral"],
+          ["1200–2000 mm/s²", "Mais rápido", "Peças estruturais"],
+          ["2000–3000 mm/s²", "Rápido", "Protótipos"],
+        ],
       },
-      influences: "Qualidade em detalhes finos, ringing em cantos, suavidade de curvas complexas.",
-      generates: "Texto em relevo de 2mm fica nítido vs. borrado. Curvas orgânicas sem 'degraus' de vibração.",
-      goldenRule: "Klipper: ativar accel_to_decel em 50% é gratuito (zero perda de tempo) e melhora visivelmente detalhes pequenos.",
+      influences: "Tempo de impressão, vibração transmitida à parede externa.",
+      generates: "Interna 2000 + externa 500 = tempo reduzido sem perda visual.",
+      goldenRule: "Parede interna sempre maior que a externa e menor que o preenchimento.",
+    },
+    {
+      name: "Aceleração — Preenchimento",
+      value: "2000 mm/s²",
+      whatIs:
+        "Aceleração do infill. Como não é visível, aceita os valores mais altos da tabela.",
+      whyAdjust:
+        "Infill é o grande consumidor de tempo. Subir a aceleração aqui reduz o tempo total sem qualquer perda estética.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["1500–2000 mm/s²", "Recomendado", "Uso geral"],
+          ["2000–4000 mm/s²", "Rápido", "Peças estruturais"],
+          ["4000–6000 mm/s²", "Máxima velocidade", "Protótipos, print farm"],
+        ],
+      },
+      influences: "Tempo total de impressão.",
+      generates: "Infill 4000 mm/s² = redução de 15–25% no tempo do miolo, sem efeito visual.",
+      goldenRule: "O infill pode ter a aceleração mais alta. Economize tempo onde ninguém vê.",
+    },
+    {
+      name: "Aceleração — Superfície superior",
+      value: "2000 mm/s²",
+      whatIs:
+        "Aceleração das camadas sólidas do topo. Visível, então merece valores moderados — mas pode ser um pouco maior que a parede externa.",
+      whyAdjust:
+        "Topo com aceleração alta gera ondulações na superfície sólida. Baixa demais aumenta tempo desnecessariamente.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["800–1200 mm/s²", "Máxima qualidade", "Peças estéticas com ironing"],
+          ["1200–2000 mm/s²", "Recomendado", "Uso geral"],
+          ["2000–3000 mm/s²", "Rápido", "Peças funcionais"],
+        ],
+      },
+      influences: "Acabamento do topo, brilho, planicidade.",
+      generates: "Topo 1000 + ironing = superfície quase espelhada.",
+      goldenRule: "Topo merece quase o mesmo cuidado da parede externa. Mantenha moderado.",
+    },
+    {
+      name: "Aceleração — Primeira camada",
+      value: "500 mm/s²",
+      whatIs:
+        "Aceleração específica da primeira camada. Baixa para garantir adesão e evitar deslocar a peça.",
+      whyAdjust:
+        "Aceleração alta na primeira camada arranca cantos da mesa e gera warping imediato. Baixa garante adesão segura.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["300–500 mm/s²", "Recomendado", "Uso geral"],
+          ["500–1000 mm/s²", "Mais rápido", "Mesas com excelente adesão"],
+          ["1000–1500 mm/s²", "Rápido", "Peças pequenas, baixo risco"],
+        ],
+      },
+      influences: "Adesão à mesa, risco de descolamento e warping.",
+      generates: "Primeira camada 500 = adesão garantida em qualquer material.",
+      goldenRule: "Primeira camada lenta = adesão garantida. Use 500 mm/s² ou menos.",
+    },
+    {
+      name: "Aceleração — Deslocamento (Travel)",
+      value: "10000 mm/s²",
+      whatIs:
+        "Aceleração dos movimentos aéreos, sem extrusão. Pode ser a maior da tabela pois não afeta nenhuma superfície.",
+      whyAdjust:
+        "Travel é tempo morto. Aceleração alta aqui reduz drasticamente o tempo total da impressão.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["5000–8000 mm/s²", "Rápido", "Impressoras médias"],
+          ["8000–12000 mm/s²", "Recomendado", "Uso geral"],
+          ["12000–20000 mm/s²", "Máxima velocidade", "Máquinas com Input Shaping"],
+        ],
+      },
+      influences: "Tempo total de impressão, ruído da máquina.",
+      generates: "Travel 10000 = redução visível no tempo em peças com muitas ilhas.",
+      goldenRule: "Travel = máximo. Acelere ao máximo onde não há extrusão.",
     },
 
-    // ───────────── JERK(XY) ─────────────
+    // ───────────── JERK (XY) ─────────────
     {
-      name: "Jerk(XY) — Padrão",
-      value: "9 mm/s",
+      name: "Jerk (XY) — Conceitos Gerais",
+      value: "mm/s",
       whatIs:
-        "Quanto a impressora pode mudar de velocidade INSTANTANEAMENTE sem passar pela rampa de aceleração. Jerk alto = bico muda direção brusco; Jerk baixo = transição suave.",
+        "Define a taxa de mudança da aceleração — a 'brusquidão' com que a impressora inicia e para movimentos. Jerk alto = bico parte e para de forma abrupta; Jerk baixo = transição suave.",
       whyAdjust:
-        "Jerk alto melhora qualidade em cantos pequenos (o bico não desacelera tanto), mas gera vibração mecânica. Com Input Shaper bem calibrado, Jerk pode ser baixo (5–9) sem perda — o IS compensa as variações.",
+        "Jerk alto melhora a qualidade em cantos pequenos (o bico não desacelera tanto) mas gera vibração. Jerk baixo elimina vibração mas arredonda cantos. Input Shaping permite Jerk mais alto sem ghosting.",
       optionsTable: {
-        headers: ["Cenário", "Jerk recomendado", "Resultado"],
+        headers: ["Tipo de Jerk", "Valor da tela", "Quando usar"],
         rows: [
-          ["Sem Input Shaper", "7–9 mm/s", "Equilíbrio entre cantos e ringing"],
-          ["Com IS calibrado", "5–9 mm/s", "Cantos limpos sem custo de tempo"],
-          ["Klipper SCV", "5 mm/s (square_corner_velocity)", "Equivalente Klipper do Jerk"],
-          [">12 mm/s", "Não recomendado", "Ringing severo na parede externa"],
+          ["Padrão", "8 mm/s", "Teto base"],
+          ["Parede externa", "4 mm/s", "Precisão máxima"],
+          ["Parede interna", "5 mm/s", "Estrutural"],
+          ["Preenchimento", "8 mm/s", "Infill, área não visível"],
+          ["Superfície superior", "5 mm/s", "Topo visível"],
+          ["Primeira camada", "2 mm/s", "Adesão"],
+          ["Travel 1ª camada", "2 mm/s", "Estabilidade da base"],
+          ["Deslocamento (Travel)", "8 mm/s", "Movimentos aéreos"],
         ],
       },
       howTo: [
-        { step: "1", path: "Velocidade > Jerk(XY)", desc: "Abrir seção" },
-        { step: "2", path: "Padrão", desc: "Definir 9 mm/s (ou 5 se IS calibrado)" },
+        { step: "1", path: "Prepare > Velocidade > Jerk (XY)", desc: "Expandir a seção" },
+        { step: "2", path: "Parede externa", desc: "3–5 mm/s para precisão" },
+        { step: "3", path: "Preenchimento", desc: "8–12 mm/s para ganhar tempo" },
+        { step: "4", path: "Primeira camada", desc: "2–3 mm/s para adesão" },
       ],
-      influences: "Definição de cantos, ressonância da máquina, ghosting, ruído de operação.",
-      generates: "Jerk 20 sem IS = ringing severo. Jerk 9 com IS = cantos limpos sem custo de tempo.",
-      goldenRule: "Sem Input Shaper: 7–9 mm/s. Com IS calibrado: 5–9 mm/s. Nunca >12 mm/s em parede externa.",
+      example: {
+        piece: "Caixa organizadora com cantos retos",
+        config: "Parede externa 4 mm/s · Preenchimento 10 mm/s · Travel 10 mm/s",
+        result: "Cantos perfeitamente nítidos, sem vibração nem arredondamento.",
+      },
+      influences: "Definição de cantos, ressonância da máquina, ghosting, ruído.",
+      generates: "Jerk 20 sem IS = cantos arredondados e ringing. Jerk 4 = cantos cirúrgicos.",
+      goldenRule:
+        "Jerk baixo = precisão (3–5 mm/s). Jerk alto = velocidade (8–12 mm/s). O Jerk define a suavidade dos movimentos.",
     },
     {
       name: "Jerk — Parede externa",
-      value: "5–9 mm/s",
+      value: "4 mm/s",
       whatIs:
-        "Jerk específico da linha visível (perímetro externo). Mantido baixo para garantir que cantos da face externa não vibrem nem deixem ghosting.",
+        "Jerk específico da linha visível (perímetro externo). Mantido baixo para garantir cantos nítidos e sem ghosting.",
       whyAdjust:
-        "É a linha que o olho enxerga — qualquer ringing aqui arruína o acabamento. Vale a pena sacrificar um pouco de tempo para ganhar nitidez.",
-      howTo: [
-        { step: "1", path: "Velocidade > Jerk(XY) > Parede externa", desc: "Definir 5–7 mm/s" },
-      ],
-      influences: "Qualidade visual de cantos retos (cubos, prismas), nitidez de chanfros e arestas.",
-      generates: "Jerk parede externa 5 mm/s + aceleração 1000 = canto perfeito, sem ondulação.",
-      goldenRule: "Parede externa sempre com o Jerk MENOR de toda a tabela. É a linha visível.",
+        "É a linha que o olho enxerga — qualquer vibração aqui arruína o acabamento. Vale sacrificar tempo por nitidez.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["2–3 mm/s", "Máxima precisão", "Peças estéticas"],
+          ["3–5 mm/s", "Recomendado", "Uso geral"],
+          ["5–7 mm/s", "Boa qualidade", "Peças funcionais"],
+        ],
+      },
+      influences: "Qualidade de cantos retos, nitidez de chanfros e arestas.",
+      generates: "Jerk parede externa 4 mm/s + aceleração 500 = canto perfeito.",
+      goldenRule: "Parede externa com Jerk baixo = cantos perfeitos. Use 3–5 mm/s.",
     },
     {
       name: "Jerk — Parede interna",
-      value: "9 mm/s",
+      value: "5 mm/s",
       whatIs:
-        "Jerk dos perímetros internos (não visíveis). Pode ser igual ou ligeiramente maior que a externa, pois eventual ringing fica escondido.",
+        "Jerk dos perímetros internos. Pode ser igual ou ligeiramente maior que a externa, pois eventual vibração fica escondida.",
       whyAdjust:
-        "Aumentar aqui acelera a impressão sem prejuízo estético, já que a parede interna fica coberta pela externa.",
-      influences: "Tempo total de impressão, vibração transmitida à parede externa.",
-      generates: "Jerk interna 9 mm/s = impressão mais rápida sem comprometer a face visível.",
-      goldenRule: "Interna pode ser igual ou +2 mm/s acima da externa. Não exagere para não 'contaminar' a externa.",
+        "Aumentar acelera a impressão sem prejuízo estético, já que a interna é coberta pela externa.",
+      influences: "Tempo de impressão, vibração transmitida à parede externa.",
+      generates: "Interna 7 mm/s = tempo reduzido sem comprometer a face visível.",
+      goldenRule: "Interna pode ser +1 a +2 mm/s acima da externa. Não exagere.",
     },
     {
-      name: "Jerk — Preenchimento (Infill)",
-      value: "9 mm/s",
+      name: "Jerk — Preenchimento",
+      value: "8 mm/s",
       whatIs:
-        "Jerk do infill. Como o infill é interno e não estético, pode usar Jerk maior para reduzir tempo.",
+        "Jerk do infill. Não é visível, então aceita valores altos para reduzir tempo.",
       whyAdjust:
-        "Infill é o grande consumidor de tempo. Subir o Jerk aqui (até 12 mm/s) acelera bastante sem perda visível.",
+        "Infill é o grande consumidor de tempo. Jerk alto aqui acelera bastante sem perda visível.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["6–8 mm/s", "Recomendado", "Uso geral"],
+          ["8–12 mm/s", "Mais rápido", "Peças estruturais"],
+          ["12–15 mm/s", "Máxima velocidade", "Protótipos"],
+        ],
+      },
       influences: "Tempo total de impressão.",
-      generates: "Jerk infill 12 mm/s + acel 5000 = redução de 15–20% no tempo do miolo.",
-      goldenRule: "Infill aceita Jerk mais alto — use 9–12 mm/s para ganhar tempo.",
+      generates: "Jerk infill 12 + aceleração 4000 = redução significativa no tempo do miolo.",
+      goldenRule: "Infill com Jerk alto = mais rápido. Economize tempo onde ninguém vê.",
     },
     {
       name: "Jerk — Superfície superior",
-      value: "5–9 mm/s",
+      value: "5 mm/s",
       whatIs:
-        "Jerk das camadas sólidas do topo. Mantido baixo para garantir acabamento liso e sem ondulações na superfície visível.",
+        "Jerk das camadas sólidas do topo. Mantido baixo para garantir acabamento liso, sem ondulações.",
       whyAdjust:
-        "Topo é tão visível quanto a parede externa. Jerk alto = ondulações. Jerk baixo = topo espelhado.",
-      influences: "Qualidade visual da face superior, planicidade, brilho.",
-      generates: "Jerk topo 5 mm/s + ironing = superfície quase espelhada.",
+        "Topo é tão visível quanto a parede externa. Jerk alto = ondulações; Jerk baixo = topo espelhado.",
+      influences: "Acabamento do topo, brilho, planicidade.",
+      generates: "Topo 5 mm/s + ironing = superfície espelhada.",
       goldenRule: "Topo merece o mesmo cuidado da parede externa — Jerk baixo sempre.",
     },
     {
       name: "Jerk — Primeira camada",
-      value: "9 mm/s",
+      value: "2 mm/s",
       whatIs:
-        "Jerk da primeira camada. Equilibra adesão à mesa com nitidez do perímetro inicial.",
+        "Jerk da primeira camada. Muito baixo para garantir estabilidade máxima e evitar deslocar a peça.",
       whyAdjust:
-        "Jerk muito alto na primeira camada pode descolar cantos da mesa. Jerk muito baixo deixa a primeira camada lenta demais.",
-      influences: "Adesão à mesa, nitidez do contorno inicial, risco de warping.",
-      generates: "Jerk primeira camada 9 mm/s = adesão segura sem perder tempo.",
-      goldenRule: "Mantenha igual ao Jerk padrão (9 mm/s). Reduza só se houver descolamento em cantos.",
+        "Jerk alto na primeira camada pode descolar cantos da mesa. Jerk muito baixo lentifica desnecessariamente.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["1–2 mm/s", "Máxima estabilidade", "Uso geral"],
+          ["2–4 mm/s", "Recomendado", "Mesas perfeitas"],
+          ["4–6 mm/s", "Mais rápido", "Peças pequenas"],
+        ],
+      },
+      influences: "Adesão à mesa, risco de descolamento.",
+      generates: "Jerk primeira camada 2 = adesão segura em qualquer material.",
+      goldenRule: "Primeira camada com Jerk baixo = estabilidade. Use 2 mm/s para garantir adesão.",
     },
     {
       name: "Jerk — Travel (deslocamento)",
-      value: "12 mm/s",
+      value: "8 mm/s",
       whatIs:
-        "Jerk em movimentos sem extrusão (travel). Pode ser bem mais alto, pois não há plástico saindo do bico.",
+        "Jerk em movimentos sem extrusão. Pode ser mais alto pois não há plástico saindo do bico.",
       whyAdjust:
-        "Travel é tempo morto. Jerk alto reduz esse tempo sem afetar qualidade de impressão.",
+        "Travel é tempo morto. Jerk alto reduz esse tempo sem afetar qualidade.",
       influences: "Tempo total de impressão, ruído da máquina.",
-      generates: "Jerk travel 12 mm/s = menos tempo entre ilhas, sem stringing extra.",
-      goldenRule: "Travel pode usar o Jerk MAIS ALTO da tabela — 12 mm/s ou mais se a máquina suportar.",
+      generates: "Travel 12 mm/s = menos tempo entre ilhas, sem stringing extra.",
+      goldenRule: "Travel pode usar o Jerk mais alto da tabela — 8–12 mm/s.",
     },
 
     // ───────────── AVANÇADO ─────────────
     {
       name: "Suavização da extrusão (Extrusion Smoothing)",
-      value: "0 mm³/s² (off)",
+      value: "0.1–0.3",
       whatIs:
-        "Suaviza variações no fluxo de extrusão, reduzindo picos quando o bico desacelera/acelera. Funciona em conjunto com Pressure Advance no Klipper.",
+        "Parâmetro avançado que suaviza variações de fluxo durante a extrusão, reduzindo picos quando o bico desacelera/acelera. Funciona em conjunto com Pressure Advance no Klipper.",
       whyAdjust:
-        "Ativar sem PA calibrado piora a qualidade. Só ative depois de PA bem ajustado — aí, suaviza ainda mais transições de velocidade.",
+        "Suaviza transições de fluxo e reduz marcas em curvas e cantos. Ativar sem Pressure Advance calibrado piora a qualidade — sempre calibrar PA primeiro.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando usar"],
         rows: [
-          ["0 (off)", "Sem suavização", "Padrão — antes de calibrar PA"],
-          ["0.01–0.03", "Suavização leve", "Após calibrar PA"],
-          ["0.04–0.05", "Suavização forte", "PA bem calibrado + cantos com excesso"],
-          [">0.05", "Pode borrar detalhes", "Não recomendado"],
+          ["0–0.1", "Pouca suavização", "Peças simples"],
+          ["0.1–0.3", "Recomendado", "Uso geral"],
+          ["0.3–0.5", "Muita suavização", "Peças com curvas e cantos"],
+          [">0.5", "Pode borrar detalhes", "Não recomendado"],
         ],
       },
       howTo: [
         { step: "1", path: "Velocidade > Avançado", desc: "Localizar Suavização da extrusão" },
         { step: "2", path: "Pré-requisito", desc: "Calibrar Pressure Advance primeiro" },
-        { step: "3", path: "Valor", desc: "Testar 0.01 → 0.03 → 0.05" },
+        { step: "3", path: "Valor", desc: "Testar 0.1 → 0.2 → 0.3" },
       ],
-      influences: "Bleeding em cantos, qualidade em zonas de variação rápida de velocidade.",
-      generates: "Com PA + suavização: cantos sem 'gota' de excesso de plástico.",
-      goldenRule: "Mantenha em 0 até calibrar Pressure Advance. Depois teste valores 0.01–0.05 mm³/s².",
+      influences: "Bleeding em cantos, qualidade em zonas de variação rápida de fluxo.",
+      generates: "Com PA + suavização 0.2: cantos sem 'gota' de excesso de plástico.",
+      goldenRule: "Use 0.1–0.3 para suavizar extrusões em curvas sem perder detalhes.",
       summaryTable: {
-        title: "Resumo da Tela 33 — Jerk, accel_to_decel e Suavização",
-        headers: ["Parâmetro", "Valor recomendado", "Função"],
+        title: "Resumo da Tela 33 — Aceleração, Jerk e Suavização",
+        headers: ["Parâmetro", "Valor da tela", "Recomendado", "Função"],
         rows: [
-          ["accel_to_decel (Klipper)", "50% (ativo)", "Limita aceleração em segmentos curtos"],
-          ["Jerk padrão", "9 mm/s", "Base para todos os tipos de linha"],
-          ["Jerk parede externa", "5–9 mm/s", "Cantos visíveis sem ringing"],
-          ["Jerk parede interna", "9 mm/s", "Pode ser ligeiramente maior"],
-          ["Jerk preenchimento", "9–12 mm/s", "Aceita valores mais altos"],
-          ["Jerk superfície superior", "5–9 mm/s", "Topo liso e sem ondulação"],
-          ["Jerk primeira camada", "9 mm/s", "Adesão segura"],
-          ["Jerk travel", "12 mm/s", "Reduz tempo morto"],
-          ["Suavização da extrusão", "0 (off)", "Ativar só após PA calibrado"],
+          ["Aceleração padrão", "5000 mm/s²", "3000–5000", "Teto geral da máquina"],
+          ["Aceleração parede externa", "500 mm/s²", "500–800", "Qualidade visual"],
+          ["Aceleração parede interna", "1000 mm/s²", "1000–2000", "Estrutura"],
+          ["Aceleração preenchimento", "2000 mm/s²", "2000–4000", "Tempo de impressão"],
+          ["Aceleração superfície superior", "2000 mm/s²", "1000–2000", "Acabamento do topo"],
+          ["Aceleração primeira camada", "500 mm/s²", "300–500", "Adesão"],
+          ["Aceleração travel", "10000 mm/s²", "8000–12000", "Tempo morto"],
+          ["Jerk padrão", "8 mm/s", "5–8", "Base da suavidade"],
+          ["Jerk parede externa", "4 mm/s", "3–5", "Cantos precisos"],
+          ["Jerk parede interna", "5 mm/s", "5–7", "Estrutura"],
+          ["Jerk preenchimento", "8 mm/s", "8–12", "Velocidade do infill"],
+          ["Jerk superfície superior", "5 mm/s", "4–6", "Topo liso"],
+          ["Jerk primeira camada", "2 mm/s", "2–3", "Adesão"],
+          ["Jerk travel", "8 mm/s", "8–12", "Reduz tempo morto"],
+          ["Suavização da extrusão", "0.1–0.3", "0.1–0.3", "Após calibrar PA"],
         ],
       },
     },
