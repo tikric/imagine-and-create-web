@@ -1091,6 +1091,7 @@ export const modules: Module[] = [
                 ["PLA quebra fácil", "Característica do material", "PLA+ ou PETG"],
               ],
             },
+            errorsImage: { src: mod4Img43.url, alt: "Erros típicos de PLA e PETG", caption: "PETG arranca PEI (cola/esfriar a 40°C), stringing por umidade (secar 6h/65°C), PLA deforma >60°C, blob no bico (−5°C ou +Z-Offset) e fragilidade do PLA (PLA+/PETG)." },
             goldenRule: "PLA visual, PETG funcional. Perfil dedicado para cada um — não tente usar o mesmo.",
           }],
         }),
