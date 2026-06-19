@@ -4129,54 +4129,182 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 41 — SUPORTE: Ativar, Tipo (Árvore), Estilo e Jangada
   // ====================================================================
   "tela-41-suporte-ativar-tipo": [
+    // ───────── AULA 1 ─────────
     {
       name: "Ativar suporte",
-      value: "Ativado / Desativado",
-      whatIs: "Liga ou desliga a geração automática de estruturas de suporte para overhangs e pontes. Sem suporte, áreas com overhang > 45° tendem a colapsar.",
-      whyAdjust: "Algumas peças não precisam de suporte (geometrias simples). Outras precisam imperativamente. Ativar gera, desativar respeita pintura manual de suporte.",
-      influences: "Viabilidade da impressão, tempo, consumo de filamento, qualidade da face inferior.",
-      generates: "Peças orgânicas (figuras, miniaturas) sem suporte = falham; com Tree = imprimem perfeitas.",
-      goldenRule: "Em dúvida, ative e revise o preview. Se o suporte estiver mínimo, mantenha; se for excessivo, desative e use pintura manual.",
+      value: "Checkbox (Ativar/Desativar)",
+      whatIs:
+        "Interruptor mestre que permite ao OrcaSlicer gerar estruturas de suporte para áreas da peça que não podem ser impressas no ar. Em FDM o plástico não pode ser depositado no vazio — ângulos acima de 45° tendem a deformar ou cair.",
+      whyAdjust:
+        "Algumas peças foram projetadas anti-suporte (todos os ângulos ≤45°) e não precisam de nada. Outras dependem de suporte para existir. Desligar economiza filamento e tempo quando não é necessário.",
+      influences: "Viabilidade da impressão, tempo total, consumo de filamento, qualidade da face inferior.",
+      generates: "Peças orgânicas sem suporte falham; com suporte ativo imprimem perfeitas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Gera suportes automaticamente", "Peças com overhangs > 45°"],
+          ["Desativado", "Nenhum suporte gerado", "Peças sem saliências ou anti-suporte"],
+        ],
+      },
+      goldenRule: "Ative suportes apenas quando necessário. O melhor suporte é aquele que você não precisa imprimir.",
     },
+    // ───────── AULA 2 ─────────
     {
-      name: "Tipo: Árvore (auto)",
-      value: "Árvore (auto)",
-      whatIs: "Algoritmo moderno que gera suportes em forma de galhos orgânicos que se ramificam apenas onde precisam tocar a peça. Substitui o suporte Normal (grade vertical sólida).",
-      whyAdjust: "Tree usa 40–60% menos filamento que Normal, deixa menos marcas, e remove com puxão. Ideal para geometrias orgânicas.",
+      name: "Tipo de suporte",
+      value: "Dropdown (Normal / Árvore / Snug)",
+      whatIs: "Define a estrutura básica que será usada para sustentar as saliências da peça.",
       types: [
-        { label: "Normal (auto)", desc: "Pilares verticais em grade — robusto, mais filamento, mais marcas" },
-        { label: "Árvore (auto)", desc: "Ramos orgânicos — econômico, fácil remoção, ideal para curvas" },
-        { label: "Híbrido", desc: "Tree para alturas grandes + Normal para áreas planas" },
+        { label: "Normal", desc: "Colunas verticais com grade — simples e confiável, mas difícil de remover e deixa marcas" },
+        { label: "Árvore (Tree)", desc: "Ramos orgânicos que crescem ao redor da peça — fácil remoção, menos material, fatiamento mais lento" },
+        { label: "Snug", desc: "Ajustado à geometria da peça — bom equilíbrio, mas difícil de remover em áreas internas" },
       ],
-      influences: "Consumo de filamento, qualidade da face inferior, facilidade de remoção, tempo de impressão.",
-      generates: "Miniatura 60mm de altura: Normal = 18g de suporte. Tree = 7g. Mesma peça, mesma qualidade.",
-      goldenRule: "Orgânico/curvo = Tree. Mecânico/plano = Normal+Snug. Quando em dúvida = Tree Organic.",
+      influences: "Consumo de filamento, qualidade da face inferior, facilidade de remoção, tempo de fatiamento.",
+      generates: "Tree usa 40–60% menos filamento que Normal e remove com puxão; Normal é mais robusto mas deixa marcas.",
+      optionsTable: {
+        headers: ["Cenário", "Tipo recomendado", "Motivo"],
+        rows: [
+          ["Peças com suportes internos", "Árvore (Tree)", "Fácil remoção em áreas internas"],
+          ["Peças estruturais simples", "Normal", "Confiável e previsível"],
+          ["Geometria orgânica/complexa", "Árvore (Tree)", "Adapta-se à forma da peça"],
+          ["Impressões multimaterial", "Normal", "Mais fácil de controlar a purga"],
+        ],
+      },
+      goldenRule: "Use Tree Support para a maioria das peças. Ele é mais fácil de remover e deixa menos marcas.",
     },
+    // ───────── AULA 3 ─────────
+    {
+      name: "Estilo de suporte",
+      value: "Dropdown (Orgânico / Grid / Lightning / Honeycomb)",
+      whatIs: "Define o padrão de preenchimento dentro do suporte e como ele se conecta à peça.",
+      types: [
+        { label: "Orgânico (Organic)", desc: "Ramos curvos que tocam a peça em pontos específicos — ideal para peças estéticas e superfícies curvas" },
+        { label: "Grid", desc: "Estrutura de grade padrão — robusta, ideal para peças estruturais" },
+        { label: "Lightning", desc: "Estrutura mínima, apenas o necessário — suportes rápidos e protótipos" },
+        { label: "Honeycomb", desc: "Estrutura hexagonal densa — estável para suportes que precisam de rigidez" },
+      ],
+      influences: "Acabamento da face inferior, consumo de filamento, estabilidade do suporte.",
+      generates: "Orgânico deixa a peça visualmente limpa; Grid produz suporte sólido e previsível; Lightning é o mais econômico.",
+      goldenRule: "Orgânico para peças estéticas. Grid para suportes estruturais.",
+    },
+    // ───────── AULA 4 ─────────
     {
       name: "Ângulo limiar",
-      value: "30°",
-      whatIs: "Inclinação mínima (medida a partir da vertical) acima da qual o Orca considera a face uma overhang que precisa de suporte. 30° = qualquer face inclinada mais que 30° do prumo recebe suporte.",
-      whyAdjust: "Reduzir (15–20°) gera MAIS suporte (mais conservador). Aumentar (40–60°) gera MENOS (confiando que o material aguenta).",
-      influences: "Quantidade total de suporte, áreas que recebem ou não suporte, tempo.",
-      generates: "Ângulo 30° = padrão seguro PLA. Ângulo 45° = mais econômico mas pode falhar em overhangs longos.",
-      goldenRule: "PLA: 30–45°. PETG: 25–35°. ABS/ASA: 20–30°. Quanto pior o cooling, menor o ângulo limiar.",
+      value: "45° (padrão)",
+      whatIs:
+        "Ângulo a partir do qual o OrcaSlicer começa a gerar suportes. 0° = horizontal, 90° = vertical. Faces inclinadas mais do que esse valor recebem suporte.",
+      whyAdjust: "Reduzir gera MAIS suporte (mais conservador). Aumentar gera MENOS (confia que o material aguenta).",
+      influences: "Quantidade total de suporte, áreas que recebem ou não suporte, tempo de impressão.",
+      generates: "30° = mais suporte e mais segurança; 55° = menos suporte mas maior risco de overhangs feios.",
+      optionsTable: {
+        headers: ["Ângulo", "Quando usar"],
+        rows: [
+          ["30°", "Peças com muitos detalhes e superfícies curvas"],
+          ["45°", "Padrão — equilíbrio entre qualidade e material"],
+          ["55°", "Peças simples e geometrias retas"],
+          ["65°+", "Apenas saliências muito severas"],
+        ],
+      },
+      goldenRule: "45° para a maioria. 30° para mais qualidade. 55° para economizar material.",
     },
+    // ───────── AULA 5 ─────────
+    {
+      name: "Densidade da primeira camada do suporte",
+      value: "100% (padrão)",
+      whatIs: "Porcentagem de preenchimento da primeira camada do suporte. Camada mais densa = melhor adesão à mesa.",
+      influences: "Adesão do suporte à mesa, risco de descolamento durante a impressão.",
+      generates: "Densidade alta = base firme; densidade baixa = risco de a torre de suporte soltar no meio da impressão.",
+      optionsTable: {
+        headers: ["Densidade", "Efeito", "Quando usar"],
+        rows: [
+          ["80–90%", "Menos material, adesão suficiente", "Mesas PEI lisas"],
+          ["100%", "Padrão — adesão máxima", "Uso geral"],
+          ["110–120%", "Mais material, adesão garantida", "Mesas irregulares, materiais difíceis"],
+        ],
+      },
+      goldenRule: "Mantenha 80–100%. Não economize aqui — suporte solto = impressão perdida.",
+    },
+    // ───────── AULA 6 ─────────
+    {
+      name: "Expansão da primeira camada",
+      value: "2–5 mm (padrão)",
+      whatIs: "Quanto a base do suporte se expande lateralmente para melhorar a adesão à mesa.",
+      influences: "Estabilidade da torre de suporte, área ocupada na mesa, consumo de filamento na base.",
+      generates: "Base larga = suporte não tomba mesmo com altura grande; base estreita = suporte fino balança e pode cair.",
+      optionsTable: {
+        headers: ["Expansão", "Efeito", "Quando usar"],
+        rows: [
+          ["0 mm", "Base exata", "Peças pequenas"],
+          ["2–5 mm", "Padrão", "Uso geral"],
+          ["5–10 mm", "Base muito expandida", "Peças grandes / suportes altos"],
+        ],
+      },
+      goldenRule: "Use 3 mm para a maioria. Aumente para suportes altos para evitar que tombem.",
+    },
+    // ───────── AULA 7 ─────────
     {
       name: "Apenas na placa de impressão",
-      value: "Ativado",
-      whatIs: "Restringe o suporte a tocar APENAS a mesa de impressão — nunca em cima da peça. Sem isso, o Orca pode pousar suporte sobre superfícies da peça, deixando marcas.",
-      whyAdjust: "Marca de suporte em cima da peça é difícil de remover e deixa imperfeição visível. Ativar evita totalmente.",
-      influences: "Acabamento da face superior, marcas visíveis após remoção.",
-      generates: "Figura com braço estendido: sem 'Apenas placa' = suporte pousa no ombro, marca visível. Com ativo = suporte sai do chão, sem marca.",
-      goldenRule: "Sempre ativado em peças visuais. Desative apenas em peças funcionais internas onde marcas não importam.",
+      value: "Checkbox (Ativado/Desativado)",
+      whatIs: "Limita a geração de suportes às áreas que tocam a mesa. Suportes em cima da peça são evitados.",
+      influences: "Acabamento da face superior, marcas visíveis após a remoção.",
+      generates: "Sem essa opção, o suporte pousa em cima da peça e deixa marcas; com ela ativa, a face superior fica limpa.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Suportes apenas na mesa", "Peças com detalhes internos / visuais"],
+          ["Desativado", "Suportes em qualquer lugar", "Peças com saliências acima de outras áreas"],
+        ],
+      },
+      goldenRule: "Ative para a maioria das peças. Desative apenas se houver saliências acima de outras áreas que precisem de suporte.",
     },
+    // ───────── AULA 8 ─────────
     {
-      name: "Densidade da primeira camada (Jangada/Raft)",
-      value: "90%",
-      whatIs: "Densidade da primeira camada do suporte (base que toca a mesa). 90% = quase sólida, garantindo adesão firme do suporte à plataforma.",
-      influences: "Adesão do suporte à mesa, risco de descolamento do suporte durante a impressão.",
-      generates: "Sem densidade alta na base, o suporte solta no meio da impressão = peça arruinada.",
-      goldenRule: "Manter 80–100%. Não tente economizar aqui — suporte solto = impressão perdida.",
+      name: "Suportar apenas regiões críticas",
+      value: "Checkbox",
+      whatIs: "Concentra os suportes apenas nas áreas mais críticas, reduzindo material e facilitando a remoção.",
+      influences: "Quantidade de suporte gerada, facilidade de remoção, tempo de impressão.",
+      generates: "Ativado = suporte mínimo em pontos críticos; desativado = suporte denso em todas as saliências.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Ativado", "Suportes apenas onde realmente necessário"],
+          ["Desativado", "Suportes em todas as saliências detectadas"],
+        ],
+      },
+      goldenRule: "Ative para economizar material em peças com muitos overhangs leves.",
+    },
+    // ───────── AULA 9 ─────────
+    {
+      name: "Ignorar pequenas saliências",
+      value: "Filtrar / Não filtrar",
+      whatIs: "Impede a geração de suportes para saliências muito pequenas que podem ser impressas sem suporte devido à área reduzida.",
+      influences: "Quantidade de suporte desnecessário, tempo de impressão, acabamento de pequenos detalhes.",
+      generates: "Filtrar = menos artefatos e remoção mais fácil; não filtrar = suporte garantido em qualquer detalhe.",
+      optionsTable: {
+        headers: ["Opção", "Efeito"],
+        rows: [
+          ["Filtrar", "Ignora saliências pequenas"],
+          ["Não filtrar", "Gera suporte para todas as saliências"],
+        ],
+      },
+      goldenRule: "Filtrar reduz suportes desnecessários sem comprometer a qualidade.",
+    },
+    // ───────── AULA 10 ─────────
+    {
+      name: "Distância Z superior (Z Gap)",
+      value: "0,20 mm (padrão)",
+      whatIs:
+        "Espaço vertical entre o topo do suporte e a parte inferior da peça. Um dos parâmetros mais críticos: define facilidade de remoção × acabamento da face inferior.",
+      influences: "Acabamento da face inferior, esforço de remoção, risco de quebrar a peça ao remover.",
+      generates: "0,1 mm = não desencaixa; 0,2 mm = remove com a mão, pequena textura; 0,3 mm = cai sozinho, mas face áspera.",
+      optionsTable: {
+        headers: ["Z Gap", "Efeito", "Quando usar"],
+        rows: [
+          ["0,10–0,15 mm", "Difícil de remover, superfície lisa", "Acabamento perfeito"],
+          ["0,15–0,20 mm", "Padrão — fácil remoção, bom acabamento", "Uso geral"],
+          ["0,20–0,30 mm", "Remoção muito fácil, superfície áspera", "Protótipos, peças internas"],
+        ],
+      },
+      goldenRule: "0,20 mm para a maioria. 0,15 mm para acabamento. 0,25 mm para remoção fácil. Sempre múltiplo da altura de camada.",
     },
   ],
 
