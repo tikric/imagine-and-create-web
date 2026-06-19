@@ -84,6 +84,12 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                       <p className="text-foreground/90 leading-relaxed">{p.whyAdjust}</p>
                     </div>
                   )}
+                  {p.image && (
+                    <figure className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+                      <img src={p.image.src} alt={p.image.alt} loading="lazy" className="w-full h-auto block" />
+                      {p.image.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.image.caption}</figcaption>}
+                    </figure>
+                  )}
                   {p.types && p.types.length > 0 && (
                     <div>
                       <div className="mono text-xs uppercase tracking-wider text-primary mb-2">▸ Tipos / Opções disponíveis</div>
