@@ -4562,53 +4562,284 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 43 — SUPORTE: Árvore (Tree) — Geometria e Densidade
   // ====================================================================
   "tela-43-suporte-arvore": [
+    // ───────── AULA 1 ─────────
     {
-      name: "Diâmetro da ponta",
+      name: "Camadas de interface inferior (Bottom Interface Layers)",
+      value: "0–2 camadas",
+      whatIs: "Número de camadas densas na base do suporte, logo acima da mesa. Cria uma base mais estável para a torre de suporte.",
+      influences: "Estabilidade da base do suporte, adesão à mesa, risco de tombamento.",
+      generates: "0 = base mínima (suportes pequenos); 2 = base sólida (uso geral); 3+ = base muito estável para suportes altos.",
+      optionsTable: {
+        headers: ["Camadas", "Efeito", "Quando usar"],
+        rows: [
+          ["0", "Sem interface inferior", "Suportes pequenos / leves"],
+          ["1", "Interface simples", "Suportes médios"],
+          ["2", "Recomendado", "Uso geral"],
+          ["3+", "Base muito estável", "Suportes altos / pesados"],
+        ],
+      },
+      goldenRule: "Use 2 camadas para a maioria. Aumente para suportes altos.",
+    },
+    // ───────── AULA 2 ─────────
+    {
+      name: "Mesmas camadas (Same Layers)",
+      value: "Checkbox",
+      whatIs: "Quando ativado, força as camadas de interface inferior a igualarem as superiores. Simplifica configuração de suportes simétricos.",
+      influences: "Consistência entre topo e base da interface, facilidade de configuração.",
+      generates: "Ativo = configuração única; Inativo = controle independente de topo e base.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Interface inferior = superior", "Uso geral"],
+          ["Desativado", "Valores independentes", "Configurações específicas"],
+        ],
+      },
+      goldenRule: "Ative para simplicidade. Desative para controle fino entre topo e base.",
+    },
+    // ───────── AULA 3 ─────────
+    {
+      name: "Padrão da interface (Pattern)",
+      value: "Padrão / Rectilinear / Concêntrico / Hexagonal",
+      whatIs: "Padrão de preenchimento das camadas de interface do suporte.",
+      influences: "Acabamento da face suportada, facilidade de remoção, alinhamento com geometria da peça.",
+      generates: "Rectilinear = linhas paralelas lisas; Concêntrico = segue formas curvas; Hexagonal = máxima rigidez.",
+      types: [
+        { label: "Padrão", desc: "Equilíbrio — uso geral" },
+        { label: "Rectilinear", desc: "Linhas retas, ótimo para superfícies planas" },
+        { label: "Concêntrico", desc: "Anéis, ideal para formas redondas" },
+        { label: "Hexagonal", desc: "Máxima estabilidade, suportes estruturais" },
+      ],
+      goldenRule: "Rectilinear para a maioria. Concêntrico apenas em peças predominantemente curvas.",
+    },
+    // ───────── AULA 4 ─────────
+    {
+      name: "Espaçamento da interface superior",
+      value: "0,5 mm (padrão)",
+      whatIs: "Distância entre as linhas da camada de interface superior. Define quão densa é a 'tampa' do suporte.",
+      influences: "Lisura da face inferior da peça, esforço de remoção, consumo de filamento.",
+      generates: "0,2–0,3 mm = quase sólido; 0,5 mm = liso e removível; 0,8–1,0 mm = listras visíveis.",
+      optionsTable: {
+        headers: ["Espaçamento", "Densidade", "Acabamento", "Quando usar"],
+        rows: [
+          ["0,2–0,3 mm", "Muito densa", "Excelente", "Peças visíveis"],
+          ["0,5 mm", "Padrão", "Bom", "Uso geral"],
+          ["0,8–1,0 mm", "Esparsa", "Aceitável", "Protótipos"],
+        ],
+      },
+      goldenRule: "0,5 mm para a maioria. Reduza para acabamento, aumente para remoção fácil.",
+    },
+    // ───────── AULA 5 ─────────
+    {
+      name: "Espaçamento da interface inferior",
+      value: "0,5–0,8 mm (padrão)",
+      whatIs: "Distância entre linhas da interface inferior, quando o suporte pousa sobre a peça ou precisa de base reforçada.",
+      influences: "Estabilidade da base do suporte, marca deixada na face superior da peça abaixo, consumo.",
+      generates: "Menor = base muito firme e mais marca; maior = remoção fácil mas menos estável.",
+      optionsTable: {
+        headers: ["Espaçamento", "Estabilidade", "Quando usar"],
+        rows: [
+          ["0,3–0,5 mm", "Muito estável", "Suportes altos"],
+          ["0,5–0,8 mm", "Padrão", "Uso geral"],
+          ["0,8–1,0 mm", "Menos estável", "Suportes pequenos"],
+        ],
+      },
+      goldenRule: "Mantenha 0,5–0,8 mm. Reduza apenas se precisar de base muito firme.",
+    },
+    // ───────── AULA 6 ─────────
+    {
+      name: "Espaçamento normal de suporte",
+      value: "2–3 mm (padrão)",
+      whatIs: "Distância entre linhas do infill (corpo) do suporte. Controla a densidade da torre.",
+      influences: "Densidade do suporte, estabilidade, consumo de filamento, tempo de impressão.",
+      generates: "1–2 mm = suporte denso e robusto; 2–3 mm = padrão equilibrado; 3–5 mm = leve e fácil de remover.",
+      optionsTable: {
+        headers: ["Espaçamento", "Densidade", "Estabilidade", "Quando usar"],
+        rows: [
+          ["1–2 mm", "Muito densa", "Máxima", "Suportes pesados"],
+          ["2–3 mm", "Padrão", "Boa", "Uso geral"],
+          ["3–5 mm", "Esparsa", "Média", "Suportes leves"],
+        ],
+      },
+      goldenRule: "2–3 mm para a maioria. Reduza apenas para suportes pesados.",
+    },
+    // ───────── AULA 7 ─────────
+    {
+      name: "Distância XY entre suporte e objeto",
+      value: "0,35 mm (padrão)",
+      whatIs: "Separação horizontal entre paredes do suporte e paredes laterais da peça.",
+      whyAdjust: "Pequeno demais funde o suporte na peça; grande demais deixa o suporte instável e overhangs sem cobertura.",
+      influences: "Facilidade de remoção lateral, qualidade das paredes verticais.",
+      generates: "0,2 mm = não desencaixa; 0,35 mm = puxa limpo; 0,5 mm = solta fácil mas pode tombar.",
+      optionsTable: {
+        headers: ["Distância XY", "Remoção", "Suporte", "Quando usar"],
+        rows: [
+          ["0,2–0,3 mm", "Difícil", "Muito próximo", "Acabamento crítico"],
+          ["0,35 mm", "Padrão", "Bom", "Uso geral"],
+          ["0,5 mm", "Fácil", "Menos efetivo", "Protótipos"],
+        ],
+      },
+      goldenRule: "PLA: 0,35 mm. PETG: 0,4 mm. Aumente se o suporte estiver grudando.",
+    },
+    // ───────── AULA 8 ─────────
+    {
+      name: "Vão na primeira camada entre suporte e objeto",
+      value: "0,2 mm (padrão)",
+      whatIs: "Espaço na primeira camada entre o suporte e a peça quando ambos nascem juntos da mesa.",
+      influences: "Separação inicial entre suporte e peça, adesão da primeira camada.",
+      generates: "0,1–0,15 mm = suporte muito próximo; 0,2 mm = padrão; 0,3 mm = remoção fácil.",
+      optionsTable: {
+        headers: ["Vão", "Efeito", "Quando usar"],
+        rows: [
+          ["0,1–0,15 mm", "Suporte próximo", "Acabamento crítico"],
+          ["0,2 mm", "Padrão", "Uso geral"],
+          ["0,3 mm", "Mais espaço", "Remoção fácil"],
+        ],
+      },
+      goldenRule: "Mantenha 0,2 mm — geralmente igual ao Z Gap superior.",
+    },
+    // ───────── AULA 9 ─────────
+    {
+      name: "Comprimento máximo de ponte (Max Bridge Length)",
+      value: "10 mm (padrão)",
+      whatIs: "Vão livre que o Orca aceita sem gerar suporte. Acima desse valor, força suporte.",
+      influences: "Quantidade de suporte gerada, qualidade de pontes longas, tempo de impressão.",
+      generates: "5 mm = ponte sempre limpa, mais suporte; 10 mm = padrão; 15–20 mm = risco de ponte ruim.",
+      optionsTable: {
+        headers: ["Comprimento", "Efeito", "Quando usar"],
+        rows: [
+          ["5 mm", "Conservador", "Acabamento crítico"],
+          ["10 mm", "Padrão", "Uso geral"],
+          ["15–20 mm", "Agressivo", "Impressões rápidas"],
+        ],
+      },
+      goldenRule: "10 mm para a maioria. Reduza para melhor acabamento em pontes.",
+    },
+    // ───────── AULA 10 ─────────
+    {
+      name: "Diâmetro da ponta (Tree Tip Diameter)",
       value: "0,4–0,8 mm",
-      whatIs: "Espessura da extremidade do ramo que toca a peça. Quanto menor, menor a marca deixada — mas se for muito fina (<0,4mm), o ramo quebra antes de chegar ao destino.",
-      whyAdjust: "Marca visível na peça depende diretamente do diâmetro da ponta. 0,4mm = marca quase invisível; 0,8mm = marca leve mas circular.",
-      influences: "Qualidade da face suportada, robustez do suporte, facilidade de quebrar antes da impressão terminar.",
-      generates: "Ponta 0,4 + Tree Organic = peça quase sem marca de suporte. Ponta 1,2 = marca grosseira mas suporte super-confiável.",
-      goldenRule: "PLA: 0,4–0,6mm. PETG (cola mais): 0,6–0,8mm. Nunca <0,4mm — quebra.",
+      whatIs: "Espessura da extremidade do ramo Tree que toca a peça. Pontas finas deixam menos marca; abaixo de 0,4 mm o ramo quebra antes de tocar.",
+      influences: "Marca visível na peça, robustez do ramo, risco de quebra antes do toque.",
+      generates: "0,2 mm = quase invisível mas frágil; 0,4 mm = marca quase invisível; 0,8 mm = marca leve circular.",
+      optionsTable: {
+        headers: ["Diâmetro", "Marca", "Estabilidade", "Quando usar"],
+        rows: [
+          ["0,2 mm", "Mínima", "Baixa", "Peças estéticas (risco)"],
+          ["0,4 mm", "Pequena", "Média", "Uso geral"],
+          ["0,6 mm", "Visível", "Alta", "Suportes estruturais"],
+          ["0,8 mm", "Marcante", "Muito alta", "Suportes grandes"],
+        ],
+      },
+      goldenRule: "PLA: 0,4–0,6 mm. PETG: 0,6–0,8 mm. Nunca abaixo de 0,4 mm.",
     },
+    // ───────── AULA 11 ─────────
     {
-      name: "Densidade da ramificação",
-      value: "30–40%",
-      whatIs: "Quão denso é o padrão interno dos ramos. Densidade alta = ramos sólidos, robustos; baixa = ocos, econômicos.",
-      influences: "Robustez do suporte, consumo de filamento, tempo.",
-      generates: "30% = padrão Orca, econômico. 50% = ramos sólidos para suportes muito altos. 20% = arrisca quebra em meio à impressão.",
-      goldenRule: "Suporte <50mm de altura: 30%. Suporte 50–150mm: 35–40%. Suporte >150mm: 45–50%.",
+      name: "Distância entre ramificações (Branch Distance)",
+      value: "2–3 mm (padrão)",
+      whatIs: "Distância entre nós adjacentes na estrutura de árvore.",
+      influences: "Densidade da árvore, estabilidade, consumo de filamento.",
+      generates: "1–2 mm = árvore muito densa; 2–3 mm = padrão; 3–5 mm = árvore esparsa, menos material.",
+      optionsTable: {
+        headers: ["Distância", "Densidade", "Estabilidade", "Quando usar"],
+        rows: [
+          ["1–2 mm", "Muito densa", "Máxima", "Suportes grandes"],
+          ["2–3 mm", "Padrão", "Boa", "Uso geral"],
+          ["3–5 mm", "Esparsa", "Média", "Suportes pequenos"],
+        ],
+      },
+      goldenRule: "2–3 mm para a maioria. Reduza apenas para suportes grandes.",
     },
+    // ───────── AULA 12 ─────────
     {
-      name: "Diâmetro do ramo de suporte",
-      value: "2 mm",
-      whatIs: "Espessura do tronco principal dos galhos. Define resistência mecânica do suporte como um todo.",
-      influences: "Estabilidade da árvore, possibilidade de tombamento, consumo.",
-      generates: "Ramo 2mm = padrão estável. Ramo 1mm = árvore frágil, tomba. Ramo 3mm = super robusto, mais filamento.",
-      goldenRule: "2mm é o sweet spot para 95% dos casos. Aumente apenas em suportes muito altos (>200mm).",
+      name: "Densidade da ramificação (Branch Density)",
+      value: "30–50%",
+      whatIs: "Densidade da estrutura interna que gera as pontas dos ramos. Valores altos suportam melhor mas dificultam remoção.",
+      influences: "Capacidade de cobertura de overhangs, esforço de remoção, consumo de filamento.",
+      generates: "30% = padrão econômico; 40–50% = melhor cobertura; >50% = remoção difícil.",
+      optionsTable: {
+        headers: ["Densidade", "Suporte", "Remoção", "Quando usar"],
+        rows: [
+          ["30–40%", "Suficiente", "Fácil", "Overhangs leves"],
+          ["40–50%", "Padrão", "Moderada", "Uso geral"],
+          ["50–70%", "Excelente", "Difícil", "Overhangs severos"],
+        ],
+      },
+      goldenRule: "40–50%. Para overhangs severos, prefira aumentar camadas de interface em vez da densidade.",
     },
+    // ───────── AULA 13 ─────────
     {
-      name: "Ângulo de ramificação",
-      value: "40°",
-      whatIs: "Ângulo máximo que um ramo pode abrir a partir do tronco. 40° = ramo se inclina até 40° do prumo para alcançar pontos distantes.",
-      whyAdjust: "Maior ângulo = árvore alcança áreas mais afastadas do centro com menos pilares. Menor = mais pilares verticais, mais filamento.",
-      influences: "Eficiência da árvore, alcance lateral, estabilidade.",
-      generates: "40° = cobre overhangs laterais. 60° = arrisca quedar; 25° = árvore mais vertical, mais filamento.",
-      goldenRule: "30–40° é o ideal. Aumente apenas se a peça tiver overhangs laterais muito extensos.",
+      name: "Diâmetro do ramo de suporte de árvore (Branch Diameter)",
+      value: "2 mm (padrão)",
+      whatIs: "Diâmetro inicial dos ramos do tronco da árvore.",
+      influences: "Estabilidade da árvore, risco de tombamento, consumo de filamento.",
+      generates: "1–2 mm = árvore frágil; 2 mm = padrão estável; 3–5 mm = super robusto, mais material.",
+      optionsTable: {
+        headers: ["Diâmetro", "Estabilidade", "Material", "Quando usar"],
+        rows: [
+          ["1–2 mm", "Baixa", "Mínimo", "Suportes pequenos"],
+          ["2–3 mm", "Padrão", "Médio", "Uso geral"],
+          ["3–5 mm", "Alta", "Máximo", "Suportes altos (>200 mm)"],
+        ],
+      },
+      goldenRule: "2 mm é o sweet spot para 95% dos casos. Aumente apenas em suportes muito altos.",
     },
+    // ───────── AULA 14 ─────────
     {
-      name: "Ângulo preferido (curvatura)",
-      value: "25°",
-      whatIs: "Ângulo natural que o algoritmo TENTA manter ao curvar os ramos. Define a aparência 'orgânica' das árvores.",
-      influences: "Estética dos suportes, suavidade das curvas dos ramos.",
-      generates: "25° = curvas suaves e elegantes (Tree Organic). 0° = ramos retos (Tree clássico). 45° = curvas exageradas.",
-      goldenRule: "Tree Organic recomendado: ângulo preferido 25° + diâmetro ponta 0,5mm + ramo 2mm. Acabamento perfeito.",
+      name: "Ângulo do diâmetro da ramificação (Branch Diameter Angle)",
+      value: "2–5° (padrão)",
+      whatIs: "Ângulo de afilamento — controla o quanto o ramo engrossa em direção à base, criando um cone.",
+      influences: "Estabilidade vertical, consumo extra de filamento na base.",
+      generates: "0° = ramo cilíndrico; 2–5° = cone leve (estável); 5–10° = cone pronunciado para suportes altos.",
+      optionsTable: {
+        headers: ["Ângulo", "Estabilidade", "Quando usar"],
+        rows: [
+          ["0°", "Uniforme", "Suportes curtos"],
+          ["2–5°", "Recomendado", "Uso geral"],
+          ["5–10°", "Alta", "Suportes altos"],
+        ],
+      },
+      goldenRule: "2–5° para a maioria. Aumente para suportes altos que precisam de base reforçada.",
+    },
+    // ───────── AULA 15 ─────────
+    {
+      name: "Ângulo de ramificação (Branch Angle)",
+      value: "40° (padrão)",
+      whatIs: "Ângulo máximo que um ramo pode abrir a partir do tronco para alcançar overhangs laterais.",
+      whyAdjust: "Maior ângulo = árvore alcança áreas distantes com menos pilares. Menor = mais vertical e estável.",
+      influences: "Alcance lateral, estabilidade, eficiência da árvore.",
+      generates: "30° = mais pilares verticais; 40° = padrão; 50–60° = arrisca queda.",
+      optionsTable: {
+        headers: ["Ângulo", "Alcance", "Estabilidade", "Quando usar"],
+        rows: [
+          ["30°", "Curto", "Muito alta", "Suportes simples"],
+          ["40°", "Recomendado", "Alta", "Uso geral"],
+          ["50°", "Longo", "Média", "Overhangs laterais extensos"],
+        ],
+      },
+      goldenRule: "30–40° é ideal. Aumente apenas em peças com overhangs laterais muito amplos.",
+    },
+    // ───────── AULA 16 ─────────
+    {
+      name: "Ângulo preferido da ramificação (Preferred Branch Angle)",
+      value: "25° (padrão)",
+      whatIs: "Ângulo natural que o algoritmo TENTA manter ao curvar os ramos. Define a aparência orgânica das árvores.",
+      influences: "Estética dos suportes, suavidade das curvas, velocidade de fusão entre ramos.",
+      generates: "15–20° = ramos mais verticais e estáveis; 25° = Tree Organic ideal; 35–45° = curvas exageradas, fusão rápida.",
+      optionsTable: {
+        headers: ["Ângulo", "Estabilidade", "Fusão", "Quando usar"],
+        rows: [
+          ["15–20°", "Muito alta", "Lenta", "Suportes altos"],
+          ["25–30°", "Recomendado", "Média", "Uso geral"],
+          ["35–45°", "Média", "Rápida", "Suportes complexos"],
+        ],
+      },
+      goldenRule: "Tree Organic ideal: ângulo preferido 25° + ponta 0,5 mm + ramo 2 mm. Acabamento perfeito.",
       summaryTable: {
-        headers: ["Caso", "Ponta", "Ramo", "Densidade", "Ângulo"],
+        headers: ["Caso", "Ponta", "Ramo", "Densidade", "Ângulo preferido"],
         rows: [
           ["Miniatura visual", "0,4", "1,5", "30%", "25°"],
           ["Peça mecânica", "0,8", "2,5", "40%", "30°"],
-          ["Suporte alto >150mm", "0,6", "3", "45%", "30°"],
+          ["Suporte alto >150mm", "0,6", "3", "45%", "20°"],
         ],
       },
     },
