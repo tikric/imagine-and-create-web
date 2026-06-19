@@ -460,6 +460,11 @@ export const modules: Module[] = [
               ["Comandos não reconhecidos", "Firmware errado", "Selecionar firmware correto"],
               ["Impressora não conecta", "Host configurado errado", "Verificar host e porta"],
             ]},
+            howToImage: {
+              src: mod2Img25.url,
+              alt: "Protocolo de 5 passos para configurar o perfil da impressora",
+              caption: "Protocolo completo: 1·Abrir Limites → 2·Formato X/Y/Z → 3·Firmware → 4·Velocidade/Aceleração/Jerk → 5·Salvar.",
+            },
             goldenRule: "Nunca use perfis genéricos. Crie um perfil específico para sua impressora e mantenha-o atualizado.",
           }],
         }),
