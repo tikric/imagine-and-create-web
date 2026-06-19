@@ -3590,7 +3590,7 @@ export const modules: Module[] = [
               config: "Aceleração 8000 mm/s², externa 2000 @ 120 mm/s, infill 8000 @ 300 mm/s",
               result: "Benchy completo em ~25 min (vs 1h30 sem IS), sem ghosting visível.",
             },
-            optionsTable: {
+            summaryTable: {
               headers: ["Benefício", "Antes", "Depois", "Melhora"],
               rows: [
                 ["Ghosting", "Visível", "Eliminado", "100%"],
