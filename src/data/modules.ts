@@ -217,6 +217,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Aba Preparar", value: "Workspace principal",
             whatIs: "Tela inicial onde modelos são importados, posicionados na mesa virtual e configurados antes do fatiamento.",
+            image: {
+              src: anatomiaInterface.url,
+              alt: "Anatomia da interface do OrcaSlicer: Barra Superior, Mesa Virtual, Painel Esquerdo, Painel Direito e Barra Inferior",
+              caption: "Anatomia da interface: as 5 zonas do OrcaSlicer que você precisa dominar.",
+            },
             whyAdjust: "Um bom posicionamento e perfil escolhido resolvem ~50% dos problemas de impressão antes mesmo do G-code.",
             optionsTable: { headers: ["Área", "Função", "Descrição"], rows: [
               ["Barra Superior", "Comandos principais", "Importar, Adicionar Placa, Fatiar, Salvar"],
