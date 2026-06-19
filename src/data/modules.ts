@@ -4550,7 +4550,53 @@ export const modules: Module[] = [
             { param: "Infill", value: "Gyroid 35-40%", action: "Distribuição multidirecional de forças" },
             { param: "Bico", value: "Aço Endurecido / Rubi", action: "Sobrevive a fibras abrasivas" },
           ],
+          paramDetails: [{
+            name: "3 Casos Industriais de Alta Resistência",
+            value: "Engrenagem · Suporte de Motor · Ferramenta",
+            whatIs: "Configurações para peças B2B de engenharia: máxima resistência, durabilidade e precisão dimensional usando Nylon+CF, ABS, PETG ou PETG+CF.",
+            whyAdjust: "Peça industrial não pode falhar. Material errado, paredes insuficientes ou orientação contra a carga = quebra em serviço e perda de cliente.",
+            optionsTable: {
+              headers: ["Caso", "Material", "Bico", "Paredes", "Infill"],
+              rows: [
+                ["Engrenagem Nylon+CF", "Nylon+CF", "0.4mm aço endurecido", "6", "Gyroid 40%"],
+                ["Suporte de Motor (5kg)", "PETG ou ABS", "0.6mm", "6", "Gyroid 35%"],
+                ["Ferramenta de Trabalho", "PETG+CF", "0.6mm", "6", "Gyroid 40%"],
+              ],
+            },
+            influences: "Resistência mecânica, durabilidade sob fadiga, resistência ao calor e capacidade de substituir peças metálicas.",
+            generates: "Contrato B2B recorrente com peças a 1/3 do preço e 1/5 do prazo da alternativa metálica.",
+            howTo: [
+              { step: "1. Validar material x aplicação", path: "Briefing técnico", desc: "Carga, temperatura e ambiente definem material." },
+              { step: "2. Secar filamento", path: "Secador 70-90°C", desc: "Nylon: 8-12h obrigatório antes de imprimir." },
+              { step: "3. Bico endurecido", path: "Hardware", desc: "Aço/Rubi obrigatório para qualquer fibra (CF/GF)." },
+              { step: "4. Orientação alinhada com carga", path: "OrcaSlicer › Posicionar", desc: "Camadas perpendiculares à direção da força." },
+              { step: "5. Teste sob carga real", path: "Bancada", desc: "Validar antes da entrega — sem suposições." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra sob carga", "Material/orientação errados", "Trocar para Nylon ou PETG+CF e aumentar paredes"],
+                ["Deformação em ambiente quente", "PLA/PETG insuficiente", "Migrar para ABS ou ASA"],
+                ["Desgaste rápido em engrenagem", "Material mole", "Usar Nylon+CF (carbono lubrifica)"],
+                ["Bico latão destruído", "Fibra abrasiva sem hardened", "Trocar imediato por aço/rubi"],
+              ],
+            },
+            summaryTable: {
+              title: "Materiais Industriais",
+              headers: ["Material", "Resistência", "Calor", "Preço"],
+              rows: [
+                ["PETG", "Média", "~80°C", "Médio"],
+                ["ABS", "Alta", "~100°C", "Médio"],
+                ["ASA", "Alta + UV", "~100°C", "Alto"],
+                ["Nylon", "Altíssima", "~120°C", "Muito alto"],
+                ["Nylon+CF", "Altíssima + rígido", "~120°C", "Muito alto"],
+                ["PETG+CF", "Alta + rígido", "~80°C", "Alto"],
+              ],
+            },
+            goldenRule: "Material certo + paredes alinhadas com a carga + teste sob carga real = peça que substitui metal.",
+          }],
           goldenRule: "Material certo + configuração precisa + validação rigorosa. Teste sob carga antes da entrega.",
+
           errors: [
             { error: "Peça quebra sob carga", solution: "Trocar para Nylon ou PETG+CF e aumentar wall loops" },
             { error: "Deformação em ambiente quente", solution: "Migrar para ABS ou ASA" },
