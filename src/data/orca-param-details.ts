@@ -2908,266 +2908,366 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 23 — RESISTÊNCIA (Sólido Interno · Avançado)
   // ====================================================================
   "tela-23-resistencia-avancado": [
+    // ───────────── MÓDULO 1: SÓLIDO INTERNO ─────────────
     {
       name: "Sólido interno › Direção do preenchimento sólido",
       value: "45°",
       whatIs:
-        "Ângulo das linhas de preenchimento em áreas onde o infill é SÓLIDO (100%): interfaces infill/parede, camadas de topo/base internas e reforços. Exige máxima resistência e alinhamento com as forças aplicadas.",
+        "Define o ângulo das linhas de preenchimento em áreas onde o infill é SÓLIDO (100% de densidade), como a interface entre infill e paredes ou camadas de topo/base. É diferente do infill esparso porque atua em áreas críticas que precisam de máxima resistência e devem se alinhar às forças aplicadas. Analogia: o infill normal é estrutura de vigas; o sólido é a laje de concreto que precisa ser forte em todas as direções.",
       whyAdjust:
-        "Alinhar com a carga predominante maximiza a resistência mecânica. 45° distribui forças uniformemente; 0° ou 90° concentram resistência em um eixo.",
+        "Alinhar a direção do sólido com a carga predominante maximiza a resistência mecânica. 45° distribui forças uniformemente; 0° ou 90° concentram resistência em um eixo específico.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
-          ["0°", "Linhas horizontais", "Forças em X"],
-          ["45° (padrão)", "Distribuição uniforme", "Uso geral"],
-          ["90°", "Linhas verticais", "Forças em Y"],
+          ["0°", "Linhas horizontais", "Forças na direção X"],
+          ["45° (padrão)", "Diagonal", "Distribuição uniforme"],
+          ["90°", "Linhas verticais", "Forças na direção Y"],
+          ["-45°", "Diagonal negativa", "Alternativa à 45°"],
           ["0°/90°", "Cruzado", "Máxima resistência multidirecional"],
         ],
       },
-      influences: "Direção da força, geometria, material e função da peça.",
-      generates: "Resistência direcional (alinhada) ou uniforme (45°).",
-      goldenRule: "45° para a maioria. Alinhe com a carga para resistência máxima.",
+      influences:
+        "Direção da força aplicada (X = 0°, Y = 90°, multidirecional = 45°), geometria da peça (retangular alinha com lados; circular usa 45° ou 0°/90°; orgânica usa 45°), material (PLA aceita qualquer, PETG e ABS pedem alinhamento com carga/contração) e função (estrutural alinha com carga; decorativa usa 45° por estética).",
+      generates:
+        "45° dá distribuição uniforme para uso geral. 0° ou 90° dão força máxima em um eixo específico. 0°/90° cobre cargas em ambas direções.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando Usar"],
+        rows: [
+          ["45°", "Distribuição uniforme", "Uso geral"],
+          ["0°", "Força máxima em X", "Carga horizontal"],
+          ["90°", "Força máxima em Y", "Carga vertical"],
+          ["0°/90°", "Força em ambas direções", "Carga complexa"],
+        ],
+      },
+      integrationsTable: {
+        headers: ["Parâmetro", "Relação", "Ajuste Recomendado"],
+        rows: [
+          ["Direção do infill esparso", "Pode ser diferente", "45° para ambos"],
+          ["Padrão de superfície superior", "Complementa", "Monotonic ou Concentric"],
+          ["Paredes", "Sólido conecta paredes", "4–6 paredes"],
+        ],
+      },
+      howTo: [
+        { step: "1. Abrir OrcaSlicer 2.4", path: "Aba Prepare", desc: "Abra o projeto" },
+        { step: "2. Painel esquerdo", path: "Resistência › Sólido interno", desc: "Expanda a seção" },
+        { step: "3. Localizar parâmetro", path: "Direção do preenchimento sólido", desc: "Campo numérico em graus" },
+        { step: "4. Definir valor", path: "Ex: 45°", desc: "Mantenha 45° na maioria; ajuste para 0° ou 90° se houver carga predominante" },
+      ],
+      example: {
+        piece: "Suporte com carga vertical / Caixa com carga distribuída",
+        config: "Suporte = 90° · Caixa = 45°",
+        result: "Suporte: máxima resistência na direção da carga. Caixa: distribuição uniforme, boa qualidade geral.",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
+        rows: [
+          ["Peça quebra no topo/base", "Direção desalinhada", "Alinhar com a carga"],
+          ["Superfície superior irregular", "Direção inconsistente", "Usar 45°"],
+          ["Resistência baixa", "Direção errada", "Alinhar com a força"],
+        ],
+      },
+      goldenRule: "45° para a maioria. Alinhe com a carga para resistência máxima. O sólido interno é a base da peça.",
       summaryTable: {
-        title: "Decisão rápida",
-        headers: ["Tipo de Peça", "Direção", "Motivo"],
+        title: "Decisão Rápida",
+        headers: ["Tipo de Peça", "Direção Recomendada", "Motivo"],
         rows: [
           ["Uso geral", "45°", "Distribuição uniforme"],
           ["Carga horizontal", "0°", "Força em X"],
           ["Carga vertical", "90°", "Força em Y"],
-          ["Carga complexa", "0°/90°", "Ambas direções"],
+          ["Carga complexa", "0°/90°", "Força em ambas direções"],
         ],
       },
     },
     {
       name: "Sólido interno › Gabarito de rotação de preenchimento sólido",
       value: "Padrão",
-      whatIs: "Ponto de referência a partir do qual a direção do infill sólido é calculada e rotacionada camada a camada.",
-      whyAdjust: "Em peças assimétricas, mudar o gabarito alinha melhor o sólido com áreas críticas.",
+      whatIs:
+        "Define o ponto de referência (gabarito) a partir do qual a direção do infill sólido é calculada. Determina o alinhamento e a consistência do padrão entre camadas sólidas.",
+      whyAdjust:
+        "Define o alinhamento do infill sólido, afeta a consistência do padrão entre camadas e pode melhorar a distribuição de forças quando ajustado para um ponto específico da peça.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
-          ["Padrão", "Rotação a partir do centro"],
-          ["Personalizado", "Rotação a partir de ponto definido"],
+          ["Padrão", "Rotação a partir do centro da peça"],
+          ["Personalizado", "Rotação a partir de um ponto definido pelo usuário"],
         ],
       },
-      influences: "Consistência do padrão sólido em peças assimétricas.",
-      generates: "Alinhamento previsível ao longo da altura.",
-      goldenRule: "Deixe em Padrão a menos que precise alinhar com eixo específico.",
+      influences: "Consistência do padrão de sólido entre camadas e o alinhamento global do infill sólido com a geometria da peça.",
+      generates: "Padrão consistente e previsível em peças simétricas; ajuste personalizado em peças com geometria assimétrica.",
+      goldenRule: "Mantenha 'Padrão' na maioria; só use personalizado quando precisar alinhar o sólido a um eixo específico da peça.",
     },
     {
       name: "Sólido interno › Aplicar preenchimento de vão",
       value: "Ativado",
-      whatIs: "Ativa o gap fill: preenche pequenos espaços entre paredes e infill com linhas extras.",
-      whyAdjust: "Sem gap fill, lacunas microscópicas enfraquecem a peça e podem ficar visíveis.",
+      whatIs:
+        "Ativa a função que preenche automaticamente pequenos espaços (vãos) entre paredes e infill com linhas adicionais. Previne lacunas microscópicas que enfraqueceriam a peça.",
+      whyAdjust:
+        "Vãos entre parede e infill criam pontos de falha. Ativar garante que a peça seja realmente sólida no interior, melhorando resistência sem afetar significativamente o tempo.",
       optionsTable: {
         headers: ["Opção", "Efeito", "Quando Usar"],
         rows: [
-          ["Ativado", "Preenche vãos", "Peças estruturais"],
-          ["Desativado", "Deixa vãos", "Velocidade"],
+          ["Ativado", "Preenche vãos automaticamente", "Uso geral, peças estruturais"],
+          ["Desativado", "Deixa vãos", "Velocidade, peças decorativas"],
         ],
       },
-      influences: "Integridade da interface parede-infill.",
-      generates: "Peça sólida sem lacunas; leve aumento de tempo.",
-      goldenRule: "Ative para peças estruturais. Evita lacunas.",
+      influences: "Resistência da interface parede/infill, integridade interna e tempo de fatiamento.",
+      generates: "Peças realmente sólidas no interior, sem pontos de fragilidade entre paredes e infill.",
+      goldenRule: "Ative para peças estruturais. O preenchimento de vão evita lacunas.",
     },
     {
       name: "Sólido interno › Filtrar vazios pequenos",
       value: "Ativado",
-      whatIs: "Remove vazios microscópicos que não afetam a estrutura, reduzindo tempo de fatiamento.",
-      whyAdjust: "Vazios sub-milimétricos geram movimentos extras sem ganho real.",
+      whatIs:
+        "Remove vazios muito pequenos que não afetam a estrutura da peça. Vazios microscópicos não impactam a resistência, mas geram G-code mais pesado e tempo de fatiamento maior.",
+      whyAdjust:
+        "Simplifica o G-code, reduz tempo de fatiamento e elimina movimentos extras inúteis em vazios irrelevantes.",
       optionsTable: {
         headers: ["Opção", "Efeito", "Quando Usar"],
         rows: [
           ["Ativado", "Remove vazios pequenos", "Uso geral"],
-          ["Desativado", "Mantém todos", "Requisitos especiais"],
+          ["Desativado", "Mantém todos os vazios", "Peças com requisitos especiais"],
         ],
       },
-      influences: "Tempo de fatiamento e tamanho do G-code.",
-      generates: "G-code mais limpo sem perda de resistência.",
-      goldenRule: "Ative. Vazios pequenos não afetam resistência.",
+      influences: "Tempo de fatiamento, tamanho do G-code e tempo de impressão.",
+      generates: "G-code mais limpo, fatiamento mais rápido, mesma resistência efetiva.",
+      goldenRule: "Ative para a maioria. Vazios pequenos não afetam a resistência.",
     },
     {
       name: "Sólido interno › Sobreposição de preenchimento/parede",
       value: "20%",
-      whatIs: "Quanto o infill se sobrepõe à parede interna para garantir conexão estrutural e eliminar lacunas.",
-      whyAdjust: "Pouco = infill se solta; muito = marcas do infill aparecem na parede externa.",
+      whatIs:
+        "Define quanto o infill se sobrepõe à parede para garantir uma conexão forte na interface. Parâmetro fundamental para a integridade estrutural da peça. Analogia: é a 'cola' que une duas peças de madeira — pouca cola = peças se soltam; cola suficiente = união forte.",
+      whyAdjust:
+        "Conecta o infill à parede, previne lacunas na interface e melhora a resistência. Sem sobreposição adequada, o infill se descola da parede sob carga.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
-          ["0-10%", "Pouca sobreposição", "Decorativas"],
-          ["15-25% (padrão)", "Conexão forte", "Uso geral"],
-          ["30-40%", "Conexão muito forte, marcas leves", "Estruturais"],
-          ["50%+", "Infill visível na parede", "Casos extremos"],
+          ["0–10%", "Pouca sobreposição", "Peças decorativas"],
+          ["15–25% (padrão)", "Sobreposição média", "Uso geral"],
+          ["30–40%", "Muita sobreposição", "Peças estruturais"],
+          ["50%", "Sobrepõe metade", "Peças de alta resistência"],
         ],
       },
-      influences: "Tipo de peça, material, densidade do infill e número de paredes.",
-      generates: "Correto = forte e liso; insuficiente = fraco; excessivo = marcas.",
+      influences:
+        "Tipo de peça (decorativa 10–15%, funcional 20–25%, estrutural 30–40%), material (PLA 15–25%, PETG 20–30%, ABS 20–30%, Nylon 25–35%), densidade do infill (baixa pede mais; alta pede menos) e número de paredes (poucas pedem mais; muitas pedem menos).",
+      generates:
+        "Sobreposição correta = peça forte e parede lisa. Sobreposição insuficiente = peça fraca, infill descola. Sobreposição excessiva = marcas visíveis e possíveis bolhas na parede externa.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando Usar"],
+        rows: [
+          ["0–10%", "Infill pode se soltar", "Peças decorativas"],
+          ["15–25%", "Conexão forte, sem excesso", "Uso geral"],
+          ["30–40%", "Conexão muito forte, possíveis marcas", "Peças estruturais"],
+          ["50%+", "Infill pode aparecer na parede", "Casos extremos"],
+        ],
+      },
       integrationsTable: {
-        headers: ["Parâmetro", "Relação", "Ajuste"],
+        headers: ["Parâmetro", "Relação", "Ajuste Recomendado"],
         rows: [
-          ["Densidade do infill", "Complementa", "Ajustar juntos"],
-          ["Número de paredes", "Afeta necessidade", "+ paredes = – sobreposição"],
-          ["Largura da linha", "Afeta valor real", "Proporcional"],
+          ["Densidade do infill", "Complementa a conexão", "Ajustar juntos"],
+          ["Número de paredes", "Afeta a necessidade", "Mais paredes = menos sobreposição"],
+          ["Largura da linha", "Afeta a sobreposição real", "Ajustar proporcionalmente"],
         ],
       },
-      goldenRule: "20% para a maioria. Conecta infill à parede sem excesso.",
-      summaryTable: {
-        title: "Decisão rápida",
-        headers: ["Tipo", "Sobreposição", "Motivo"],
+      howTo: [
+        { step: "1. Abrir aba Prepare", path: "OrcaSlicer 2.4", desc: "Abra o projeto" },
+        { step: "2. Painel esquerdo", path: "Resistência › Sólido interno", desc: "Expanda a seção" },
+        { step: "3. Localizar parâmetro", path: "Sobreposição de preenchimento/parede", desc: "Campo em porcentagem" },
+        { step: "4. Definir valor", path: "Ex: 20%", desc: "Comece com 20%; aumente para 25% se houver lacunas; reduza para 15% se aparecer marca na parede" },
+      ],
+      example: {
+        piece: "Caixa organizadora / Suporte estrutural / Estatueta decorativa",
+        config: "Caixa = 20% · Suporte = 30% · Estatueta = 10%",
+        result: "Caixa: conexão forte e sem marcas (excelente). Suporte: conexão muito forte com leves marcas (funcional). Estatueta: conexão suficiente sem marcas (excelente).",
+      },
+      errorsTable: {
+        headers: ["Sintoma", "Causa", "Solução"],
         rows: [
-          ["Decorativa", "10-15%", "Sem marcas"],
+          ["Infill se solta da parede", "Sobreposição insuficiente", "Aumentar para 25–30%"],
+          ["Marcas na parede externa", "Sobreposição excessiva", "Reduzir para 15–20%"],
+          ["Peça quebra na interface", "Conexão fraca", "Aumentar sobreposição"],
+          ["Tempo de impressão alto", "Sobreposição muito alta", "Reduzir para 20%"],
+        ],
+      },
+      goldenRule: "20% para a maioria. A sobreposição conecta o infill à parede. Nem muito, nem pouco.",
+      summaryTable: {
+        title: "Decisão Rápida",
+        headers: ["Tipo de Peça", "Sobreposição Recomendada", "Motivo"],
+        rows: [
+          ["Decorativa", "10–15%", "Sem marcas"],
           ["Uso geral", "20%", "Equilíbrio"],
-          ["Estrutural", "25-30%", "Conexão forte"],
-          ["Alta carga", "30-40%", "Máxima resistência"],
+          ["Estrutural", "25–30%", "Conexão forte"],
+          ["Alta carga", "30–40%", "Máxima resistência"],
         ],
       },
     },
+
+    // ───────────── MÓDULO 2: AVANÇADO ─────────────
     {
       name: "Avançado › Alinhar direção do preenchimento ao modelo",
       value: "Desativado",
-      whatIs: "Ajusta automaticamente a direção do infill para se alinhar à geometria local do modelo.",
-      whyAdjust: "Em geometrias curvas/orgânicas, direção fixa não acompanha as forças reais.",
+      whatIs:
+        "Ajusta automaticamente a direção do infill para se alinhar com a geometria do modelo, otimizando a resistência localmente em cada área da peça.",
+      whyAdjust:
+        "Otimiza resistência por região, melhora distribuição de forças em peças complexas e automatiza um ajuste que seria impossível fazer manualmente em geometrias orgânicas.",
       optionsTable: {
         headers: ["Opção", "Efeito", "Quando Usar"],
         rows: [
-          ["Ativado", "Ajuste local", "Peças orgânicas"],
-          ["Desativado", "Direção global", "Peças simples"],
+          ["Ativado", "Ajuste automático por região", "Peças complexas, orgânicas"],
+          ["Desativado", "Direção fixa global", "Peças simples, estruturais"],
         ],
       },
-      influences: "Resistência local em regiões com geometria variável.",
-      generates: "Melhor aproveitamento mecânico em peças não-cartesianas.",
-      goldenRule: "Ative para geometrias complexas.",
+      influences: "Resistência local em cada área, comportamento mecânico em peças com geometria variável.",
+      generates: "Peças orgânicas com resistência otimizada por região. Em peças simples, gera complexidade desnecessária.",
+      goldenRule: "Ative para geometrias complexas. O alinhamento melhora a resistência.",
     },
     {
       name: "Avançado › Inserir camadas sólidas",
       value: "0",
-      whatIs: "Adiciona camadas sólidas em intervalos regulares dentro do infill esparso, criando 'lajes' de reforço.",
-      whyAdjust: "Aumenta rigidez vertical sem precisar aumentar a densidade global do infill.",
+      whatIs:
+        "Adiciona camadas 100% sólidas em intervalos regulares dentro do infill esparso, criando reforços internos horizontais ao longo da altura da peça.",
+      whyAdjust:
+        "Cria reforços horizontais que aumentam drasticamente a resistência em compressão e flexão, especialmente útil em peças altas que sofrem carga vertical.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
           ["0", "Sem camadas extras", "Peças simples"],
-          ["2-3", "Reforço a cada 2-3mm", "Estruturais"],
-          ["5+", "Muitas lajes", "Alta resistência vertical"],
+          ["2–3", "Camadas a cada 2–3 mm", "Peças estruturais"],
+          ["5+", "Muitas camadas", "Peças de alta resistência"],
         ],
       },
-      influences: "Rigidez Z, peso, tempo e material.",
-      generates: "Peças mais rígidas no eixo Z.",
-      goldenRule: "2-3 para peças estruturais.",
+      influences: "Resistência à compressão e flexão, peso da peça, consumo de filamento e tempo de impressão.",
+      generates: "Peças com 'lajes' internas que aumentam resistência sem precisar elevar densidade total do infill.",
+      goldenRule: "Use 2–3 para peças estruturais. Camadas sólidas reforçam o interior.",
     },
     {
       name: "Avançado › Direção de preenchimento de ponte externa",
-      value: "0° (auto)",
-      whatIs: "Ângulo do infill nas pontes EXTERNAS visíveis.",
-      whyAdjust: "Linhas paralelas ao vão (0°) maximizam resistência; diagonais causam sag.",
+      value: "0°",
+      whatIs:
+        "Define o ângulo das linhas do infill nas pontes externas — aquelas que ficam visíveis e enfrentam o vão sem suporte.",
+      whyAdjust:
+        "Alinhar com a direção da ponte garante que cada linha cruze o vão como uma viga independente, sustentada nas duas extremidades.",
       optionsTable: {
         headers: ["Valor", "Efeito"],
         rows: [
-          ["0° (auto)", "Alinhado com a ponte — recomendado"],
-          ["45°", "Diagonal — estético"],
-        ],
-      },
-      influences: "Qualidade visual e resistência das pontes.",
-      generates: "Pontes firmes sem afundamento.",
-      goldenRule: "Deixe em 0°. Linhas paralelas ao vão = ponte forte.",
-    },
-    {
-      name: "Avançado › Direção de preenchimento de ponte interna",
-      value: "0° (auto)",
-      whatIs: "Ângulo do infill nas pontes INTERNAS (não visíveis, mas estruturais).",
-      whyAdjust: "Mesma lógica das pontes externas, afetando estrutura interna.",
-      optionsTable: {
-        headers: ["Valor", "Efeito"],
-        rows: [
-          ["0° (auto)", "Alinhado com a ponte"],
+          ["0°", "Alinhado com a ponte"],
           ["45°", "Diagonal"],
         ],
       },
-      influences: "Resistência estrutural interna sobre cavidades.",
-      generates: "Suporte interno robusto para camadas subsequentes.",
-      goldenRule: "0° (auto) para máxima resistência.",
+      influences: "Qualidade visual e resistência da ponte externa.",
+      generates: "0° dá pontes mais firmes e limpas; 45° pode causar droop se o vão for grande.",
+      goldenRule: "0° para pontes que precisam de resistência.",
     },
     {
-      name: "Avançado › Ângulo relativo de ponte (Relative bridge angle)",
+      name: "Avançado › Direção de preenchimento de ponte interna",
+      value: "0°",
+      whatIs:
+        "Define o ângulo do infill nas pontes internas — áreas onde uma camada sólida precisa atravessar um vão sobre o infill esparso.",
+      whyAdjust:
+        "Boa direção interna evita 'pelos' e camadas mal formadas que comprometem o suporte das camadas superiores.",
+      optionsTable: {
+        headers: ["Valor", "Efeito"],
+        rows: [
+          ["0°", "Alinhado com a ponte"],
+          ["45°", "Diagonal"],
+        ],
+      },
+      influences: "Qualidade do topo da peça e estabilidade das camadas que vêm depois da ponte interna.",
+      generates: "0° dá pontes internas firmes que servem de base limpa para as camadas seguintes.",
+      goldenRule: "Mantenha 0° para máxima estabilidade interna.",
+    },
+    {
+      name: "Avançado › Relative bridge angle",
       value: "Desativado",
-      whatIs: "Quando ATIVADO, os ângulos das pontes são RELATIVOS à geometria local, não à mesa.",
-      whyAdjust: "Em peças rotacionadas, mantém a estratégia de ponte consistente.",
+      whatIs:
+        "Define se o ângulo da ponte é relativo à geometria local da ponte (ativo) ou absoluto em relação ao eixo XY da impressora (desativado).",
+      whyAdjust:
+        "Em peças com múltiplas pontes em direções diferentes, o modo relativo faz o Orca rotacionar automaticamente cada ponte para o melhor ângulo individual.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
-          ["Ativado", "Relativo à geometria"],
-          ["Desativado", "Relativo ao eixo X"],
+          ["Ativado", "Ângulo relativo à ponte (auto por ponte)"],
+          ["Desativado", "Ângulo absoluto global"],
         ],
       },
-      influences: "Consistência da estratégia de ponte ao rotacionar a peça.",
-      generates: "Pontes ótimas independente da rotação.",
-      goldenRule: "Ative se rotaciona peças no plate.",
+      influences: "Qualidade de pontes em peças com múltiplas direções de vão.",
+      generates: "Ativado = cada ponte recebe o melhor ângulo localmente. Desativado = ângulo único global.",
+      goldenRule: "Ative em peças com várias pontes em direções diferentes.",
     },
     {
       name: "Avançado › Limiar mínimo de preenchimento esparso",
       value: "0 mm²",
-      whatIs: "Área mínima para que uma região receba infill esparso. Áreas menores são tratadas como sólidas ou ignoradas.",
-      whyAdjust: "Em ilhas pequenas, infill esparso não traz resistência e gera movimentos extras.",
+      whatIs:
+        "Define a área mínima para que o infill esparso seja aplicado. Áreas menores que esse limiar são preenchidas como sólido em vez de receber padrão esparso.",
+      whyAdjust:
+        "Evita o Orca tentar gerar padrão de infill esparso em áreas tão pequenas que ele se transformaria em traços soltos. Em áreas pequenas, sólido é mais forte e rápido.",
       optionsTable: {
         headers: ["Valor", "Efeito"],
         rows: [
-          ["0 mm²", "Esparso em todas as áreas"],
-          ["10-50 mm²", "Esparso apenas em áreas grandes"],
+          ["0 mm²", "Infill esparso em todas as áreas"],
+          ["10–50 mm²", "Áreas menores viram sólidas"],
         ],
       },
-      influences: "Tratamento de pequenas ilhas internas.",
-      generates: "Menos movimentos curtos em ilhas pequenas.",
-      goldenRule: "Mantenha 0 a menos que tenha problemas com ilhas pequenas.",
+      influences: "Qualidade e resistência de áreas pequenas internas, tempo de impressão.",
+      generates: "Áreas pequenas com sólido firme em vez de padrão fragmentado.",
+      goldenRule: "10–15 mm² é o sweet spot para a maioria das peças.",
     },
     {
       name: "Avançado › Combinar preenchimento",
       value: "Desativado",
-      whatIs: "Funde várias camadas de infill em uma única passagem mais espessa, acelerando a impressão.",
-      whyAdjust: "Reduz drasticamente o tempo de infill, ao custo de maior demanda de fluxo do hotend.",
+      whatIs:
+        "Une várias camadas de infill esparso em uma única camada mais grossa, imprimindo o infill apenas a cada N camadas em vez de em todas.",
+      whyAdjust:
+        "Acelera drasticamente a impressão de peças com bastante infill, ao custo de menor precisão dimensional interna.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
-          ["Ativado", "Une camadas (mais rápido)"],
-          ["Desativado", "Uma camada por vez (padrão)"],
+          ["Ativado", "Une camadas de infill (mais rápido)"],
+          ["Desativado", "Cada camada com seu infill (mais preciso)"],
         ],
       },
-      influences: "Tempo de impressão, demanda de fluxo do hotend.",
-      generates: "Impressões mais rápidas; cuidado com hotends de baixo fluxo.",
-      goldenRule: "Ative em peças grandes com hotend volumétrico capaz.",
+      influences: "Tempo de impressão, precisão dimensional interna, qualidade de pontes internas.",
+      generates: "Ativado = ganho de tempo significativo. Desativado = precisão máxima.",
+      goldenRule: "Mantenha desativado para precisão. Ative apenas em peças funcionais grandes onde tempo importa.",
     },
     {
       name: "Avançado › Detectar preenchimentos sólidos internos estreitos",
       value: "Ativado",
-      whatIs: "Identifica regiões estreitas de infill sólido e otimiza o tratamento para evitar superextrusão.",
-      whyAdjust: "Sem detecção, áreas estreitas podem gerar blobs ou vazios.",
+      whatIs:
+        "Identifica automaticamente áreas internas estreitas que precisam de tratamento sólido especial para evitar gaps e fragilidade.",
+      whyAdjust:
+        "Sem essa detecção, áreas finas internas podem ficar com infill mal distribuído, gerando pontos fracos invisíveis.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
-          ["Ativado", "Detecta e otimiza"],
+          ["Ativado", "Detecta e reforça áreas estreitas"],
           ["Desativado", "Tratamento padrão"],
         ],
       },
-      influences: "Qualidade de regiões sólidas internas finas.",
-      generates: "Acabamento limpo em sólidos estreitos.",
-      goldenRule: "Mantenha ativado.",
+      influences: "Resistência em regiões finas internas, integridade estrutural em paredes com nervuras.",
+      generates: "Peças mais consistentes em geometrias com regiões internas finas.",
+      goldenRule: "Mantenha ativado — reforça regiões finas sem custo perceptível.",
     },
     {
       name: "Avançado › Garantir a espessura vertical da casca",
-      value: "Ativado",
-      whatIs: "Garante espessura mínima da casca em TODAS as áreas, adicionando sólido onde a geometria afina.",
-      whyAdjust: "Sem esta opção, áreas inclinadas podem ter casca menor que a configurada, causando vazamentos.",
+      value: "Ativado (Todos)",
+      whatIs:
+        "Garante que a casca (topo e base) tenha a espessura definida em TODAS as áreas, mesmo em superfícies inclinadas onde naturalmente o número de camadas sólidas seria menor.",
+      whyAdjust:
+        "Sem esse ajuste, superfícies inclinadas ficam translúcidas ou com vazamento dimensional. Com ele, o Orca adiciona camadas sólidas extras onde a inclinação reduziria a espessura efetiva.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
-          ["Ativado", "Espessura mínima garantida"],
-          ["Desativado", "Pode variar com inclinação"],
+          ["Ativado", "Espessura garantida em toda a superfície"],
+          ["Desativado", "Espessura variável conforme inclinação"],
         ],
       },
-      influences: "Estanqueidade e opacidade em áreas inclinadas.",
-      generates: "Peças sem vazamentos nem zonas translúcidas.",
-      goldenRule: "Mantenha ativado — padrão seguro.",
+      influences: "Estanqueidade, opacidade e integridade dimensional em áreas inclinadas.",
+      generates: "Peças sem vazamentos, sem zonas translúcidas e com casca consistente em todas as inclinações.",
+      goldenRule: "Mantenha ativado em 'Todos' — resolve 90% dos casos de vazamento dimensional em geometrias complexas.",
     },
   ],
+
 
   // ====================================================================
   // TELA 31 — VELOCIDADE (Primeira camada · Outras camadas · Saliências)
