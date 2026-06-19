@@ -4957,7 +4957,51 @@ export const modules: Module[] = [
             { param: "Infill Pattern", value: "Gyroid", action: "Padrão 3D isotrópico — peças funcionais" },
             { param: "Infill Pattern", value: "Lightning", action: "Apenas sustenta topo — economia máxima" },
           ],
+          paramDetails: [{
+            name: "Infills Avançados — Gyroid, Cubic, Lightning, Adaptive",
+            value: "3D, isotrópicos, eficientes",
+            whatIs: "Padrões tridimensionais que distribuem forças em múltiplas direções. Gyroid é onda senoidal 3D isotrópica; Cubic forma células cúbicas; Lightning cria 'raízes' só onde necessário; Adaptive Cubic concentra material onde precisa.",
+            whyAdjust: "Avançados eliminam cruzamento na mesma camada (sem vibração no bico) e oferecem resistência superior por grama de filamento — base de peças funcionais profissionais.",
+            optionsTable: {
+              headers: ["Padrão", "Estrutura", "Densidade típica", "Melhor para"],
+              rows: [
+                ["Gyroid", "Onda senoidal 3D", "15-35%", "Peças estruturais multidirecionais"],
+                ["Cubic", "Células cúbicas 3D", "20-40%", "Estruturas com carga uniforme"],
+                ["Lightning", "Raízes localizadas", "5-10%", "Decorativos, economia extrema"],
+                ["Adaptive Cubic", "Cúbico adaptativo", "15-25%", "Estruturas otimizadas por região"],
+              ],
+            },
+            influences: "Resistência isotrópica, peso final da peça, tempo de impressão e consumo de filamento.",
+            generates: "Peça funcional com relação resistência/peso superior — base do produto industrial 3D.",
+            howTo: [
+              { step: "1. Selecionar Gyroid como default", path: "Resistência > Padrão", desc: "Cobre 80% das aplicações estruturais." },
+              { step: "2. Lightning para decorativos grandes", path: "Resistência > Padrão", desc: "Economia até 60% de filamento." },
+              { step: "3. Configurar ângulos do Lightning", path: "Lightning Settings", desc: "Saliência 60-70°, Poda 40-50°, Endireitamento 20-30°." },
+              { step: "4. Adaptive Cubic para otimização", path: "Resistência > Padrão", desc: "Quando carga concentra em região específica." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Peça quebra apesar de denso", "Padrão errado para tipo de carga", "Trocar para Gyroid isotrópico"],
+                ["Tempo de fatiamento alto", "Gyroid em peça gigante simples", "Voltar para Cubic ou Lightning"],
+                ["Topo afundando em Lightning", "Density baixa demais", "Aumentar Top Shell Layers para 5-6"],
+                ["Material excessivo", "Densidade alta desnecessária", "Reduzir para 20-25%"],
+              ],
+            },
+            summaryTable: {
+              title: "Comparativo Avançados",
+              headers: ["Padrão", "Resistência", "Material", "Isotropia"],
+              rows: [
+                ["Gyroid", "Excelente", "Médio", "Sim"],
+                ["Cubic", "Excelente", "Médio", "Parcial"],
+                ["Lightning", "Muito baixa", "Mínimo", "Não"],
+                ["Adaptive Cubic", "Alta", "Otimizado", "Parcial"],
+              ],
+            },
+            goldenRule: "Gyroid para resistência. Lightning para economia. Cubic para estrutura uniforme.",
+          }],
           goldenRule: "Use Gyroid para qualquer peça que sofrerá torção e compressão multidirecional.",
+
           errors: [
             { error: "Topo afundado com Lightning", solution: "Aumente Top Shell Layers para 6+." },
             { error: "Gyroid lento demais", solution: "Aumente Infill Speed gradualmente até aparecer ruído, depois recue 10%." },
