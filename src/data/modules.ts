@@ -1224,6 +1224,7 @@ export const modules: Module[] = [
                 ["Automotivo motor", "ASA ou Nylon", "Enclosure"],
               ],
             },
+            errorsImage: { src: mod4Img44.url, alt: "Erros de materiais técnicos: ABS/ASA, TPU, Nylon", caption: "Warping ABS/ASA (enclosure + Brim 8mm), TPU clog (Direct Drive + 15-30mm/s), Nylon com bolhas (secador ativo), ABS amarelando (trocar por ASA), desgaste de bico com CF (aço/rubi) e VOCs do ABS (ventilação + filtro carvão)." },
             goldenRule: "Sem enclosure não tente ABS/ASA/Nylon. Sem Direct Drive não tente TPU. Sem bico aço não tente Nylon-CF. Infraestrutura é pré-requisito, não opcional.",
           }],
           checklist: [
