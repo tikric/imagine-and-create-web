@@ -596,6 +596,11 @@ export const modules: Module[] = [
               ["Entupimento", "Retração longa ou heat creep", "Reduzir retração ou melhorar cooling"],
               ["TPU falha", "Bowden em TPU", "Usar Direct Drive"],
             ]},
+            errorsImage: {
+              src: mod2Img27.url,
+              alt: "Quatro problemas de extrusão: subextrusão, fiapos (stringing), entupimento (clog) e falha com TPU",
+              caption: "Os 4 problemas clássicos do extrusor: subextrusão (MVS alto) · stringing (calibrar retração) · clog (retração longa/heat creep) · TPU falha (trocar para Direct Drive).",
+            },
             goldenRule: "Use bicos de aço endurecido para filamentos abrasivos (CF, GF, madeira, glow). Bronze se desgasta rápido.",
             summaryTable: { title: "Resumo do Módulo 2", headers: ["Aula", "Tópico", "Aprendizados"], rows: [
               ["2.1", "Perfil Geral", "Identificação, firmware, básico"],
