@@ -5098,12 +5098,13 @@ export const modules: Module[] = [
     methodology: "Comparativo Normal vs Tree Organic, configurações de interface, design anti-suporte com chanfros.",
     objective: "Gerar suportes que sustentam perfeitamente e se desprendem sem marcar a peça.",
     lessons: [
-      L(1, "tipos-suporte", "Normal Grid vs Tree Organic", "25min",
-        ["Normal denso", "Tree ramos curvos"], {
+      L(1, "tipos-suporte", "Tipos de Suporte — Normal, Tree e Snug", "30min",
+        ["Normal Grid", "Tree Organic", "Snug ajustado"], {
           theory: [
-            "Normal Grid: blocos verticais densos, difíceis de arrancar, marcam a peça e gastam muito material.",
-            "Tree Organic: ramos curvos calculados por algoritmo, mínimo contato com a peça e ramificação inteligente.",
-            "Tree gasta menos material, imprime mais rápido e deixa marcas quase imperceptíveis.",
+            "Normal Grid: colunas verticais densas, confiáveis em superfícies planas, mas difíceis de arrancar e marcam a peça.",
+            "Tree Organic: ramos curvos calculados por algoritmo, mínimo contato com a peça, ideal para curvas e estéticas.",
+            "Snug: ajusta-se à silhueta da peça — meio termo entre estabilidade do Normal e economia do Tree, bom para geometrias mistas.",
+            "Tree Hybrid combina Tree em regiões orgânicas com Normal em overhangs chapados — default ideal para peças mistas.",
           ],
           integrations: [
             { module: "Módulo 3 (Suportes)", text: "Tree Organic é uma revolução real para miniaturas e estátuas." },
