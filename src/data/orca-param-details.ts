@@ -4246,6 +4246,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       value: "Checkbox (Ativado/Desativado)",
       whatIs: "Limita a geração de suportes às áreas que tocam a mesa. Suportes em cima da peça são evitados.",
       influences: "Acabamento da face superior, marcas visíveis após a remoção.",
+      generates: "Sem essa opção, o suporte pousa em cima da peça e deixa marcas; com ela ativa, a face superior fica limpa.",
       optionsTable: {
         headers: ["Opção", "Efeito", "Quando usar"],
         rows: [
