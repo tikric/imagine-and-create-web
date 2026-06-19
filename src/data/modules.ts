@@ -508,6 +508,11 @@ export const modules: Module[] = [
               ["Área correta", "Posicionamento confiável", "Sempre"],
               ["Área incorreta", "Não cabe ou colide", "Nunca"],
             ]},
+            generatesImage: {
+              src: mod2Img24.url,
+              alt: "Limites altos vs baixos (velocidade/vibração) e área correta vs incorreta de posicionamento",
+              caption: "Limites altos = rápido com vibração (impressoras robustas) · Limites baixos = lento e suave (impressoras leves) · Área correta = sempre · Área incorreta = nunca.",
+            },
             integrationsTable: { headers: ["Parâmetro", "Relação", "Ajuste"], rows: [
               ["Velocidade (Processo)", "Nunca pode exceder o limite", "Sempre respeitar"],
               ["Aceleração (Processo)", "Nunca pode exceder o limite", "Sempre respeitar"],
