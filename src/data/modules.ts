@@ -638,6 +638,7 @@ export const modules: Module[] = [
             name: "Altura da Camada", value: "0.20mm padrão (25–75% do bico)",
             whatIs: "Espessura vertical de cada fatia que o bico deposita; é a distância que Z sobe a cada camada.",
             whyAdjust: "Equilibrar detalhe vs tempo: quanto menor, mais detalhe e mais lento; quanto maior, mais rápido e com degraus.",
+            image: { src: mod3Img32.url, alt: "Regra 25-75% do bico, PLA vs PETG e adesão em Z", caption: "Regra de engenharia: 25-75% do bico • PLA 0.08mm vs PETG 0.16mm • adesão entre camadas em Z" },
             optionsTable: { headers: ["Valor", "Uso", "Tempo (rel.)", "Qualidade"], rows: [
               ["0.08mm", "Ultra detalhe", "4x", "Excelente"],
               ["0.12mm", "Alta qualidade", "2x", "Muito boa"],
