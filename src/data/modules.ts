@@ -275,6 +275,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Barra Superior", value: "Centro de comando",
             whatIs: "Conjunto de botões e menus que controlam todo o projeto, da importação à exportação do G-code.",
+            image: {
+              src: barraSuperior.url,
+              alt: "Comandos da barra superior do OrcaSlicer: Adicionar Placa, Importar, Desfazer/Refazer, Fatiar Placa e Seleção de Perfis",
+              caption: "Os 5 comandos principais da Barra Superior — decore a posição de cada um.",
+            },
             whyAdjust: "Conhecer cada botão acelera o fluxo e evita perda de configurações.",
             optionsTable: { headers: ["Botão", "Função", "Descrição"], rows: [
               ["Arquivo", "Projeto", "Novo, Abrir, Salvar, Importar, Exportar"],
