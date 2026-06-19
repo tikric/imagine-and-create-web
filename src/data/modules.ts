@@ -5861,9 +5861,11 @@ export const modules: Module[] = [
           ],
           paramDetails: [
             {
-              label: "Efeito da Temperatura",
-              color: "primary",
-              data: {
+              name: "Efeito da Temperatura na Viscosidade",
+              value: "Temp ↔ MVS ↔ PA",
+              whatIs: "Mapa de como cada faixa de temperatura altera a viscosidade do polímero e, por consequência, MVS e PA.",
+              whyAdjust: "Sem entender essa relação, qualquer mudança térmica vira tentativa-e-erro.",
+              optionsTable: {
                 headers: ["Temperatura", "Viscosidade", "MVS", "PA"],
                 rows: [
                   ["Muito alta", "Muito fluido", "↑", "↓ (menos pressão)"],
@@ -5871,11 +5873,15 @@ export const modules: Module[] = [
                   ["Muito baixa", "Muito viscoso", "↓", "↑ (mais pressão)"],
                 ],
               },
+              influences: "Define como ajustar PA e MVS sempre que a temperatura mudar.",
+              generates: "Decisão consciente: subir T não é 'sempre melhor'.",
             },
             {
-              label: "Tabela de Relações (Regras Práticas)",
-              color: "chart-3",
-              data: {
+              name: "Tabela de Relações (Regras Práticas)",
+              value: "Quantificação dos efeitos",
+              whatIs: "Tabela rápida com a magnitude esperada do efeito de cada mudança em Temp ou Flow sobre MVS, PA e Retração.",
+              whyAdjust: "Permite ajustes proporcionais sem precisar recalibrar tudo do zero.",
+              summaryTable: {
                 headers: ["Mudança", "Efeito MVS", "Efeito PA", "Efeito Retração"],
                 rows: [
                   ["Temp +5°C", "+10%", "-10%", "-10% (menos fiapos)"],
@@ -5884,6 +5890,8 @@ export const modules: Module[] = [
                   ["Flow -5%", "—", "-5–10%", "—"],
                 ],
               },
+              influences: "Reduz o tempo de recalibração ao trocar de set point de temperatura ou flow.",
+              generates: "Cheat-sheet de ajustes rápidos para o estúdio.",
             },
           ],
           params: [
