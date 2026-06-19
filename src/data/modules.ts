@@ -767,6 +767,7 @@ export const modules: Module[] = [
             name: "Posição da Costura", value: "Aligned (padrão poligonal)",
             whatIs: "Configuração que define onde a costura/cicatriz da impressão aparece em cada camada.",
             whyAdjust: "Esconder a cicatriz em pontos não visíveis (cantos, traseira, distribuídos).",
+            image: { src: mod3Img37.url, alt: "Os 4 tipos de posição de costura no OrcaSlicer", caption: "Os 4 tipos de Seam: Aligned (canto), Rear (traseira), Nearest (mais próximo) e Random (distribuído)" },
             optionsTable: { headers: ["Tipo", "O que faz", "Melhor para"], rows: [
               ["Aligned", "Empilha no canto mais oculto", "Peças poligonais (caixas)"],
               ["Rear", "Posiciona na traseira", "Bustos, estátuas"],
