@@ -7303,9 +7303,9 @@ export const modules: Module[] = [
             name: "Métricas de sucesso no Mercado Livre",
             value: "6 indicadores-chave",
             whatIs: "Conjunto de métricas que define a saúde do negócio no ML. Abaixo do alvo indica problema; acima, espaço para escalar.",
-            whyAdjust: "Sem métrica não há gestão. Acompanhar semanalmente revela onde investir tempo e dinheiro.",
-            influences: "Reputação, ad-score, custo por venda, lucro líquido.",
-            generates: "Decisões objetivas de marketing, produto e operação.",
+            whyAdjust: "No Mercado Livre a reputação é cumulativa: cada métrica fora do alvo derruba o termômetro e o ad-score, encarecendo o tráfego pago por semanas. Monitorar semanalmente é o que mantém o verde.",
+            influences: "Cor da reputação, ad-score do Mercado Ads, custo por venda e elegibilidade ao Mercado Envios Full.",
+            generates: "Decisões de preço, lance no Mercado Ads e priorização de Full baseadas em dados — protegendo a reputação verde.",
             summaryTable: {
               title: "Metas do vendedor 3D no Mercado Livre",
               headers: ["Métrica", "O que mede", "Meta"],
