@@ -3275,53 +3275,53 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   "tela-31-velocidade-primeira-camada": [
     // ───────────── MÓDULO 1: VELOCIDADE DA PRIMEIRA CAMADA ─────────────
     {
-      name: "Primeira camada",
-      value: "50 mm/s",
+      name: "Primeira camada › Primeira camada",
+      value: "30 mm/s (padrão recomendado)",
       whatIs:
-        "Velocidade do bico ao imprimir a primeira camada — a base de toda a peça. É uma das configurações mais críticas: se a primeira camada falha, toda a impressão falha.",
+        "Define a velocidade com que o bico se move ao imprimir a primeira camada da peça. É uma das configurações mais críticas: a primeira camada é a base de toda a impressão — se falhar, toda a peça falha. Analogia: é a fundação de uma casa — precisa ser feita com calma; uma fundação rápida e mal feita compromete toda a construção.",
       whyAdjust:
-        "Velocidade lenta dá tempo para o plástico esmagar contra a mesa e compensar pequenas irregularidades de nivelamento, garantindo adesão.",
+        "Velocidade lenta garante adesão e precisão. A primeira camada deve ser 50–70% mais lenta que as outras: se a normal é 200 mm/s, a primeira fica em ~50 mm/s. Essa redução compensa irregularidades da mesa e dá tempo do plástico 'esmagar' contra a superfície.",
       optionsTable: {
         headers: ["Velocidade", "Efeito", "Quando Usar"],
         rows: [
           ["10–15 mm/s", "Muito lenta", "Mesas irregulares, materiais difíceis"],
           ["20–30 mm/s", "Recomendado", "Uso geral, boa adesão"],
           ["40–50 mm/s", "Rápida", "Mesas perfeitas, peças pequenas"],
-          ["60+ mm/s", "Muito rápida", "Risco alto de falha de adesão"],
+          ["60+ mm/s", "Muito rápida", "Risco de falha na adesão"],
         ],
       },
       influences:
-        "Adesão à mesa, uniformidade das linhas, sensibilidade a desníveis, sucesso geral da impressão.",
-      influencesList: [
-        "Tipo de superfície (PEI, vidro, magnética, Kapton)",
-        "Material (PLA, PETG, ABS, TPU)",
-        "Tamanho da peça (peças grandes precisam de velocidade menor)",
-        "Qualidade do nivelamento da mesa",
-        "Uso de adesivos (cola, spray)",
-      ],
+        "Tipo de superfície da mesa (PEI lisa 30–40, vidro 20–30, magnética 30–50, Kapton 20–30), material (PLA 30–50, PETG 20–30, ABS 15–25, TPU 15–20), tamanho da peça (pequenas 30–40, médias 25–35, grandes 20–30), nivelamento da mesa (bem nivelada 30–50, desníveis 20–30, irregular 10–20) e uso de adesivos (com cola 30–50, sem 20–30).",
       generates:
-        "Velocidade lenta = adesão excelente e linhas uniformes. Velocidade alta = lacunas, descolamento e warping.",
+        "Velocidade lenta = adesão excelente e linha uniforme. Velocidade média = bom equilíbrio. Velocidade rápida = adesão aceitável mas com risco. Adesão é inversamente proporcional à velocidade; lenta dá tempo do plástico esmagar e selar.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado", "Quando Usar"],
+        rows: [
+          ["Lenta (20 mm/s)", "Adesão excelente, linha uniforme", "Peças grandes, mesas irregulares"],
+          ["Média (30 mm/s)", "Boa adesão, equilíbrio", "Uso geral"],
+          ["Rápida (50 mm/s)", "Adesão aceitável, rápida", "Peças pequenas, mesas perfeitas"],
+        ],
+      },
       integrationsTable: {
         headers: ["Parâmetro", "Relação", "Ajuste Recomendado"],
         rows: [
           ["Altura da primeira camada", "Deve ser mais grossa", "0,24–0,30 mm"],
-          ["Largura da primeira camada", "Mais grossa que padrão", "0,50–0,60 mm"],
-          ["Temperatura da mesa", "Adequada ao material", "PLA 60 °C, PETG 80 °C"],
-          ["Z-Offset", "Deve estar calibrado", "Ajustar com folha de papel"],
-          ["Brim/Skirt", "Complementam adesão", "Ativar em peças grandes"],
+          ["Largura da primeira camada", "Deve ser mais grossa", "0,50–0,60 mm"],
+          ["Temperatura da mesa", "Adequada ao material", "PLA 60°C · PETG 80°C"],
+          ["Z-Offset", "Calibrado", "Ajustar com papel"],
+          ["Brim/Skirt", "Complementa a adesão", "Ativar em peças grandes"],
         ],
       },
       howTo: [
-        {
-          step: "1",
-          path: "Prepare › Velocidade › Velocidade da primeira camada › Primeira camada",
-          desc: "Comece com 30 mm/s. Reduza para 20 mm/s em casos difíceis; suba a 40 mm/s em mesas perfeitas.",
-        },
+        { step: "1. Abrir OrcaSlicer 2.4", path: "Aba Prepare", desc: "Abra o projeto" },
+        { step: "2. Painel esquerdo", path: "Velocidade › Velocidade da primeira camada", desc: "Expanda a seção" },
+        { step: "3. Localizar parâmetro", path: "Primeira camada", desc: "Campo em mm/s" },
+        { step: "4. Definir valor", path: "Ex: 30 mm/s", desc: "Comece com 30; reduza para 20 em adesão ruim; aumente para 40 em mesas ótimas" },
       ],
       example: {
-        piece: "Suporte de parede 200×150 mm em PLA, mesa PEI lisa",
-        config: "Primeira camada = 25 mm/s",
-        result: "Adesão perfeita, sem warping, base uniforme em toda a área.",
+        piece: "Suporte de parede 200×150 mm / Miniatura pequena / Peça técnica ABS",
+        config: "Suporte = 25 mm/s · Miniatura = 40 mm/s · ABS = 20 mm/s",
+        result: "Suporte: adesão perfeita sem warping. Miniatura: boa adesão e rápida. ABS: adesão garantida sem warping.",
       },
       errorsTable: {
         headers: ["Sintoma", "Causa", "Solução"],
@@ -3332,10 +3332,9 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
           ["Tempo de impressão alto", "Velocidade muito baixa", "Aumentar para 30–40 mm/s"],
         ],
       },
-      goldenRule:
-        "Primeira camada lenta = sucesso garantido. Use 30 mm/s para a maioria; reduza a 20 mm/s em casos difíceis.",
+      goldenRule: "Primeira camada lenta = sucesso garantido. Use 30 mm/s para a maioria. Reduza para 20 mm/s em casos difíceis.",
       summaryTable: {
-        title: "Decisão rápida por material × mesa",
+        title: "Decisão Rápida (Material × Mesa)",
         headers: ["Material", "Mesa", "Velocidade Recomendada"],
         rows: [
           ["PLA", "PEI lisa", "30–40 mm/s"],
@@ -3348,112 +3347,113 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       },
     },
     {
-      name: "Preenchimento da primeira camada",
-      value: "100 mm/s",
+      name: "Primeira camada › Preenchimento da primeira camada",
+      value: "60 mm/s (40–80 recomendado)",
       whatIs:
-        "Velocidade do infill na primeira camada. Como o infill não é visível, pode ser mais rápido que a parede, mas ainda precisa aderir à mesa.",
+        "Define a velocidade do infill (preenchimento) na primeira camada. Geralmente é mais rápido que a parede externa, mas ainda mais lento que as outras camadas. Por ser interno, não precisa do mesmo cuidado estético da parede.",
       whyAdjust:
-        "Equilibra tempo de impressão e adesão da base interna. Geralmente 1,5–2× mais rápido que a parede externa da primeira camada.",
+        "O infill da primeira camada não é visível, então pode ir mais rápido — mas ainda precisa aderir bem à mesa. Regra: 1,5–2× mais rápido que a parede externa da primeira camada.",
       optionsTable: {
         headers: ["Velocidade", "Efeito", "Quando Usar"],
         rows: [
-          ["20–40 mm/s", "Lenta", "Materiais difíceis"],
           ["40–60 mm/s", "Recomendado", "Uso geral"],
           ["60–80 mm/s", "Rápida", "Mesas perfeitas"],
+          ["20–40 mm/s", "Lenta", "Materiais difíceis"],
         ],
       },
-      influences: "Tempo da primeira camada e adesão das regiões internas.",
-      generates: "Base interna firme sem comprometer a velocidade total.",
-      goldenRule: "Mantenha 1,5–2× a velocidade da parede externa da primeira camada.",
+      influences: "Adesão do infill da primeira camada, tempo total da camada inicial e qualidade da base interna.",
+      generates: "Infill da base bem aderido e firme, servindo como apoio estável para as camadas seguintes.",
+      goldenRule: "1,5–2× a velocidade da parede externa da primeira camada.",
     },
     {
-      name: "Velocidade de deslocamento da primeira camada",
-      value: "100% (mm/s)",
+      name: "Primeira camada › Velocidade de deslocamento da primeira camada",
+      value: "100% (50–80 mm/s na prática)",
       whatIs:
-        "Velocidade dos deslocamentos (sem extrusão) durante a primeira camada. Deslocamentos rápidos podem arrastar ou derrubar linhas ainda moles.",
+        "Define a velocidade dos movimentos aéreos (travel) durante a primeira camada. Como a primeira camada ainda está mole, deslocamentos rápidos podem arrastar plástico ou derrubar partes recém-impressas.",
       whyAdjust:
-        "Reduzir evita marcas, arrastamentos e descolamentos antes da camada esfriar.",
+        "Travel alto na primeira camada cria marcas, arranca linhas e pode descolar trechos. Manter <100 mm/s evita esses problemas.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
           ["50–80 mm/s", "Seguro, sem marcas", "Uso geral"],
           ["80–120 mm/s", "Rápido", "Peças pequenas"],
-          ["120+ mm/s", "Muito rápido", "Risco de marcas e arrastamentos"],
+          ["120+ mm/s", "Muito rápido", "Risco de marcas"],
         ],
       },
-      influences: "Integridade das linhas recém depositadas na primeira camada.",
-      generates: "Primeira camada limpa, sem riscos nem deslocamentos.",
+      influences: "Marcas na primeira camada, risco de arrancar trechos recém-impressos, tempo total da camada inicial.",
+      generates: "Travel moderado = primeira camada limpa sem marcas de deslocamento.",
       goldenRule: "Mantenha abaixo de 100 mm/s na primeira camada.",
     },
     {
-      name: "Número de camadas lentas",
+      name: "Primeira camada › Número de camadas lentas",
       value: "1",
       whatIs:
-        "Quantas camadas mantêm a velocidade reduzida antes de acelerar para a velocidade normal das demais camadas.",
+        "Define quantas camadas iniciais são impressas na velocidade reduzida da primeira camada antes de acelerar para a velocidade normal das outras camadas.",
       whyAdjust:
-        "A transição gradual melhora a adesão e reduz o warping, especialmente em materiais que contraem muito.",
+        "Transição gradual melhora adesão, evita mudanças bruscas de velocidade e reduz risco de warping — fundamental em materiais que contraem muito (ABS, ASA, Nylon).",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
-          ["1", "Padrão", "PLA, uso geral"],
+          ["1", "Padrão", "Uso geral"],
           ["2–3", "Transição suave", "Peças grandes, ABS"],
           ["4–5", "Transição muito suave", "Materiais que contraem muito"],
         ],
       },
-      influences: "Risco de warping e qualidade da base.",
-      generates: "Aceleração progressiva sem choque térmico ou mecânico.",
-      goldenRule: "1 camada para PLA; 2–3 para ABS. A transição gradual reduz o warping.",
+      influences: "Risco de warping, qualidade das primeiras camadas, tempo total inicial.",
+      generates: "Mais camadas lentas = peça com base mais firme e menos warping em materiais difíceis.",
+      goldenRule: "1 camada para PLA. 2–3 para ABS. A transição gradual reduz o warping.",
     },
 
     // ───────────── MÓDULO 2: VELOCIDADE DE OUTRAS CAMADAS ─────────────
     {
-      name: "Parede externa",
-      value: "200 mm/s",
+      name: "Outras camadas › Parede externa",
+      value: "50 mm/s (padrão recomendado)",
       whatIs:
-        "Velocidade da parede mais externa — a superfície visível da peça. É o parâmetro que mais afeta a qualidade estética da impressão.",
+        "Velocidade da parede mais externa, a superfície visível da peça. É o parâmetro que mais afeta a qualidade estética da impressão. Analogia: é como pintar um quadro — pintar rápido deixa a tinta irregular; pintar devagar dá acabamento perfeito.",
       whyAdjust:
-        "Velocidades altas geram vibrações que produzem ghosting e marcas. Velocidade lenta = superfície lisa e precisão dimensional maior.",
+        "Velocidades altas causam vibrações que viram ghosting e marcas visíveis. A parede externa deve ser a velocidade MAIS LENTA do perfil — é a linha que define a qualidade final da peça.",
       optionsTable: {
         headers: ["Velocidade", "Efeito", "Quando Usar"],
         rows: [
           ["30–40 mm/s", "Muito lenta", "Alta qualidade estética"],
           ["40–60 mm/s", "Recomendado", "Uso geral, bom equilíbrio"],
           ["60–80 mm/s", "Rápida", "Peças menos críticas"],
-          ["80–120 mm/s", "Muito rápida", "Risco de ghosting e marcas"],
+          ["80–120 mm/s", "Muito rápida", "Risco de ghosting"],
         ],
       },
       influences:
-        "Qualidade estética, precisão dimensional, presença de ghosting e marcas.",
-      influencesList: [
-        "Material (PLA, PETG, ABS, TPU)",
-        "Aceleração configurada",
-        "Temperatura do bico",
-        "Altura da camada",
-        "Input Shaping ativado ou não",
-      ],
+        "Material (PLA 40–60, PETG 30–50, ABS 40–60, TPU 15–25, Nylon 30–50), aceleração (baixa permite mais velocidade; alta exige menos), temperatura (bico quente aceita mais velocidade) e altura da camada (fina pede menos; grossa aceita mais).",
       generates:
-        "Velocidade baixa = superfície espelhada. Velocidade alta = ghosting visível e menor precisão.",
+        "Velocidade alta = ghosting visível (fantasmas da geometria na parede) e menor precisão dimensional. Velocidade baixa = superfície espelhada e máxima precisão. Precisão e qualidade são inversamente proporcionais à velocidade.",
+      generatesTable: {
+        headers: ["Configuração", "Resultado Visual", "Quando Usar"],
+        rows: [
+          ["30–40 mm/s", "Superfície espelhada, sem marcas", "Alta qualidade"],
+          ["50–60 mm/s", "Boa qualidade, equilibrada", "Uso geral"],
+          ["70–80 mm/s", "Qualidade aceitável, marcas leves", "Protótipos"],
+          ["100+ mm/s", "Qualidade baixa, ghosting", "Internas, estruturais"],
+        ],
+      },
       integrationsTable: {
         headers: ["Parâmetro", "Relação", "Ajuste Recomendado"],
         rows: [
           ["Aceleração", "Deve ser baixa", "500–1000 mm/s²"],
-          ["Temperatura", "Mais quente = mais rápido", "Ajustar com a velocidade"],
-          ["Fluxo", "Velocidade alta = fluxo alto", "Calibrar ambos juntos"],
-          ["Input Shaping", "Permite velocidades maiores", "Ativar para acelerar"],
+          ["Temperatura", "Mais quente = mais rápido", "Ajustar conforme velocidade"],
+          ["Fluxo", "Velocidade alta = fluxo alto", "Calibrar ambos"],
+          ["Input Shaping", "Permite velocidades maiores", "Ativar para velocidade"],
           ["Jerk", "Deve ser baixo", "5–8 mm/s"],
         ],
       },
       howTo: [
-        {
-          step: "1",
-          path: "Prepare › Velocidade › Velocidade de outras camadas › Parede externa",
-          desc: "Comece com 50 mm/s. Suba a 60 mm/s se a qualidade for boa; reduza a 40 mm/s se houver ghosting.",
-        },
+        { step: "1. Abrir OrcaSlicer 2.4", path: "Aba Prepare", desc: "Abra o projeto" },
+        { step: "2. Painel esquerdo", path: "Velocidade › Velocidade de outras camadas", desc: "Expanda a seção" },
+        { step: "3. Localizar parâmetro", path: "Parede externa", desc: "Campo em mm/s" },
+        { step: "4. Definir valor", path: "Ex: 50 mm/s", desc: "Comece com 50 (PLA); aumente para 60 se qualidade boa; reduza para 40 se houver ghosting" },
       ],
       example: {
-        piece: "Busto decorativo em PLA",
-        config: "Parede externa = 40 mm/s",
-        result: "Superfície perfeita, sem marcas nem ghosting.",
+        piece: "Busto decorativo / Caixa organizadora / Suporte estrutural",
+        config: "Busto = 40 mm/s · Caixa = 50 mm/s · Suporte = 70 mm/s",
+        result: "Busto: superfície perfeita sem marcas. Caixa: boa qualidade em tempo moderado. Suporte: qualidade aceitável e rápida.",
       },
       errorsTable: {
         headers: ["Sintoma", "Causa", "Solução"],
@@ -3464,10 +3464,9 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
           ["Tempo de impressão alto", "Velocidade muito baixa", "Aumentar para 50–60 mm/s"],
         ],
       },
-      goldenRule:
-        "Parede externa lenta = qualidade. 50 mm/s para a maioria; reduza a 40 mm/s para perfeição.",
+      goldenRule: "Parede externa lenta = qualidade. 50 mm/s para a maioria. Reduza para 40 mm/s para perfeição.",
       summaryTable: {
-        title: "Decisão rápida por material e qualidade",
+        title: "Decisão Rápida (Qualidade × Material)",
         headers: ["Qualidade", "PLA", "PETG", "ABS", "TPU"],
         rows: [
           ["Excelente", "35–45", "25–35", "30–40", "10–15"],
@@ -3477,31 +3476,31 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       },
     },
     {
-      name: "Parede interna",
-      value: "300 mm/s",
+      name: "Outras camadas › Parede interna",
+      value: "150 mm/s (80–250 conforme máquina)",
       whatIs:
-        "Velocidade das paredes internas — estruturais e não visíveis externamente. Foco em resistência e eficiência, não estética.",
+        "Velocidade das paredes internas — estruturais e não visíveis externamente. Como ficam atrás da parede externa, não precisam de acabamento estético perfeito, apenas resistência e boa coesão.",
       whyAdjust:
-        "Pode ser 2–3× mais rápida que a parede externa, economizando tempo total sem prejudicar acabamento.",
+        "Pode ir muito mais rápido que a externa porque não é visível. Foco em eficiência e resistência interna. Regra: 2–3× a velocidade da parede externa.",
       optionsTable: {
         headers: ["Velocidade", "Efeito", "Quando Usar"],
         rows: [
           ["80–120 mm/s", "Rápida", "Eficiência máxima"],
           ["120–200 mm/s", "Muito rápida", "Peças estruturais"],
-          ["150–250 mm/s", "Extrema", "Impressoras rápidas (CoreXY, Klipper)"],
+          ["150–250 mm/s", "Extrema", "Impressoras rápidas"],
         ],
       },
-      influences: "Tempo total de impressão e capacidade de fluxo do hotend.",
-      generates: "Tempo de impressão drasticamente menor sem perda de qualidade externa.",
-      goldenRule: "Parede interna 2–3× mais rápida que a externa.",
+      influences: "Tempo total de impressão, coesão entre paredes internas e externas, capacidade do hotend.",
+      generates: "Tempo total reduzido sem comprometer qualidade visível.",
+      goldenRule: "2–3× a velocidade da parede externa. Sem custo estético.",
     },
     {
-      name: "Pequenos perímetros",
-      value: "50% (mm/s)",
+      name: "Outras camadas › Pequenos perímetros",
+      value: "50% da parede normal",
       whatIs:
-        "Velocidade reduzida aplicada a perímetros pequenos (detalhes finos, pontas), expressa em % da velocidade da parede externa.",
+        "Define uma velocidade reduzida (como porcentagem) para áreas pequenas — detalhes finos, pontas, recortes pequenos. Áreas pequenas exigem mais precisão; reduzir velocidade evita 'blobs' e perda de definição.",
       whyAdjust:
-        "Áreas pequenas têm pouco tempo para resfriar entre passagens; velocidade reduzida evita blobs e melhora a precisão.",
+        "Em detalhes finos, a velocidade normal é alta demais para o material esfriar entre passes próximos, gerando blobs. Reduzir compensa.",
       optionsTable: {
         headers: ["Valor", "Efeito", "Quando Usar"],
         rows: [
@@ -3510,109 +3509,109 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
           ["100%", "Velocidade normal", "Sem detalhes finos"],
         ],
       },
-      influences: "Qualidade de pontas, colunas finas e detalhes pequenos.",
-      generates: "Detalhes finos limpos, sem blobs ou deformações.",
-      goldenRule: "50% para detalhes críticos; 75% para uso geral.",
+      influences: "Definição de detalhes finos, presença de blobs, qualidade em pontas e recortes.",
+      generates: "Detalhes pequenos com definição preservada, sem blobs.",
+      goldenRule: "50% é o sweet spot para detalhes finos.",
     },
     {
-      name: "Limiar de pequenos perímetros",
+      name: "Outras camadas › Limiar de pequenos perímetros",
       value: "0 mm",
       whatIs:
-        "Comprimento máximo de um perímetro para ser considerado “pequeno” e receber a velocidade reduzida.",
+        "Define o tamanho máximo (em mm) de uma área para ser considerada 'pequena' e receber a velocidade reduzida. Acima desse limiar, mesmo perímetros curtos usam velocidade normal.",
       whyAdjust:
-        "Define quais áreas são desaceleradas. 0 mm desativa o tratamento; valores maiores ampliam o alcance.",
+        "Aumentar faz mais áreas se beneficiarem da velocidade reduzida; diminuir ou zerar mantém velocidade normal em quase tudo.",
       optionsTable: {
         headers: ["Valor", "Efeito"],
         rows: [
-          ["0 mm", "Nenhum perímetro considerado pequeno"],
-          ["5–10 mm", "Pequenas áreas recebem velocidade reduzida"],
+          ["0 mm", "Todas as áreas com velocidade normal"],
+          ["5–10 mm", "Pequenas áreas com velocidade reduzida"],
         ],
       },
-      influences: "Quais regiões da peça são impressas em velocidade reduzida.",
-      generates: "Controle preciso de onde aplicar o tratamento de pequenos perímetros.",
-      goldenRule: "Comece com 0 mm; ative apenas se houver problemas em detalhes finos.",
+      influences: "Quais perímetros recebem velocidade reduzida, qualidade em detalhes e tempo total.",
+      generates: "Definição preservada em áreas curtas quando ajustado para 5–10 mm.",
+      goldenRule: "5–10 mm para peças com muitos detalhes finos.",
     },
     {
-      name: "Preenchimento esparso",
-      value: "300 mm/s",
+      name: "Outras camadas › Preenchimento esparso",
+      value: "200 mm/s (150–350 conforme máquina)",
       whatIs:
-        "Velocidade do infill interno da peça. Como é interno e não visível, pode ser a velocidade mais alta do perfil.",
+        "Velocidade do infill esparso da peça. Como é totalmente interno e invisível, pode ser a velocidade MAIS ALTA do perfil — ganho direto de tempo sem perda visual.",
       whyAdjust:
-        "É o maior ganho de tempo possível. Limitado apenas pela capacidade volumétrica do hotend.",
+        "Infill é onde se ganha mais tempo. Regra: 3–5× a velocidade da parede externa. Limitado apenas pela capacidade do hotend.",
       optionsTable: {
         headers: ["Velocidade", "Efeito", "Quando Usar"],
         rows: [
           ["150–250 mm/s", "Rápida", "Uso geral"],
           ["250–350 mm/s", "Muito rápida", "Impressoras rápidas"],
-          ["350+ mm/s", "Extrema", "Fazendas de impressão / hotends de alto fluxo"],
+          ["350+ mm/s", "Extrema", "Fazendas de impressão"],
         ],
       },
-      influences: "Tempo total de impressão e demanda volumétrica do hotend.",
-      generates: "Maior ganho de tempo do perfil, sem impacto visível.",
-      goldenRule: "Infill 3–5× mais rápido que a parede externa, respeitando o fluxo máximo do hotend.",
+      influences: "Tempo total da impressão (infill costuma representar 40–60% do tempo), capacidade do hotend, qualidade interna (geralmente irrelevante visualmente).",
+      generates: "Redução drástica do tempo total sem afetar qualidade externa.",
+      goldenRule: "3–5× a velocidade da parede externa. É onde se ganha mais tempo.",
     },
     {
-      name: "Preenchimento sólido",
-      value: "250 mm/s",
+      name: "Outras camadas › Preenchimento sólido",
+      value: "150 mm/s",
       whatIs:
-        "Velocidade do infill denso que conecta o infill esparso às paredes (topo, base, sólidos internos).",
+        "Velocidade do infill denso (100%) que conecta o infill esparso às paredes — a 'cola' estrutural entre regiões. Precisa de boa adesão para garantir transferência de carga entre infill e paredes.",
       whyAdjust:
-        "Precisa de boa adesão à parede e cobertura uniforme; velocidade moderada equilibra acabamento e tempo.",
+        "Sólido demais rápido = adesão fraca entre regiões. Mais lento que o esparso, mais rápido que a parede externa.",
       optionsTable: {
         headers: ["Velocidade", "Efeito"],
         rows: [
-          ["100–150 mm/s", "Moderada — melhor acabamento"],
-          ["150–200 mm/s", "Rápida — equilíbrio"],
+          ["100–150 mm/s", "Moderada"],
+          ["150–200 mm/s", "Rápida"],
         ],
       },
-      influences: "Adesão entre infill e parede, qualidade de topos e bases.",
-      generates: "Topos e bases sólidos sem vazios visíveis.",
-      goldenRule: "Mantenha entre a velocidade do infill esparso e a da parede externa.",
+      influences: "Adesão entre infill e paredes, resistência mecânica da peça.",
+      generates: "Conexão firme entre regiões internas e paredes externas.",
+      goldenRule: "Mantenha entre a parede externa e o infill esparso. 150 mm/s é seguro.",
     },
     {
-      name: "Superfície superior",
-      value: "200 mm/s",
+      name: "Outras camadas › Superfície superior",
+      value: "50 mm/s (30–80 recomendado)",
       whatIs:
-        "Velocidade da última camada superior, visível externamente. Define a qualidade do acabamento de topo.",
+        "Velocidade da última camada superior — a face de TOPO visível da peça. Como é uma superfície estética crítica, exige velocidade reduzida para acabamento liso. Pode ser combinada com Ironing.",
       whyAdjust:
-        "Velocidade lenta produz superfície lisa; pode ser combinada com Ironing para acabamento ainda melhor.",
+        "Velocidade alta no topo deixa textura visível, linhas tortas e cantos mal fechados. Reduzir garante face plana e brilhante.",
       optionsTable: {
         headers: ["Velocidade", "Efeito"],
         rows: [
           ["30–50 mm/s", "Superfície lisa"],
-          ["50–80 mm/s", "Equilíbrio entre tempo e acabamento"],
-          ["80–120 mm/s", "Rápida, com possíveis marcas"],
+          ["50–80 mm/s", "Equilíbrio"],
+          ["80–120 mm/s", "Rápida"],
         ],
       },
-      influences: "Qualidade visual da face superior da peça.",
-      generates: "Acabamento de topo uniforme, sem linhas marcadas.",
-      goldenRule: "Mantenha entre 30–50 mm/s para topos perfeitos.",
+      influences: "Acabamento da face superior, eficácia do Ironing, presença de pinholes.",
+      generates: "Topo liso e uniforme, especialmente com Ironing ativo.",
+      goldenRule: "Trate como a parede externa: lenta = bonita.",
     },
     {
-      name: "Preenchimento de vão",
-      value: "250 mm/s",
+      name: "Outras camadas › Preenchimento de vão",
+      value: "150 mm/s",
       whatIs:
-        "Velocidade das linhas que preenchem vãos estreitos entre paredes (gap fill).",
+        "Velocidade das linhas que preenchem vãos pequenos entre paredes (gap fill) — usadas quando a geometria deixa espaços que não cabem uma linha inteira mas precisam ser preenchidos.",
       whyAdjust:
-        "Vãos são imprevisíveis em largura; velocidade moderada evita superextrusão e blobs.",
+        "Gap fill geralmente são linhas curtas e irregulares — velocidade muito alta gera blobs e cantos sujos.",
       optionsTable: {
         headers: ["Velocidade", "Efeito"],
         rows: [
-          ["100–150 mm/s", "Moderada — mais segura"],
+          ["100–150 mm/s", "Moderada"],
           ["150–250 mm/s", "Rápida"],
         ],
       },
-      influences: "Qualidade de vãos finos entre paredes.",
-      generates: "Vãos preenchidos sem blobs ou superextrusão.",
-      goldenRule: "Mantenha moderada para evitar artefatos em vãos.",
+      influences: "Qualidade visual em transições parede-vão, presença de blobs em geometrias finas.",
+      generates: "Vãos preenchidos com firmeza sem blobs.",
+      goldenRule: "Mantenha próximo à velocidade do sólido interno.",
     },
     {
-      name: "Suporte",
-      value: "150 mm/s",
+      name: "Outras camadas › Suporte",
+      value: "150 mm/s (80–200 conforme tipo)",
       whatIs:
-        "Velocidade das estruturas de suporte. Como são descartadas, não precisam de alta qualidade.",
+        "Velocidade das estruturas de suporte. Como suportes são descartáveis e não fazem parte da peça final, podem ser rápidos — qualidade visual não importa.",
       whyAdjust:
-        "Acelerar economiza tempo sem impacto na peça final.",
+        "Ganho de tempo direto. Único limite é não derrubar a estrutura por velocidade excessiva (causa vibração).",
       optionsTable: {
         headers: ["Velocidade", "Efeito"],
         rows: [
@@ -3620,38 +3619,38 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
           ["150–200 mm/s", "Muito rápida"],
         ],
       },
-      influences: "Tempo total de impressão de peças com suporte.",
-      generates: "Suportes funcionais com tempo mínimo.",
-      goldenRule: "Acelere o máximo que o hotend permitir — suporte é descartado.",
+      influences: "Tempo total da impressão, estabilidade do suporte durante a impressão.",
+      generates: "Suportes rápidos sem comprometer a estabilidade da peça.",
+      goldenRule: "Rápido — suporte vai para o lixo.",
     },
     {
-      name: "Interface de suporte",
-      value: "80 mm/s",
+      name: "Outras camadas › Interface de suporte",
+      value: "50 mm/s (30–80 recomendado)",
       whatIs:
-        "Velocidade da camada de interface entre suporte e peça. Define a qualidade da superfície apoiada e a facilidade de remoção.",
+        "Velocidade da camada de interface do suporte — a parte que TOCA a face inferior da peça. Define a qualidade da superfície suportada e a facilidade de remoção.",
       whyAdjust:
-        "Velocidade reduzida melhora o acabamento da face apoiada e facilita a separação.",
+        "Velocidade lenta na interface = face inferior lisa e suporte que solta limpo. Velocidade alta = face áspera e suporte fundido.",
       optionsTable: {
         headers: ["Velocidade", "Efeito"],
         rows: [
-          ["30–50 mm/s", "Interface limpa, fácil remoção"],
+          ["30–50 mm/s", "Interface limpa"],
           ["50–80 mm/s", "Equilíbrio"],
-          ["80–120 mm/s", "Rápida — interface mais marcada"],
+          ["80–120 mm/s", "Rápida"],
         ],
       },
-      influences: "Qualidade da superfície apoiada e esforço de remoção.",
-      generates: "Faces apoiadas limpas e suportes que se separam facilmente.",
-      goldenRule: "Mantenha entre 30–50 mm/s para interfaces limpas.",
+      influences: "Acabamento da face suportada, facilidade de remoção do suporte.",
+      generates: "Face inferior da peça lisa e suporte que solta com puxão limpo.",
+      goldenRule: "Trate como parede externa — lenta = face suportada bonita.",
     },
 
     // ───────────── MÓDULO 3: VELOCIDADE EM SALIÊNCIAS ─────────────
     {
-      name: "Reduzir velocidade em saliências",
+      name: "Saliências › Reduzir velocidade em saliências",
       value: "Ativado",
       whatIs:
-        "Reduz automaticamente a velocidade quando o bico imprime sobre saliências (overhangs), onde a camada anterior oferece pouco apoio.",
+        "Reduz automaticamente a velocidade quando o bico imprime sobre overhangs (saliências). Permite que o cooling solidifique o plástico antes que ele caia, evitando droop e stringing.",
       whyAdjust:
-        "Velocidade reduzida dá tempo para o material esfriar antes de avançar, evitando que a saliência caia ou enrole.",
+        "Velocidade normal em saliência = plástico mole cai, gerando droop e cabelos. Velocidade reduzida + cooling 100% = overhangs limpos até 60–70°.",
       optionsTable: {
         headers: ["Opção", "Efeito", "Quando Usar"],
         rows: [
@@ -3659,19 +3658,30 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
           ["Desativado", "Mantém velocidade normal", "Peças sem saliências"],
         ],
       },
-      influences: "Qualidade de saliências e necessidade de suportes.",
-      generates: "Saliências limpas, sem queda ou enrolamento.",
-      goldenRule: "Ative sempre que houver overhangs — saliências precisam de velocidade reduzida.",
+      influences: "Qualidade de overhangs sem suporte, necessidade de árvores de suporte, acabamento de faces inclinadas.",
+      generates: "Overhangs limpos sem droop ou stringing, especialmente em PLA.",
+      goldenRule: "Ative para peças com overhangs. Saliências precisam de velocidade reduzida.",
+    },
+
+    // ───────────── RESUMO TELA 31 ─────────────
+    {
+      name: "Resumo › Parâmetros principais da Tela 31",
+      value: "Tabela consolidada",
+      whatIs:
+        "Visão consolidada de todos os parâmetros da Tela 31 com função, valor padrão e impacto principal. Use como referência rápida na hora de calibrar um novo perfil.",
+      influences: "Estratégia global de velocidade da impressora.",
+      generates: "Calibração mais rápida e consistente entre perfis.",
+      goldenRule: "Parede externa lenta + infill rápido + primeira camada lenta = perfil equilibrado.",
       summaryTable: {
-        title: "Resumo dos parâmetros da Tela 31",
+        title: "Resumo da Tela 31",
         headers: ["Parâmetro", "Função", "Valor Padrão", "Impacto"],
         rows: [
-          ["Primeira camada", "Velocidade da base", "30–50 mm/s", "Adesão"],
+          ["Primeira camada", "Velocidade da base", "30–50 mm/s", "Adesão da peça"],
           ["Parede externa", "Velocidade da superfície", "50–60 mm/s", "Qualidade estética"],
           ["Parede interna", "Velocidade estrutural", "150–200 mm/s", "Eficiência"],
           ["Preenchimento esparso", "Velocidade do infill", "200–300 mm/s", "Tempo de impressão"],
           ["Superfície superior", "Velocidade do topo", "50–80 mm/s", "Acabamento"],
-          ["Reduzir velocidade em saliências", "Overhangs", "Ativado", "Qualidade das saliências"],
+          ["Reduzir vel. em saliências", "Overhangs", "Ativado", "Qualidade de saliências"],
         ],
       },
     },
