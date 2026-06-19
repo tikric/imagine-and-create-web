@@ -4183,6 +4183,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         { label: "Honeycomb", desc: "Estrutura hexagonal densa — estável para suportes que precisam de rigidez" },
       ],
       influences: "Acabamento da face inferior, consumo de filamento, estabilidade do suporte.",
+      generates: "Orgânico deixa a peça visualmente limpa; Grid produz suporte sólido e previsível; Lightning é o mais econômico.",
       goldenRule: "Orgânico para peças estéticas. Grid para suportes estruturais.",
     },
     // ───────── AULA 4 ─────────
