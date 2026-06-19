@@ -4849,49 +4849,290 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 51 — MULTIMATERIAL: Torre de Preparo (Wipe Tower)
   // ====================================================================
   "tela-51-multimaterial-torre-preparo": [
+    // ───────── AULA 1 ─────────
     {
-      name: "Ativar Torre de Preparo",
-      value: "Ativado em multimaterial",
-      whatIs: "Habilita a geração da Wipe Tower — estrutura auxiliar onde a impressora purga o material antigo durante cada troca de cor/filamento. Sem ela, a primeira porção da nova cor sai contaminada na peça.",
-      whyAdjust: "Obrigatória em AMS, MMU e qualquer setup multi-filamento. Sem torre, a transição entre cores fica com 'fantasma' da cor anterior.",
+      name: "Ativar (Enable Prime Tower)",
+      value: "Checkbox",
+      whatIs:
+        "Interruptor que liga ou desliga a geração da torre de purga (Prime Tower). A torre é uma estrutura impressa ao lado do modelo que serve como 'ponto de limpeza' para o bico durante trocas de filamento.",
       influences: "Pureza das cores após cada troca, desperdício de filamento, tempo extra de impressão.",
-      generates: "Sem torre em troca AMS = primeiros 10–30mm da nova cor saem misturados, manchando a peça.",
-      goldenRule: "Sempre ativada em multi-cor. Em mono-filamento, manter desativada (economiza tempo e filamento).",
+      generates: "Sem torre em multimaterial = primeiros 10–30 mm da nova cor saem misturados, manchando a peça.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Gera torre ao lado da peça", "Impressões com múltiplos filamentos"],
+          ["Desativado", "Sem torre", "Impressões com um único filamento"],
+        ],
+      },
+      goldenRule: "Sempre ative em multimaterial. Em mono-filamento, mantenha desativada (economiza tempo e filamento).",
     },
+    // ───────── AULA 2 ─────────
     {
-      name: "Largura da torre",
+      name: "Pular pontos (Skip Points)",
+      value: "Checkbox",
+      whatIs:
+        "Permite pular etapas de pós-processamento de purga, reduzindo tempo e desperdício. Especialmente útil em impressoras IDEX e trocas entre cores próximas.",
+      influences: "Tempo total da impressão, consumo de filamento, qualidade da transição entre cores.",
+      generates: "Ativado = menos paradas na torre; desativado = purga completa em todas as trocas.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Pula etapas desnecessárias", "IDEX, trocas entre cores similares"],
+          ["Desativado", "Purga completa", "Cores muito contrastantes"],
+        ],
+      },
+      goldenRule: "Ative em máquinas IDEX para otimizar tempo.",
+    },
+    // ───────── AULA 3 ─────────
+    {
+      name: "Ativar recursos da interface da torre",
+      value: "Checkbox",
+      whatIs: "Habilita funcionalidades avançadas na interface (topo/base) da torre, melhorando estabilidade e eficiência da purga.",
+      influences: "Estabilidade da torre, qualidade da purga em camadas críticas.",
+      generates: "Ativo = torre mais robusta em pontos de troca; inativo = torre simples.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Recursos avançados", "Impressões complexas"],
+          ["Desativado", "Interface básica", "Uso geral"],
+        ],
+      },
+      goldenRule: "Ative em peças complexas com muitas trocas.",
+    },
+    // ───────── AULA 4 ─────────
+    {
+      name: "Nervuras internas (Internal Ribs)",
+      value: "Checkbox",
+      whatIs: "Adiciona estruturas de reforço internas na torre, aumentando a estabilidade vertical.",
+      influences: "Estabilidade da torre em altura, consumo extra de filamento.",
+      generates: "Torres altas sem nervuras tombam; com nervuras ficam rígidas como uma viga em I.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Torre mais estável", "Torres altas (>80 mm)"],
+          ["Desativado", "Torre simples", "Torres baixas"],
+        ],
+      },
+      goldenRule: "Ative sempre que a torre passar de 80 mm de altura.",
+    },
+    // ───────── AULA 5 ─────────
+    {
+      name: "Largura da torre (Width)",
       value: "30 mm (padrão)",
-      whatIs: "Dimensão lateral da torre quadrada. Define quanto volume de purga cabe em cada camada da torre.",
-      whyAdjust: "Torre pequena = pouca área para purgar, exige altura maior. Torre grande = mais área, menos altura, mas ocupa mais espaço da mesa.",
-      influences: "Estabilidade da torre, área útil da mesa, fluxo de purga por camada.",
-      generates: "30mm × 30mm = padrão estável para até 4 cores. Para 8+ cores, aumentar para 40–50mm.",
-      goldenRule: "2 cores: 25mm. 4 cores: 30mm. 8+ cores ou muita saturação: 40–50mm.",
+      whatIs: "Dimensão horizontal da torre quadrada. Define quanto volume de purga cabe por camada.",
+      whyAdjust: "Torre pequena = pouca área de purga, precisa ser mais alta. Torre grande = mais área, menos altura, mas ocupa mais mesa.",
+      influences: "Estabilidade, área útil da mesa, fluxo de purga por camada.",
+      generates: "20 mm = 2 cores; 30 mm = padrão até 4 cores; 40–60 mm = 8+ cores ou alta saturação.",
+      optionsTable: {
+        headers: ["Largura", "Efeito", "Quando usar"],
+        rows: [
+          ["20–30 mm", "Torre pequena", "Poucas trocas"],
+          ["30–40 mm", "Padrão", "Uso geral"],
+          ["40–60 mm", "Torre grande", "Muitas trocas / cores contrastantes"],
+        ],
+      },
+      goldenRule: "2 cores: 25 mm. 4 cores: 30 mm. 8+ cores: 40–50 mm.",
     },
+    // ───────── AULA 6 ─────────
     {
-      name: "Volume de preparo (purga)",
-      value: "30 mm³",
-      whatIs: "Quantidade mínima de filamento extrudada na torre a cada troca, suficiente para limpar o filamento anterior do bico.",
-      whyAdjust: "Pouco = cor contaminada. Muito = desperdício. Volume varia conforme par de cores (claro→escuro precisa menos; escuro→claro precisa muito mais).",
-      influences: "Pureza da cor após troca, desperdício, tempo.",
-      generates: "Branco→preto: 30mm³ basta. Preto→branco: precisa 80–120mm³.",
-      goldenRule: "Calibrar matriz de purga no Orca (Calibrate › Flushing volumes) é a única forma de otimizar de verdade.",
+      name: "Volume de preparo (Prime Volume)",
+      value: "30 mm³ (mínimo)",
+      whatIs: "Quantidade de filamento extrudada na torre a cada troca, suficiente para limpar o material anterior do bico.",
+      whyAdjust: "Pouco = cor contaminada. Muito = desperdício. Varia drasticamente conforme o par de cores (claro→escuro precisa menos; escuro→claro precisa muito mais).",
+      influences: "Pureza da cor após troca, desperdício, tempo total.",
+      generates: "Branco→preto: ~30 mm³ basta. Preto→branco: 80–120 mm³.",
+      optionsTable: {
+        headers: ["Volume", "Efeito", "Quando usar"],
+        rows: [
+          ["150–200 mm³", "Purga mínima", "Cores similares"],
+          ["200–300 mm³", "Padrão", "Uso geral"],
+          ["300–500 mm³", "Purga máxima", "Branco ↔ preto, alto contraste"],
+        ],
+      },
+      goldenRule: "Calibre a matriz de purga em Calibrate › Flushing Volumes — é a única forma de otimizar de verdade.",
     },
+    // ───────── AULA 7 ─────────
     {
-      name: "Purgar nos suportes (Avançado)",
-      value: "Ativado",
-      whatIs: "Em vez de jogar a purga na torre dedicada, usa o filamento purgado para imprimir as estruturas de suporte. O suporte fica multicolor, mas isso é jogado fora depois.",
-      whyAdjust: "Economia ENORME: a torre fica muito menor (ou sumirá) porque a purga vira material útil de suporte.",
-      influences: "Tamanho da torre, desperdício total, viabilidade econômica do multimaterial.",
-      generates: "Peça AMS 4 cores: sem este recurso = 25g de desperdício na torre. Com purgar nos suportes = 8g.",
-      goldenRule: "Sempre ativado se a peça tiver suporte. Economia de até 60% do desperdício multimaterial.",
+      name: "Largura da borda (Brim Width)",
+      value: "10 mm (padrão)",
+      whatIs: "Largura da borda (brim) que a torre cria na mesa para aumentar a adesão.",
+      influences: "Adesão da torre à mesa, risco de descolamento durante a impressão.",
+      generates: "Brim 5 mm = torre baixa; 10 mm = padrão; 15–20 mm = torre alta sem risco de tombar.",
+      optionsTable: {
+        headers: ["Largura", "Estabilidade", "Quando usar"],
+        rows: [
+          ["5 mm", "Básica", "Torres baixas"],
+          ["10 mm", "Padrão", "Uso geral"],
+          ["15–20 mm", "Máxima", "Torres altas"],
+        ],
+      },
+      goldenRule: "10 mm para a maioria. Aumente para torres altas ou com muitas trocas.",
     },
+    // ───────── AULA 8 ─────────
     {
-      name: "Parede chanfrada (Bevel)",
-      value: "Ativada",
-      whatIs: "Inclina as paredes da torre formando um cone trapezoidal. Facilita drasticamente a remoção da torre da mesa após a impressão.",
+      name: "Vão entre preenchimentos (Gap between Infills)",
+      value: "2–3 mm (padrão)",
+      whatIs: "Espaço entre as linhas de preenchimento interno da torre.",
+      influences: "Densidade da torre, consumo, eficiência da purga.",
+      generates: "Menor vão = torre mais densa e estável; maior vão = mais econômico mas frágil.",
+      optionsTable: {
+        headers: ["Vão", "Densidade", "Quando usar"],
+        rows: [
+          ["1–2 mm", "Densa", "Purga eficiente"],
+          ["2–3 mm", "Padrão", "Uso geral"],
+          ["3–5 mm", "Esparsa", "Economia de material"],
+        ],
+      },
+      goldenRule: "2–3 mm equilibra densidade e economia.",
+    },
+    // ───────── AULA 9 ─────────
+    {
+      name: "Ângulo de rotação da torre de limpeza",
+      value: "15–30°",
+      whatIs: "Gira a torre a cada camada para distribuir a purga uniformemente e melhorar a estabilidade.",
+      influences: "Estabilidade global da torre, distribuição de cores nas paredes.",
+      generates: "Sem rotação = um lado fica saturado; com rotação = paredes uniformes e torre mais rígida.",
+      optionsTable: {
+        headers: ["Ângulo", "Efeito", "Quando usar"],
+        rows: [
+          ["0°", "Sem rotação", "Torres pequenas"],
+          ["15–30°", "Rotação suave", "Recomendado"],
+          ["45°", "Rotação acentuada", "Torres altas"],
+        ],
+      },
+      goldenRule: "15–30° é o sweet spot para a maioria das impressões multimaterial.",
+    },
+    // ───────── AULA 10 ─────────
+    {
+      name: "Distância máxima de ponte (Max Bridge Length)",
+      value: "10–15 mm (padrão)",
+      whatIs: "Comprimento máximo que uma ponte pode ter dentro da torre sem suporte.",
+      influences: "Integridade das camadas da torre, qualidade das pontes internas.",
+      generates: "Curto = mais conservador; longo = torre mais leve mas risco de pontes ruins.",
+      optionsTable: {
+        headers: ["Distância", "Efeito", "Quando usar"],
+        rows: [
+          ["5–10 mm", "Conservador", "Torres com detalhes"],
+          ["10–15 mm", "Padrão", "Uso geral"],
+          ["15–20 mm", "Agressivo", "Torres grandes"],
+        ],
+      },
+      goldenRule: "10–15 mm para a maioria.",
+    },
+    // ───────── AULA 11 ─────────
+    {
+      name: "Espaçamento das linhas de purga da torre",
+      value: "1–2 mm (padrão)",
+      whatIs: "Distância entre as linhas de purga propriamente ditas (camadas onde o filamento novo é depositado).",
+      influences: "Eficiência da purga, consumo de filamento.",
+      generates: "Espaçamento pequeno = purga densa e completa; grande = economia de filamento.",
+      optionsTable: {
+        headers: ["Espaçamento", "Densidade", "Quando usar"],
+        rows: [
+          ["0,5–1 mm", "Muito densa", "Purga completa"],
+          ["1–2 mm", "Padrão", "Uso geral"],
+          ["2–3 mm", "Esparsa", "Economia"],
+        ],
+      },
+      goldenRule: "1–2 mm cobre 90% dos casos.",
+    },
+    // ───────── AULA 12 ─────────
+    {
+      name: "Fluxo extra para purga (Extra Purge Flow)",
+      value: "100–150% (recomendado)",
+      whatIs: "Multiplicador de fluxo aplicado durante a purga para garantir que o filamento anterior seja completamente expelido.",
+      influences: "Pureza da cor após troca, pressão no bico, qualidade da torre.",
+      generates: "100% = fluxo normal; 120–150% = purga reforçada; >150% = necessário para PETG/TPU pegajosos.",
+      optionsTable: {
+        headers: ["Fluxo extra", "Efeito", "Quando usar"],
+        rows: [
+          ["100%", "Fluxo normal", "Cores similares"],
+          ["120–150%", "Recomendado", "Uso geral"],
+          ["150–200%", "Fluxo máximo", "PETG, TPU, materiais pegajosos"],
+        ],
+      },
+      goldenRule: "120–150% para PLA, 150–200% para PETG/TPU.",
+    },
+    // ───────── AULA 13 ─────────
+    {
+      name: "Velocidade máxima de impressão da torre",
+      value: "80–120 mm/s (padrão)",
+      whatIs: "Velocidade máxima usada ao imprimir a torre de purga.",
+      influences: "Tempo total, qualidade das paredes da torre, estabilidade.",
+      generates: "Lenta = paredes lisas mas torre demorada; rápida = ganho de tempo mas risco de torre frágil.",
+      optionsTable: {
+        headers: ["Velocidade", "Efeito", "Quando usar"],
+        rows: [
+          ["50–80 mm/s", "Lenta", "Torres detalhadas"],
+          ["80–120 mm/s", "Padrão", "Uso geral"],
+          ["120–200 mm/s", "Rápida", "Torres grandes / máquinas Core XY"],
+        ],
+      },
+      goldenRule: "80–120 mm/s é o equilíbrio entre tempo e qualidade.",
+    },
+    // ───────── AULA 14 ─────────
+    {
+      name: "Tipo de parede (Wall Type)",
+      value: "Padrão / Espiral / Nervura",
+      whatIs: "Define como as paredes da torre são impressas — paredes normais, espiral contínua ou paredes com nervuras estruturais.",
+      influences: "Visual da torre, estabilidade, tempo.",
+      generates: "Padrão = robusto; Espiral = sem costura; Nervura = máxima rigidez.",
+      types: [
+        { label: "Padrão", desc: "Paredes normais — uso geral" },
+        { label: "Espiral", desc: "Parede contínua, sem costura visível" },
+        { label: "Nervura", desc: "Paredes reforçadas para torres altas" },
+      ],
+      goldenRule: "Padrão para a maioria. Nervura para torres > 100 mm.",
+    },
+    // ───────── AULA 15 ─────────
+    {
+      name: "Comprimento extra de nervura (Extra Rib Length)",
+      value: "0–4 mm",
+      whatIs: "Comprimento adicional aplicado às nervuras internas da torre, reforçando o ancoramento à parede principal.",
+      influences: "Rigidez da torre, consumo extra de filamento.",
+      generates: "Maior valor = nervuras mais profundas e torre mais rígida; zero = nervuras só estruturais.",
+      goldenRule: "Mantenha o padrão salvo em torres muito altas que estejam balançando.",
+    },
+    // ───────── AULA 16 ─────────
+    {
+      name: "Largura da nervura (Rib Width)",
+      value: "8 mm (padrão)",
+      whatIs: "Espessura das nervuras internas da torre.",
+      influences: "Rigidez da torre, consumo de filamento, tempo.",
+      generates: "Nervuras grossas = torre rígida mas pesada; finas = leves mas menos estáveis.",
+      goldenRule: "8 mm é o padrão equilibrado para a maioria das torres.",
+    },
+    // ───────── AULA 17 ─────────
+    {
+      name: "Parede chanfrada (Chamfered Wall)",
+      value: "Ativada (recomendada)",
+      whatIs: "Inclina as paredes da torre formando um trapézio. Facilita drasticamente a remoção da torre da mesa após a impressão.",
       influences: "Facilidade de remoção, integridade da torre durante impressão.",
-      generates: "Torre vertical = gruda muito na mesa, precisa de espátula. Chanfrada = solta com leve torção da mão.",
+      generates: "Torre vertical gruda forte na mesa e precisa de espátula. Chanfrada solta com leve torção.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Paredes inclinadas", "Torres altas / multimaterial"],
+          ["Desativado", "Paredes retas", "Torres baixas / experimentos"],
+        ],
+      },
       goldenRule: "Sempre ativada em multi-filamento. Custo zero, benefício alto.",
+    },
+    // ───────── AULA 18 ─────────
+    {
+      name: "Sem camadas esparsas (No Sparse Layers) — beta",
+      value: "Checkbox",
+      whatIs: "Função beta que remove camadas esparsas da torre, deixando-a contínua em altura.",
+      influences: "Eficiência da purga, consumo de filamento, comportamento da torre em alturas variáveis.",
+      generates: "Ativo = torre sempre contínua, purga mais previsível; inativo = torre só sobe quando há troca.",
+      optionsTable: {
+        headers: ["Opção", "Efeito", "Quando usar"],
+        rows: [
+          ["Ativado", "Torre densa e contínua", "Purga eficiente / cores críticas"],
+          ["Desativado", "Comportamento padrão", "Uso geral"],
+        ],
+      },
+      goldenRule: "Ative apenas se sua versão do Orca for estável com esse recurso beta.",
     },
   ],
 
