@@ -4142,7 +4142,51 @@ export const modules: Module[] = [
             { param: "Temperatura", value: "20-25°C", action: "AC e ventilação controlada" },
             { param: "Zoneamento", value: "Por material", action: "PLA / PETG / ABS / TPU / Nylon separados" },
           ],
-          
+          paramDetails: [{
+            name: "Estrutura e Zoneamento da Fazenda",
+            value: "Salas + Zonas por material",
+            whatIs: "Organização física dividida em Sala de Impressão, Preparação, Pós-processamento, Embalagem e Escritório, com impressoras agrupadas em zonas por material (PLA, PETG, ABS/ASA, TPU, Nylon).",
+            whyAdjust: "Sem zoneamento, perfis se misturam, manutenção fica caótica e qualidade oscila entre máquinas. Zonas dedicadas padronizam perfis e simplificam treinamento da equipe.",
+            optionsTable: {
+              headers: ["Zona", "Equipamentos", "Quantidade típica"],
+              rows: [
+                ["Zona PLA", "Impressoras padrão", "4-6 máquinas"],
+                ["Zona PETG", "Impressoras com perfil PETG", "2-4 máquinas"],
+                ["Zona ABS/ASA", "Impressoras com enclosure", "2-3 máquinas"],
+                ["Zona TPU", "Direct Drive obrigatório", "1-2 máquinas"],
+                ["Zona Nylon", "Bico endurecido + secador", "1-2 máquinas"],
+              ],
+            },
+            influences: "Produtividade, consistência de qualidade, tempo de troca de perfil, facilidade de manutenção e curva de aprendizado da equipe.",
+            generates: "Operação previsível com fluxo padronizado e capacidade de escalar sem perder controle.",
+            howTo: [
+              { step: "1. Receber pedido", path: "Escritório", desc: "Validar especificações e prazo." },
+              { step: "2. Fatiar e preparar G-codes", path: "Sala de Preparação", desc: "Usar perfil padrão da zona do material." },
+              { step: "3. Distribuir nas máquinas", path: "Sala de Impressão", desc: "Alocar na zona correta conforme material." },
+              { step: "4. Monitorar progresso", path: "Painel central / app", desc: "Acompanhar tempo restante e alertas." },
+              { step: "5. Liberar para próximo lote", path: "Sala de Pós-processamento", desc: "Remover peça e liberar mesa." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Produtividade baixa", "Filas desorganizadas", "Implementar zoneamento e gestão de fila"],
+                ["Qualidade inconsistente", "Perfis diferentes por máquina", "Padronizar perfil por zona"],
+                ["Filamentos úmidos", "Armazenamento aberto", "Caixas herméticas + sílica + secador"],
+                ["Máquinas paradas", "Falta de buffer", "Manter estoque de itens recorrentes"],
+              ],
+            },
+            summaryTable: {
+              title: "Níveis de Escalabilidade",
+              headers: ["Nível", "Impressoras", "Produção/dia", "Investimento"],
+              rows: [
+                ["Iniciante", "1-3", "5-15 peças", "Baixo"],
+                ["Intermediário", "4-10", "20-50 peças", "Médio"],
+                ["Profissional", "11-30", "50-200 peças", "Alto"],
+                ["Industrial", "30+", "200+ peças", "Muito alto"],
+              ],
+            },
+            goldenRule: "Zoneamento + gestão de fila + controle ambiental valem mais que máquinas extras desorganizadas.",
+          }],
 
           goldenRule: "Uma fazenda bem organizada é mais produtiva que muitas impressoras desorganizadas.",
           errors: [
