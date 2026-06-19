@@ -4788,7 +4788,53 @@ export const modules: Module[] = [
             { param: "Min Wall Width", value: "0.85x bico", action: "Limite inferior" },
             { param: "Max Wall Width", value: "1.5x bico", action: "Limite superior" },
           ],
+          paramDetails: [{
+            name: "Arachne — Largura Variável",
+            value: "Voronoi medial-axis, preenche fendas",
+            whatIs: "Algoritmo moderno que calcula o esqueleto medial da geometria e ajusta a largura de extrusão entre Min/Max Wall Width para preencher qualquer parede sem deixar lacunas.",
+            whyAdjust: "Sem Arachne, textos <0.8mm, letras 'o', engrenagens finas e relevos delicados ficam ilegíveis ou com gaps no Classic. Arachne resolve sem ajuste manual.",
+            optionsTable: {
+              headers: ["Parâmetro", "Função", "Valor Default"],
+              rows: [
+                ["Min Wall Width", "Largura mínima da linha", "0.85× bico (≈0.34mm)"],
+                ["Max Wall Width", "Largura máxima da linha", "1.5× bico (≈0.6mm)"],
+                ["Wall Transition Angle", "Onde Arachne muda número de paredes", "10°"],
+                ["Wall Transition Length", "Comprimento da transição", "0.4mm"],
+              ],
+            },
+            influences: "Legibilidade de textos pequenos, qualidade de relevos, preenchimento de fendas e suavidade da parede em transições.",
+            generates: "Peça com texto <1mm legível e relevos preenchidos sem ajuste manual por modelo.",
+            howTo: [
+              { step: "1. Abrir Resistência > Gerador de paredes", path: "OrcaSlicer › Processo", desc: "Selecionar Arachne (default no Orca moderno)." },
+              { step: "2. Manter Min/Max Wall Width nos defaults", path: "Quality > Wall", desc: "0.85× / 1.5× nozzle resolve 95% dos casos." },
+              { step: "3. Aumentar Transition Angle se ondular", path: "Quality > Wall", desc: "20° suaviza transições em superfície estética." },
+              { step: "4. Calibrar Pressure Advance", path: "Filament > PA", desc: "Arachne amplifica erros de PA — calibrar é obrigatório." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Arachne sem benefício em peça grande", "Geometria simples", "Voltar para Classic, ligeiramente mais rápido"],
+                ["Parede ondulada visualmente", "Min/Max muito largo", "Estreitar faixa Min/Max Wall Width"],
+                ["Oscilação de fluxo visível", "PA mal calibrado", "Calibrar Pressure Advance para o filamento"],
+                ["Peça com encaixe fora de medida", "Largura variável", "Voltar para Classic + Horizontal Expansion"],
+              ],
+            },
+            summaryTable: {
+              title: "Como Escolher Entre Classic e Arachne",
+              headers: ["Pergunta", "Sim →"],
+              rows: [
+                ["Paredes finas (<1mm)?", "Arachne"],
+                ["Tem textos ou detalhes finos?", "Arachne"],
+                ["É estrutural com carga crítica?", "Classic"],
+                ["É simples (caixa, suporte)?", "Classic"],
+                ["Precisa máxima previsibilidade?", "Classic"],
+                ["Precisa máxima qualidade de detalhes?", "Arachne"],
+              ],
+            },
+            goldenRule: "Arachne para detalhes, textos e paredes finas. Classic para estruturas previsíveis. Teste ambos por peça.",
+          }],
           goldenRule: "Adote Arachne para chaveiros com textos <1mm — único jeito de sair legível.",
+
           errors: [
             { error: "Arachne em peça grande sem detalhe — sem benefício", solution: "Volte para Classic, ligeiramente mais rápido" },
             { error: "Parede variando demais e visualmente irregular", solution: "Estreite Min/Max Wall Width" },
