@@ -792,6 +792,7 @@ export const modules: Module[] = [
               { step: "4", path: "Pintar Costura", desc: "Vermelho bloqueia em superfícies visíveis; azul força em cantos ocultos" },
               { step: "5", path: "Wipe", desc: "Ativar limpeza ~80% para reduzir blob" },
             ],
+            howToImage: { src: mod3Img38.url, alt: "Diretrizes de seleção, Scarf Seam e Seam Painting", caption: "Diretrizes por geometria, Scarf Seam (45°/60°), Seam Painting Tool e Wipe on Loops a 80%" },
             example: { piece: "Vaso cilíndrico", config: "Random + Scarf 45°", result: "Sem linha vertical, pontos imperceptíveis" },
             errorsTable: { headers: ["Sintoma", "Causa", "Solução"], rows: [
               ["Linha vertical visível", "Aligned em peça redonda", "Mudar para Random"],
