@@ -5,7 +5,7 @@ import { LessonBlock } from "@/components/LessonBlock";
 
 const SPLIT_MODULES = new Set(["mestre-orcaslicer"]);
 
-export const Route = createFileRoute("/curso/$moduleId")({
+export const Route = createFileRoute("/curso/$moduleId/")({
   head: ({ params }) => {
     const m = modules.find((x) => x.id === params.moduleId);
     if (!m) return { meta: [{ title: "Módulo não encontrado" }] };
