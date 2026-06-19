@@ -747,6 +747,7 @@ export const modules: Module[] = [
               ["Detalhes finos perdidos", "Parede externa grossa", "Reduzir para 0.35–0.38mm"],
               ["Ponte caída", "Largura/fluxo alto", "Reduzir para 85% + fan 100%"],
             ]},
+            errorsImage: { src: mod3Img36.url, alt: "Erros de largura de linha e correções", caption: "Paredes com lacunas (aumentar), excesso (reduzir), detalhes perdidos (reduzir parede externa) e ponte caída (fluxo + largura)" },
             goldenRule: "Use 100–120% do bico como largura padrão (0.42mm em bico 0.4mm).",
             summaryTable: { title: "Decisão Rápida", headers: ["Uso", "0.4mm", "0.6mm", "0.8mm"], rows: [
               ["Detalhe fino", "0.35", "—", "—"],
