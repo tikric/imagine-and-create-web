@@ -3746,40 +3746,173 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
   // TELA 33 — VELOCIDADE: Jerk(XY), Decel e Suavização de Extrusão
   // ====================================================================
   "tela-33-velocidade-jerk-extrusao": [
+    // ───────────── ACELERAÇÃO (continuação) ─────────────
     {
-      name: "Habilitar accel_to_decel (50%)",
+      name: "Habilitar accel_to_decel (Klipper)",
       value: "Ativado · 50%",
-      whatIs: "Recurso do Klipper que limita a aceleração máxima usada em movimentos curtos. Em segmentos curtos, o firmware nunca atinge a velocidade alvo — o accel_to_decel reduz a aceleração permitida nesses casos, suavizando o movimento.",
-      whyAdjust: "Sem accel_to_decel, segmentos curtos (cantos, detalhes finos) recebem aceleração total e geram vibração que aparece como ringing. Com 50%, o firmware nivela a resposta mecânica.",
+      whatIs:
+        "Recurso do Klipper que limita a aceleração máxima usada em movimentos curtos. Em segmentos pequenos, o firmware nunca chega à velocidade alvo — o accel_to_decel reduz a aceleração permitida nesses casos, suavizando o movimento e reduzindo vibração mecânica.",
+      whyAdjust:
+        "Sem accel_to_decel, segmentos curtos (cantos, textos, detalhes finos) recebem aceleração total e geram ringing visível. Com 50%, o firmware nivela a resposta mecânica sem perda real de tempo de impressão.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["Desativado", "Aceleração total em qualquer segmento", "Não recomendado"],
+          ["50% (padrão)", "Limita aceleração em segmentos curtos", "Recomendado para Klipper"],
+          ["25%", "Muito conservador, suaviza ao extremo", "Máquinas com ringing severo"],
+          ["75–100%", "Pouco efeito", "Apenas se accel base já for baixo"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Velocidade > Aceleração > Avançado", desc: "Localizar accel_to_decel" },
+        { step: "2", path: "Ativar", desc: "Marcar a opção" },
+        { step: "3", path: "Valor", desc: "Definir 50% (padrão recomendado)" },
+      ],
+      example: {
+        piece: "Texto em relevo de 2 mm",
+        config: "accel_to_decel 50% + IS calibrado",
+        result: "Letras nítidas, sem borrão de vibração nos cantos",
+      },
       influences: "Qualidade em detalhes finos, ringing em cantos, suavidade de curvas complexas.",
       generates: "Texto em relevo de 2mm fica nítido vs. borrado. Curvas orgânicas sem 'degraus' de vibração.",
       goldenRule: "Klipper: ativar accel_to_decel em 50% é gratuito (zero perda de tempo) e melhora visivelmente detalhes pequenos.",
     },
+
+    // ───────────── JERK(XY) ─────────────
     {
       name: "Jerk(XY) — Padrão",
       value: "9 mm/s",
-      whatIs: "Quanto a impressora pode mudar de velocidade INSTANTANEAMENTE sem acelerar suavemente. Jerk alto = bico muda direção brusco; Jerk baixo = transição suave.",
-      whyAdjust: "Jerk alto melhora qualidade em cantos pequenos (o bico não desacelera tanto), mas gera vibração mecânica. Em Input Shaper bem calibrado, jerk pode ser baixo (5–9) sem perda — o IS compensa.",
-      influences: "Definição de cantos, ressonância da máquina, ghosting, ruído.",
+      whatIs:
+        "Quanto a impressora pode mudar de velocidade INSTANTANEAMENTE sem passar pela rampa de aceleração. Jerk alto = bico muda direção brusco; Jerk baixo = transição suave.",
+      whyAdjust:
+        "Jerk alto melhora qualidade em cantos pequenos (o bico não desacelera tanto), mas gera vibração mecânica. Com Input Shaper bem calibrado, Jerk pode ser baixo (5–9) sem perda — o IS compensa as variações.",
+      optionsTable: {
+        headers: ["Cenário", "Jerk recomendado", "Resultado"],
+        rows: [
+          ["Sem Input Shaper", "7–9 mm/s", "Equilíbrio entre cantos e ringing"],
+          ["Com IS calibrado", "5–9 mm/s", "Cantos limpos sem custo de tempo"],
+          ["Klipper SCV", "5 mm/s (square_corner_velocity)", "Equivalente Klipper do Jerk"],
+          [">12 mm/s", "Não recomendado", "Ringing severo na parede externa"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Velocidade > Jerk(XY)", desc: "Abrir seção" },
+        { step: "2", path: "Padrão", desc: "Definir 9 mm/s (ou 5 se IS calibrado)" },
+      ],
+      influences: "Definição de cantos, ressonância da máquina, ghosting, ruído de operação.",
       generates: "Jerk 20 sem IS = ringing severo. Jerk 9 com IS = cantos limpos sem custo de tempo.",
       goldenRule: "Sem Input Shaper: 7–9 mm/s. Com IS calibrado: 5–9 mm/s. Nunca >12 mm/s em parede externa.",
     },
     {
       name: "Jerk — Parede externa",
       value: "5–9 mm/s",
-      whatIs: "Jerk específico da linha visível. Mantido baixo para garantir que cantos da face externa não vibrem.",
-      influences: "Qualidade visual de cantos retos (cubos, prismas), nitidez de chanfros.",
+      whatIs:
+        "Jerk específico da linha visível (perímetro externo). Mantido baixo para garantir que cantos da face externa não vibrem nem deixem ghosting.",
+      whyAdjust:
+        "É a linha que o olho enxerga — qualquer ringing aqui arruína o acabamento. Vale a pena sacrificar um pouco de tempo para ganhar nitidez.",
+      howTo: [
+        { step: "1", path: "Velocidade > Jerk(XY) > Parede externa", desc: "Definir 5–7 mm/s" },
+      ],
+      influences: "Qualidade visual de cantos retos (cubos, prismas), nitidez de chanfros e arestas.",
       generates: "Jerk parede externa 5 mm/s + aceleração 1000 = canto perfeito, sem ondulação.",
       goldenRule: "Parede externa sempre com o Jerk MENOR de toda a tabela. É a linha visível.",
     },
     {
-      name: "Suavização da extrusão (Avançado)",
+      name: "Jerk — Parede interna",
+      value: "9 mm/s",
+      whatIs:
+        "Jerk dos perímetros internos (não visíveis). Pode ser igual ou ligeiramente maior que a externa, pois eventual ringing fica escondido.",
+      whyAdjust:
+        "Aumentar aqui acelera a impressão sem prejuízo estético, já que a parede interna fica coberta pela externa.",
+      influences: "Tempo total de impressão, vibração transmitida à parede externa.",
+      generates: "Jerk interna 9 mm/s = impressão mais rápida sem comprometer a face visível.",
+      goldenRule: "Interna pode ser igual ou +2 mm/s acima da externa. Não exagere para não 'contaminar' a externa.",
+    },
+    {
+      name: "Jerk — Preenchimento (Infill)",
+      value: "9 mm/s",
+      whatIs:
+        "Jerk do infill. Como o infill é interno e não estético, pode usar Jerk maior para reduzir tempo.",
+      whyAdjust:
+        "Infill é o grande consumidor de tempo. Subir o Jerk aqui (até 12 mm/s) acelera bastante sem perda visível.",
+      influences: "Tempo total de impressão.",
+      generates: "Jerk infill 12 mm/s + acel 5000 = redução de 15–20% no tempo do miolo.",
+      goldenRule: "Infill aceita Jerk mais alto — use 9–12 mm/s para ganhar tempo.",
+    },
+    {
+      name: "Jerk — Superfície superior",
+      value: "5–9 mm/s",
+      whatIs:
+        "Jerk das camadas sólidas do topo. Mantido baixo para garantir acabamento liso e sem ondulações na superfície visível.",
+      whyAdjust:
+        "Topo é tão visível quanto a parede externa. Jerk alto = ondulações. Jerk baixo = topo espelhado.",
+      influences: "Qualidade visual da face superior, planicidade, brilho.",
+      generates: "Jerk topo 5 mm/s + ironing = superfície quase espelhada.",
+      goldenRule: "Topo merece o mesmo cuidado da parede externa — Jerk baixo sempre.",
+    },
+    {
+      name: "Jerk — Primeira camada",
+      value: "9 mm/s",
+      whatIs:
+        "Jerk da primeira camada. Equilibra adesão à mesa com nitidez do perímetro inicial.",
+      whyAdjust:
+        "Jerk muito alto na primeira camada pode descolar cantos da mesa. Jerk muito baixo deixa a primeira camada lenta demais.",
+      influences: "Adesão à mesa, nitidez do contorno inicial, risco de warping.",
+      generates: "Jerk primeira camada 9 mm/s = adesão segura sem perder tempo.",
+      goldenRule: "Mantenha igual ao Jerk padrão (9 mm/s). Reduza só se houver descolamento em cantos.",
+    },
+    {
+      name: "Jerk — Travel (deslocamento)",
+      value: "12 mm/s",
+      whatIs:
+        "Jerk em movimentos sem extrusão (travel). Pode ser bem mais alto, pois não há plástico saindo do bico.",
+      whyAdjust:
+        "Travel é tempo morto. Jerk alto reduz esse tempo sem afetar qualidade de impressão.",
+      influences: "Tempo total de impressão, ruído da máquina.",
+      generates: "Jerk travel 12 mm/s = menos tempo entre ilhas, sem stringing extra.",
+      goldenRule: "Travel pode usar o Jerk MAIS ALTO da tabela — 12 mm/s ou mais se a máquina suportar.",
+    },
+
+    // ───────────── AVANÇADO ─────────────
+    {
+      name: "Suavização da extrusão (Extrusion Smoothing)",
       value: "0 mm³/s² (off)",
-      whatIs: "Suaviza variações no fluxo de extrusão, reduzindo picos quando o bico desacelera/acelera. Funciona em conjunto com Pressure Advance no Klipper.",
-      whyAdjust: "Ativar sem PA calibrado piora a qualidade. Só ative depois de PA bem ajustado — aí, suaviza ainda mais transições de velocidade.",
-      influences: "Bleeding em cantos, qualidade quando há muita variação de velocidade.",
+      whatIs:
+        "Suaviza variações no fluxo de extrusão, reduzindo picos quando o bico desacelera/acelera. Funciona em conjunto com Pressure Advance no Klipper.",
+      whyAdjust:
+        "Ativar sem PA calibrado piora a qualidade. Só ative depois de PA bem ajustado — aí, suaviza ainda mais transições de velocidade.",
+      optionsTable: {
+        headers: ["Valor", "Efeito", "Quando usar"],
+        rows: [
+          ["0 (off)", "Sem suavização", "Padrão — antes de calibrar PA"],
+          ["0.01–0.03", "Suavização leve", "Após calibrar PA"],
+          ["0.04–0.05", "Suavização forte", "PA bem calibrado + cantos com excesso"],
+          [">0.05", "Pode borrar detalhes", "Não recomendado"],
+        ],
+      },
+      howTo: [
+        { step: "1", path: "Velocidade > Avançado", desc: "Localizar Suavização da extrusão" },
+        { step: "2", path: "Pré-requisito", desc: "Calibrar Pressure Advance primeiro" },
+        { step: "3", path: "Valor", desc: "Testar 0.01 → 0.03 → 0.05" },
+      ],
+      influences: "Bleeding em cantos, qualidade em zonas de variação rápida de velocidade.",
       generates: "Com PA + suavização: cantos sem 'gota' de excesso de plástico.",
       goldenRule: "Mantenha em 0 até calibrar Pressure Advance. Depois teste valores 0.01–0.05 mm³/s².",
+      summaryTable: {
+        title: "Resumo da Tela 33 — Jerk, accel_to_decel e Suavização",
+        headers: ["Parâmetro", "Valor recomendado", "Função"],
+        rows: [
+          ["accel_to_decel (Klipper)", "50% (ativo)", "Limita aceleração em segmentos curtos"],
+          ["Jerk padrão", "9 mm/s", "Base para todos os tipos de linha"],
+          ["Jerk parede externa", "5–9 mm/s", "Cantos visíveis sem ringing"],
+          ["Jerk parede interna", "9 mm/s", "Pode ser ligeiramente maior"],
+          ["Jerk preenchimento", "9–12 mm/s", "Aceita valores mais altos"],
+          ["Jerk superfície superior", "5–9 mm/s", "Topo liso e sem ondulação"],
+          ["Jerk primeira camada", "9 mm/s", "Adesão segura"],
+          ["Jerk travel", "12 mm/s", "Reduz tempo morto"],
+          ["Suavização da extrusão", "0 (off)", "Ativar só após PA calibrado"],
+        ],
+      },
     },
   ],
 
