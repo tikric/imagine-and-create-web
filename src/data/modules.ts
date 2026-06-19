@@ -477,6 +477,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Machine Limits", value: "Tetos físicos e elétricos",
             whatIs: "Conjunto de parâmetros que limita área útil, altura Z e cinemática da impressora para garantir G-code seguro.",
+            image: {
+              src: mod2Img23.url,
+              alt: "Firmware (Marlin/Klipper/RepRap), limites cinemáticos de aceleração e área da mesa no OrcaSlicer",
+              caption: "Os 3 eixos do Machine Limits: Firmware (compatibilidade) · Limites cinemáticos (aceleração/jerk) · Área da mesa (volume máximo).",
+            },
             whyAdjust: "Limites corretos evitam colisões e ghosting; limites incorretos são a causa nº 1 de falhas catastróficas.",
             optionsTable: { headers: ["Parâmetro", "Descrição", "Exemplo (Ender 3)"], rows: [
               ["Formato", "Retangular ou circular", "Retangular"],
