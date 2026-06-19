@@ -4261,6 +4261,8 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       name: "Suportar apenas regiões críticas",
       value: "Checkbox",
       whatIs: "Concentra os suportes apenas nas áreas mais críticas, reduzindo material e facilitando a remoção.",
+      influences: "Quantidade de suporte gerada, facilidade de remoção, tempo de impressão.",
+      generates: "Ativado = suporte mínimo em pontos críticos; desativado = suporte denso em todas as saliências.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
