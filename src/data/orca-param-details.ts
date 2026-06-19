@@ -4277,6 +4277,8 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
       name: "Ignorar pequenas saliências",
       value: "Filtrar / Não filtrar",
       whatIs: "Impede a geração de suportes para saliências muito pequenas que podem ser impressas sem suporte devido à área reduzida.",
+      influences: "Quantidade de suporte desnecessário, tempo de impressão, acabamento de pequenos detalhes.",
+      generates: "Filtrar = menos artefatos e remoção mais fácil; não filtrar = suporte garantido em qualquer detalhe.",
       optionsTable: {
         headers: ["Opção", "Efeito"],
         rows: [
