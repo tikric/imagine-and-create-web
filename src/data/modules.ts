@@ -4177,40 +4177,8 @@ export const modules: Module[] = [
             { param: "Amostragem QC", value: "100% em peças finais", action: "Inspeção visual e tátil obrigatória" },
             { param: "Custo Embalagem", value: "~R$ 4,00/peça", action: "Saco + bolha + caixa + fita + etiqueta" },
           ],
-          paramDetails: {
-            optionsTable: {
-              title: "Embalagem por Tipo de Peça",
-              headers: ["Tipo", "Embalagem", "Material"],
-              rows: [
-                ["Pequenas (<100g)", "Saco zíper + caixa", "Polietileno + papelão"],
-                ["Médias (100-500g)", "Papel bolha + caixa", "Plástico bolha + papelão"],
-                ["Grandes (>500g)", "Isopor + caixa reforçada", "EPS + papelão reforçado"],
-                ["Frágil/Detalhada", "Suporte interno + caixa", "Espuma + papelão"],
-                ["Múltiplas peças", "Divisórias + caixa", "Papelão com divisórias"],
-              ],
-            },
-            howTo: {
-              title: "Checklist de Inspeção",
-              steps: [
-                "Meça dimensões críticas com paquímetro",
-                "Inspecione superfície visual e tátil",
-                "Verifique uniformidade de camadas",
-                "Confira áreas de suporte sem marcas",
-                "Teste encaixe/funcionalidade quando aplicável",
-                "Registre na ficha e fotografe",
-              ],
-            },
-            errorsTable: {
-              title: "Defeitos e Critérios",
-              headers: ["Defeito", "Critério"],
-              rows: [
-                ["Fiapos em peças visíveis", "Tolerância zero"],
-                ["Subextrusão / Sobreextrusão", "Tolerância zero"],
-                ["Warping (cantos levantados)", "Tolerância zero"],
-                ["Ghosting", "Aceitável apenas em peças internas"],
-              ],
-            },
-          },
+          
+
           goldenRule: "Documente cada lote, inspecione cada peça, embale com cuidado — o cliente merece o melhor.",
           errors: [
             { error: "Peça danificada no transporte", solution: "Papel bolha ou isopor conforme peso da peça" },
