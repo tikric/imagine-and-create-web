@@ -38,8 +38,10 @@ export type Lesson = {
     influencesList?: string[];
     generates: string;
     generatesTable?: { headers: string[]; rows: string[][] };
+    generatesImage?: { src: string; alt: string; caption?: string };
     integrationsTable?: { headers: string[]; rows: string[][] };
     howTo?: { step: string; path: string; desc: string }[];
+    howToImage?: { src: string; alt: string; caption?: string };
     example?: { piece: string; config: string; result: string };
     errorsTable?: { headers: string[]; rows: string[][] };
     errorsImage?: { src: string; alt: string; caption?: string };
