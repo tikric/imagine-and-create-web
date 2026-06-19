@@ -5255,11 +5255,14 @@ export const modules: Module[] = [
             "Anote o melhor Z Gap para seu nozzle/material.",
           ],
         }),
-      L(3, "design-anti-suporte", "Design Anti-Suporte: Chanfros de 45°", "30min",
-        ["Ângulo <45° autoportante", "Chanfros em furos"], {
+      L(3, "design-anti-suporte", "Design Anti-Suporte — Projetando para Evitar Suportes", "30min",
+        ["Ângulo ≤45°", "Chanfros e filetes", "Divisão e orientação"], {
           theory: [
-            "Overhangs com ângulo menor que 45° são autoportantes — o filamento se apoia na camada anterior.",
-            "Chanfros em furos horizontais eliminam suportes internos e melhoram tolerância dimensional.",
+            "Overhangs com ângulo ≤45° são autoportantes — o filamento se apoia na camada anterior sem precisar de suporte.",
+            "Chanfros (corte em ângulo) e filetes (curva suave) substituem quinas de 90° e eliminam overhangs críticos.",
+            "Divisão de peças complexas em partes menores permite orientação ideal para cada uma — montagem por pino e cola.",
+            "Place on Face reorienta a peça assentando a maior face plana na mesa, minimizando overhangs.",
+            "Support Painting e Modifier Mesh aplicam suporte apenas em áreas estritamente necessárias.",
             "Reprojetar a peça é mais barato do que pós-processar suporte mal acabado.",
           ],
           integrations: [
