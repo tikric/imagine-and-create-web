@@ -3514,7 +3514,7 @@ export const modules: Module[] = [
               { step: "4. Aplicar margem", path: "× 0.85", desc: "MVS_seguro = MVS_medido × 0.85." },
               { step: "5. Salvar perfil", path: "filament_max_volumetric_speed", desc: "Insira no perfil do filamento usado." },
             ],
-            optionsTable: {
+            summaryTable: {
               headers: ["Como ler a linha", "Significado", "Ação"],
               rows: [
                 ["Linha uniforme", "MVS segura", "Pode imprimir aqui"],
