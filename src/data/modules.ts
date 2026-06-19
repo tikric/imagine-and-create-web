@@ -1,3 +1,5 @@
+import { orcaParamDetails } from "./orca-param-details";
+
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
 export type ErrorItem = { error: string; solution: string };
@@ -61,6 +63,139 @@ const L = (
   topics: string[],
   extra: Partial<Lesson> = {},
 ): Lesson => ({ number: n, id, title, duration, topics, ...extra });
+
+type ScreenLessonConfig = {
+  n: number;
+  id: string;
+  title: string;
+  duration: string;
+  topics: string[];
+  detailKey: keyof typeof orcaParamDetails;
+  src: string;
+  tela: string;
+  panel: string;
+  tool: string;
+  caption: string;
+};
+
+const screenLesson = ({ n, id, title, duration, topics, detailKey, src, tela, panel, tool, caption }: ScreenLessonConfig): Lesson =>
+  L(n, id, title, duration, topics, {
+    screens: [{ src, tela, panel, tool, caption }],
+    theory: [
+      `Nesta ${tela}, o aluno trabalha a aba ${panel} olhando diretamente para ${tool}.`,
+      "A aula não é resumo: cada opção da tela é explicada com o que é, por que ajustar, o que influencia, o que gera e como configurar no OrcaSlicer.",
+      "O objetivo é transformar a interface em checklist operacional: o aluno sabe onde clicar, que valor escolher e qual consequência esperar na peça.",
+    ],
+    paramDetails: orcaParamDetails[detailKey],
+    goldenRule: "Leia a tela da esquerda para a direita: primeiro entenda a função do item, depois o impacto na peça, e só então altere o valor.",
+  });
+
+const mestreOrcaSlicerLessons: Lesson[] = [
+  L(1, "mapa-mestre-painel-esquerdo", "Mapa Mestre — Painel Esquerdo do OrcaSlicer 2.4", "15min",
+    ["Modo Desenvolvedor", "6 abas", "17 telas", "Fluxo de leitura"], {
+      theory: [
+        "O Módulo 10 é o mapa completo do painel esquerdo do OrcaSlicer 2.4 em Modo Desenvolvedor. Ele organiza Qualidade, Resistência, Velocidade, Suporte, Multimaterial e Outros como um fluxo único de tomada de decisão.",
+        "O aluno não deve decorar valores soltos. Ele deve entender o papel de cada tela, a sequência lógica entre elas e como uma mudança em um grupo altera os demais.",
+        "As próximas 17 aulas seguem as capturas do OrcaSlicer: cada tela vira uma aula prática com explicação item por item.",
+      ],
+      params: [
+        { param: "Qualidade", value: "Telas 01-02", action: "Define aparência, precisão e acabamento" },
+        { param: "Resistência", value: "Telas 03-07", action: "Define estrutura, paredes, pontes e infill" },
+        { param: "Velocidade", value: "Telas 08-10", action: "Define tempo, estabilidade e movimento" },
+        { param: "Suporte", value: "Telas 11-13", action: "Resolve overhangs e remoção limpa" },
+        { param: "Multimaterial", value: "Telas 14-15", action: "Controla purga, torre e troca de filamento" },
+        { param: "Outros", value: "Telas 16-17", action: "Controla adesão extra, modo vaso, textura e G-code" },
+      ],
+      paramDetails: [{
+        name: "Estrutura das 17 telas capturadas",
+        value: "Tour completo",
+        whatIs: "Roteiro visual que transforma cada captura do painel esquerdo em uma aula específica, mantendo a ordem real da interface do OrcaSlicer.",
+        whyAdjust: "Sem ordem, o aluno pula parâmetros e cria conflito entre qualidade, resistência, velocidade e suporte. Com ordem, ele diagnostica como profissional.",
+        optionsTable: {
+          headers: ["Bloco", "Telas", "Decisão principal"],
+          rows: [
+            ["Qualidade", "01-02", "Como a peça aparece e encaixa"],
+            ["Resistência", "03-07", "Como a peça suporta carga e preenche volume"],
+            ["Velocidade", "08-10", "Como a máquina se move sem perder qualidade"],
+            ["Suporte", "11-13", "Como imprimir geometrias difíceis e remover suporte"],
+            ["Multimaterial", "14-15", "Como trocar material/cor sem contaminar"],
+            ["Outros", "16-17", "Como controlar adesão, vaso, textura e G-code"],
+          ],
+        },
+        influences: "A sequência de estudo influencia diretamente a capacidade do aluno de configurar uma peça do zero sem tentativa e erro.",
+        generates: "Um mapa mental operacional: o aluno sabe em qual aba procurar cada solução.",
+        goldenRule: "Não ajuste uma tela isolada. Todo parâmetro pertence a um sistema.",
+      }],
+      checklist: [
+        "Abrir OrcaSlicer 2.4 em Modo Desenvolvedor",
+        "Localizar as 6 abas do painel esquerdo",
+        "Percorrer as 17 telas na ordem do módulo",
+        "Anotar valores padrão do seu perfil atual",
+      ],
+    }),
+  L(2, "diagnose-integrada-raciocinio-clinico", "Diagnose Integrada — Raciocínio Clínico do Mestre", "15min",
+    ["Diagnóstico", "Uma variável por vez", "Checklist", "Perfis"], {
+      theory: [
+        "Diagnose integrada é o método para usar todas as telas do OrcaSlicer como uma árvore de decisão. Em vez de chutar valores, o aluno observa o defeito, identifica a família do problema e muda uma variável por vez.",
+        "Problemas visuais normalmente começam em Qualidade; problemas de quebra começam em Resistência; problemas de sombra, vibração e tempo começam em Velocidade; marcas inferiores e overhangs começam em Suporte.",
+        "O mestre documenta o antes e depois. Sem registro, qualquer acerto vira sorte e não processo.",
+      ],
+      params: [
+        { param: "Regra de teste", value: "1 variável", action: "Evita falso diagnóstico" },
+        { param: "Registro", value: "Perfil + foto + valor", action: "Cria histórico confiável" },
+        { param: "Hipótese", value: "Mais provável primeiro", action: "Economiza tempo e filamento" },
+      ],
+      paramDetails: [{
+        name: "Método clínico de diagnóstico",
+        value: "Observe → Hipótese → Teste → Valide",
+        whatIs: "Processo de resolução de problemas inspirado no raciocínio clínico: descrever o sintoma, levantar hipóteses, testar uma alteração e validar o resultado.",
+        whyAdjust: "Na impressão 3D, o mesmo defeito pode ter várias causas. Stringing pode ser umidade, temperatura, retração ou pressão; mudar tudo ao mesmo tempo impede aprender a causa real.",
+        optionsTable: {
+          headers: ["Sintoma", "Primeira tela a verificar", "Variável inicial"],
+          rows: [
+            ["Costura visível", "Tela 01 / Módulo 11", "Seam Position / Scarf / Wipe"],
+            ["Peça fraca", "Telas 03-07", "Paredes, infill e orientação"],
+            ["Ponte caída", "Tela 04", "Bridge flow, velocidade e fan"],
+            ["Ghosting", "Telas 09-10", "Aceleração, jerk e input shaping"],
+            ["Suporte marca a peça", "Telas 11-13", "Z Gap, interface e tipo Tree"],
+            ["Cor contaminada", "Telas 14-15", "Volume de purga e torre"],
+          ],
+        },
+        influences: "Taxa de erro, retrabalho, consumo de filamento, confiança do perfil e velocidade de aprendizado.",
+        generates: "Checklist de diagnóstico que permite resolver problemas reais sem destruir o perfil inteiro.",
+        howTo: [
+          { step: "1. Fotografar o defeito", path: "Peça real", desc: "Registrar onde ocorre: base, parede, topo, suporte, troca de cor." },
+          { step: "2. Escolher uma hipótese", path: "Módulo 10", desc: "Associar o defeito à tela correta." },
+          { step: "3. Alterar um parâmetro", path: "OrcaSlicer › Processo", desc: "Mudar apenas um valor por teste." },
+          { step: "4. Comparar resultado", path: "Peça A/B", desc: "Manter foto, perfil e anotação do resultado." },
+        ],
+        goldenRule: "Uma variável por vez. Se você muda três coisas, você não aprende nada.",
+      }],
+      checklist: [
+        "Criar uma planilha de diagnóstico",
+        "Salvar presets antes de testar",
+        "Testar uma variável por vez",
+        "Registrar resultado com foto",
+      ],
+    }),
+  screenLesson({ n: 3, id: "tela-01-qualidade-camada-largura-costura", title: "Tela 01 — Qualidade: Altura da camada, Largura da linha e Costura", duration: "15min", topics: ["Altura da camada", "Largura da linha", "Costura"], detailKey: "tela-11-qualidade-camada-largura-costura", src: "tela_11", tela: "Tela 01", panel: "Qualidade", tool: "Altura da camada · Largura da linha · Costura", caption: "Primeira tela de Qualidade: resolução vertical, espessura de extrusão e posição da costura." }),
+  screenLesson({ n: 4, id: "tela-02-qualidade-precisao-alisamento", title: "Tela 02 — Qualidade: Precisão, Alisamento (Ironing) e Compensações", duration: "15min", topics: ["Precisão", "Ironing", "Compensações XY"], detailKey: "tela-12-qualidade-precisao-alisamento", src: "tela_12", tela: "Tela 02", panel: "Qualidade", tool: "Precisão · Alisamento · Compensações", caption: "Tela de acabamento fino: tolerâncias dimensionais, curvas, furos e superfície superior." }),
+  screenLesson({ n: 5, id: "tela-03-resistencia-gerador-paredes", title: "Tela 03 — Resistência: Gerador de Paredes (Classic vs Arachne) e Superfícies", duration: "15min", topics: ["Classic", "Arachne", "Superfícies"], detailKey: "tela-13-resistencia-gerador-paredes", src: "tela_13", tela: "Tela 03", panel: "Resistência", tool: "Gerador de paredes · Classic vs Arachne · Superfícies", caption: "Escolha do algoritmo de paredes e dos parâmetros que definem cascas externas e internas." }),
+  screenLesson({ n: 6, id: "tela-04-resistencia-pontes-saliencias", title: "Tela 04 — Resistência: Pontes e Saliências (Overhangs)", duration: "12min", topics: ["Pontes", "Overhangs", "Resfriamento"], detailKey: "tela-14-resistencia-ponte-saliencias", src: "tela_14", tela: "Tela 04", panel: "Resistência", tool: "Pontes · Saliências · Overhangs", caption: "Parâmetros de vãos sem suporte, velocidade de ponte, fluxo e comportamento em ângulos críticos." }),
+  screenLesson({ n: 7, id: "tela-05-resistencia-voltas-cascas-infill", title: "Tela 05 — Resistência: Voltas da Parede, Cascas e início do Infill", duration: "15min", topics: ["Voltas da parede", "Cascas", "Infill"], detailKey: "tela-21-resistencia-cascas-preenchimento", src: "tela_21", tela: "Tela 05", panel: "Resistência", tool: "Voltas da parede · Cascas · Início do preenchimento", caption: "Controle da espessura estrutural da peça antes de entrar nos padrões de preenchimento." }),
+  screenLesson({ n: 8, id: "tela-06-resistencia-padroes-direcao-infill", title: "Tela 06 — Resistência: Padrões e Direção do Infill", duration: "15min", topics: ["Padrões", "Direção", "Densidade"], detailKey: "tela-22-resistencia-padroes-infill", src: "tela_22", tela: "Tela 06", panel: "Resistência", tool: "Padrões e direção do preenchimento", caption: "Escolha do padrão interno, densidade, direção e impacto em força, peso e tempo." }),
+  screenLesson({ n: 9, id: "tela-07-resistencia-avancado", title: "Tela 07 — Resistência: Avançado (camadas sólidas, bridge angle, espessura)", duration: "12min", topics: ["Camadas sólidas", "Bridge angle", "Espessura"], detailKey: "tela-23-resistencia-avancado", src: "tela_23", tela: "Tela 07", panel: "Resistência", tool: "Avançado · Camadas sólidas · Bridge angle · Espessura", caption: "Ajustes avançados que refinam topo, base, pontes e consistência estrutural." }),
+  screenLesson({ n: 10, id: "tela-08-velocidade-primeira-outras-camadas", title: "Tela 08 — Velocidade: Primeira Camada e Outras Camadas", duration: "15min", topics: ["Primeira camada", "Outras camadas", "Velocidade"], detailKey: "tela-31-velocidade-primeira-camada", src: "tela_31", tela: "Tela 08", panel: "Velocidade", tool: "Primeira camada · Outras camadas", caption: "Base da velocidade: adesão inicial, paredes externas, internas, infill e topo." }),
+  screenLesson({ n: 11, id: "tela-09-velocidade-saliencias-travel", title: "Tela 09 — Velocidade: Saliências e Deslocamento (Travel)", duration: "15min", topics: ["Saliências", "Travel", "Aceleração"], detailKey: "tela-32-velocidade-saliencias-aceleracao", src: "tela_32", tela: "Tela 09", panel: "Velocidade", tool: "Saliências · Deslocamento · Aceleração", caption: "Controle de movimento em áreas difíceis: overhangs, travel, aceleração e estabilidade." }),
+  screenLesson({ n: 12, id: "tela-10-velocidade-jerk-decel-extrusao", title: "Tela 10 — Velocidade: Jerk(XY), Decel e Suavização de Extrusão", duration: "12min", topics: ["Jerk XY", "Decel", "Suavização"], detailKey: "tela-33-velocidade-jerk-extrusao", src: "tela_33", tela: "Tela 10", panel: "Velocidade", tool: "Jerk(XY) · Decel · Suavização de extrusão", caption: "Ajustes de resposta dinâmica que influenciam ghosting, cantos, vibração e fluxo." }),
+  screenLesson({ n: 13, id: "tela-11-suporte-ativar-tipo", title: "Tela 11 — Suporte: Ativar, Tipo (Árvore), Estilo e Jangada", duration: "15min", topics: ["Ativar suporte", "Árvore", "Jangada"], detailKey: "tela-41-suporte-ativar-tipo", src: "tela_41", tela: "Tela 11", panel: "Suporte", tool: "Ativar · Tipo Árvore · Estilo · Jangada", caption: "Decisão principal de suporte: quando ativar, que tipo usar e como preparar a base." }),
+  screenLesson({ n: 14, id: "tela-12-suporte-avancado-interface", title: "Tela 12 — Suporte: Avançado, Z Gap, Interface e Padrão", duration: "15min", topics: ["Z Gap", "Interface", "Padrão"], detailKey: "tela-42-suporte-avancado-interface", src: "tela_42", tela: "Tela 12", panel: "Suporte", tool: "Avançado · Z Gap · Interface · Padrão", caption: "Tela crítica para equilibrar remoção fácil e acabamento inferior limpo." }),
+  screenLesson({ n: 15, id: "tela-13-suporte-arvore", title: "Tela 13 — Suporte: Árvore (Tree) — ramos, ângulos e densidade", duration: "12min", topics: ["Tree", "Ramos", "Ângulos"], detailKey: "tela-43-suporte-arvore", src: "tela_43", tela: "Tela 13", panel: "Suporte", tool: "Árvore · Ramos · Ângulos · Densidade", caption: "Configuração fina de suportes Tree para reduzir marcas, tempo e consumo de material." }),
+  screenLesson({ n: 16, id: "tela-14-multimaterial-torre-preparo", title: "Tela 14 — Multimaterial: Torre de Preparo (Wipe Tower)", duration: "15min", topics: ["Wipe Tower", "Purga", "Troca de cor"], detailKey: "tela-51-multimaterial-torre-preparo", src: "tela_51", tela: "Tela 14", panel: "Multimaterial", tool: "Torre de Preparo · Wipe Tower", caption: "Controle da torre usada para limpar o bico entre trocas de filamento ou material." }),
+  screenLesson({ n: 17, id: "tela-15-multimaterial-filamento-purga", title: "Tela 15 — Multimaterial: Filamento por Recurso e Opções de Purga", duration: "12min", topics: ["Filamento por recurso", "Purga", "Suporte solúvel"], detailKey: "tela-52-multimaterial-filamento-purga", src: "tela_52", tela: "Tela 15", panel: "Multimaterial", tool: "Filamento por recurso · Opções de purga", caption: "Configuração de material por recurso, purga em infill/suporte e controle de contaminação." }),
+  screenLesson({ n: 18, id: "tela-16-outros-saia-borda-vaso", title: "Tela 16 — Outros: Saia (Skirt), Borda (Brim) e Modo Vaso", duration: "15min", topics: ["Skirt", "Brim", "Modo Vaso"], detailKey: "tela-61-outros-saia-borda-vaso", src: "tela_61", tela: "Tela 16", panel: "Outros", tool: "Saia · Borda · Modo Vaso", caption: "Recursos auxiliares para purgar o bico, aumentar adesão e imprimir paredes contínuas." }),
+  screenLesson({ n: 19, id: "tela-17-outros-textura-difusa-gcode", title: "Tela 17 — Outros: Textura Difusa (Fuzzy Skin) e Opções de G-code", duration: "12min", topics: ["Fuzzy Skin", "G-code", "Textura"], detailKey: "tela-62-outros-textura-difusa-gcode", src: "tela_62", tela: "Tela 17", panel: "Outros", tool: "Textura Difusa · Opções de G-code", caption: "Acabamento texturizado e comandos finais para adaptar o comportamento da impressão." }),
+];
 
 export const modules: Module[] = [
   {
@@ -2620,10 +2755,10 @@ export const modules: Module[] = [
   {
     id: "mestre-orcaslicer", number: 10, title: "Mestre do OrcaSlicer",
     tagline: "Tour visual, diagnose integrada e desafios avançados",
-    level: "Profissional", duration: "2h 30min",
-    methodology: "Tour visual completo do painel esquerdo (5 partes) + diagnose com raciocínio clínico. Cada aula mapeia uma aba, suas interdependências e tabelas de decisão rápida.",
-    objective: "Consolidar conhecimento integrando todas as telas do OrcaSlicer em visão panorâmica. Diagnosticar problemas complexos com raciocínio clínico e resolver qualquer desafio de impressão.",
-    lessons: [
+    level: "Profissional", duration: "4h 30min",
+    methodology: "Mapa mestre + diagnose integrada + 17 telas capturadas do painel esquerdo do OrcaSlicer 2.4, com cada opção explicada item por item.",
+    objective: "Consolidar o domínio completo do OrcaSlicer em 19 aulas: primeiro o mapa e o método de diagnóstico, depois cada tela real da interface com função, influência, consequência prática e configuração recomendada.",
+    lessons: mestreOrcaSlicerLessons, /* conteúdo antigo de 6 aulas preservado abaixo apenas como histórico interno
       L(1, "tour-qualidade", "Tour Visual — Painel Esquerdo (Parte 1): Qualidade", "25min",
         ["Altura da camada", "Largura da linha", "Costura (Seam)", "Precisão", "Ironing"], {
           theory: [
@@ -3023,7 +3158,7 @@ export const modules: Module[] = [
             "Configurações de cada tipo de peça documentadas",
           ],
         }),
-    ],
+    */
   },
 
   {
