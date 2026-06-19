@@ -3,6 +3,13 @@ import anatomiaInterface from "@/assets/orca/modulo1-anatomia-interface.jpeg.ass
 import errosComuns from "@/assets/orca/modulo1-erros-comuns.jpeg.asset.json";
 import barraSuperior from "@/assets/orca/modulo1-barra-superior.jpeg.asset.json";
 import ferramentasAvancadas from "@/assets/orca/modulo1-ferramentas-avancadas.jpeg.asset.json";
+import mod2Img21 from "@/assets/orca/modulo2-img21.jpeg.asset.json";
+import mod2Img22 from "@/assets/orca/modulo2-img22.jpeg.asset.json";
+import mod2Img23 from "@/assets/orca/modulo2-img23.jpeg.asset.json";
+import mod2Img24 from "@/assets/orca/modulo2-img24.jpeg.asset.json";
+import mod2Img25 from "@/assets/orca/modulo2-img25.jpeg.asset.json";
+import mod2Img26 from "@/assets/orca/modulo2-img26.jpeg.asset.json";
+import mod2Img27 from "@/assets/orca/modulo2-img27.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
