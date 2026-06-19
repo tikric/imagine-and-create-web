@@ -2620,7 +2620,7 @@ export const modules: Module[] = [
   {
     id: "mestre-orcaslicer", number: 10, title: "Mestre do OrcaSlicer",
     tagline: "Tour visual, diagnose integrada e desafios avançados",
-    level: "Avançado / Profissional", duration: "2h 30min",
+    level: "Profissional", duration: "2h 30min",
     methodology: "Tour visual completo do painel esquerdo (5 partes) + diagnose com raciocínio clínico. Cada aula mapeia uma aba, suas interdependências e tabelas de decisão rápida.",
     objective: "Consolidar conhecimento integrando todas as telas do OrcaSlicer em visão panorâmica. Diagnosticar problemas complexos com raciocínio clínico e resolver qualquer desafio de impressão.",
     lessons: [
