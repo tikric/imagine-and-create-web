@@ -7050,9 +7050,9 @@ export const modules: Module[] = [
             name: "Métricas de sucesso na Shopee",
             value: "6 indicadores-chave",
             whatIs: "Conjunto de métricas que define a saúde do negócio na Shopee. Operar abaixo das metas indica problema; acima, oportunidade de escalar.",
-            whyAdjust: "Sem métrica não há gestão. Acompanhar semanalmente revela onde investir tempo e dinheiro.",
-            influences: "Posicionamento orgânico na Shopee, custo de aquisição, lucro líquido.",
-            generates: "Decisões objetivas de marketing, produto e operação.",
+            whyAdjust: "Na Shopee o algoritmo premia velocidade: lojas que acompanham CTR, ROAS de Shopee Ads e taxa de cancelamento semanalmente reagem antes da queda de visibilidade nos cards.",
+            influences: "Posicionamento orgânico na Shopee, custo de aquisição via Shopee Ads, lucro líquido após comissão e frete subsidiado.",
+            generates: "Decisões rápidas de cupom, ofertas relâmpago e lance de Shopee Ads baseadas em dados — não em achismo.",
             summaryTable: {
               title: "Metas do vendedor 3D na Shopee",
               headers: ["Métrica", "O que mede", "Meta"],
