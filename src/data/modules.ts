@@ -707,6 +707,7 @@ export const modules: Module[] = [
             name: "Largura da Linha", value: "0.42mm para bico 0.4mm (100–150% do bico)",
             whatIs: "Espessura horizontal de cada linha depositada; define paredes, adesão e qualidade.",
             whyAdjust: "Equilibra detalhe, resistência e tempo. Diferente por região (parede externa, interna, infill, ponte).",
+            image: { src: mod3Img35.url, alt: "Guia visual de largura de linha", caption: "Guia visual: fórmula base (100-150% do bico), parede externa, otimização de pontes e eficiência do preenchimento" },
             optionsTable: { headers: ["Parâmetro", "Função", "Padrão"], rows: [
               ["Padrão", "Largura base de extrusão", "0.42mm"],
               ["Primeira camada", "Largura na 1ª camada", "0.50mm"],
