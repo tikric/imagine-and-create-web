@@ -361,6 +361,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Edição Avançada", value: "Cut / Seam / Support / Modifier",
             whatIs: "Conjunto de ferramentas para dividir modelos, controlar costura, controlar suportes e aplicar configurações por região.",
+            image: {
+              src: ferramentasAvancadas.url,
+              alt: "Quatro casos das ferramentas avançadas: Rejeitar Suporte em furos, Bloquear Cicatriz, Ferramenta Cut e Modifier Mesh",
+              caption: "Os 4 casos clássicos: suporte em furo → rejeitar; costura visível → bloquear; peça grande → Cut; parâmetro por região → Modifier Mesh.",
+            },
             whyAdjust: "Permite impressões que cabem na mesa, com costura escondida, suportes mínimos e regiões com configurações específicas.",
             optionsTable: { headers: ["Ferramenta", "Função", "Cores / Opções"], rows: [
               ["Corte (Cut)", "Divide o modelo em planos", "Pinos e encaixes opcionais"],
