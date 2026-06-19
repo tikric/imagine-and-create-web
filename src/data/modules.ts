@@ -5098,12 +5098,13 @@ export const modules: Module[] = [
     methodology: "Comparativo Normal vs Tree Organic, configurações de interface, design anti-suporte com chanfros.",
     objective: "Gerar suportes que sustentam perfeitamente e se desprendem sem marcar a peça.",
     lessons: [
-      L(1, "tipos-suporte", "Normal Grid vs Tree Organic", "25min",
-        ["Normal denso", "Tree ramos curvos"], {
+      L(1, "tipos-suporte", "Tipos de Suporte — Normal, Tree e Snug", "30min",
+        ["Normal Grid", "Tree Organic", "Snug ajustado"], {
           theory: [
-            "Normal Grid: blocos verticais densos, difíceis de arrancar, marcam a peça e gastam muito material.",
-            "Tree Organic: ramos curvos calculados por algoritmo, mínimo contato com a peça e ramificação inteligente.",
-            "Tree gasta menos material, imprime mais rápido e deixa marcas quase imperceptíveis.",
+            "Normal Grid: colunas verticais densas, confiáveis em superfícies planas, mas difíceis de arrancar e marcam a peça.",
+            "Tree Organic: ramos curvos calculados por algoritmo, mínimo contato com a peça, ideal para curvas e estéticas.",
+            "Snug: ajusta-se à silhueta da peça — meio termo entre estabilidade do Normal e economia do Tree, bom para geometrias mistas.",
+            "Tree Hybrid combina Tree em regiões orgânicas com Normal em overhangs chapados — default ideal para peças mistas.",
           ],
           integrations: [
             { module: "Módulo 3 (Suportes)", text: "Tree Organic é uma revolução real para miniaturas e estátuas." },
@@ -5181,11 +5182,13 @@ export const modules: Module[] = [
             "Filamento de suporte seco (PETG e PVA acumulam umidade que mata estabilidade do ramo)",
           ],
         }),
-      L(2, "interface-layers", "Interface Layers — Camadas Densas Separadoras", "25min",
-        ["Z Gap 0.15-0.20mm", "3 camadas densas", "Solúveis"], {
+      L(2, "interface-layers", "Interface Layers — Z Gap, Distância XY e Padrões", "30min",
+        ["Z Gap 0.20mm", "2-3 interface", "XY 0.35mm"], {
           theory: [
-            "Z Gap (0.15–0.20mm) é o espaço que descola o suporte da peça sem soltar no ar.",
-            "Top Interface (3 camadas densas a 90%) cria uma plataforma uniforme que recebe o overhang sem deixar fios.",
+            "Z Gap (0.15–0.25mm) é o espaço vertical que descola o suporte da peça sem deixar o overhang no ar.",
+            "Top Interface (2-3 camadas a 90-95%) cria uma plataforma uniforme que recebe o overhang sem fios pendentes.",
+            "Distância XY (0.35mm padrão) define o espaço lateral entre suporte e peça — evita soldagem e facilita remoção.",
+            "Espaçamento da interface (0.5mm padrão) regula densidade — 0.2-0.3mm para acabamento premium, 0.8mm para protótipo.",
             "Filamentos solúveis (PVA, BVOH) em impressoras multi-material dão acabamento absolutamente limpo.",
           ],
           integrations: [
@@ -5252,11 +5255,14 @@ export const modules: Module[] = [
             "Anote o melhor Z Gap para seu nozzle/material.",
           ],
         }),
-      L(3, "design-anti-suporte", "Design Anti-Suporte: Chanfros de 45°", "30min",
-        ["Ângulo <45° autoportante", "Chanfros em furos"], {
+      L(3, "design-anti-suporte", "Design Anti-Suporte — Projetando para Evitar Suportes", "30min",
+        ["Ângulo ≤45°", "Chanfros e filetes", "Divisão e orientação"], {
           theory: [
-            "Overhangs com ângulo menor que 45° são autoportantes — o filamento se apoia na camada anterior.",
-            "Chanfros em furos horizontais eliminam suportes internos e melhoram tolerância dimensional.",
+            "Overhangs com ângulo ≤45° são autoportantes — o filamento se apoia na camada anterior sem precisar de suporte.",
+            "Chanfros (corte em ângulo) e filetes (curva suave) substituem quinas de 90° e eliminam overhangs críticos.",
+            "Divisão de peças complexas em partes menores permite orientação ideal para cada uma — montagem por pino e cola.",
+            "Place on Face reorienta a peça assentando a maior face plana na mesa, minimizando overhangs.",
+            "Support Painting e Modifier Mesh aplicam suporte apenas em áreas estritamente necessárias.",
             "Reprojetar a peça é mais barato do que pós-processar suporte mal acabado.",
           ],
           integrations: [
