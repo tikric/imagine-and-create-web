@@ -10,6 +10,14 @@ import mod2Img24 from "@/assets/orca/modulo2-img24.jpeg.asset.json";
 import mod2Img25 from "@/assets/orca/modulo2-img25.jpeg.asset.json";
 import mod2Img26 from "@/assets/orca/modulo2-img26.jpeg.asset.json";
 import mod2Img27 from "@/assets/orca/modulo2-img27.jpeg.asset.json";
+import mod3Img31 from "@/assets/orca/modulo3-img31.jpeg.asset.json";
+import mod3Img32 from "@/assets/orca/modulo3-img32.jpeg.asset.json";
+import mod3Img33 from "@/assets/orca/modulo3-img33.jpeg.asset.json";
+import mod3Img34 from "@/assets/orca/modulo3-img34.jpeg.asset.json";
+import mod3Img35 from "@/assets/orca/modulo3-img35.jpeg.asset.json";
+import mod3Img36 from "@/assets/orca/modulo3-img36.jpeg.asset.json";
+import mod3Img37 from "@/assets/orca/modulo3-img37.jpeg.asset.json";
+import mod3Img38 from "@/assets/orca/modulo3-img38.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -630,6 +638,7 @@ export const modules: Module[] = [
             name: "Altura da Camada", value: "0.20mm padrão (25–75% do bico)",
             whatIs: "Espessura vertical de cada fatia que o bico deposita; é a distância que Z sobe a cada camada.",
             whyAdjust: "Equilibrar detalhe vs tempo: quanto menor, mais detalhe e mais lento; quanto maior, mais rápido e com degraus.",
+            image: { src: mod3Img32.url, alt: "Regra 25-75% do bico, PLA vs PETG e adesão em Z", caption: "Regra de engenharia: 25-75% do bico • PLA 0.08mm vs PETG 0.16mm • adesão entre camadas em Z" },
             optionsTable: { headers: ["Valor", "Uso", "Tempo (rel.)", "Qualidade"], rows: [
               ["0.08mm", "Ultra detalhe", "4x", "Excelente"],
               ["0.12mm", "Alta qualidade", "2x", "Muito boa"],
@@ -654,6 +663,7 @@ export const modules: Module[] = [
               ["Média (0.20mm)", "Equilíbrio qualidade/tempo", "Funcional, protótipos"],
               ["Grossa (0.28mm)", "Linhas visíveis, degraus", "Peças grandes, testes"],
             ]},
+            generatesImage: { src: mod3Img31.url, alt: "Detalhes em curvas vs paredes retas e equação tempo vs adesão Z", caption: "Detalhes em curvas (0.08-0.28mm), paredes retas e equação prática tempo vs adesão em Z" },
             integrationsTable: { headers: ["Parâmetro", "Relação", "Ajuste"], rows: [
               ["Velocidade", "Finas pedem velocidade menor", "−20–30% para 0.12mm"],
               ["Temperatura", "Finas precisam de mais calor", "+5°C para 0.12mm"],
@@ -668,6 +678,7 @@ export const modules: Module[] = [
               { step: "4", path: "Primeira camada", desc: "100–150% da normal (ex.: 0.24–0.30mm) para adesão" },
               { step: "5", path: "Adaptive Layer Height", desc: "Ativar variação (ex.: 0.08–0.20mm) para otimizar" },
             ],
+            howToImage: { src: mod3Img34.url, alt: "Matriz de altura de camada vs diâmetro do bico", caption: "Matriz de altura de camada vs diâmetro do bico (0.4 / 0.6 / 0.8mm) por tipo de aplicação" },
             example: { piece: "Miniatura D&D 28mm", config: "Bico 0.4mm + 0.08mm", result: "Detalhes nítidos; 3h vs 1.5h em 0.20mm" },
             errorsTable: { headers: ["Sintoma", "Causa", "Solução"], rows: [
               ["Linhas não se tocam", "Camada muito grossa", "Reduzir para ≤75% do bico"],
@@ -676,6 +687,7 @@ export const modules: Module[] = [
               ["Quebra entre camadas", "Camada grossa", "Reduzir ou aumentar T°"],
               ["Tempo alto", "Camada fina demais", "Subir para 0.20mm"],
             ]},
+            errorsImage: { src: mod3Img33.url, alt: "Erros comuns de altura de camada e correções", caption: "Erros comuns: linhas separadas (75%), plástico não sai (25%), degraus (Adaptive), delaminação e tempo alto" },
             goldenRule: "Para bico 0.4mm: 0.12mm = detalhe, 0.20mm = padrão, 0.28mm = rapidez.",
             summaryTable: { title: "Decisão Rápida", headers: ["Peça", "0.4mm", "0.6mm", "0.8mm"], rows: [
               ["Miniatura/Detalhe", "0.08–0.12", "—", "—"],
@@ -695,6 +707,7 @@ export const modules: Module[] = [
             name: "Largura da Linha", value: "0.42mm para bico 0.4mm (100–150% do bico)",
             whatIs: "Espessura horizontal de cada linha depositada; define paredes, adesão e qualidade.",
             whyAdjust: "Equilibra detalhe, resistência e tempo. Diferente por região (parede externa, interna, infill, ponte).",
+            image: { src: mod3Img35.url, alt: "Guia visual de largura de linha", caption: "Guia visual: fórmula base (100-150% do bico), parede externa, otimização de pontes e eficiência do preenchimento" },
             optionsTable: { headers: ["Parâmetro", "Função", "Padrão"], rows: [
               ["Padrão", "Largura base de extrusão", "0.42mm"],
               ["Primeira camada", "Largura na 1ª camada", "0.50mm"],
@@ -734,6 +747,7 @@ export const modules: Module[] = [
               ["Detalhes finos perdidos", "Parede externa grossa", "Reduzir para 0.35–0.38mm"],
               ["Ponte caída", "Largura/fluxo alto", "Reduzir para 85% + fan 100%"],
             ]},
+            errorsImage: { src: mod3Img36.url, alt: "Erros de largura de linha e correções", caption: "Paredes com lacunas (aumentar), excesso (reduzir), detalhes perdidos (reduzir parede externa) e ponte caída (fluxo + largura)" },
             goldenRule: "Use 100–120% do bico como largura padrão (0.42mm em bico 0.4mm).",
             summaryTable: { title: "Decisão Rápida", headers: ["Uso", "0.4mm", "0.6mm", "0.8mm"], rows: [
               ["Detalhe fino", "0.35", "—", "—"],
@@ -753,6 +767,7 @@ export const modules: Module[] = [
             name: "Posição da Costura", value: "Aligned (padrão poligonal)",
             whatIs: "Configuração que define onde a costura/cicatriz da impressão aparece em cada camada.",
             whyAdjust: "Esconder a cicatriz em pontos não visíveis (cantos, traseira, distribuídos).",
+            image: { src: mod3Img37.url, alt: "Os 4 tipos de posição de costura no OrcaSlicer", caption: "Os 4 tipos de Seam: Aligned (canto), Rear (traseira), Nearest (mais próximo) e Random (distribuído)" },
             optionsTable: { headers: ["Tipo", "O que faz", "Melhor para"], rows: [
               ["Aligned", "Empilha no canto mais oculto", "Peças poligonais (caixas)"],
               ["Rear", "Posiciona na traseira", "Bustos, estátuas"],
@@ -777,6 +792,7 @@ export const modules: Module[] = [
               { step: "4", path: "Pintar Costura", desc: "Vermelho bloqueia em superfícies visíveis; azul força em cantos ocultos" },
               { step: "5", path: "Wipe", desc: "Ativar limpeza ~80% para reduzir blob" },
             ],
+            howToImage: { src: mod3Img38.url, alt: "Diretrizes de seleção, Scarf Seam e Seam Painting", caption: "Diretrizes por geometria, Scarf Seam (45°/60°), Seam Painting Tool e Wipe on Loops a 80%" },
             example: { piece: "Vaso cilíndrico", config: "Random + Scarf 45°", result: "Sem linha vertical, pontos imperceptíveis" },
             errorsTable: { headers: ["Sintoma", "Causa", "Solução"], rows: [
               ["Linha vertical visível", "Aligned em peça redonda", "Mudar para Random"],
