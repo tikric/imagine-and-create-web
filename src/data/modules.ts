@@ -5113,6 +5113,49 @@ export const modules: Module[] = [
             { param: "Support Style", value: "Tree Organic", action: "Ramos fáceis de extrair sem marcar" },
             { param: "Tree Support Branch Angle", value: "40°", action: "Equilíbrio entre estabilidade e economia" },
           ],
+          paramDetails: [{
+            name: "Tipos de Suporte — Normal, Tree e Snug",
+            value: "Normal Grid / Tree Organic / Snug",
+            whatIs: "Três algoritmos de geração de suporte no OrcaSlicer. Normal cria colunas verticais densas; Tree cresce ramos orgânicos partindo do overhang; Snug ajusta a estrutura à silhueta da peça.",
+            whyAdjust: "O tipo errado dobra o tempo de remoção, marca a peça e desperdiça material. A escolha depende da geometria: planar, orgânica ou mista.",
+            optionsTable: {
+              headers: ["Tipo", "Remoção", "Marca", "Material", "Estabilidade", "Melhor para"],
+              rows: [
+                ["Normal Grid", "Difícil", "Muitas", "Alto", "Alta", "Superfícies planas, overhangs amplos"],
+                ["Tree Organic", "Fácil", "Poucas", "Baixo", "Média", "Curvas, miniaturas, estéticas"],
+                ["Snug", "Médio", "Médias", "Médio", "Alta", "Geometrias mistas"],
+                ["Tree Hybrid", "Fácil", "Poucas", "Baixo", "Alta", "Peças com parte plana + orgânica"],
+              ],
+            },
+            influences: "Tempo de pós-processamento, qualidade da face inferior, peso final do suporte e risco de falha durante a impressão.",
+            generates: "Estrutura temporária dimensionada à geometria — sustenta sem soldar nem desabar.",
+            howTo: [
+              { step: "1. Classificar a peça", path: "Análise visual", desc: "Plana → Normal; orgânica → Tree; mista → Tree Hybrid." },
+              { step: "2. Selecionar tipo", path: "OrcaSlicer › Support › Type/Style", desc: "Tree Organic é padrão recomendado." },
+              { step: "3. Ajustar Branch", path: "Support › Tree", desc: "Branch Angle 40°, Branch Distance 1.0mm, Branch Diameter 5mm." },
+              { step: "4. Pré-visualizar fatias", path: "Slice › Preview", desc: "Confirmar que ramos cobrem todos os overhangs." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Tree tomba durante impressão", "Branch Angle alto demais", "Reduzir para 30° e aumentar Branch Diameter para 6mm"],
+                ["Suporte solda na peça", "Normal em curva fechada", "Trocar para Tree Organic"],
+                ["Ramo fino não cobre overhang", "Tip Diameter grande", "Reduzir Tree Support Tip Diameter para 0.4mm"],
+                ["Marca profunda na face inferior", "Normal Grid", "Trocar para Tree + interface 3 camadas"],
+              ],
+            },
+            summaryTable: {
+              title: "Decisão Rápida por Geometria",
+              headers: ["Caso", "Tipo", "Observação"],
+              rows: [
+                ["Miniatura / estátua", "Tree Organic", "Remoção quase sem marca"],
+                ["Suporte estrutural plano", "Normal Grid 10-15%", "Estabilidade máxima"],
+                ["Peça mista (técnica+estética)", "Tree Hybrid", "Combina ambos automaticamente"],
+                ["TPU flexível", "Tree Organic", "Reduz risco de rasgar peça"],
+              ],
+            },
+            goldenRule: "Tree para a maioria; Normal só onde o overhang é amplo e chapado. Tree Hybrid resolve quando a peça tem ambos.",
+          }],
           goldenRule: "Adote Tree para todas estátuas, miniaturas e modelos estéticos.",
           errors: [
             { error: "Tree tomba durante impressão", solution: "Reduza Branch Angle para 30° ou aumente Branch Diameter." },
