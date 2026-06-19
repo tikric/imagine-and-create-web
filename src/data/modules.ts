@@ -4886,7 +4886,51 @@ export const modules: Module[] = [
             { param: "Infill Pattern", value: "Grid / Lines", action: "Rápido para visualização" },
             { param: "Infill Density", value: "10–15%", action: "Suficiente para protótipo conceitual" },
           ],
+          paramDetails: [{
+            name: "Infills Básicos — Grid, Lines, Rectilinear, Honeycomb",
+            value: "2D, simples, rápidos",
+            whatIs: "Padrões 2D tradicionais que se repetem camada a camada. Grid/Rectilinear cruzam em 90°, Lines vai em direção única (alternada por camada), Honeycomb usa hexágonos.",
+            whyAdjust: "Infill errado destrói relação resistência/peso/tempo. Grid gera vibração no cruzamento, Lines é frágil em Y, Honeycomb é estrutural mas mais lento.",
+            optionsTable: {
+              headers: ["Padrão", "Estrutura", "Densidade típica", "Melhor para"],
+              rows: [
+                ["Grid", "Linhas cruzadas 90°", "10-20%", "Protótipos, peças simples"],
+                ["Lines", "Linhas paralelas 1D", "5-15%", "Decorativos, vasos"],
+                ["Rectilinear", "Grade retangular", "15-25%", "Uso geral básico"],
+                ["Honeycomb", "Hexágonos 2D", "20-30%", "Painéis estruturais leves"],
+              ],
+            },
+            influences: "Tempo de impressão, consumo de filamento, resistência X/Y, vibração no infill e qualidade da superfície superior.",
+            generates: "Peça funcional rápida com custo material baixo — ideal para validação de geometria antes da peça final.",
+            howTo: [
+              { step: "1. Abrir Resistência > Preenchimento", path: "OrcaSlicer › Processo", desc: "Selecionar Padrão Esparso." },
+              { step: "2. Escolher padrão por aplicação", path: "Tabela acima", desc: "Grid/Lines para rápido; Honeycomb para estrutura leve." },
+              { step: "3. Ajustar densidade", path: "Sparse Infill Density", desc: "10-30% conforme uso." },
+              { step: "4. Validar superfície superior", path: "Top Shell Layers", desc: "Aumentar para 4-5 se infill esparso." },
+            ],
+            errorsTable: {
+              headers: ["Sintoma", "Causa", "Solução"],
+              rows: [
+                ["Bico raspa no infill", "Grid/Rectilinear cruza na mesma camada", "Trocar para Gyroid"],
+                ["Peça quebra fácil", "Lines/Grid em peça estrutural", "Migrar para Gyroid ou Cubic"],
+                ["Superfície superior afundada", "Infill esparso demais", "Aumentar densidade ou Top Layers"],
+                ["Tempo alto sem benefício", "Honeycomb em peça simples", "Voltar para Grid/Rectilinear"],
+              ],
+            },
+            summaryTable: {
+              title: "Comparativo Básicos",
+              headers: ["Padrão", "Velocidade", "Resistência", "Material"],
+              rows: [
+                ["Grid", "Muito rápido", "Baixa", "Baixo"],
+                ["Lines", "Muito rápido", "Muito baixa", "Mínimo"],
+                ["Rectilinear", "Rápido", "Baixa", "Baixo"],
+                ["Honeycomb", "Médio", "Alta", "Médio"],
+              ],
+            },
+            goldenRule: "Básicos são para protótipos e decoração. Para resistência real use Gyroid ou Cubic.",
+          }],
           goldenRule: "Evite Grid em impressões estruturais rápidas — o cruzamento gera vibração.",
+
           errors: [
             { error: "Ruído metálico no infill", solution: "Troque Grid por Rectilinear ou reduza velocidade." },
             { error: "Peça quebra na direção Z", solution: "Aumente paredes (4+) — o infill 2D não ajuda em tração Z." },
