@@ -548,6 +548,11 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Extruder (Bico, Tipo e Fluxo)", value: "Bico 0.4mm padrão",
             whatIs: "Conjunto de parâmetros do sistema de extrusão: bico, extrusor, retração e MVS.",
+            image: {
+              src: mod2Img26.url,
+              alt: "Quatro diâmetros de bico: 0.2mm detalhes, 0.4mm padrão, 0.6mm funcional, 0.8mm protótipos",
+              caption: "Os 4 diâmetros de bico: 0.2mm (detalhes/miniaturas) · 0.4mm (padrão) · 0.6mm (funcional rápido) · 0.8mm (protótipos e grandes volumes).",
+            },
             whyAdjust: "Define largura real da linha, comportamento da retração e velocidade máxima útil sem subextrusão.",
             optionsTable: { headers: ["Diâmetro", "Uso", "Observação"], rows: [
               ["0.2 mm", "Detalhes finos, miniaturas", "Lento, fácil entupir"],
