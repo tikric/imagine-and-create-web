@@ -24,7 +24,9 @@ const TELA_MAP: Record<string, { url: string }> = {
   tela_61: tela61, tela_62: tela62,
 };
 
-export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean }) {
+export function LessonBlock({ l, isFirst = true, withDivider = false, compact = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean; compact?: boolean }) {
+  const S = ({ title, children }: { title: string; children: React.ReactNode }) =>
+    compact ? <div className="mt-10">{children}</div> : <Section title={title}>{children}</Section>;
   return (
     <section id={l.id} className={`scroll-mt-24 ${!isFirst && withDivider ? "mt-20 pt-16 border-t border-border" : ""}`}>
       <div className="flex items-center gap-3 flex-wrap mb-4 mono text-xs">
@@ -42,7 +44,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
       </div>
 
       {l.screens && l.screens.length > 0 && (
-        <Section title="Tela do OrcaSlicer — Ferramenta em destaque">
+        <S title="Tela do OrcaSlicer — Ferramenta em destaque">
           <div className="space-y-6">
             {l.screens.map((s, i) => (
               <figure key={i} className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
@@ -56,11 +58,11 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </figure>
             ))}
           </div>
-        </Section>
+        </S>
       )}
 
       {l.paramDetails && l.paramDetails.length > 0 && (
-        <Section title="Cada item da tela, explicado">
+        <S title="Cada item da tela, explicado">
           <div className="space-y-5">
             {l.paramDetails.map((p, i) => (
               <div key={i} className="rounded-2xl border border-border bg-card/40 p-6">
@@ -146,37 +148,37 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </div>
             ))}
           </div>
-        </Section>
+        </S>
       )}
 
       {l.theory && l.theory.length > 0 && (
-        <Section title="Conteúdo Teórico">
+        <S title="Conteúdo Teórico">
           <div className="space-y-4 text-lg leading-relaxed text-foreground/90">
             {l.theory.map((p: string, i: number) => <p key={i}>{p}</p>)}
           </div>
-        </Section>
+        </S>
       )}
 
       {l.deepDive && l.deepDive.length > 0 && (
-        <Section title="Aprofundamento Técnico">
+        <S title="Aprofundamento Técnico">
           <div className="space-y-5 text-base leading-relaxed text-foreground/90 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 to-transparent p-6 md:p-8">
             <div className="mono text-xs uppercase tracking-wider text-primary">▼ Deep Dive</div>
             {l.deepDive.map((p: string, i: number) => <p key={i}>{p}</p>)}
           </div>
-        </Section>
+        </S>
       )}
 
       {l.caseStudy && (
-        <Section title="Estudo de Caso">
+        <S title="Estudo de Caso">
           <div className="rounded-2xl border border-chart-3/40 bg-chart-3/5 p-6 md:p-8">
             <div className="mono text-xs uppercase tracking-wider text-chart-3 mb-3">◆ Caso real</div>
             <p className="text-foreground/90 leading-relaxed">{l.caseStudy}</p>
           </div>
-        </Section>
+        </S>
       )}
 
       {l.checklist && l.checklist.length > 0 && (
-        <Section title="Checklist Operacional">
+        <S title="Checklist Operacional">
           <ul className="space-y-2 rounded-xl border border-border bg-card/40 p-5">
             {l.checklist.map((c: string, i: number) => (
               <li key={i} className="flex items-start gap-3">
@@ -185,11 +187,11 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </li>
             ))}
           </ul>
-        </Section>
+        </S>
       )}
 
       {l.integrations && l.integrations.length > 0 && (
-        <Section title="Integrações Teóricas">
+        <S title="Integrações Teóricas">
           <div className="space-y-3">
             {l.integrations.map((it: Integration, i: number) => (
               <div key={i} className="rounded-xl border-l-4 border-primary bg-card/50 p-5">
@@ -198,20 +200,20 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </div>
             ))}
           </div>
-        </Section>
+        </S>
       )}
 
       {(l.economy || l.finance) && (
-        <Section title="Economia & Dicas Financeiras">
+        <S title="Economia & Dicas Financeiras">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {l.economy && <Callout label="Economia do Mestre FDM" icon="◇">{l.economy}</Callout>}
             {l.finance && <Callout label="Dica Financeira" icon="$">{l.finance}</Callout>}
           </div>
-        </Section>
+        </S>
       )}
 
       {l.params && l.params.length > 0 && (
-        <Section title="Tabela de Parâmetros">
+        <S title="Tabela de Parâmetros">
           <div className="overflow-x-auto rounded-xl border border-border">
             <table className="w-full text-sm">
               <thead className="bg-card">
@@ -232,20 +234,20 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </tbody>
             </table>
           </div>
-        </Section>
+        </S>
       )}
 
       {l.goldenRule && (
-        <Section title="Regra de Ouro">
+        <S title="Regra de Ouro">
           <div className="rounded-2xl border border-primary/50 bg-gradient-to-br from-primary/10 to-transparent p-8 glow-orca">
             <div className="mono text-xs uppercase tracking-wider text-primary mb-3">★ Regra de Ouro</div>
             <p className="text-xl font-semibold leading-relaxed text-balance">"{l.goldenRule}"</p>
           </div>
-        </Section>
+        </S>
       )}
 
       {l.errors && l.errors.length > 0 && (
-        <Section title="Lista de Erros Comuns & Solução Imediata">
+        <S title="Lista de Erros Comuns & Solução Imediata">
           <div className="overflow-x-auto rounded-xl border border-destructive/30">
             <table className="w-full text-sm">
               <thead className="bg-destructive/10">
@@ -264,11 +266,11 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </tbody>
             </table>
           </div>
-        </Section>
+        </S>
       )}
 
-      {l.exercise && l.exercise.length > 0 && (
-        <Section title="Exercício Prático Autônomo">
+      {!compact && l.exercise && l.exercise.length > 0 && (
+        <S title="Exercício Prático Autônomo">
           <ol className="space-y-3">
             {l.exercise.map((step: string, i: number) => (
               <li key={i} className="flex items-start gap-4 rounded-xl border border-border bg-card/40 p-5">
@@ -277,7 +279,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false }: { l: Les
               </li>
             ))}
           </ol>
-        </Section>
+        </S>
       )}
     </section>
   );
