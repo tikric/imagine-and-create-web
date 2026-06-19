@@ -4159,6 +4159,7 @@ export const orcaParamDetails: Record<string, OrcaParamDetail[]> = {
         { label: "Snug", desc: "Ajustado à geometria da peça — bom equilíbrio, mas difícil de remover em áreas internas" },
       ],
       influences: "Consumo de filamento, qualidade da face inferior, facilidade de remoção, tempo de fatiamento.",
+      generates: "Tree usa 40–60% menos filamento que Normal e remove com puxão; Normal é mais robusto mas deixa marcas.",
       optionsTable: {
         headers: ["Cenário", "Tipo recomendado", "Motivo"],
         rows: [
