@@ -32,6 +32,9 @@ import mod5Img57 from "@/assets/orca/modulo5-img57.jpeg.asset.json";
 import mod5Img58 from "@/assets/orca/modulo5-img58.jpeg.asset.json";
 import mod5Img591 from "@/assets/orca/modulo5-img591.jpeg.asset.json";
 import mod5Img592 from "@/assets/orca/modulo5-img592.jpeg.asset.json";
+import mod6Img61 from "@/assets/orca/modulo6-img61.jpg.asset.json";
+import mod6Img62 from "@/assets/orca/modulo6-img62.jpg.asset.json";
+import mod6Img63 from "@/assets/orca/modulo6-img63.jpg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -1680,6 +1683,7 @@ export const modules: Module[] = [
             name: "Anisotropia FDM",
             value: "X/Y forte, Z fraco",
             whatIs: "Diferença de resistência entre os eixos da peça impressa, causada pela natureza camada-a-camada do FDM.",
+            image: { src: mod6Img63.url, alt: "Anisotropia comparada: gancho impresso vertical vs horizontal sob 12 kg", caption: "Mesma geometria, dois resultados opostos: à esquerda (camadas perpendiculares à carga) o gancho sofre fratura limpa entre camadas a 12 kg — falha anisotrópica clássica; à direita (camadas paralelas à carga) sustenta os mesmos 12 kg com integridade estrutural." },
             whyAdjust: "Sem entender anisotropia, peças funcionais quebram em uso. Com ela, você projeta para a carga real.",
             types: [
               { label: "Tração", desc: "Camadas paralelas à força = máxima resistência" },
@@ -1773,6 +1777,8 @@ export const modules: Module[] = [
             name: "Orientação na Mesa",
             value: "Horizontal / Vertical / 45°",
             whatIs: "Posição da peça em relação à mesa, que determina a direção de deposição das camadas e o padrão de tensões resultante.",
+            image: { src: mod6Img61.url, alt: "Suporte em L horizontal vs vertical com peso de 10 kg", caption: "Suporte em L sob 10 kg: impresso na horizontal (camadas paralelas à carga) — zero deformação; impresso na vertical (camadas perpendiculares na curva) — deformação visível na dobra. A orientação muda completamente a rigidez." },
+            generatesImage: { src: mod6Img62.url, alt: "Efeito da orientação de impressão em ganchos: intacto vs partido", caption: "Mesmo gancho, duas orientações: camadas horizontais (carga paralela às camadas) → forte, suporta 5 kg; camadas verticais (carga perpendicular às camadas) → falha na curva. A orientação correta vale mais do que aumentar paredes ou infill." },
             whyAdjust: "Mesma peça com orientações diferentes pode variar 5× na resistência, 50% no tempo e 80% no consumo de suporte.",
             types: [
               { label: "Horizontal (deitada)", desc: "Camadas paralelas à mesa — máxima tração/flexão, melhor topo, mais suportes" },
