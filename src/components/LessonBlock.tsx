@@ -88,7 +88,10 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                   <div className="text-sm font-semibold mt-1">{s.panel}</div>
                   <div className="text-xs text-muted-foreground mt-0.5">{s.tool}</div>
                 </div>
-                <img src={TELA_MAP[s.src]?.url} alt={`${s.tela} — ${s.panel}`} loading="lazy" className="w-full h-auto block bg-[#1e1e1e]" />
+                {!isPlaceholder(TELA_MAP[s.src]?.url) && (
+                  <img src={TELA_MAP[s.src]?.url} alt={`${s.tela} — ${s.panel}`} loading="lazy" className="w-full h-auto block bg-[#1e1e1e]" />
+                )}
+
                 <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{s.caption}</figcaption>
               </figure>
             ))}
