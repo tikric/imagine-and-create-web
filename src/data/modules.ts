@@ -30,6 +30,8 @@ import mod5Img55 from "@/assets/orca/modulo5-img55.jpeg.asset.json";
 import mod5Img56 from "@/assets/orca/modulo5-img56.jpeg.asset.json";
 import mod5Img57 from "@/assets/orca/modulo5-img57.jpeg.asset.json";
 import mod5Img58 from "@/assets/orca/modulo5-img58.jpeg.asset.json";
+import mod5Img591 from "@/assets/orca/modulo5-img591.jpeg.asset.json";
+import mod5Img592 from "@/assets/orca/modulo5-img592.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -1548,6 +1550,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Jerk / Junction Deviation", value: "Jerk 5–15 mm/s • JD 0.01–0.1",
+            image: { src: mod5Img591.url, alt: "Tabela de dinâmica de cantos, fatores de movimento e consequência geométrica", caption: "Tabela por arquitetura (Ender Jerk 8–12 / JD 0.02–0.05, Prusa Jerk 10–15, Voron/Bambu JD 0.01–0.05); massa e inércia ditam o limite; consequência prática: Jerk/JD alto = ghosting e vibração, Jerk/JD baixo = cantos arredondados." },
             whatIs: "Controle de quão abruptas podem ser as mudanças de direção do bico.",
             whyAdjust: "Equilibrar precisão dos cantos e velocidade global da impressão.",
             optionsTable: { headers: ["Impressora", "Jerk (Marlin)", "JD (Klipper)"], rows: [
@@ -1579,6 +1582,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Input Shaper (X / Y)", value: "MZV/EI/ZV • freq medida (~30–60 Hz)",
+            image: { src: mod5Img592.url, alt: "Algoritmos de Input Shaping, fatores de ressonância e ghosting vs parede limpa", caption: "Algoritmos MZV/EI/ZV com frequência medida 30–60 Hz; ressonância depende de rigidez do frame, tensão das correias, motores e precisão do ADXL345; consequência: em alta velocidade sem Input Shaping aparece ghosting, com Input Shaping a parede fica limpa." },
             whatIs: "Filtro de firmware que antecipa e cancela vibrações estruturais da impressora.",
             whyAdjust: "Eliminar ghosting nas paredes e habilitar acelerações maiores sem perder qualidade.",
             influences: "Rigidez do frame, posição dos motores, qualidade do acelerômetro.",
