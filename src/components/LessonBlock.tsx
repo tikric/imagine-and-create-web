@@ -70,6 +70,8 @@ const MAIN_MAP: Record<string, string> = {
   "pecas-esteticas": "lesson-pecas-esteticas",       // Mod 8 — 8.3
   "mercado-padronizacao": "lesson-mercado-padronizacao", // Mod 9 — 9.1
   "precificacao": "lesson-precificacao",                 // Mod 9 — 9.2
+  "mapa-mestre-painel-esquerdo": "lesson-mapa-mestre-painel",       // Mod 10 — 10.1
+  "diagnose-integrada-raciocinio-clinico": "lesson-diagnose-integrada", // Mod 10 — 10.2
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
