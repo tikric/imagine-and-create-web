@@ -2415,6 +2415,7 @@ export const modules: Module[] = [
             {
               name: "Caso 2 — Dobradiça Articulada",
               value: "PETG/PLA+, 4 paredes, Gyroid 25%, folga +0.15mm",
+              image: { src: mod8Img84.url, alt: "Painel triplo: 1 O que influencia adesão Z, 2 Parâmetros críticos em português, 3 Consequência prática", caption: "Mapa mental dos 3 fatores que decidem se a dobradiça vai articular ou quebrar: (1) o que influencia a adesão Z — orientação na mesa, material, parâmetros e número de paredes; (2) parâmetros críticos — altura de camada 0.12-0.16mm aumenta superfície de fusão, +5°C melhora fusão molecular, -20% de velocidade dá mais tempo de difusão, PETG/Nylon superam PLA, e 4-6 paredes absorvem a carga; (3) consequência prática — comparativo de duas peças sob ensaio de tração: a mal-configurada delamina entre camadas, a bem-configurada flexiona como peça maciça. Para dobradiça (tração+compressão cíclicas), esses 3 painéis explicam por que +0.15mm de folga só funciona quando a adesão Z já foi resolvida." },
               whatIs: "Peça articulada com pino central que sofre tração e compressão alternadas em movimento repetitivo.",
               whyAdjust: "Tolerância no pino define se vai travar ou ter folga excessiva. Calibração de XY Compensation é crítica.",
               influences: "Movimento livre, durabilidade do pino, vida útil em ciclos.",
