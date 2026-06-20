@@ -1434,6 +1434,9 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Flow Ratio", value: "0.90–1.05 (típico)",
+            image: { src: mod5Img57.url, alt: "Métodos de calibração de vazão e fatores que influenciam o flow", caption: "Três métodos (Passo Grosso, Passo Fino, Cubo de Fluxo), fatores que mudam o Flow (PLA ~1.0, PETG ~0.95, TPU ~0.92, temperatura e diâmetro do filamento) e o aviso: E-Steps descalibrados são compensados pelo Flow, mas calibre o hardware antes." },
+            generatesImage: { src: mod5Img56.url, alt: "Passo grosso/fino, cubo de fluxo e consequência sub/superextrusão", caption: "Passo Grosso e Fino calibram a superfície superior; o Cubo de Fluxo mede a parede real com paquímetro. Resultado prático: subextrusão (lacunas, adesão fraca) vs superextrusão (excesso de plástico e cantos abaulados)." },
+            errorsImage: { src: mod5Img58.url, alt: "Exemplo prático do cubo de fluxo, erros comuns e tabela de soluções", caption: "Exemplo: alvo 0.42mm, medido 0.40mm → Novo Flow = 1.05. Erros típicos: lacunas (Flow baixo) → +2–5%; excesso (Flow alto) → −2–5%; medida incorreta → recalibrar." },
             whatIs: "Multiplicador do volume extrudado para casar a largura real com a desejada.",
             whyAdjust: "Garante dimensões precisas, superfície superior lisa e sem excesso de material.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
