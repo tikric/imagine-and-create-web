@@ -1995,6 +1995,7 @@ export const modules: Module[] = [
             name: "Estratégia de Otimização",
             value: "Eficiência multi-eixo",
             whatIs: "Conjunto de princípios e métricas para reduzir tempo e material mantendo função.",
+            image: { src: mod7Img71.url, alt: "Mesmo organizador impresso com configuração padrão vs otimizada", caption: "Mesma peça, dois perfis: padrão (4 paredes, Gyroid 20%, bico 0.4mm) → 150g e 4h; otimizado (3 paredes, Lightning 10%, bico 0.6mm) → 60g e 2h. Função idêntica, custo e tempo na metade." },
             whyAdjust: "Sem otimização, a mesma máquina produz menos da metade — margem comercial fica inviável.",
             influences: "Tempo de produção, custo por peça, peso final, resistência funcional, consumo energético.",
             influencesList: [
