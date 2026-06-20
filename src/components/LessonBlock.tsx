@@ -60,7 +60,9 @@ const MAIN_MAP: Record<string, string> = {
   "cornering": "lesson-cornering",              // Mod 5 — 5.6
   "input-shaping": "lesson-input-shaping",      // Mod 5 — 5.7
   "tolerancia": "lesson-tolerancia",            // Mod 5 — 5.8
-  "anisotropia-forcas": "main-orientacao",      // Mod 6
+  "anisotropia-forcas": "lesson-anisotropia-forcas",     // Mod 6 — 6.1
+  "orientacao-tensoes": "lesson-orientacao-tensoes",     // Mod 6 — 6.2
+  "resistencia-estrutural": "lesson-resistencia-estrutural", // Mod 6 — 6.3
   "otimizacao-conceitos": "main-infill",        // Mod 7
   "analise-requisitos": "main-funcional",       // Mod 8
 };
