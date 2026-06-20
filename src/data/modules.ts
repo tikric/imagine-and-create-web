@@ -2809,6 +2809,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Planilha de Precificação Completa",
             value: "Custo Total ÷ (1 − Margem)",
+            image: { src: mod9Img92.url, alt: "Suporte de celular em PLA preto sobre bancada com planilha 3D Print Cost Analysis e calculadora científica", caption: "Precificação real do suporte (Stand Black PLA): Filamento R$8,00 + Energia R$2,40 + Depreciação R$1,50 + Mão de obra R$10,00 + Embalagem R$4,00 + Impostos R$5,00 = Custo total R$30,90. Com margem de 100% → preço final R$62,00. Cada item visível na planilha é um item que costuma ser esquecido — e cada item esquecido é margem que vira prejuízo." },
             whatIs: "Modelo de cálculo que integra custos diretos, indiretos e ocultos com margem de lucro para chegar ao preço de venda sustentável.",
             whyAdjust: "Cada item omitido vira prejuízo silencioso. A planilha torna visível o que normalmente é esquecido — base para decisões financeiras reais.",
             influences: "Margem real, sustentabilidade financeira, capacidade de investir em melhorias, posicionamento no mercado e poder de negociação.",
