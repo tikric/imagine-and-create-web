@@ -2604,6 +2604,7 @@ export const modules: Module[] = [
             {
               name: "Técnicas para Acabamento Premium",
               value: "Toolbox decorativo",
+              image: { src: mod8Img85.url, alt: "Matriz de Resistência Anisotrópica em monitor mostrando Tensão, Compressão, Flexão, Shear e Cisalhamento por orientação, com peças de teste ao lado", caption: "Matriz de Resistência Anisotrópica — ferramenta que fecha a caixa de ferramentas decorativa quando a peça vai vender por R$ 3-5× o preço base: Tensão (camadas paralelas à força = resistência máxima), Compressão (camadas perpendiculares à força = boa resistência), Flexão (camadas paralelas à flexão = resistência máxima), Shear a 45° (alta resistência mas não máxima) e Cisalhamento (camadas perpendiculares = resistência máxima). À direita, a Plataforma de Impressão Virtual mostra a Zona de Ensaio de Anisotropia (0°, 90°, 45°) para validar qual orientação maximiza a sobrevivência da peça no transporte e no manuseio do cliente final. Acabamento premium não é só Ironing+Silk — é também escolher a orientação que não vai trincar na entrega." },
               whatIs: "Conjunto de técnicas do OrcaSlicer que transformam decorativos comuns em premium.",
               influences: "Acabamento visual, valor percebido, preço de venda.",
               generates: "Diferença qualitativa que justifica preço 3-5× maior.",
