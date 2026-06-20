@@ -1377,6 +1377,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Pressure Advance", value: "0.02–1.2 (depende do extrusor)",
+            image: { src: mod5Img55.url, alt: "PA Line, PA Pattern/Tower e consequência prática nos cantos", caption: "PA Line (recomendado para Klipper) com valores crescentes; PA Pattern e Tower para Marlin/alternativas; e a consequência prática: PA descalibrado abaúla os cantos, PA otimizado entrega canto vivo e precisão dimensional." },
             whatIs: "Fator que antecipa/reduz o fluxo para compensar a inércia da pressão no hotend.",
             whyAdjust: "Elimina cantos arredondados e melhora precisão dimensional em mudanças de direção.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
