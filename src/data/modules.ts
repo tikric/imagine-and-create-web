@@ -2098,6 +2098,7 @@ export const modules: Module[] = [
               name: "Lightning Infill",
               value: "10-15% densidade",
               whatIs: "Padrão de infill que cria subestruturas (raízes) apenas onde necessário para suportar superfícies superiores.",
+              image: { src: mod7Img72.url, alt: "Vaso decorativo com infill Lightning exposto vs vaso fechado", caption: "Lightning Infill em ação: à esquerda, o vaso aberto revela as 'raízes' do padrão que sustentam o topo gastando o mínimo de material; à direita, o mesmo vaso fechado com forma externa preservada — peso e tempo caem drasticamente sem perder o visual." },
               whyAdjust: "Economiza até 60% de material e 30% de tempo em peças sem carga estrutural.",
               types: [
                 { label: "Quando USAR", desc: "Peças decorativas, sem carga, protótipos visuais, peças com paredes grossas" },
