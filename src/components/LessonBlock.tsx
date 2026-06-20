@@ -52,7 +52,14 @@ const MAIN_MAP: Record<string, string> = {
   "fundamentos-materiais": "lesson-fundamentos-materiais", // Mod 4 — 4.1
   "pla-petg": "lesson-pla-petg",                // Mod 4 — 4.2
   "abs-asa-tpu-nylon": "lesson-abs-asa-tpu-nylon", // Mod 4 — 4.3
-  "temperatura": "main-calibracao",             // Mod 5
+  "temperatura": "lesson-temperatura",          // Mod 5 — 5.1
+  "mvs": "lesson-mvs",                          // Mod 5 — 5.2
+  "pressure-advance": "lesson-pressure-advance",// Mod 5 — 5.3
+  "flow-rate": "lesson-flow-rate",              // Mod 5 — 5.4
+  "retracao": "lesson-retracao",                // Mod 5 — 5.5
+  "cornering": "lesson-cornering",              // Mod 5 — 5.6
+  "input-shaping": "lesson-input-shaping",      // Mod 5 — 5.7
+  "tolerancia": "lesson-tolerancia",            // Mod 5 — 5.8
   "anisotropia-forcas": "main-orientacao",      // Mod 6
   "otimizacao-conceitos": "main-infill",        // Mod 7
   "analise-requisitos": "main-funcional",       // Mod 8
