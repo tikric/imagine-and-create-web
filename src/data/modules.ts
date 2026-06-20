@@ -1683,6 +1683,7 @@ export const modules: Module[] = [
             name: "Anisotropia FDM",
             value: "X/Y forte, Z fraco",
             whatIs: "Diferença de resistência entre os eixos da peça impressa, causada pela natureza camada-a-camada do FDM.",
+            image: { src: mod6Img63.url, alt: "Anisotropia comparada: gancho impresso vertical vs horizontal sob 12 kg", caption: "Mesma geometria, dois resultados opostos: à esquerda (camadas perpendiculares à carga) o gancho sofre fratura limpa entre camadas a 12 kg — falha anisotrópica clássica; à direita (camadas paralelas à carga) sustenta os mesmos 12 kg com integridade estrutural." },
             whyAdjust: "Sem entender anisotropia, peças funcionais quebram em uso. Com ela, você projeta para a carga real.",
             types: [
               { label: "Tração", desc: "Camadas paralelas à força = máxima resistência" },
