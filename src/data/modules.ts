@@ -40,6 +40,8 @@ import mod7Img72 from "@/assets/orca/modulo7-img72.jpg.asset.json";
 import mod8Img81 from "@/assets/orca/modulo8-img81.jpg.asset.json";
 import mod8Img82 from "@/assets/orca/modulo8-img82.jpg.asset.json";
 import mod8Img83 from "@/assets/orca/modulo8-img83.jpg.asset.json";
+import mod9Img91 from "@/assets/orca/modulo9-img91.jpg.asset.json";
+import mod9Img92 from "@/assets/orca/modulo9-img92.jpg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -2685,6 +2687,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Padronização Comercial Completa",
             value: "Perfis + QA + Embalagem + Fluxo",
+            image: { src: mod9Img91.url, alt: "OrcaSlicer em Pré-Visualização exibindo benchmark com paredes, infill Gyroid e Tree Support — camada 185/320, 3:14:48 e 45.2g PLA", caption: "Padronização visual em ação: o mesmo perfil aplicado a todo lote — paredes (azul), inner walls (verde), infill Gyroid (amarelo) e Tree Support (laranja) — com métricas previsíveis (185/320 camadas, 3h14, 45.2g). Quando o perfil é padrão, o preview vira contrato: tempo e material são orçáveis antes da máquina ligar." },
             whatIs: "Sistema integrado de processos que garante que toda peça produzida atenda ao mesmo padrão de qualidade, do orçamento à entrega.",
             whyAdjust: "Sem padronização, cada peça vira projeto novo — custo de setup explode e qualidade vira loteria. Com padronização, escala vira possibilidade real.",
             influences: "Consistência entre lotes, taxa de retrabalho, confiança do cliente, capacidade de escalar e profissionalismo percebido.",
@@ -2806,6 +2809,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Planilha de Precificação Completa",
             value: "Custo Total ÷ (1 − Margem)",
+            image: { src: mod9Img92.url, alt: "Suporte de celular em PLA preto sobre bancada com planilha 3D Print Cost Analysis e calculadora científica", caption: "Precificação real do suporte (Stand Black PLA): Filamento R$8,00 + Energia R$2,40 + Depreciação R$1,50 + Mão de obra R$10,00 + Embalagem R$4,00 + Impostos R$5,00 = Custo total R$30,90. Com margem de 100% → preço final R$62,00. Cada item visível na planilha é um item que costuma ser esquecido — e cada item esquecido é margem que vira prejuízo." },
             whatIs: "Modelo de cálculo que integra custos diretos, indiretos e ocultos com margem de lucro para chegar ao preço de venda sustentável.",
             whyAdjust: "Cada item omitido vira prejuízo silencioso. A planilha torna visível o que normalmente é esquecido — base para decisões financeiras reais.",
             influences: "Margem real, sustentabilidade financeira, capacidade de investir em melhorias, posicionamento no mercado e poder de negociação.",
