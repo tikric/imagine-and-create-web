@@ -22,6 +22,14 @@ import mod4Img41 from "@/assets/orca/modulo4-img41.jpeg.asset.json";
 import mod4Img42 from "@/assets/orca/modulo4-img42.jpeg.asset.json";
 import mod4Img43 from "@/assets/orca/modulo4-img43.jpeg.asset.json";
 import mod4Img44 from "@/assets/orca/modulo4-img44.jpeg.asset.json";
+import mod5Img51 from "@/assets/orca/modulo5-img51.jpeg.asset.json";
+import mod5Img52 from "@/assets/orca/modulo5-img52.jpeg.asset.json";
+import mod5Img53 from "@/assets/orca/modulo5-img53.jpeg.asset.json";
+import mod5Img54 from "@/assets/orca/modulo5-img54.jpg.asset.json";
+import mod5Img55 from "@/assets/orca/modulo5-img55.jpeg.asset.json";
+import mod5Img56 from "@/assets/orca/modulo5-img56.jpeg.asset.json";
+import mod5Img57 from "@/assets/orca/modulo5-img57.jpeg.asset.json";
+import mod5Img58 from "@/assets/orca/modulo5-img58.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -1256,6 +1264,8 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Temperatura do Bico", value: "195–270°C (depende do material)",
+            image: { src: mod5Img52.url, alt: "Torre de temperatura, teste de ponte e teste de overhang", caption: "Três métodos visuais de calibração térmica: Torre de Temperatura (adesão e fluxo por degraus), Teste de Ponte (evita queda por excesso de calor) e Teste de Overhang (evita deformação em saliências)." },
+            errorsImage: { src: mod5Img53.url, alt: "Defeitos térmicos: fiapos, superfície fosca, bolhas, má adesão e queima", caption: "Diagnóstico térmico: fiapos = filamento úmido (secar 4–6h); superfície fosca/PLA Silk = T baixa; bolhas = T alta (excesso) ou baixa (umidade); delaminação = T baixa; peça queimada = T excessiva." },
             whatIs: "Temperatura do hotend que define a fluidez do polímero derretido.",
             whyAdjust: "Cada combinação de material, velocidade e ventilação tem uma temperatura ótima — a menor que ainda produz uma impressão forte e sem defeitos.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
@@ -1313,6 +1323,8 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Maximum Volumetric Speed", value: "5–25 mm³/s (depende do hotend)",
+            image: { src: mod5Img54.url, alt: "Fatores de influência da MVS e tabela de diagnóstico", caption: "Quatro fatores que definem a MVS: tipo de hotend (padrão vs high-flow), comportamento térmico do material, temperatura e diâmetro do bico (0.6mm +20–30%, 0.8mm +40–50%)." },
+            generatesImage: { src: mod5Img51.url, alt: "MVS muito alta, ideal e muito baixa — consequência prática", caption: "MVS > 25 mm³/s: subextrusão severa e peça frágil. MVS ideal (~15): extrusão consistente e peça sólida. MVS muito baixa (~5): velocidade limitada à toa e risco de degradação térmica no bico." },
             whatIs: "Limite térmico de fluxo do hotend; impede subextrusão em alta velocidade.",
             whyAdjust: "Permite imprimir o mais rápido possível com segurança, sem falhas de extrusão.",
             optionsTable: { headers: ["Hotend", "MVS (mm³/s)", "Observação"], rows: [
@@ -1365,6 +1377,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Pressure Advance", value: "0.02–1.2 (depende do extrusor)",
+            image: { src: mod5Img55.url, alt: "PA Line, PA Pattern/Tower e consequência prática nos cantos", caption: "PA Line (recomendado para Klipper) com valores crescentes; PA Pattern e Tower para Marlin/alternativas; e a consequência prática: PA descalibrado abaúla os cantos, PA otimizado entrega canto vivo e precisão dimensional." },
             whatIs: "Fator que antecipa/reduz o fluxo para compensar a inércia da pressão no hotend.",
             whyAdjust: "Elimina cantos arredondados e melhora precisão dimensional em mudanças de direção.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
@@ -1421,6 +1434,9 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Flow Ratio", value: "0.90–1.05 (típico)",
+            image: { src: mod5Img57.url, alt: "Métodos de calibração de vazão e fatores que influenciam o flow", caption: "Três métodos (Passo Grosso, Passo Fino, Cubo de Fluxo), fatores que mudam o Flow (PLA ~1.0, PETG ~0.95, TPU ~0.92, temperatura e diâmetro do filamento) e o aviso: E-Steps descalibrados são compensados pelo Flow, mas calibre o hardware antes." },
+            generatesImage: { src: mod5Img56.url, alt: "Passo grosso/fino, cubo de fluxo e consequência sub/superextrusão", caption: "Passo Grosso e Fino calibram a superfície superior; o Cubo de Fluxo mede a parede real com paquímetro. Resultado prático: subextrusão (lacunas, adesão fraca) vs superextrusão (excesso de plástico e cantos abaulados)." },
+            errorsImage: { src: mod5Img58.url, alt: "Exemplo prático do cubo de fluxo, erros comuns e tabela de soluções", caption: "Exemplo: alvo 0.42mm, medido 0.40mm → Novo Flow = 1.05. Erros típicos: lacunas (Flow baixo) → +2–5%; excesso (Flow alto) → −2–5%; medida incorreta → recalibrar." },
             whatIs: "Multiplicador do volume extrudado para casar a largura real com a desejada.",
             whyAdjust: "Garante dimensões precisas, superfície superior lisa e sem excesso de material.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
