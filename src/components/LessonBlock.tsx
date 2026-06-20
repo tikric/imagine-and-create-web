@@ -78,6 +78,9 @@ const MAIN_MAP: Record<string, string> = {
   "tolerancias-folgas": "lesson-tolerancias-folgas",         // Mod 13 — 13.1
   "press-snap-slide": "lesson-press-snap-slide",             // Mod 13 — 13.2
   "heat-inserts-roscas": "lesson-heat-inserts-roscas",       // Mod 13 — 13.3
+  "diagnostico-metodologia": "lesson-diagnostico-metodologia", // Mod 14 — 14.1
+  "stringing-ghosting": "lesson-stringing-ghosting",           // Mod 14 — 14.2
+  "warping-delaminacao": "lesson-warping-delaminacao",         // Mod 14 — 14.3
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
