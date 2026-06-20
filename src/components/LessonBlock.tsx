@@ -75,6 +75,9 @@ const MAIN_MAP: Record<string, string> = {
   "limites-cinematicos": "lesson-limites-cinematicos",       // Mod 12 — 12.1
   "fluxo-volumetrico-mvs": "lesson-fluxo-volumetrico-mvs",   // Mod 12 — 12.2
   "input-shaping-klipper": "lesson-input-shaping-klipper",   // Mod 12 — 12.3
+  "tolerancias-folgas": "lesson-tolerancias-folgas",         // Mod 13 — 13.1
+  "press-snap-slide": "lesson-press-snap-slide",             // Mod 13 — 13.2
+  "heat-inserts-roscas": "lesson-heat-inserts-roscas",       // Mod 13 — 13.3
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
