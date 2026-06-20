@@ -2579,6 +2579,7 @@ export const modules: Module[] = [
             {
               name: "Caso 3 — Luminária Translúcida",
               value: "PLA Branco, padrão vazado, 0% infill",
+              image: { src: mod8Img88.url, alt: "Termodinâmica da layer adhesion no OrcaSlicer: tempo de camada, ajuste de velocidade, razão de altura da camada com microestrutura PETG", caption: "Por que a luminária precisa de paredes coesas mesmo com 0% infill: o painel de Termodinâmica da Layer Adhesion mostra os 3 fatores que controlam a fusão molecular entre camadas — Tempo de Camada (acima de 30s o filme já resfriou e a próxima camada não funde direito), Ajuste de Velocidade (curva de temperatura mostra que -20% mantém a interface a 188°C, acima do Tg do PETG, gerando 68% de cristalinidade) e Razão de Altura da Camada (thin layer = cadeias poliméricas alinhadas e entrelaçadas, thick layer = microvazios). Para luminária translúcida em PLA branco, a inspeção macro do canto inferior mostra parede PETG sólida lisa com costuras de camada perfeitas — exatamente o que difunde luz de forma uniforme em vez de criar linhas escuras visíveis." },
               whatIs: "Abajur com padrão geométrico vazado que aproveita a translucidez do PLA branco para difundir luz.",
               whyAdjust: "Pontes bem configuradas garantem que o padrão fique limpo. Infill 0% deixa a luz passar.",
               influences: "Qualidade visual do padrão, translucidez, difusão da luz.",
