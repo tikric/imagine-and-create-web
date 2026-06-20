@@ -55,7 +55,7 @@ for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
   if (TOPIC_FILES[key]) TOPIC_MAP[lessonId] = TOPIC_FILES[key];
 }
 
-const isPlaceholder = (url?: string) => !!url && url.includes("/placeholder.png");
+const isPlaceholder = (url?: string) => !url || url.includes("/placeholder.png");
 
 
 export function LessonBlock({ l, isFirst = true, withDivider = false, compact = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean; compact?: boolean }) {
@@ -139,7 +139,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                       <p className="text-foreground/90 leading-relaxed">{p.whyAdjust}</p>
                     </div>
                   )}
-                  {p.image && (
+                  {p.image && !isPlaceholder(p.image.src) && (
                     <figure className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
                       <img src={p.image.src} alt={p.image.alt} loading="lazy" className="w-full h-auto block" />
                       {p.image.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.image.caption}</figcaption>}
@@ -172,7 +172,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                     <p className="text-foreground/90 leading-relaxed">{p.generates}</p>
                   </div>
                   {p.generatesTable && <MiniTable label="▸ Consequências práticas" color="primary" data={p.generatesTable} />}
-                  {p.generatesImage && (
+                  {p.generatesImage && !isPlaceholder(p.generatesImage.src) && (
                     <figure className="rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
                       <img src={p.generatesImage.src} alt={p.generatesImage.alt} loading="lazy" className="w-full h-auto block" />
                       {p.generatesImage.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.generatesImage.caption}</figcaption>}
@@ -193,7 +193,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                       </ol>
                     </div>
                   )}
-                  {p.howToImage && (
+                  {p.howToImage && !isPlaceholder(p.howToImage.src) && (
                     <figure className="rounded-2xl border border-chart-3/30 bg-card/40 overflow-hidden">
                       <img src={p.howToImage.src} alt={p.howToImage.alt} loading="lazy" className="w-full h-auto block" />
                       {p.howToImage.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.howToImage.caption}</figcaption>}
@@ -210,7 +210,7 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
                     </div>
                   )}
                   {p.errorsTable && <MiniTable label="▸ Erros comuns e soluções" color="destructive" data={p.errorsTable} />}
-                  {p.errorsImage && (
+                  {p.errorsImage && !isPlaceholder(p.errorsImage.src) && (
                     <figure className="rounded-2xl border border-destructive/30 bg-card/40 overflow-hidden">
                       <img src={p.errorsImage.src} alt={p.errorsImage.alt} loading="lazy" className="w-full h-auto block" />
                       {p.errorsImage.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{p.errorsImage.caption}</figcaption>}
