@@ -2246,6 +2246,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Metodologia de Análise",
             value: "4 Pilares + Matriz",
+            image: { src: mod8Img81.url, alt: "Bancada com 3 peças impressas e fichas de requisitos (Load 10kg, Movement Hinge, Finish Vase)", caption: "Análise de requisitos na prática: as 3 peças sobre a bancada já estão etiquetadas com seus requisitos centrais — suporte de parede (Carga: 10kg), dobradiça (Movimento: articulação) e vaso decorativo (Acabamento: espelhado/decorativo). Cada ficha resume os 4 pilares que ditam material, paredes, infill e orientação antes mesmo de abrir o slicer." },
             whatIs: "Processo estruturado em 4 passos para extrair todos os requisitos de uma peça antes de tocar no OrcaSlicer.",
             whyAdjust: "Sem metodologia, configuração vira tentativa-e-erro. Com metodologia, vira engenharia repetível.",
             types: [
