@@ -37,6 +37,9 @@ import mod6Img62 from "@/assets/orca/modulo6-img62.jpg.asset.json";
 import mod6Img63 from "@/assets/orca/modulo6-img63.jpg.asset.json";
 import mod7Img71 from "@/assets/orca/modulo7-img71.jpg.asset.json";
 import mod7Img72 from "@/assets/orca/modulo7-img72.jpg.asset.json";
+import mod8Img81 from "@/assets/orca/modulo8-img81.jpg.asset.json";
+import mod8Img82 from "@/assets/orca/modulo8-img82.jpg.asset.json";
+import mod8Img83 from "@/assets/orca/modulo8-img83.jpg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -2243,6 +2246,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Metodologia de Análise",
             value: "4 Pilares + Matriz",
+            image: { src: mod8Img81.url, alt: "Bancada com 3 peças impressas e fichas de requisitos (Load 10kg, Movement Hinge, Finish Vase)", caption: "Análise de requisitos na prática: as 3 peças sobre a bancada já estão etiquetadas com seus requisitos centrais — suporte de parede (Carga: 10kg), dobradiça (Movimento: articulação) e vaso decorativo (Acabamento: espelhado/decorativo). Cada ficha resume os 4 pilares que ditam material, paredes, infill e orientação antes mesmo de abrir o slicer." },
             whatIs: "Processo estruturado em 4 passos para extrair todos os requisitos de uma peça antes de tocar no OrcaSlicer.",
             whyAdjust: "Sem metodologia, configuração vira tentativa-e-erro. Com metodologia, vira engenharia repetível.",
             types: [
@@ -2372,6 +2376,7 @@ export const modules: Module[] = [
             {
               name: "Caso 1 — Suporte de Parede em L",
               value: "PETG, 5 paredes, Gyroid 30%",
+              image: { src: mod8Img82.url, alt: "Suporte de parede azul com kettlebell 10kg, dobradiça articulada cinza e engrenagem preta sobre bancada técnica", caption: "Trio funcional clássico: suporte de parede em PETG segurando kettlebell de 10 kg (5 paredes + Gyroid 30%), dobradiça articulada com folga +0.15mm no pino e engrenagem em Nylon-CF com 6 paredes. Ao fundo, o OrcaSlicer mostra o perfil 'PETG — High Strength' com Resistance Ultra Strong, 5 paredes, Gyroid 40% e 6 camadas top/bottom — a receita base que aguenta carga real." },
               whatIs: "Suporte estrutural para prateleira que sofre flexão constante (peso vertical sobre braço horizontal).",
               whyAdjust: "Curva do L é ponto de máxima tensão — exige orientação e parede otimizadas.",
               influences: "Capacidade de carga, deformação ao longo do tempo, durabilidade.",
@@ -2511,6 +2516,7 @@ export const modules: Module[] = [
             {
               name: "Caso 1 — Vaso Decorativo (Espiral)",
               value: "PLA Silk, Modo Vaso, 0% infill",
+              image: { src: mod8Img83.url, alt: "Vaso PLA Silk cobre, busto de Vênus em PLA Matte e luminária translúcida com padrão vazado", caption: "Trio estético clássico: vaso em PLA Silk cobre impresso em Modo Vaso Espiral (sem costura, parede contínua), busto de Vênus em PLA Matte com Seam Painting na traseira e Tree Organic nos overhangs, e luminária translúcida com padrão vazado em PLA branco (0% infill, luz interna evidencia o desenho). Acabamento digno de vitrine — receita: camada 0.12mm + costura oculta + suportes que não marcam." },
               whatIs: "Vaso impresso em espiral contínua (sem mudança de camada), eliminando completamente a costura.",
               whyAdjust: "Modo Vaso transforma a peça em uma parede helicoidal — superfície externa fica perfeita, sem nenhuma costura visível.",
               influences: "Acabamento visual, ausência de defeitos, tempo de impressão (mais rápido), peso (mais leve).",
