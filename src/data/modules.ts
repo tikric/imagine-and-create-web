@@ -35,6 +35,8 @@ import mod5Img592 from "@/assets/orca/modulo5-img592.jpeg.asset.json";
 import mod6Img61 from "@/assets/orca/modulo6-img61.jpg.asset.json";
 import mod6Img62 from "@/assets/orca/modulo6-img62.jpg.asset.json";
 import mod6Img63 from "@/assets/orca/modulo6-img63.jpg.asset.json";
+import mod7Img71 from "@/assets/orca/modulo7-img71.jpg.asset.json";
+import mod7Img72 from "@/assets/orca/modulo7-img72.jpg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -1993,6 +1995,7 @@ export const modules: Module[] = [
             name: "Estratégia de Otimização",
             value: "Eficiência multi-eixo",
             whatIs: "Conjunto de princípios e métricas para reduzir tempo e material mantendo função.",
+            image: { src: mod7Img71.url, alt: "Mesmo organizador impresso com configuração padrão vs otimizada", caption: "Mesma peça, dois perfis: padrão (4 paredes, Gyroid 20%, bico 0.4mm) → 150g e 4h; otimizado (3 paredes, Lightning 10%, bico 0.6mm) → 60g e 2h. Função idêntica, custo e tempo na metade." },
             whyAdjust: "Sem otimização, a mesma máquina produz menos da metade — margem comercial fica inviável.",
             influences: "Tempo de produção, custo por peça, peso final, resistência funcional, consumo energético.",
             influencesList: [
@@ -2095,6 +2098,7 @@ export const modules: Module[] = [
               name: "Lightning Infill",
               value: "10-15% densidade",
               whatIs: "Padrão de infill que cria subestruturas (raízes) apenas onde necessário para suportar superfícies superiores.",
+              image: { src: mod7Img72.url, alt: "Vaso decorativo com infill Lightning exposto vs vaso fechado", caption: "Lightning Infill em ação: à esquerda, o vaso aberto revela as 'raízes' do padrão que sustentam o topo gastando o mínimo de material; à direita, o mesmo vaso fechado com forma externa preservada — peso e tempo caem drasticamente sem perder o visual." },
               whyAdjust: "Economiza até 60% de material e 30% de tempo em peças sem carga estrutural.",
               types: [
                 { label: "Quando USAR", desc: "Peças decorativas, sem carga, protótipos visuais, peças com paredes grossas" },
