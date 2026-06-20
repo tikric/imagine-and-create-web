@@ -1550,6 +1550,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Jerk / Junction Deviation", value: "Jerk 5–15 mm/s • JD 0.01–0.1",
+            image: { src: mod5Img591.url, alt: "Tabela de dinâmica de cantos, fatores de movimento e consequência geométrica", caption: "Tabela por arquitetura (Ender Jerk 8–12 / JD 0.02–0.05, Prusa Jerk 10–15, Voron/Bambu JD 0.01–0.05); massa e inércia ditam o limite; consequência prática: Jerk/JD alto = ghosting e vibração, Jerk/JD baixo = cantos arredondados." },
             whatIs: "Controle de quão abruptas podem ser as mudanças de direção do bico.",
             whyAdjust: "Equilibrar precisão dos cantos e velocidade global da impressão.",
             optionsTable: { headers: ["Impressora", "Jerk (Marlin)", "JD (Klipper)"], rows: [
