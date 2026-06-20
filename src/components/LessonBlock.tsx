@@ -45,7 +45,10 @@ const MAIN_MAP: Record<string, string> = {
   "perfil-geral": "main-extrusao",              // Mod 2 — 2.1
   "machine-limits": "lesson-machine-limits",    // Mod 2 — 2.2
   "bico-extrusor-fluxo": "lesson-bico-extrusor-fluxo", // Mod 2 — 2.3
-  "altura-camada": "main-camada",               // Mod 3
+  "altura-camada": "main-camada",               // Mod 3 — 3.1
+  "largura-linha": "lesson-largura-linha",      // Mod 3 — 3.2
+  "costura-seam": "lesson-costura-seam",        // Mod 3 — 3.3
+  "precisao-alisamento": "lesson-precisao-alisamento", // Mod 3 — 3.4
   "fundamentos-materiais": "main-filamento",    // Mod 4
   "temperatura": "main-calibracao",             // Mod 5
   "anisotropia-forcas": "main-orientacao",      // Mod 6
