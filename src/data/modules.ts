@@ -2556,6 +2556,7 @@ export const modules: Module[] = [
             {
               name: "Caso 2 — Estatueta / Busto",
               value: "PLA Matte, costura Rear + Painted, Tree Organic",
+              image: { src: mod8Img86.url, alt: "Duas peças impressas comparando falha em 0°/90° (delaminação entre camadas) com falha em 45° (cisalhamento dúctil do polímero)", caption: "Por que orientação importa também em decorativos: à esquerda, peça impressa a 0°/90° rompe com falha frágil — separação limpa entre camadas (direção Z), com a força perpendicular à interface, deixando uma cicatriz horizontal feia no busto. À direita, mesma peça orientada a 45° aproveita a resistência do polímero ao fluxo, convertendo tração em cisalhamento — falha dúctil com fibras esticadas (acabamento que disfarça melhor microfraturas em peças decorativas finas). Para bustos com pescoço/braços salientes, orientar a 30-45° em vez de 0°/90° evita não só falha mecânica do transporte mas também a linha de camada horizontal que delata o defeito." },
               whatIs: "Peça decorativa com overhangs (nariz, queixo) e detalhes finos. Costura deve ficar escondida na parte de trás.",
               whyAdjust: "Tree Organic remove sem deixar marca nas superfícies curvas. Seam Painting permite controlar exatamente onde fica a costura.",
               influences: "Qualidade de detalhes, ausência de marcas, custo do material (Lightning economiza).",
