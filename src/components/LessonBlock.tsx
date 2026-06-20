@@ -49,7 +49,9 @@ const MAIN_MAP: Record<string, string> = {
   "largura-linha": "lesson-largura-linha",      // Mod 3 — 3.2
   "costura-seam": "lesson-costura-seam",        // Mod 3 — 3.3
   "precisao-alisamento": "lesson-precisao-alisamento", // Mod 3 — 3.4
-  "fundamentos-materiais": "main-filamento",    // Mod 4
+  "fundamentos-materiais": "lesson-fundamentos-materiais", // Mod 4 — 4.1
+  "pla-petg": "lesson-pla-petg",                // Mod 4 — 4.2
+  "abs-asa-tpu-nylon": "lesson-abs-asa-tpu-nylon", // Mod 4 — 4.3
   "temperatura": "main-calibracao",             // Mod 5
   "anisotropia-forcas": "main-orientacao",      // Mod 6
   "otimizacao-conceitos": "main-infill",        // Mod 7
