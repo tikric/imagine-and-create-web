@@ -34,16 +34,21 @@ for (const [path, asset] of Object.entries(TOPIC_ASSETS)) {
   const name = path.split("/").pop()?.replace(/\.(jpg|png)\.asset\.json$/, "");
   if (name) TOPIC_FILES[name] = asset.url;
 }
-// Map lesson IDs → main hero image key
+// Map lesson IDs → hero image key
 const MAIN_MAP: Record<string, string> = {
-  "prepare-workspace": "main-interface",        // Mod 1
+  // Módulo 1 — Interface Completa
+  "prepare-workspace": "main-interface",
+  "layout-barra-superior": "lesson-layout-barra-superior",
+  "visualizacao-3d": "lesson-visualizacao-3d",
+  "ferramentas-avancadas": "lesson-ferramentas-avancadas",
+  // Primeira aula dos demais módulos
   "perfil-geral": "main-extrusao",              // Mod 2
   "altura-camada": "main-camada",               // Mod 3
   "fundamentos-materiais": "main-filamento",    // Mod 4
   "temperatura": "main-calibracao",             // Mod 5
   "anisotropia-forcas": "main-orientacao",      // Mod 6
   "otimizacao-conceitos": "main-infill",        // Mod 7
-  "pecas-funcionais": "main-funcional",         // Mod 8
+  "analise-requisitos": "main-funcional",       // Mod 8
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
