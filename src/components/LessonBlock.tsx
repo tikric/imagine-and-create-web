@@ -24,6 +24,17 @@ const TELA_MAP: Record<string, { url: string }> = {
   tela_61: tela61, tela_62: tela62,
 };
 
+// Auto-collect per-topic images from src/assets/orca/topics/{lessonId}-{idx}.png.asset.json
+const TOPIC_ASSETS = import.meta.glob<{ url: string }>(
+  "@/assets/orca/topics/*.png.asset.json",
+  { eager: true, import: "default" },
+);
+const TOPIC_MAP: Record<string, string> = {};
+for (const [path, asset] of Object.entries(TOPIC_ASSETS)) {
+  const name = path.split("/").pop()?.replace(".png.asset.json", "");
+  if (name) TOPIC_MAP[name] = asset.url;
+}
+
 export function LessonBlock({ l, isFirst = true, withDivider = false, compact = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean; compact?: boolean }) {
   const S = ({ title, children }: { title: string; children: React.ReactNode }) =>
     compact ? <div className="mt-10">{children}</div> : <Section title={title}>{children}</Section>;
@@ -37,11 +48,22 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
 
       <h2 className="text-3xl md:text-4xl font-bold text-balance">{l.title}</h2>
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        {l.topics.map((t: string) => (
-          <span key={t} className="text-xs rounded-md border border-border bg-card/60 px-2.5 py-1 text-muted-foreground">{t}</span>
-        ))}
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {l.topics.map((t: string, i: number) => {
+          const url = TOPIC_MAP[`${l.id}-${i}`];
+          return (
+            <figure key={t} className="rounded-xl border border-border bg-card/40 overflow-hidden">
+              {url ? (
+                <img src={url} alt={t} loading="lazy" className="w-full h-auto aspect-video object-cover block" />
+              ) : (
+                <div className="w-full aspect-video bg-card/60 flex items-center justify-center text-xs text-muted-foreground">imagem pendente</div>
+              )}
+              <figcaption className="px-3 py-2 text-sm font-medium">{t}</figcaption>
+            </figure>
+          );
+        })}
       </div>
+
 
       {l.image && (
         <figure className="mt-8 w-full rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
