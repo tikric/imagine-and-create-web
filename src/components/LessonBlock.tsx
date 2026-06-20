@@ -65,7 +65,9 @@ const MAIN_MAP: Record<string, string> = {
   "resistencia-estrutural": "lesson-resistencia-estrutural", // Mod 6 — 6.3
   "otimizacao-conceitos": "lesson-otimizacao-conceitos",     // Mod 7 — 7.1
   "reduzir-tempo-material": "lesson-reduzir-tempo-material", // Mod 7 — 7.2
-  "analise-requisitos": "main-funcional",       // Mod 8
+  "analise-requisitos": "lesson-analise-requisitos", // Mod 8 — 8.1
+  "pecas-funcionais": "lesson-pecas-funcionais",     // Mod 8 — 8.2
+  "pecas-esteticas": "lesson-pecas-esteticas",       // Mod 8 — 8.3
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
