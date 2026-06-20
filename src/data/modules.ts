@@ -2439,6 +2439,7 @@ export const modules: Module[] = [
             {
               name: "Caso 3 — Engrenagem",
               value: "Nylon+CF, 6 paredes, Gyroid 40%, bico aço",
+              image: { src: mod8Img87.url, alt: "Guia para esforço de flexão: orientação vertical (falha frágil) vs horizontal (perímetros contínuos absorvem tensão)", caption: "Regra de ouro da engrenagem: nunca permita que a linha de fratura seja paralela às linhas de camada. Painel esquerdo — peça impressa em pé sofre fratura frágil catastrófica sob flexão, com o corte exatamente paralelo às camadas (linha vermelha). Painel direito — mesma peça deitada com perímetros contínuos absorve a tensão e apresenta apenas deflexão elástica medida no relógio comparador (45 N de carga sem falha). Para engrenagem em Nylon-CF, isso significa: imprima sempre deitada com camadas contínuas atravessando os dentes — caso contrário, o primeiro pico de torque parte o dente no plano de camada." },
               whatIs: "Engrenagem mecânica que sofre torção constante e atrito nos dentes.",
               whyAdjust: "Dentes são pontos de máxima tensão. Material errado = desgaste rápido. Bico errado = entupimento.",
               influences: "Resistência à torção, durabilidade dos dentes, precisão do engrenamento.",
