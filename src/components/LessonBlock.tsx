@@ -43,6 +43,15 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
         ))}
       </div>
 
+      {l.image && (
+        <figure className="mt-8 rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+          <img src={l.image.src} alt={l.image.alt} loading="lazy" className="w-full h-auto block" />
+          {l.image.caption && <figcaption className="px-5 py-3 text-sm text-foreground/80 border-t border-border bg-card/30">{l.image.caption}</figcaption>}
+        </figure>
+      )}
+
+
+
       {l.screens && l.screens.length > 0 && (
         <S title="Tela do OrcaSlicer — Ferramenta em destaque">
           <div className="space-y-6">
