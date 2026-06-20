@@ -3423,6 +3423,7 @@ export const modules: Module[] = [
             generates: "Critério visual para decidir estratégia de Seam antes mesmo de abrir as opções do slicer.",
           }],
           goldenRule: "A costura é a cicatriz da impressão. O objetivo não é eliminá-la, mas escondê-la onde ninguém vai ver.",
+          image: { src: mod11Img111.url, alt: "Macro de vaso cilíndrico em PLA cinza mostrando a cicatriz vertical da costura", caption: "A costura (Seam) é a cicatriz visível onde cada perímetro começa e termina — uma linha vertical de pequenos blobs causada por pressão inicial e residual no bico." },
         }),
       L(2, "seam-tipos", "Tipos de Seam — Rear, Aligned, Nearest e Random", "25min",
         ["Aligned", "Rear", "Nearest", "Random"], {
@@ -3461,6 +3462,7 @@ export const modules: Module[] = [
             goldenRule: "Peças com cantos = Aligned. Peças redondas = Random. Peças com frente definida = Rear.",
           }],
           goldenRule: "Peças com cantos = Aligned. Peças redondas = Random. Peças com frente definida = Rear. Posicione a costura onde ninguém vai ver.",
+          image: { src: mod11Img112.url, alt: "Quatro peças impressas em PLA cinza: caixa hexagonal, busto, engrenagem e vaso", caption: "Matriz geometria × Seam: caixa hexagonal → Aligned (canto); busto → Rear (traseira); engrenagem → Nearest (otimiza tempo); vaso → Random (espalha pontos). Combinar tipo certo com geometria é o primeiro passo do acabamento profissional." },
         }),
       L(3, "seam-painting", "Seam Painting — Controle manual da costura", "25min",
         ["Pintura de costura", "Bloquear", "Forçar", "Scarf Seam"], {
@@ -3513,6 +3515,7 @@ export const modules: Module[] = [
             goldenRule: "Pinte de vermelho onde você NÃO quer a costura. Pinte de azul onde você QUER a costura.",
           }],
           goldenRule: "Pinte de vermelho onde você NÃO quer a costura. Pinte de azul onde você QUER a costura. O controle manual é a chave para a costura invisível.",
+          image: { src: mod11Img113.url, alt: "Figurine 3D com traços azuis pintados verticalmente indicando posição manual da costura", caption: "Seam Painting em ação: o pincel azul força a costura na lateral oculta da figura. Vermelho bloqueia onde não pode aparecer, azul força onde deve ficar — controle total sobre o algoritmo automático." },
         }),
       L(4, "ironing-alisamento", "Ironing — Alisamento térmico", "30min",
         ["Ironing", "Top surfaces", "Fluxo", "Espaçamento"], {
@@ -3565,6 +3568,7 @@ export const modules: Module[] = [
             goldenRule: "Use Ironing apenas em superfícies superiores planas. Seque o filamento. 15% de fluxo, 0.15 mm de espaçamento e 20 mm/s é o ponto ideal.",
           }],
           goldenRule: "Use Ironing apenas em superfícies superiores planas. Seque o filamento antes. 15% de fluxo, 0.15 mm de espaçamento e 20 mm/s de velocidade é o ponto ideal.",
+          image: { src: mod11Img114.url, alt: "Comparação lado a lado de duas placas planas em PLA branco: sem Ironing com linhas de camada visíveis vs com Ironing com topo espelhado", caption: "Ironing na prática: à esquerda topo sem ironing mostra as linhas de extrusão; à direita o mesmo topo após o segundo passe a 15% de fluxo e 20 mm/s — superfície lisa e brilhante, como se fosse injetada." },
         }),
       L(5, "fuzzy-skin", "Fuzzy Skin — Textura difusa", "30min",
         ["Fuzzy Skin", "Deslocamento", "Espessura", "Perlin"], {
@@ -3627,6 +3631,7 @@ export const modules: Module[] = [
             goldenRule: "Use Fuzzy Skin para acabamento premium e para esconder imperfeições. 0.3 mm de deslocamento e espessura é o ponto ideal.",
           }],
           goldenRule: "Use Fuzzy Skin para dar um acabamento premium e esconder imperfeições. 0.3 mm de deslocamento e espessura é o ponto ideal para a maioria das peças.",
+          image: { src: mod11Img115.url, alt: "Cubo impresso em PLA preto com paredes externas em textura Fuzzy Skin", caption: "Fuzzy Skin a 0.3 mm transforma a parede lisa em superfície tátil e premium — disfarça micro-imperfeições, melhora a pegada e dá ao olho a sensação de pedra ou tecido sem alterar a geometria." },
           exercise: [
             "Imprima um cilindro com Seam Aligned, Random e Rear e compare a localização da costura",
             "Pratique Seam Painting em um busto ou estátua",
