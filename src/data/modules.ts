@@ -1582,6 +1582,7 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Input Shaper (X / Y)", value: "MZV/EI/ZV • freq medida (~30–60 Hz)",
+            image: { src: mod5Img592.url, alt: "Algoritmos de Input Shaping, fatores de ressonância e ghosting vs parede limpa", caption: "Algoritmos MZV/EI/ZV com frequência medida 30–60 Hz; ressonância depende de rigidez do frame, tensão das correias, motores e precisão do ADXL345; consequência: em alta velocidade sem Input Shaping aparece ghosting, com Input Shaping a parede fica limpa." },
             whatIs: "Filtro de firmware que antecipa e cancela vibrações estruturais da impressora.",
             whyAdjust: "Eliminar ghosting nas paredes e habilitar acelerações maiores sem perder qualidade.",
             influences: "Rigidez do frame, posição dos motores, qualidade do acelerômetro.",
