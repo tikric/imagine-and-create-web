@@ -48,6 +48,12 @@ import mod8Img88 from "@/assets/orca/modulo8-img88.jpg.asset.json";
 import mod8Img89 from "@/assets/orca/modulo8-img89.jpg.asset.json";
 import mod9Img91 from "@/assets/orca/modulo9-img91.jpg.asset.json";
 import mod9Img92 from "@/assets/orca/modulo9-img92.jpg.asset.json";
+import mod9Img93 from "@/assets/orca/modulo9-img93.jpg.asset.json";
+import mod9Img94 from "@/assets/orca/modulo9-img94.jpg.asset.json";
+import mod9Img95 from "@/assets/orca/modulo9-img95.jpg.asset.json";
+import mod9Img96 from "@/assets/orca/modulo9-img96.jpg.asset.json";
+import mod9Img97 from "@/assets/orca/modulo9-img97.jpg.asset.json";
+import mod9Img98 from "@/assets/orca/modulo9-img98.jpg.asset.json";
 import mod10Img101 from "@/assets/orca/modulo10-img101.jpg.asset.json";
 import mod10Img102 from "@/assets/orca/modulo10-img102.jpg.asset.json";
 import mod10Img103 from "@/assets/orca/modulo10-img103.jpg.asset.json";
@@ -2766,6 +2772,42 @@ export const modules: Module[] = [
               ],
             },
             goldenRule: "Padronize onde escala. Documente onde precisa repetir. Inspecione antes de enviar. Sempre.",
+          }, {
+            name: "Resumo Operacional — Escalando o Negócio",
+            value: "Fluxo + Padronização + Redução de desperdício + Crescimento",
+            image: { src: mod9Img98.url, alt: "Painel 'Guia de Resumo Operacional: Escalando seu Negócio de Impressão 3D' com 5 blocos (Fluxo de Trabalho Otimizado, Aumento de Capacidade, Padronização Comercial Sustentável, Redução de Desperdícios, Crescimento de Mercado) e fileira de 5 impressoras 3D operando em paralelo", caption: "Guia de Resumo Operacional: escalar não é comprar mais impressora — é colocar 5 alavancas em pé simultaneamente. (1) Fluxo de Trabalho Otimizado: padronização de etapas com aumento de throughput; (2) Aumento de Capacidade: melhoria de processos + otimização de layouts + capacitação da equipe; (3) Padronização Comercial Sustentável (no centro): perfis aprovados evitam retrabalho, processos documentados garantem que qualquer operador execute a produção, satisfação do cliente gera recompra; (4) Redução de Desperdícios: manuseio correto de materiais, redução de consumo energético, redução de rejeitos; (5) Crescimento de Mercado: cliente satisfeito recomenda → expansão. A foto da micro-fábrica em operação é a meta visual desta aula." },
+            whatIs: "Mapa-síntese das 5 alavancas que transformam impressão 3D de hobby em micro-fábrica gerenciável.",
+            whyAdjust: "Sem as 5 alavancas funcionando juntas, escalar quebra o negócio: mais máquina sem padronização = mais retrabalho proporcional.",
+            influences: "Capacidade de produção, margem líquida, recompra, posicionamento e sobrevivência no longo prazo.",
+            generates: "Operação previsível com 5 impressoras rodando o mesmo perfil, mesma qualidade e mesma rastreabilidade.",
+            goldenRule: "Não compre a 5ª impressora antes de padronizar a 1ª.",
+          }, {
+            name: "Controle de Qualidade — Protocolo Dimensional",
+            value: "Inspeção visual + dimensional + micrômetro calibrado",
+            image: { src: mod9Img95.url, alt: "Bancada de QC com OrcaSlicer aberto em modo análise, tabela 'Protocolo: Controle de Qualidade' (Inspeção Visual, Inspeção Dimensional, Meta Comercial), engrenagens metálicas alinhadas e mão com luva azul usando paquímetro digital Mitutoyo marcando 3.00mm", caption: "Protocolo de Controle de Qualidade que separa lote comercial de lote experimental: Inspeção Visual — ausência de strings, blobs e imperfeições superficiais; Inspeção Dimensional — verificação centesimal com micrômetro/paquímetro calibrado; Meta Comercial — descarte zero e repetibilidade absoluta entre lotes. A peça com paquímetro Mitutoyo digital (0.01mm de resolução) marcando 3.00mm em flanco de dente é o gesto físico do checklist obrigatório antes da embalagem — sem esse instrumento, a 'tolerância ±0.2mm' do perfil é só intenção." },
+            whatIs: "Sequência obrigatória de checagem visual + dimensional aplicada a cada peça antes da embalagem.",
+            whyAdjust: "Olho humano não pega ±0.2mm; sem instrumento calibrado o lote vira loteria.",
+            influences: "Taxa de devolução, NPS do cliente, recompra B2B.",
+            generates: "Lote 100% dentro de tolerância, com registro fotográfico e medida arquivados por cliente.",
+            goldenRule: "Sem paquímetro/micrômetro calibrado, não existe controle de qualidade — existe esperança.",
+          }, {
+            name: "Fluxo de Trabalho & Embalagem Profissional",
+            value: "3 etapas: Fatiamento em lote → Pós-processamento → Embalagem com controle de umidade",
+            image: { src: mod9Img96.url, alt: "Tela 'Fluxo de Trabalho Eficiente' com 3 etapas (Etapa 1 Fatiamento padronizado em lotes organizados, Etapa 2 Pós-processamento limpo e rápido, Etapa 3 Embalagem profissional protetiva contra umidade) e mão com luva manipulando peça cinza acima de caixa Print-Pro Industrial com sachês de sílica e etiqueta de lote C-0123", caption: "Fluxo de trabalho que entrega valor percebido junto com a peça: Etapa 1 — Fatiamento padronizado em lotes organizados (várias peças na mesma plataforma usando o mesmo perfil); Etapa 2 — Pós-processamento limpo e rápido (lavagem/cura/lixa em estação dedicada); Etapa 3 — Embalagem profissional protetiva contra umidade. A caixa Print-Pro Industrial com sachês de sílica (DESICCANT GEL), etiqueta de lote C-0123, ícones de manuseio com cuidado e identificação 'Peças de Engenharia de Alta Precisão' é exatamente como peça B2B/B2C deve chegar — comunicando 'isso é produto', não 'isso é maker'." },
+            whatIs: "Pipeline operacional padrão do pedido aprovado até a peça embalada pronta para envio.",
+            whyAdjust: "Embalagem amadora destrói percepção de valor mesmo quando a peça é perfeita; PLA/PETG sem desumidificação volta com defeito quando reusado.",
+            influences: "Percepção de marca, taxa de avaria no transporte, possibilidade de cobrar prêmio.",
+            generates: "Pacote rastreável (lote + data + material) que justifica margem 50-100% sobre custo.",
+            goldenRule: "A última coisa que o cliente toca é a embalagem — invista nela como você investe na primeira camada.",
+          }, {
+            name: "Sintonia Técnica da Camada de Interface do Suporte",
+            value: "Densidade 80-100% / Padrão Grelha Concentrada / Espessura 0.8mm",
+            image: { src: mod9Img93.url, alt: "Painel 'Guia de Sintonia da Camada de Interface do Suporte em OrcaSlicer' com fluxo Ajustar Configurações → Imprimir Amostra → Remover e Avaliar, tabela 'Configurações da Interface' (Densidade 80-100%, Padrão Grelha Concentrada, Espessura 0.8mm) e gráfico comparativo Padrão Padrão vs Grelha Concentrada nas métricas Facilidade de Remoção, Qualidade de Superfície e Integridade da Peça", caption: "Padronização técnica que entra no perfil comercial: a Camada de Interface do Suporte é o detalhe que define se a peça sai limpa em 100% do lote ou se metade precisa de retrabalho manual. Receita aprovada para perfil 'Qualidade': Densidade 80-100%, Padrão Grelha Concentrada, Espessura 0.8mm. O comparativo Padrão Padrão vs Grelha Concentrada mostra ganho real nas 3 métricas de QA — Facilidade de Remoção (menos minutos por peça → reduz mão de obra), Qualidade de Superfície (menos lixa → reduz pós-processamento), Integridade da Peça (sem quebra → reduz refugo). Ciclo de calibração: Ajustar Configurações → Imprimir Amostra → Remover e Avaliar antes de promover ao perfil comercial padrão." },
+            whatIs: "Parâmetro técnico de suporte que vira item obrigatório no perfil comercial padronizado.",
+            whyAdjust: "Perfis comerciais sem interface bem ajustada geram tempo oculto de pós-processamento que evapora a margem.",
+            influences: "Tempo/peça pós-impressão, taxa de refugo, qualidade da superfície inferior.",
+            generates: "Perfil comercial pronto onde a remoção do suporte é parte previsível do takt-time, não surpresa.",
+            goldenRule: "Toda decisão técnica que reduz minuto/peça vira margem direta no fim do mês.",
           }],
           checklist: [
             "4 perfis comerciais criados, nomeados e testados com benchy",
@@ -2891,6 +2933,24 @@ export const modules: Module[] = [
               ],
             },
             goldenRule: "Custo Total ÷ (1 − Margem). Sem fórmula, sem negócio. Margem 50% é o mínimo para sustentar operação séria.",
+          }, {
+            name: "Custos Diretos + Fórmula de Margem Líquida",
+            value: "Tabela 1 (kWh, filamento, insumos) + Tabela 2 (fórmula de margem)",
+            image: { src: mod9Img94.url, alt: "Tela do OrcaSlicer com Tabela 1 'Custos Diretos da Impressão' (Consumo de Energia kWh, Peso do Filamento g, Desgaste de Insumos por Protocolo 1 a 4) e Tabela 2 'Perfis Comerciais e Precificação' repetindo a fórmula Margem Líquida = (Preço de Venda − Custo Direto − Custo Indireto) ÷ Preço de Venda × 100, sobre plataforma de impressão com várias peças mecânicas em PLA", caption: "Mapa de cálculo da margem líquida real, da medição ao perfil comercial. Tabela 1 — Custos Diretos da Impressão por Protocolo (1 a 4): Consumo de Energia (0,06 a 0,24 kWh), Peso do Filamento (42 a 680 g), Desgaste de Insumos (0,03 a 0,06 por ciclo) — esses 3 números, por perfil, viram a base de custo direto auditável. Tabela 2 — fórmula Margem Líquida = (Preço de Venda − Custo Direto − Custo Indireto) ÷ Preço de Venda × 100, aplicada peça a peça. A faixa final reforça: padronize seus perfis, documente seus processos e entregue qualidade consistente — sem essas 3 colunas medidas, qualquer 'margem 50%' é chute." },
+            whatIs: "Modelo de custo direto medido + fórmula de margem líquida aplicada por perfil comercial.",
+            whyAdjust: "Custo estimado de cabeça erra 20-40%; medido em wattímetro/balança é o único que sustenta margem real.",
+            influences: "Margem líquida verdadeira, ponto de equilíbrio, decisão de aceitar/recusar pedido.",
+            generates: "Tabela viva por perfil (Rápido/Padrão/Qualidade/Estrutural) com kWh + g + insumos medidos.",
+            goldenRule: "Meça os 3 (energia, filamento, desgaste). O resto da planilha depende deles.",
+          }, {
+            name: "Análise Financeira — Margem Real vs Standard",
+            value: "+22.4% eficiência de fatiamento / −11.1% material",
+            image: { src: mod9Img97.url, alt: "Bancada com monitor exibindo Excel 'Cálculo de Margem Líquida Real' (Custo de Filamento Otimizado vs Inpreens Infill, Tempo de Máquina, Margem Comercial), painel 'Eficiência de Fatiamento +22.4%' e 'Redução de Material ~11.1%', notebook ao lado com mesmo cálculo, peças geométricas cinza sobre caixas Corporate prontas para envio", caption: "Análise financeira que prova em números o que a padronização entrega: comparativo Standard vs Otimizado mostra Eficiência de Fatiamento +22.4% (mesma peça com infill e caminhos otimizados → mais peças/hora-máquina) e Redução de Material ~11.1% (filamento otimizado vs infill padrão → menos gramas por peça aprovada). Esses 2 ganhos combinados explicam por que o mesmo preço de venda passa de 'hobby' a 'negócio lucrativo'. Os blocos de orçamento sobre caixas Corporate são o lote real onde esses percentuais viram dinheiro — a planilha à esquerda integra Custo de Filamento Otimizado, Tempo de Máquina (custo/hora reduzido) e Margem Comercial em um único cálculo auditável." },
+            whatIs: "Painel de KPIs financeiros que valida o ROI da otimização e padronização sobre custo direto.",
+            whyAdjust: "Sem antes/depois numérico, melhoria técnica não vira argumento comercial nem aumento de margem.",
+            influences: "Justificativa de preço, decisão de investir em melhorias, narrativa de venda B2B.",
+            generates: "Relatório mensal com 2 KPIs comparáveis (eficiência %, material %) por perfil.",
+            goldenRule: "Otimização que não aparece no relatório financeiro não existe para o negócio.",
           }],
           checklist: [
             "Planilha de precificação com todos os 8 itens de custo",
