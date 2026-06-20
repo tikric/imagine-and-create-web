@@ -35,6 +35,9 @@ for (const [path, asset] of Object.entries(TOPIC_ASSETS)) {
   if (name) TOPIC_MAP[name] = asset.url;
 }
 
+const isPlaceholder = (url?: string) => !!url && url.includes("/placeholder.png");
+
+
 export function LessonBlock({ l, isFirst = true, withDivider = false, compact = false }: { l: Lesson; isFirst?: boolean; withDivider?: boolean; compact?: boolean }) {
   const S = ({ title, children }: { title: string; children: React.ReactNode }) =>
     compact ? <div className="mt-10">{children}</div> : <Section title={title}>{children}</Section>;
