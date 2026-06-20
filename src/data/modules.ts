@@ -2210,6 +2210,7 @@ export const modules: Module[] = [
     lessons: [
       L(1, "analise-requisitos", "Análise de Requisitos e Metodologia", "30min",
         ["Checklist funcional", "Matriz de decisão", "Ferramentas de análise"], {
+          image: { src: mod8Img81.url, alt: "Bancada com 3 peças impressas e fichas de requisitos (Load 10kg, Movement Hinge, Finish Vase)", caption: "Análise de requisitos na prática: as 3 peças sobre a bancada estão etiquetadas com seus requisitos centrais — suporte de parede (Carga: 10kg), dobradiça (Movimento: articulação) e vaso decorativo (Acabamento: espelhado). Cada ficha resume os 4 pilares (função, estética, estrutura, restrições) que ditam material, paredes, infill e orientação antes mesmo de abrir o slicer." },
           theory: [
             "Análise de requisitos é o processo de examinar uma peça ANTES de imprimir para identificar suas necessidades funcionais, estéticas e estruturais. É a etapa mais importante — define todas as configurações subsequentes.",
             "Por que importa: evita retrabalho, garante que a peça atenda aos requisitos, otimiza recursos e reduz falhas. Ignorar essa etapa = falha previsível.",
