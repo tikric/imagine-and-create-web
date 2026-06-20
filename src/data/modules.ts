@@ -1777,6 +1777,8 @@ export const modules: Module[] = [
             name: "Orientação na Mesa",
             value: "Horizontal / Vertical / 45°",
             whatIs: "Posição da peça em relação à mesa, que determina a direção de deposição das camadas e o padrão de tensões resultante.",
+            image: { src: mod6Img61.url, alt: "Suporte em L horizontal vs vertical com peso de 10 kg", caption: "Suporte em L sob 10 kg: impresso na horizontal (camadas paralelas à carga) — zero deformação; impresso na vertical (camadas perpendiculares na curva) — deformação visível na dobra. A orientação muda completamente a rigidez." },
+            generatesImage: { src: mod6Img62.url, alt: "Efeito da orientação de impressão em ganchos: intacto vs partido", caption: "Mesmo gancho, duas orientações: camadas horizontais (carga paralela às camadas) → forte, suporta 5 kg; camadas verticais (carga perpendicular às camadas) → falha na curva. A orientação correta vale mais do que aumentar paredes ou infill." },
             whyAdjust: "Mesma peça com orientações diferentes pode variar 5× na resistência, 50% no tempo e 80% no consumo de suporte.",
             types: [
               { label: "Horizontal (deitada)", desc: "Camadas paralelas à mesa — máxima tração/flexão, melhor topo, mais suportes" },
