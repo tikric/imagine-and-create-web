@@ -42,6 +42,12 @@ import mod8Img82 from "@/assets/orca/modulo8-img82.jpg.asset.json";
 import mod8Img83 from "@/assets/orca/modulo8-img83.jpg.asset.json";
 import mod9Img91 from "@/assets/orca/modulo9-img91.jpg.asset.json";
 import mod9Img92 from "@/assets/orca/modulo9-img92.jpg.asset.json";
+import mod10Img101 from "@/assets/orca/modulo10-img101.jpg.asset.json";
+import mod10Img102 from "@/assets/orca/modulo10-img102.jpg.asset.json";
+import mod10Img103 from "@/assets/orca/modulo10-img103.jpg.asset.json";
+import mod10Img104 from "@/assets/orca/modulo10-img104.jpg.asset.json";
+import mod10Img105 from "@/assets/orca/modulo10-img105.jpg.asset.json";
+import mod10Img106 from "@/assets/orca/modulo10-img106.jpg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
@@ -2922,6 +2928,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Tour Aba Qualidade",
             value: "5 telas integradas",
+            image: { src: mod10Img101.url, alt: "Painel Esquerdo do OrcaSlicer com Qualidade, Resistência, Velocidade, Suporte, Multimaterial, Outros e Modo Avançado destacado", caption: "O Painel Esquerdo organiza tudo em 6 abas (Qualidade, Resistência, Velocidade, Suporte, Multimaterial, Outros). A seta marca o Modo Avançado — clicar nele revela parâmetros ocultos como Ironing, Scarf Seam e Pressure Advance que mudam radicalmente o resultado da aba Qualidade." },
             whatIs: "Mapa completo da aba Qualidade do OrcaSlicer, mostrando como Altura, Largura, Costura, Precisão e Ironing se interconectam.",
             whyAdjust: "Mexer em uma sem entender o impacto nas outras quebra o equilíbrio. O tour mostra o sistema completo.",
             optionsTable: {
@@ -2984,6 +2991,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Tour Aba Resistência",
             value: "5 telas integradas",
+            image: { src: mod10Img102.url, alt: "Aba Resistência do OrcaSlicer com Wall Generator Arachne vs Classic, Bridges 0.95 e Overhangs 60° + peças impressas (ponte 50mm e overhang 60° sem suporte)", caption: "Aba Resistência em ação: Wall Generator Arachne (largura variável) vs Classic (largura fixa) — Arachne fecha detalhes finos que Classic deixa vazados; Bridge flow ratio 0.95 e Bridge speed 25mm/s habilitam pontes perfeitas de 50mm sem suporte; Threshold angle 60° permite overhangs de 60° sem suporte. As três peças no banco provam a configuração." },
             whatIs: "Mapa da aba Resistência: gerador de paredes, pontes, saliências e infill em visão sistêmica.",
             whyAdjust: "Resistência é estrutural: cada parâmetro afeta carga máxima, peso e tempo de impressão.",
             optionsTable: {
@@ -3048,6 +3056,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Tour Aba Velocidade",
             value: "5 telas integradas",
+            image: { src: mod10Img103.url, alt: "Aba Velocidade do OrcaSlicer com primeira camada 25mm/s, parede externa 180mm/s, aceleração 5000mm/s² + comparativo cubo A (ghosting) vs cubo B (parede lisa)", caption: "Velocidade em sistema único: Primeira Camada 25mm/s (adesão garantida), Parede Externa 180mm/s + Aceleração 5000mm/s² (alta velocidade) gera o Cubo A com ghosting visível; baixando para 60mm/s + 1500mm/s² o Cubo B sai com parede lisa. A aba Velocidade é trade-off direto entre tempo e acabamento — sem Input Shaping calibrado, alta velocidade sempre cobra ghosting." },
             whatIs: "Mapa da aba Velocidade: primeira camada, tipos de linha, aceleração e jerk em sistema único.",
             whyAdjust: "Tempo de impressão é dinheiro, mas velocidade mal calibrada destrói qualidade. Sistema balanceado é a meta.",
             optionsTable: {
@@ -3110,6 +3119,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Tour Aba Suporte",
             value: "7 telas integradas",
+            image: { src: mod10Img104.url, alt: "Aba Suporte com Tree Organic (Árvore Orgânica), Z Gap 0.28mm e comparativo bracket V1 vs V2 (suporte normal vs Tree Organic) na bancada", caption: "Aba Suporte em ação: V1 com suporte Normal (paredes verticais densas que marcam a peça e custam muito material) vs V2 com Tree Organic (galhos finos que só tocam onde precisa). Configuração: Tipo de suporte 'Árvore (Orgânico)', Z Gap 0.28mm, Espessura de base 2.5mm, Diâmetro da ponta 0.6mm. Resultado: superfície limpa e remoção sem marcas." },
             whatIs: "Mapa da aba Suporte: ativação, tipo, estilo, Z Gap, interface e suportes em árvore.",
             whyAdjust: "Suporte mal configurado = pós-processamento horrível ou peça inviável.",
             optionsTable: {
@@ -3171,6 +3181,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Tour Aba Multimaterial",
             value: "3 telas integradas",
+            image: { src: mod10Img105.url, alt: "OrcaSlicer com Torre de Purga (35mm) ao lado da caneca multimaterial azul/laranja e torre de teste laranja/azul listrada", caption: "Aba Multimaterial: a Torre de Purga (largura 35mm) absorve o filamento residual em cada troca de cor, garantindo que a caneca azul/laranja saia com transição limpa entre filamentos. Sem torre + 'Aliviar troca de filamento' = manchas e contaminação. A torre é o seguro técnico de qualquer impressão multimaterial." },
             whatIs: "Mapa da aba Multimaterial: torre de purga, prevenção de vazamento e troca de filamento.",
             whyAdjust: "Multimaterial mal configurado desperdiça filamento e contamina cores. Bem configurado, abre nicho premium.",
             optionsTable: {
@@ -3240,6 +3251,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Diagnose com Raciocínio Clínico",
             value: "Método em 5 passos",
+            image: { src: mod10Img106.url, alt: "Bancada com 4 peças defeituosas etiquetadas: Stringing (seque filamento), Ghosting (reduza aceleração), Warping (aumente temp mesa), Delaminação (aumente temp bico) + tela do Troubleshooting Center", caption: "Diagnose clínica visualizada: cada peça mostra um defeito clássico já mapeado para sua causa-raiz e intervenção — Fio/Stringing → filamento úmido → secar; Ghosting → aceleração alta → reduzir; Warping → mesa fria → aumentar temperatura da mesa; Delaminação → bico frio → aumentar temperatura do bico. O Troubleshooting Center do OrcaSlicer ao fundo organiza o mesmo raciocínio com referências visuais para o sintoma exato." },
             whatIs: "Metodologia médica aplicada à impressão 3D: anamnese, exame, hipótese, intervenção, validação.",
             whyAdjust: "Sem método, diagnóstico vira chute. Com método, vira engenharia repetível e ensinável.",
             optionsTable: {
