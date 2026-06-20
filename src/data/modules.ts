@@ -2376,6 +2376,7 @@ export const modules: Module[] = [
             {
               name: "Caso 1 — Suporte de Parede em L",
               value: "PETG, 5 paredes, Gyroid 30%",
+              image: { src: mod8Img82.url, alt: "Suporte de parede azul com kettlebell 10kg, dobradiça articulada cinza e engrenagem preta sobre bancada técnica", caption: "Trio funcional clássico: suporte de parede em PETG segurando kettlebell de 10 kg (5 paredes + Gyroid 30%), dobradiça articulada com folga +0.15mm no pino e engrenagem em Nylon-CF com 6 paredes. Ao fundo, o OrcaSlicer mostra o perfil 'PETG — High Strength' com Resistance Ultra Strong, 5 paredes, Gyroid 40% e 6 camadas top/bottom — a receita base que aguenta carga real." },
               whatIs: "Suporte estrutural para prateleira que sofre flexão constante (peso vertical sobre braço horizontal).",
               whyAdjust: "Curva do L é ponto de máxima tensão — exige orientação e parede otimizadas.",
               influences: "Capacidade de carga, deformação ao longo do tempo, durabilidade.",
