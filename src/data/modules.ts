@@ -30,6 +30,8 @@ import mod5Img55 from "@/assets/orca/modulo5-img55.jpeg.asset.json";
 import mod5Img56 from "@/assets/orca/modulo5-img56.jpeg.asset.json";
 import mod5Img57 from "@/assets/orca/modulo5-img57.jpeg.asset.json";
 import mod5Img58 from "@/assets/orca/modulo5-img58.jpeg.asset.json";
+import mod5Img591 from "@/assets/orca/modulo5-img591.jpeg.asset.json";
+import mod5Img592 from "@/assets/orca/modulo5-img592.jpeg.asset.json";
 
 export type ParamRow = { param: string; value: string; action: string };
 export type Integration = { module: string; text: string };
