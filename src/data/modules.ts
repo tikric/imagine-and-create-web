@@ -1323,6 +1323,8 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Maximum Volumetric Speed", value: "5–25 mm³/s (depende do hotend)",
+            image: { src: mod5Img54.url, alt: "Fatores de influência da MVS e tabela de diagnóstico", caption: "Quatro fatores que definem a MVS: tipo de hotend (padrão vs high-flow), comportamento térmico do material, temperatura e diâmetro do bico (0.6mm +20–30%, 0.8mm +40–50%)." },
+            generatesImage: { src: mod5Img51.url, alt: "MVS muito alta, ideal e muito baixa — consequência prática", caption: "MVS > 25 mm³/s: subextrusão severa e peça frágil. MVS ideal (~15): extrusão consistente e peça sólida. MVS muito baixa (~5): velocidade limitada à toa e risco de degradação térmica no bico." },
             whatIs: "Limite térmico de fluxo do hotend; impede subextrusão em alta velocidade.",
             whyAdjust: "Permite imprimir o mais rápido possível com segurança, sem falhas de extrusão.",
             optionsTable: { headers: ["Hotend", "MVS (mm³/s)", "Observação"], rows: [
