@@ -2687,6 +2687,7 @@ export const modules: Module[] = [
           paramDetails: [{
             name: "Padronização Comercial Completa",
             value: "Perfis + QA + Embalagem + Fluxo",
+            image: { src: mod9Img91.url, alt: "OrcaSlicer em Pré-Visualização exibindo benchmark com paredes, infill Gyroid e Tree Support — camada 185/320, 3:14:48 e 45.2g PLA", caption: "Padronização visual em ação: o mesmo perfil aplicado a todo lote — paredes (azul), inner walls (verde), infill Gyroid (amarelo) e Tree Support (laranja) — com métricas previsíveis (185/320 camadas, 3h14, 45.2g). Quando o perfil é padrão, o preview vira contrato: tempo e material são orçáveis antes da máquina ligar." },
             whatIs: "Sistema integrado de processos que garante que toda peça produzida atenda ao mesmo padrão de qualidade, do orçamento à entrega.",
             whyAdjust: "Sem padronização, cada peça vira projeto novo — custo de setup explode e qualidade vira loteria. Com padronização, escala vira possibilidade real.",
             influences: "Consistência entre lotes, taxa de retrabalho, confiança do cliente, capacidade de escalar e profissionalismo percebido.",
