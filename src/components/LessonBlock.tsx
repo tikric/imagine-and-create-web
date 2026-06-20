@@ -24,15 +24,30 @@ const TELA_MAP: Record<string, { url: string }> = {
   tela_61: tela61, tela_62: tela62,
 };
 
-// Auto-collect per-topic images from src/assets/orca/topics/{lessonId}-{idx}.png.asset.json
+// Auto-collect main hero images from src/assets/orca/topics/*.{jpg,png}.asset.json
 const TOPIC_ASSETS = import.meta.glob<{ url: string }>(
-  "@/assets/orca/topics/*.png.asset.json",
+  ["@/assets/orca/topics/*.jpg.asset.json", "@/assets/orca/topics/*.png.asset.json"],
   { eager: true, import: "default" },
 );
-const TOPIC_MAP: Record<string, string> = {};
+const TOPIC_FILES: Record<string, string> = {};
 for (const [path, asset] of Object.entries(TOPIC_ASSETS)) {
-  const name = path.split("/").pop()?.replace(".png.asset.json", "");
-  if (name) TOPIC_MAP[name] = asset.url;
+  const name = path.split("/").pop()?.replace(/\.(jpg|png)\.asset\.json$/, "");
+  if (name) TOPIC_FILES[name] = asset.url;
+}
+// Map lesson IDs → main hero image key
+const MAIN_MAP: Record<string, string> = {
+  "interface-completa": "main-interface",
+  "config-processo": "main-camada",
+  "materiais-filamentos": "main-filamento",
+  "calibracao-completa": "main-calibracao",
+  "engenharia-mecanica": "main-orientacao",
+  "otimizacao-extrema": "main-extrusao",
+  "estudos-caso": "main-funcional",
+  "mestre-orcaslicer": "main-infill",
+};
+const TOPIC_MAP: Record<string, string> = {};
+for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
+  if (TOPIC_FILES[key]) TOPIC_MAP[lessonId] = TOPIC_FILES[key];
 }
 
 const isPlaceholder = (url?: string) => !!url && url.includes("/placeholder.png");
