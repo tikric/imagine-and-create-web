@@ -81,6 +81,9 @@ const MAIN_MAP: Record<string, string> = {
   "diagnostico-metodologia": "lesson-diagnostico-metodologia", // Mod 14 — 14.1
   "stringing-ghosting": "lesson-stringing-ghosting",           // Mod 14 — 14.2
   "warping-delaminacao": "lesson-warping-delaminacao",         // Mod 14 — 14.3
+  "fazenda-impressao": "lesson-fazenda-impressao",             // Mod 15 — 15.1
+  "qc-embalagem": "lesson-qc-embalagem",                       // Mod 15 — 15.2
+  "monitoramento-automacao": "lesson-monitoramento-automacao", // Mod 15 — 15.3
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
