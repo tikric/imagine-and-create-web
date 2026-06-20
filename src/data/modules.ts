@@ -88,6 +88,7 @@ export type Lesson = {
   checklist?: string[];
   caseStudy?: string;
   screens?: { src: string; tela: string; panel: string; tool: string; caption: string }[];
+  image?: { src: string; alt: string; caption?: string };
   paramDetails?: {
     name: string;
     value: string;
