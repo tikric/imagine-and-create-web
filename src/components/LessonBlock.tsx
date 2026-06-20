@@ -72,6 +72,9 @@ const MAIN_MAP: Record<string, string> = {
   "precificacao": "lesson-precificacao",                 // Mod 9 — 9.2
   "mapa-mestre-painel-esquerdo": "lesson-mapa-mestre-painel",       // Mod 10 — 10.1
   "diagnose-integrada-raciocinio-clinico": "lesson-diagnose-integrada", // Mod 10 — 10.2
+  "limites-cinematicos": "lesson-limites-cinematicos",       // Mod 12 — 12.1
+  "fluxo-volumetrico-mvs": "lesson-fluxo-volumetrico-mvs",   // Mod 12 — 12.2
+  "input-shaping-klipper": "lesson-input-shaping-klipper",   // Mod 12 — 12.3
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
