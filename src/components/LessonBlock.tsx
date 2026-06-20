@@ -63,7 +63,8 @@ const MAIN_MAP: Record<string, string> = {
   "anisotropia-forcas": "lesson-anisotropia-forcas",     // Mod 6 — 6.1
   "orientacao-tensoes": "lesson-orientacao-tensoes",     // Mod 6 — 6.2
   "resistencia-estrutural": "lesson-resistencia-estrutural", // Mod 6 — 6.3
-  "otimizacao-conceitos": "main-infill",        // Mod 7
+  "otimizacao-conceitos": "lesson-otimizacao-conceitos",     // Mod 7 — 7.1
+  "reduzir-tempo-material": "lesson-reduzir-tempo-material", // Mod 7 — 7.2
   "analise-requisitos": "main-funcional",       // Mod 8
 };
 const TOPIC_MAP: Record<string, string> = {};
