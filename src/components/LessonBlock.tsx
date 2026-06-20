@@ -44,8 +44,8 @@ export function LessonBlock({ l, isFirst = true, withDivider = false, compact = 
       </div>
 
       {l.image && (
-        <figure className="mt-8 mx-auto max-w-sm rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
-          <img src={l.image.src} alt={l.image.alt} loading="lazy" className="w-full h-auto block" />
+        <figure className="mt-8 w-full rounded-2xl border border-primary/30 bg-card/40 overflow-hidden">
+          <img src={l.image.src} alt={l.image.alt} loading="lazy" className="w-full h-auto aspect-video object-cover block" />
           {l.image.caption && <figcaption className="px-4 py-2 text-xs text-foreground/80 border-t border-border bg-card/30">{l.image.caption}</figcaption>}
         </figure>
       )}
