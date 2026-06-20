@@ -84,6 +84,43 @@ const MAIN_MAP: Record<string, string> = {
   "fazenda-impressao": "lesson-fazenda-impressao",             // Mod 15 — 15.1
   "qc-embalagem": "lesson-qc-embalagem",                       // Mod 15 — 15.2
   "monitoramento-automacao": "lesson-monitoramento-automacao", // Mod 15 — 15.3
+  // Mod 16
+  "esteticos-avancados": "lesson-esteticos-avancados",
+  "produtos-virais-marketplace": "lesson-produtos-virais-marketplace",
+  "industriais-resistencia": "lesson-industriais-resistencia",
+  // Mod 17
+  "algoritmo-fatiamento": "lesson-algoritmo-fatiamento",
+  "classic-loops-fixos": "lesson-classic-loops-fixos",
+  "arachne-variavel": "lesson-arachne-variavel",
+  // Mod 18
+  "infill-basicos": "lesson-infill-basicos",
+  "infill-avancados": "lesson-infill-avancados",
+  "otimizacao-forcas": "lesson-otimizacao-forcas",
+  // Mod 19
+  "tipos-suporte": "lesson-tipos-suporte",
+  "z-gap-interface": "lesson-z-gap-interface",
+  "design-anti-suporte": "lesson-design-anti-suporte",
+  // Mod 20
+  "velocidades-extrusao": "lesson-velocidades-extrusao",
+  "travel-deslocamento": "lesson-travel-deslocamento",
+  "aceleracao-jerk": "lesson-aceleracao-jerk",
+  // Mod 21
+  "protocolo-8-etapas": "lesson-protocolo-8-etapas",
+  "termo-fluxo-pa": "lesson-termo-fluxo-pa",
+  "manutencao-preventiva": "lesson-manutencao-preventiva",
+  // Mod 22
+  "perfil-filamento-precisao": "lesson-perfil-filamento-precisao",
+  "variacoes-termicas": "lesson-variacoes-termicas",
+  "dilatacao-shrinkage": "lesson-dilatacao-shrinkage",
+  // Mod 23
+  "anatomia-hotend": "lesson-anatomia-hotend",
+  "retracao-wipe": "lesson-retracao-wipe",
+  "z-hop-colisao": "lesson-z-hop-colisao",
+  // Mod 24
+  "ironing-coeficientes": "lesson-ironing-coeficientes",
+  "bridges-overhangs": "lesson-bridges-overhangs",
+  "fuzzy-skin": "lesson-fuzzy-skin",
+  "pos-processamento-pro": "lesson-pos-processamento-pro",
 };
 const TOPIC_MAP: Record<string, string> = {};
 for (const [lessonId, key] of Object.entries(MAIN_MAP)) {
