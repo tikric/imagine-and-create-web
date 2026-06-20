@@ -42,7 +42,9 @@ const MAIN_MAP: Record<string, string> = {
   "visualizacao-3d": "lesson-visualizacao-3d",
   "ferramentas-avancadas": "lesson-ferramentas-avancadas",
   // Primeira aula dos demais módulos
-  "perfil-geral": "main-extrusao",              // Mod 2
+  "perfil-geral": "main-extrusao",              // Mod 2 — 2.1
+  "machine-limits": "lesson-machine-limits",    // Mod 2 — 2.2
+  "bico-extrusor-fluxo": "lesson-bico-extrusor-fluxo", // Mod 2 — 2.3
   "altura-camada": "main-camada",               // Mod 3
   "fundamentos-materiais": "main-filamento",    // Mod 4
   "temperatura": "main-calibracao",             // Mod 5
