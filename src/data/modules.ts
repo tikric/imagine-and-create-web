@@ -2464,6 +2464,7 @@ export const modules: Module[] = [
             {
               name: "Comparativo Funcionais",
               value: "Quick reference",
+              image: { src: mod8Img89.url, alt: "OrcaSlicer mostrando Paredes Adicionais (4-6) e Padrões Gyroid/Cubic 3D ao lado de suporte de parede com infill Gyroid visível", caption: "Distribuição de carga e reforço estrutural — a receita base de qualquer peça funcional: Paredes Adicionais (4-6) absorvem mais de 80% das tensões de tração externas (acima de 6 gera retornos decrescentes), e os Padrões Recomendados Gyroid ou Cubic 3D garantem suporte multi-axial estável (ao contrário de Grid/Lines, que falham fora do eixo). A peça em primeiro plano, presa no torno, mostra o resultado: estrutura de cinta com Gyroid visível, perímetros contínuos absorvendo a carga vertical. Esta tela do OrcaSlicer (Paredes 4-6 + Gyroid Cubic 3D) é o ponto de partida de suporte, dobradiça e engrenagem." },
               whatIs: "Tabela síntese das 3 receitas funcionais clássicas.",
               influences: "Escolha rápida quando o tipo de peça já está identificado.",
               generates: "Configuração base aplicável direto após análise de requisitos.",
