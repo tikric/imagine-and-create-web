@@ -2516,6 +2516,7 @@ export const modules: Module[] = [
             {
               name: "Caso 1 — Vaso Decorativo (Espiral)",
               value: "PLA Silk, Modo Vaso, 0% infill",
+              image: { src: mod8Img83.url, alt: "Vaso PLA Silk cobre, busto de Vênus em PLA Matte e luminária translúcida com padrão vazado", caption: "Trio estético clássico: vaso em PLA Silk cobre impresso em Modo Vaso Espiral (sem costura, parede contínua), busto de Vênus em PLA Matte com Seam Painting na traseira e Tree Organic nos overhangs, e luminária translúcida com padrão vazado em PLA branco (0% infill, luz interna evidencia o desenho). Acabamento digno de vitrine — receita: camada 0.12mm + costura oculta + suportes que não marcam." },
               whatIs: "Vaso impresso em espiral contínua (sem mudança de camada), eliminando completamente a costura.",
               whyAdjust: "Modo Vaso transforma a peça em uma parede helicoidal — superfície externa fica perfeita, sem nenhuma costura visível.",
               influences: "Acabamento visual, ausência de defeitos, tempo de impressão (mais rápido), peso (mais leve).",
