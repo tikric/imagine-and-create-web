@@ -1264,6 +1264,8 @@ export const modules: Module[] = [
           ],
           paramDetails: [{
             name: "Temperatura do Bico", value: "195–270°C (depende do material)",
+            image: { src: mod5Img52.url, alt: "Torre de temperatura, teste de ponte e teste de overhang", caption: "Três métodos visuais de calibração térmica: Torre de Temperatura (adesão e fluxo por degraus), Teste de Ponte (evita queda por excesso de calor) e Teste de Overhang (evita deformação em saliências)." },
+            errorsImage: { src: mod5Img53.url, alt: "Defeitos térmicos: fiapos, superfície fosca, bolhas, má adesão e queima", caption: "Diagnóstico térmico: fiapos = filamento úmido (secar 4–6h); superfície fosca/PLA Silk = T baixa; bolhas = T alta (excesso) ou baixa (umidade); delaminação = T baixa; peça queimada = T excessiva." },
             whatIs: "Temperatura do hotend que define a fluidez do polímero derretido.",
             whyAdjust: "Cada combinação de material, velocidade e ventilação tem uma temperatura ótima — a menor que ainda produz uma impressão forte e sem defeitos.",
             optionsTable: { headers: ["Método", "Descrição", "Quando Usar"], rows: [
